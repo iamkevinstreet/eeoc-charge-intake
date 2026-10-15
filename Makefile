@@ -25,4 +25,4 @@ dev:
 	.venv/bin/uvicorn eeoc_intake.api:app --reload --port 8000 & cd ui && npm run dev
 
 clean:
-	rm -rf eeoc_intake/data/generated eeoc_intake/evals/results logs .pytest_cache .ruff_cache ui/dist
+	rm -rf eeoc_intake/data/generated eeoc_intake/evals/results/smoke logs .pytest_cache .ruff_cache ui/dist

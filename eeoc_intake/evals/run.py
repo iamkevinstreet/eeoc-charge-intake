@@ -14,7 +14,8 @@ Scores per case:
 - guesses: fields filled when the document had no value
 - empty_precision / empty_recall: how well "I could not find it" matches the documents that lacked a value
 
-The runner adds latency, cost and failures. Results land in eeoc_intake/evals/results/.
+The runner adds latency, cost and failures. Offline runs land in eeoc_intake/evals/results/smoke/ (ignored by
+git); live runs in eeoc_intake/evals/results/live/, which is committed so the case study can cite it.
 """
 
 from __future__ import annotations
@@ -76,8 +77,12 @@ def main() -> None:
     ap.add_argument("--name", default="eeoc-extraction")
     ap.add_argument("--fake", action="store_true", help="use the offline stand-in provider")
     ap.add_argument("--limit", type=int, default=None)
-    ap.add_argument("--out", type=Path, default=RESULTS_DIR)
+    ap.add_argument(
+        "--out", type=Path, default=None, help="default: results/smoke for --fake, results/live otherwise"
+    )
     args = ap.parse_args()
+    if args.out is None:
+        args.out = RESULTS_DIR / ("smoke" if args.fake else "live")
 
     cases = load_cases(args.cases)[: args.limit]
     adapter = (

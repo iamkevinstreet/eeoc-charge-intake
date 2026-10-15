@@ -207,7 +207,11 @@ def export(review_id: str) -> dict:
 
 @api.get("/evals/latest")
 def latest_eval() -> dict:
-    runs = sorted(RESULTS_DIR.glob("*.json"), key=lambda p: p.stat().st_mtime) if RESULTS_DIR.exists() else []
+    runs: list[Path] = []
+    for folder in ("live", "smoke"):  # a live run, when there is one, beats the offline smoke run
+        runs = sorted((RESULTS_DIR / folder).glob("*.json"), key=lambda p: p.stat().st_mtime)
+        if runs:
+            break
     if not runs:
         raise HTTPException(404, "no evaluation results yet")
     return json.loads(runs[-1].read_text(encoding="utf-8"))

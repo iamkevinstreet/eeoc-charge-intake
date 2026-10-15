@@ -20,7 +20,7 @@ dist/
 # generated data, logs and eval outputs (regenerate with the scripts; never commit real records)
 logs/
 */data/generated/
-*/evals/results/
+*/evals/results/smoke/
 *.sqlite
 *.db
 

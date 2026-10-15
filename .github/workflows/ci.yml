@@ -58,4 +58,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: eval-results
-          path: eeoc_intake/evals/results/*.md
+          path: eeoc_intake/evals/results/smoke/*.md

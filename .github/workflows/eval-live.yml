@@ -1,0 +1,99 @@
+name: eval-live
+
+# Runs the extraction evaluation against a real model. Started by hand from the Actions tab.
+# The API key comes from a repository secret and never appears in logs (kds.logs redacts, and the
+# adapter stops at the budget). Results are committed to the eval-results branch and uploaded as
+# an artifact; merging the branch into main publishes them.
+
+on:
+  workflow_dispatch:
+    inputs:
+      provider:
+        description: Model provider
+        type: choice
+        options: [anthropic, openai]
+        default: anthropic
+      model:
+        description: Model id (see utils/llm/kds/llm/pricing.json for priced models)
+        type: string
+        default: claude-sonnet-5-5
+      cases:
+        description: Number of documents to generate and evaluate
+        type: number
+        default: 40
+      budget_usd:
+        description: Stop the run once this much has been spent
+        type: string
+        default: "5"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: eval-live
+  cancel-in-progress: false
+
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    env:
+      LLM_PROVIDER: ${{ inputs.provider }}
+      LLM_MODEL: ${{ inputs.model }}
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      EVAL_BUDGET_USD: ${{ inputs.budget_usd }}
+      LOG_REDACT: "true"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .
+
+      - name: Check the key is present
+        run: |
+          if [ "$LLM_PROVIDER" = "anthropic" ] && [ -z "$ANTHROPIC_API_KEY" ]; then
+            echo "ANTHROPIC_API_KEY is not set as a repository secret"; exit 1; fi
+          if [ "$LLM_PROVIDER" = "openai" ] && [ -z "$OPENAI_API_KEY" ]; then
+            echo "OPENAI_API_KEY is not set as a repository secret"; exit 1; fi
+
+      - name: Generate documents
+        run: python -m eeoc_intake.generate --n ${{ inputs.cases }} --out eeoc_intake/data/generated
+
+      - name: Evaluate
+        run: |
+          python -m eeoc_intake.evals.run \
+            --cases eeoc_intake/data/generated/cases.jsonl \
+            --name "live-${{ inputs.model }}" \
+            --out eeoc_intake/evals/results/live
+
+      - name: Job summary
+        run: cat "eeoc_intake/evals/results/live/live-${{ inputs.model }}-latest.md" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload results
+        uses: actions/upload-artifact@v4
+        with:
+          name: live-results
+          path: eeoc_intake/evals/results/live/
+
+      - name: Commit results to the eval-results branch
+        run: |
+          git config user.name "Kevin Street"
+          git config user.email "747156+iamkevinstreet@users.noreply.github.com"
+          mkdir -p /tmp/results && cp -r eeoc_intake/evals/results/live /tmp/results/
+          rm -rf eeoc_intake/evals/results/live
+          git fetch origin eval-results:eval-results 2>/dev/null || true
+          if git show-ref --verify --quiet refs/heads/eval-results; then
+            git checkout eval-results
+          else
+            git checkout -b eval-results
+          fi
+          mkdir -p eeoc_intake/evals/results && cp -r /tmp/results/live eeoc_intake/evals/results/
+          git add eeoc_intake/evals/results/live
+          git commit -m "Live evaluation: ${{ inputs.model }} on ${{ inputs.cases }} generated documents" || echo "nothing to commit"
+          git push origin eval-results
