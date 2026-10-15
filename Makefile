@@ -1,9 +1,9 @@
-.PHONY: install ui lint test smoke run dev clean
+.PHONY: install ui lint test smoke run dev dashboard export clean
 
 PY ?= .venv/bin/python
 
 install:
-	uv venv .venv && uv pip install -e ".[dev]" && $(PY) -m pre_commit install
+	uv venv .venv && uv pip install -e ".[dev,dashboard]" && $(PY) -m pre_commit install
 
 lint:
 	.venv/bin/ruff check . && .venv/bin/ruff format --check .
@@ -23,6 +23,12 @@ run: ui
 
 dev:
 	.venv/bin/uvicorn eeoc_intake.api:app --reload --port 8000 & cd ui && npm run dev
+
+dashboard:
+	$(PY) -m eeoc_intake.dashboard
+
+export:
+	$(PY) -m eeoc_intake.evals.export
 
 clean:
 	rm -rf eeoc_intake/data/generated eeoc_intake/evals/results/smoke logs .pytest_cache .ruff_cache ui/dist

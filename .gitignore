@@ -21,6 +21,7 @@ dist/
 logs/
 */data/generated/
 */evals/results/smoke/
+*/evals/results/export/
 *.sqlite
 *.db
 
