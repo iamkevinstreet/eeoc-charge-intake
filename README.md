@@ -1,5 +1,7 @@
 # EEOC charge intake: extraction with source spans and human review
 
+[![ci](https://github.com/iamkevinstreet/eeoc-charge-intake/actions/workflows/ci.yml/badge.svg)](https://github.com/iamkevinstreet/eeoc-charge-intake/actions/workflows/ci.yml) [![License: Apache 2.0](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
+
 Turns a charge of discrimination (the EEOC form and its notice letter) into a structured intake record. Every
 field carries the page and the exact text it came from. A field the document does not support comes back empty
 with a reason. Nothing is exported until a person has accepted, edited or rejected each field.
