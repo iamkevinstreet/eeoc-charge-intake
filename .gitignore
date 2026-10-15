@@ -26,7 +26,8 @@ logs/
 
 # node (review UIs)
 node_modules/
-*/ui/dist/
+ui/dist/
+ui/node_modules/
 
 # editors and OS
 .vscode/

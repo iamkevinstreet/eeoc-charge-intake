@@ -69,10 +69,10 @@ def make_one(i: int, rng: random.Random, gen: NameGen, out: Path) -> dict:
     paragraphs = 2 if kind != "long" else 9
     for p in range(paragraphs):
         charge.para(
-            f"{p + 1}. I was employed by {respondent} and my job involved {rng.choice(ISSUES).lower()} matters. "
-            f"I believe I was subjected to {issues[0].lower()} because of my {bases[0].lower()}, in violation of "
-            f"applicable law. On or about {earliest:%B %d, %Y} the conduct began and it continued through "
-            f"{latest:%B %d, %Y}."
+            f"{p + 1}. I was employed by {respondent.rstrip('.')}. I believe I was subjected to "
+            f"{' and '.join(i.lower() for i in issues)} because of my {' and '.join(b.lower() for b in bases)}, "
+            f"in violation of applicable law. On or about {earliest:%B %d, %Y} the conduct began and it "
+            f"continued through {latest:%B %d, %Y}."
         )
         if kind == "long" and p % 3 == 2:
             charge.page_break()

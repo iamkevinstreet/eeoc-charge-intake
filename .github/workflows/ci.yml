@@ -37,6 +37,18 @@ jobs:
       - name: Lint
         run: ruff check . && ruff format --check .
 
+      - name: Tests
+        run: pytest
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: ui/package-lock.json
+
+      - name: Review screen builds
+        run: cd ui && npm ci && npm run build
+
       - name: Smoke evaluation (offline)
         run: |
           python -m eeoc_intake.generate --n 10 --out eeoc_intake/data/generated

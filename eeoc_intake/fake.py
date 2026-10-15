@@ -9,6 +9,7 @@ model performs; that is what the live evaluation is for.
 from __future__ import annotations
 
 import json
+import re
 from collections.abc import Callable
 
 from kds.evals.case import EvalCase
@@ -29,13 +30,13 @@ def gold_responder(cases: list[EvalCase]) -> Callable[[list[Message]], str]:
             if c.expected["charging_party"] not in text:
                 continue
             pages = pages_text(c.input["charge_pdf"])
+            notice_pages = pages_text(c.input["notice_pdf"])
             record: dict = {}
             for f in SCORED_FIELDS:
                 value = c.expected.get(f)
-                span = find_span(f, value, pages)
-                page = next((i + 1 for i, p in enumerate(pages) if span and span in p), None)
-                if f == "notice_date":
-                    page, span = 1, "Date of Notice"
+                doc_pages = notice_pages if f == "notice_date" else pages
+                span = find_span(f, value, doc_pages)
+                page = next((i + 1 for i, p in enumerate(doc_pages) if span and span in p), None)
                 record[f] = {
                     "value": value,
                     "page": page,
@@ -65,7 +66,7 @@ def find_span(field: str, value: object, pages: list[str]) -> str | None:
     if value in (None, "", []):
         return None
     probe = value[0] if isinstance(value, list) else str(value)
-    if field in ("earliest_date", "latest_date"):
+    if field in ("earliest_date", "latest_date", "notice_date"):
         y, m, d = str(value).split("-")
         probe = f"{m}/{d}/{y}"
     if field == "continuing_action":
@@ -74,4 +75,10 @@ def find_span(field: str, value: object, pages: list[str]) -> str | None:
         for line in p.splitlines():
             if probe.casefold() in line.casefold():
                 return line.strip()
+    # The value may wrap across a line break in the extracted text; quote just the matching words then.
+    pattern = r"\s+".join(re.escape(w) for w in probe.split())
+    for p in pages:
+        m = re.search(pattern, p, flags=re.IGNORECASE)
+        if m:
+            return m.group(0)
     return None
