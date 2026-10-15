@@ -1,7 +1,14 @@
-"""Extraction: PDF pages in, a ChargeRecord with evidence out, then span verification."""
+"""Extraction: PDF pages in, a ChargeRecord with evidence out, then span verification.
+
+`extract()` returns everything a reviewer or an evaluation needs to judge the result: the verified record, the
+raw model output, the list of fields verification emptied, the page texts the spans point into, and what the
+call cost.
+"""
 
 from __future__ import annotations
 
+import time
+from dataclasses import dataclass, field
 from datetime import date, timedelta
 from pathlib import Path
 
@@ -14,12 +21,32 @@ from eeoc_intake.schema import FIELDS, ChargeRecord, Sourced
 _log = get_logger("eeoc.extract")
 
 SYSTEM = """You extract fields from an EEOC charge of discrimination and its notice letter.
+
 Rules:
-- For every field, quote the exact text (the span) and the 1-based page number that supports the value.
-- If the document does not support a value, leave value empty and give the reason. Never guess.
-- Dates are ISO (YYYY-MM-DD). `bases` and `issues` are lists. `respondent` is a list if there are several.
-- `continuing_action` is true only if the form marks it.
-- `summary` is three sentences at most, drawn only from the particulars."""
+- For every field, quote the exact text that supports the value as `span`, copied character for character from
+  the page text, and give the 1-based `page` it appears on. A span is a short excerpt: a line or a phrase,
+  never a whole paragraph.
+- The charge pages come first; `page` for every field refers to the CHARGE document, except `notice_date`,
+  whose `page` refers to the NOTICE document.
+- If the document does not support a value, leave `value` null, set `confidence` to 0 and explain in `reason`.
+  Never guess. A blank line where a value should be means the value is missing.
+- Dates are ISO (YYYY-MM-DD). `bases` and `issues` are lists of the labels as written. `respondent` is a single
+  string, or a list when the charge names more than one.
+- `continuing_action` is true only if the form marks it; otherwise false with no span.
+- `summary` is at most three sentences, drawn only from the particulars; it has no span.
+- `confidence` is your own estimate from 0 to 1 that the value is correct."""
+
+
+@dataclass
+class Extraction:
+    record: ChargeRecord
+    raw: ChargeRecord
+    removed: list[str] = field(default_factory=list)
+    charge_pages: list[str] = field(default_factory=list)
+    notice_pages: list[str] = field(default_factory=list)
+    model: str = ""
+    cost_usd: float = 0.0
+    latency_ms: int = 0
 
 
 def build_prompt(charge_pages: list[str], notice_pages: list[str]) -> str:
@@ -33,26 +60,45 @@ def build_prompt(charge_pages: list[str], notice_pages: list[str]) -> str:
     return "\n".join(parts)
 
 
-def extract(adapter: ModelAdapter, charge_pdf: Path | str, notice_pdf: Path | str) -> ChargeRecord:
+def extract(adapter: ModelAdapter, charge_pdf: Path | str, notice_pdf: Path | str) -> Extraction:
     charge_pages = pages_text(charge_pdf)
     notice_pages = pages_text(notice_pdf)
-    record, completion = adapter.complete_json(
+    t0 = time.perf_counter()
+    raw, completion = adapter.complete_json(
         build_prompt(charge_pages, notice_pages), ChargeRecord, system=SYSTEM
     )
-    verified = verify_spans(record, charge_pages, notice_pages)
+    latency_ms = int((time.perf_counter() - t0) * 1000)
+    verified, removed = verify_spans(raw, charge_pages, notice_pages)
     log_event(
         _log,
         "extract.done",
         charge=str(charge_pdf),
         filled=sum(1 for f in FIELDS if getattr(verified, f).value not in (None, "", [])),
+        removed=removed,
         cost_usd=completion.cost_usd,
+        latency_ms=latency_ms,
     )
-    return verified
+    return Extraction(
+        record=verified,
+        raw=raw,
+        removed=removed,
+        charge_pages=charge_pages,
+        notice_pages=notice_pages,
+        model=completion.model,
+        cost_usd=completion.cost_usd or 0.0,
+        latency_ms=latency_ms,
+    )
 
 
-def verify_spans(record: ChargeRecord, charge_pages: list[str], notice_pages: list[str]) -> ChargeRecord:
-    """Empty any field whose quoted span is not on the page it cites. The reviewer never sees unsupported values."""
+def verify_spans(
+    record: ChargeRecord, charge_pages: list[str], notice_pages: list[str]
+) -> tuple[ChargeRecord, list[str]]:
+    """Empty any field whose quoted span is not on the page it cites. The reviewer never sees unsupported values.
+
+    Returns the verified record and the names of the fields that were emptied.
+    """
     out = record.model_copy(deep=True)
+    removed: list[str] = []
     for f in FIELDS:
         s: Sourced = getattr(out, f)
         if s.value in (None, "", []):
@@ -69,12 +115,13 @@ def verify_spans(record: ChargeRecord, charge_pages: list[str], notice_pages: li
             and span_in_page(s.span, pages[s.page - 1])
         )
         if not ok:
+            removed.append(f)
             setattr(
                 out,
                 f,
                 Sourced(value=None, reason="unsupported: cited span not found on cited page", confidence=0.0),
             )
-    return out
+    return out, removed
 
 
 def response_due(notice_date: date, days: int = 30) -> date:
