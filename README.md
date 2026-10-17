@@ -76,15 +76,20 @@ Live runs are committed under `eeoc_intake/evals/results/live/`; the run log is 
 
 | Run | Field accuracy | Unsupported outputs | Guesses | False abstentions per document | Median time | Cost per document |
 | --- | --- | --- | --- | --- | --- | --- |
+| v0.3, claude-sonnet-5-5, 40 documents, Oct 17, 2026 | 100% | 0 | 0 | 0 | 4.2 s | $0.0134 |
 | v0.2, claude-sonnet-5-5, 40 documents, Oct 17, 2026 | 93.0% | 0 | 0 | 0.70 | 4.3 s | $0.0119 |
 
 What the first run said: nine of the ten scored fields were right on every document, including the hard cases
 (missing charge number, rotated page, long particulars, two respondents). Every miss was the `issues` field,
 which the model left empty on 28 of 40 documents. The form has no line that names the issues; they have to be
 read out of the particulars, and the prompt had told the model to quote labels "as written", so it abstained.
-It never guessed and never cited text that was not there. v0.3 changes the prompt to say where issues come
-from and which labels to use, and makes the generated particulars read the way a charging party writes them.
-The next run shows whether that closed the gap.
+It never guessed and never cited text that was not there.
+
+What the second run said: with the prompt saying where issues come from and the particulars written the way a
+charging party writes them, every field was right on every document. The remaining risk is the one the
+documents cannot show: generated particulars are cleaner and more regular than real ones, so 100% here is a
+ceiling for the pipeline, not a forecast for real intake. The next step is a harder test set: varied wording,
+irrelevant detail, scanned-looking pages.
 
 ## Data
 

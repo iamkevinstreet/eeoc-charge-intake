@@ -8,6 +8,9 @@
 - Generator: particulars describe what happened (a denied promotion, written discipline) instead of naming
   the issue label.
 - `--dump N` writes the full extraction for the first N documents; the live workflow keeps eight.
+- Second live run (claude-sonnet-5-5, 40 documents): field accuracy 100%, zero unsupported outputs, zero
+  guesses, zero false abstentions; 4.2 s median, $0.0134 per document.
+- Live results carry `index.json` and `figures.json` for the case study on kevindstreet.com.
 
 ## v0.2, Oct 15, 2026
 
