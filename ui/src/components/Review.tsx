@@ -1,17 +1,25 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { api } from '../api';
+import { api as liveApi } from '../api';
 import { formatValue, locate, parseValue } from '../highlight';
-import type { Action, Export, Review as ReviewT, Sourced, Value } from '../types';
+import type { Action, Decision, Export, Review as ReviewT, Sourced, Value } from '../types';
 import { FIELD_LABELS } from '../types';
 import { Document } from './Document';
+
+/** The two calls the screen makes while a person reviews. The demo on kevindstreet.com supplies an in-memory version. */
+export interface ReviewApi {
+  decide: (id: string, decision: Decision) => Promise<{ decided: number; total: number }>;
+  exportReview: (id: string) => Promise<Export>;
+}
 
 interface Props {
   review: ReviewT;
   onChange: (update: (r: ReviewT) => ReviewT) => void;
   onBack: () => void;
+  api?: ReviewApi;
+  backLabel?: string;
 }
 
-export function Review({ review, onChange, onBack }: Props) {
+export function Review({ review, onChange, onBack, api = liveApi, backLabel = 'All documents' }: Props) {
   const fields = review.fields;
   const [selected, setSelected] = useState(0);
   const [editing, setEditing] = useState<string | null>(null);
@@ -98,7 +106,7 @@ export function Review({ review, onChange, onBack }: Props) {
       <header className="review-head">
         <div>
           <button className="link" onClick={onBack}>
-            All documents
+            {backLabel}
           </button>
           <h1>{review.source.replace('sample:', '').replace('upload:', '')}</h1>
           <p className="meta">
