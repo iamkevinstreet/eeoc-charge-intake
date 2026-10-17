@@ -415,7 +415,43 @@ INDEX = """<!DOCTYPE html>
 <body>{%app_entry%}<footer>{%config%}{%scripts%}{%renderer%}</footer></body></html>"""
 
 
+def export_figures(results_dir: Path, out: Path) -> dict:
+    """Plotly JSON for the latest live run (and the one before it, for the comparison), for the case study."""
+    runs = [r for r in load_runs(results_dir) if r["kind"] == "live"]
+    if not runs:
+        raise SystemExit("no live runs to export")
+    runs_df, cases_df, fields_df = frames(runs)
+    ids = list(runs_df.run_id[:2])
+    latest = runs_df.iloc[0]
+    figs = [
+        ("by_field", "Accuracy by field", fig_accuracy_by_field(fields_df, ids)),
+        ("heatmap", "Accuracy by field and case kind", fig_heatmap(fields_df, ids[0])),
+        ("latency", "Seconds per document", fig_latency(cases_df, ids)),
+        ("cost", "Cost per document", fig_cost(runs_df, ids)),
+    ]
+    payload = {
+        "run_id": latest.run_id,
+        "model": latest.model,
+        "started_at": latest.started_at,
+        "figures": [{"name": n, "title": t, "spec": json.loads(f.to_json())} for n, t, f in figs],
+    }
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(json.dumps(payload), encoding="utf-8")
+    return payload
+
+
 def main() -> None:
+    import argparse
+
+    ap = argparse.ArgumentParser()
+    ap.add_argument(
+        "--export-figures", type=Path, default=None, help="write Plotly JSON for the site and exit"
+    )
+    args = ap.parse_args()
+    if args.export_figures:
+        payload = export_figures(RESULTS_DIR, args.export_figures)
+        print(f"wrote {args.export_figures} ({len(payload['figures'])} figures for {payload['run_id']})")
+        return
     app = build_app()
     app.run(host="127.0.0.1", port=int(os.environ.get("PORT", "8050")), debug=False)
 

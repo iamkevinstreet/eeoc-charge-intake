@@ -73,6 +73,12 @@ jobs:
             --out eeoc_intake/evals/results/live \
             --dump 8
 
+      - name: Figures and index for the case study
+        run: |
+          pip install ".[dashboard]"
+          python -m eeoc_intake.dashboard --export-figures eeoc_intake/evals/results/live/figures.json
+          python -m eeoc_intake.evals.index eeoc_intake/evals/results/live
+
       - name: Job summary
         run: cat "eeoc_intake/evals/results/live/live-${{ inputs.model }}-latest.md" >> "$GITHUB_STEP_SUMMARY"
 
