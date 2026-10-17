@@ -10,6 +10,9 @@ python -m eeoc_intake.evals.export
 # eeoc_intake/evals/results/export/fields.csv     one row per (document, field): correct 0/1, returned, expected
 ```
 
+The live workflow writes the same three files for the live runs to `eeoc_intake/evals/results/live/export/`, so
+the current ones can be downloaded from the repository without running anything.
+
 ## Connect
 
 1. Tableau Desktop or Tableau Public: Connect, Text file, pick `fields.csv`.
@@ -32,6 +35,11 @@ put the run filter (`run`) at the top and apply it to all sheets.
 
 ## Publishing
 
-Tableau Public workbooks are public by definition. The generated documents contain no real names or facts,
-so the export is safe to publish. Live runs on real documents would not be; keep those in Tableau Desktop or
-on a server with access control.
+Tableau Public workbooks are public by definition, and only Tableau Public vizzes can be embedded on a public
+page without a sign-in. The generated documents contain no real names or facts, so the export is safe to
+publish there. Tableau Cloud needs every viewer to sign in, which suits a client's own site but not a
+portfolio page. Live runs on real documents would not belong on Tableau Public; keep those in Tableau Cloud
+or Desktop.
+
+Web authoring on Tableau Public: sign in at public.tableau.com, choose Create, then Web Authoring, upload
+`fields.csv`, and build the sheets above. Publish, open the viz, and use Share to get the embed code.

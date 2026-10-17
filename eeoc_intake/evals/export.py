@@ -15,7 +15,9 @@ from eeoc_intake.dashboard import RESULTS_DIR, frames, load_runs
 
 
 def export(results_dir: Path, out: Path) -> list[Path]:
-    runs_df, cases_df, fields_df = frames(load_runs(results_dir))
+    runs_df, cases_df, fields_df = frames(
+        [r for r in load_runs(results_dir) if r["kind"] == "live"] or load_runs(results_dir)
+    )
     out.mkdir(parents=True, exist_ok=True)
     written = []
     for name, df in (("runs", runs_df), ("documents", cases_df), ("fields", fields_df)):

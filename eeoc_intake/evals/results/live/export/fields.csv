@@ -1,0 +1,801 @@
+run_id,run,model,case_id,case_kind,field,correct,value,expected,removed_by_verification
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-000,Clean,Charge number,1,"""410-2026-10000""","""410-2026-10000""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-000,Clean,Charging party,1,"""Reese Underwood""","""Reese Underwood""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-000,Clean,Respondent,1,"""Northgate Industries Corp.""","""Northgate Industries Corp.""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-000,Clean,EEOC office,1,"""Atlanta District Office""","""Atlanta District Office""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-000,Clean,Bases,1,"[""Color"", ""Sex""]","[""Color"", ""Sex""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-000,Clean,Issues,1,"[""Discipline"", ""Reasonable Accommodation""]","[""Discipline"", ""Reasonable Accommodation""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-000,Clean,Earliest date,1,"""2025-12-25""","""2025-12-25""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-000,Clean,Latest date,1,"""2026-07-09""","""2026-07-09""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-000,Clean,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-000,Clean,Notice date,1,"""2026-09-23""","""2026-09-23""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-001,Clean,Charge number,1,"""410-2026-10001""","""410-2026-10001""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-001,Clean,Charging party,1,"""Amara Montgomery""","""Amara Montgomery""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-001,Clean,Respondent,1,"""Keystone Analytics""","""Keystone Analytics""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-001,Clean,EEOC office,1,"""Atlanta District Office""","""Atlanta District Office""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-001,Clean,Bases,1,"[""Religion""]","[""Religion""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-001,Clean,Issues,1,"[""Promotion""]","[""Promotion""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-001,Clean,Earliest date,1,"""2025-01-27""","""2025-01-27""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-001,Clean,Latest date,1,"""2025-07-21""","""2025-07-21""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-001,Clean,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-001,Clean,Notice date,1,"""2025-09-19""","""2025-09-19""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-002,Clean,Charge number,1,"""410-2026-10002""","""410-2026-10002""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-002,Clean,Charging party,1,"""Avery Foster""","""Avery Foster""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-002,Clean,Respondent,1,"""Cedar Plumbing Inc.""","""Cedar Plumbing Inc.""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-002,Clean,EEOC office,1,"""Phoenix District Office""","""Phoenix District Office""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-002,Clean,Bases,1,"[""Age"", ""National Origin""]","[""Age"", ""National Origin""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-002,Clean,Issues,1,"[""Discipline"", ""Reasonable Accommodation""]","[""Discipline"", ""Reasonable Accommodation""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-002,Clean,Earliest date,1,"""2025-11-03""","""2025-11-03""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-002,Clean,Latest date,1,"""2026-05-07""","""2026-05-07""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-002,Clean,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-002,Clean,Notice date,1,"""2026-08-03""","""2026-08-03""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-003,Clean,Charge number,1,"""410-2026-10003""","""410-2026-10003""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-003,Clean,Charging party,1,"""Avery Goldsmith""","""Avery Goldsmith""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-003,Clean,Respondent,1,"""Summit Consulting Corp.""","""Summit Consulting Corp.""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-003,Clean,EEOC office,1,"""Phoenix District Office""","""Phoenix District Office""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-003,Clean,Bases,1,"[""Religion""]","[""Religion""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-003,Clean,Issues,1,"[""Reasonable Accommodation""]","[""Reasonable Accommodation""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-003,Clean,Earliest date,1,"""2025-06-12""","""2025-06-12""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-003,Clean,Latest date,1,"""2025-10-08""","""2025-10-08""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-003,Clean,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-003,Clean,Notice date,1,"""2025-12-18""","""2025-12-18""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-004,Missing charge number,Charge number,1,null,null,False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-004,Missing charge number,Charging party,1,"""Cameron Whitaker""","""Cameron Whitaker""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-004,Missing charge number,Respondent,1,"""Ironwood Staffing Inc.""","""Ironwood Staffing Inc.""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-004,Missing charge number,EEOC office,1,"""Atlanta District Office""","""Atlanta District Office""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-004,Missing charge number,Bases,1,"[""Color"", ""Disability""]","[""Color"", ""Disability""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-004,Missing charge number,Issues,1,"[""Discipline"", ""Promotion""]","[""Discipline"", ""Promotion""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-004,Missing charge number,Earliest date,1,"""2025-08-17""","""2025-08-17""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-004,Missing charge number,Latest date,1,"""2025-12-27""","""2025-12-27""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-004,Missing charge number,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-004,Missing charge number,Notice date,1,"""2026-02-13""","""2026-02-13""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-005,Clean,Charge number,1,"""410-2026-10005""","""410-2026-10005""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-005,Clean,Charging party,1,"""Kendall Foster""","""Kendall Foster""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-005,Clean,Respondent,1,"""Oakridge Plumbing Co.""","""Oakridge Plumbing Co.""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-005,Clean,EEOC office,1,"""Atlanta District Office""","""Atlanta District Office""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-005,Clean,Bases,1,"[""Disability"", ""Retaliation"", ""Sex""]","[""Disability"", ""Retaliation"", ""Sex""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-005,Clean,Issues,1,"[""Discharge"", ""Harassment""]","[""Discharge"", ""Harassment""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-005,Clean,Earliest date,1,"""2025-11-23""","""2025-11-23""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-005,Clean,Latest date,1,"""2026-03-19""","""2026-03-19""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-005,Clean,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-005,Clean,Notice date,1,"""2026-06-16""","""2026-06-16""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-006,Clean,Charge number,1,"""410-2026-10006""","""410-2026-10006""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-006,Clean,Charging party,1,"""Emerson Pemberton""","""Emerson Pemberton""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-006,Clean,Respondent,1,"""Granite Logistics LLP""","""Granite Logistics LLP""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-006,Clean,EEOC office,1,"""Phoenix District Office""","""Phoenix District Office""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-006,Clean,Bases,1,"[""Color"", ""National Origin"", ""Religion""]","[""Color"", ""National Origin"", ""Religion""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-006,Clean,Issues,1,"[""Promotion"", ""Reasonable Accommodation""]","[""Promotion"", ""Reasonable Accommodation""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-006,Clean,Earliest date,1,"""2025-04-10""","""2025-04-10""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-006,Clean,Latest date,1,"""2025-06-17""","""2025-06-17""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-006,Clean,Continuing action,1,true,true,False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-006,Clean,Notice date,1,"""2025-07-26""","""2025-07-26""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-007,Clean,Charge number,1,"""410-2026-10007""","""410-2026-10007""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-007,Clean,Charging party,1,"""Zion Beaumont""","""Zion Beaumont""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-007,Clean,Respondent,1,"""Beacon Staffing""","""Beacon Staffing""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-007,Clean,EEOC office,1,"""Phoenix District Office""","""Phoenix District Office""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-007,Clean,Bases,1,"[""Age"", ""Color"", ""Sex""]","[""Age"", ""Color"", ""Sex""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-007,Clean,Issues,1,"[""Promotion"", ""Reasonable Accommodation""]","[""Promotion"", ""Reasonable Accommodation""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-007,Clean,Earliest date,1,"""2025-08-17""","""2025-08-17""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-007,Clean,Latest date,1,"""2026-03-01""","""2026-03-01""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-007,Clean,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-007,Clean,Notice date,1,"""2026-05-15""","""2026-05-15""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-008,Clean,Charge number,1,"""410-2026-10008""","""410-2026-10008""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-008,Clean,Charging party,1,"""Reese Beaumont""","""Reese Beaumont""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-008,Clean,Respondent,1,"""Northgate Analytics Group""","""Northgate Analytics Group""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-008,Clean,EEOC office,1,"""Atlanta District Office""","""Atlanta District Office""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-008,Clean,Bases,1,"[""Disability"", ""National Origin""]","[""Disability"", ""National Origin""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-008,Clean,Issues,1,"[""Promotion""]","[""Promotion""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-008,Clean,Earliest date,1,"""2025-12-23""","""2025-12-23""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-008,Clean,Latest date,1,"""2026-07-11""","""2026-07-11""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-008,Clean,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-008,Clean,Notice date,1,"""2026-09-02""","""2026-09-02""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-009,Rotated page,Charge number,1,"""410-2026-10009""","""410-2026-10009""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-009,Rotated page,Charging party,1,"""Cameron Abernathy""","""Cameron Abernathy""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-009,Rotated page,Respondent,1,"""Pinnacle Analytics LLC""","""Pinnacle Analytics LLC""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-009,Rotated page,EEOC office,1,"""Chicago District Office""","""Chicago District Office""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-009,Rotated page,Bases,1,"[""Color"", ""Race""]","[""Color"", ""Race""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-009,Rotated page,Issues,1,"[""Promotion"", ""Terms/Conditions""]","[""Promotion"", ""Terms/Conditions""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-009,Rotated page,Earliest date,1,"""2025-02-07""","""2025-02-07""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-009,Rotated page,Latest date,1,"""2025-08-17""","""2025-08-17""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-009,Rotated page,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-009,Rotated page,Notice date,1,"""2025-09-24""","""2025-09-24""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-010,Clean,Charge number,1,"""410-2026-10010""","""410-2026-10010""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-010,Clean,Charging party,1,"""Skyler Iverson""","""Skyler Iverson""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-010,Clean,Respondent,1,"""Apex Industries Group""","""Apex Industries Group""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-010,Clean,EEOC office,1,"""Atlanta District Office""","""Atlanta District Office""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-010,Clean,Bases,1,"[""Color""]","[""Color""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-010,Clean,Issues,1,"[""Discipline""]","[""Discipline""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-010,Clean,Earliest date,1,"""2025-04-08""","""2025-04-08""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-010,Clean,Latest date,1,"""2025-05-08""","""2025-05-08""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-010,Clean,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-010,Clean,Notice date,1,"""2025-08-05""","""2025-08-05""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-011,Clean,Charge number,1,"""410-2026-10011""","""410-2026-10011""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-011,Clean,Charging party,1,"""Emerson Fairbanks""","""Emerson Fairbanks""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-011,Clean,Respondent,1,"""Evergreen Industries""","""Evergreen Industries""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-011,Clean,EEOC office,1,"""Dallas District Office""","""Dallas District Office""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-011,Clean,Bases,1,"[""Race""]","[""Race""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-011,Clean,Issues,1,"[""Discipline"", ""Reasonable Accommodation""]","[""Discipline"", ""Reasonable Accommodation""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-011,Clean,Earliest date,1,"""2025-10-25""","""2025-10-25""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-011,Clean,Latest date,1,"""2026-02-27""","""2026-02-27""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-011,Clean,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-011,Clean,Notice date,1,"""2026-04-05""","""2026-04-05""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-012,Clean,Charge number,1,"""410-2026-10012""","""410-2026-10012""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-012,Clean,Charging party,1,"""Nico Lancaster""","""Nico Lancaster""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-012,Clean,Respondent,1,"""Falcon Staffing Co.""","""Falcon Staffing Co.""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-012,Clean,EEOC office,1,"""Chicago District Office""","""Chicago District Office""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-012,Clean,Bases,1,"[""Disability"", ""Race"", ""Religion""]","[""Disability"", ""Race"", ""Religion""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-012,Clean,Issues,1,"[""Harassment""]","[""Harassment""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-012,Clean,Earliest date,1,"""2025-10-10""","""2025-10-10""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-012,Clean,Latest date,1,"""2026-02-16""","""2026-02-16""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-012,Clean,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-012,Clean,Notice date,1,"""2026-03-27""","""2026-03-27""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-013,Clean,Charge number,1,"""410-2026-10013""","""410-2026-10013""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-013,Clean,Charging party,1,"""Idris Holloway""","""Idris Holloway""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-013,Clean,Respondent,1,"""Timberline Analytics Group""","""Timberline Analytics Group""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-013,Clean,EEOC office,1,"""Chicago District Office""","""Chicago District Office""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-013,Clean,Bases,1,"[""Color"", ""Race""]","[""Color"", ""Race""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-013,Clean,Issues,1,"[""Discharge"", ""Reasonable Accommodation""]","[""Discharge"", ""Reasonable Accommodation""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-013,Clean,Earliest date,1,"""2025-06-21""","""2025-06-21""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-013,Clean,Latest date,1,"""2025-09-19""","""2025-09-19""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-013,Clean,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-013,Clean,Notice date,1,"""2025-10-12""","""2025-10-12""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-014,Long particulars,Charge number,1,"""410-2026-10014""","""410-2026-10014""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-014,Long particulars,Charging party,1,"""Sawyer Sorensen""","""Sawyer Sorensen""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-014,Long particulars,Respondent,1,"""Falcon Logistics LLC""","""Falcon Logistics LLC""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-014,Long particulars,EEOC office,1,"""Dallas District Office""","""Dallas District Office""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-014,Long particulars,Bases,1,"[""Age"", ""Disability"", ""Religion""]","[""Age"", ""Disability"", ""Religion""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-014,Long particulars,Issues,1,"[""Promotion""]","[""Promotion""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-014,Long particulars,Earliest date,1,"""2025-08-19""","""2025-08-19""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-014,Long particulars,Latest date,1,"""2026-01-24""","""2026-01-24""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-014,Long particulars,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-014,Long particulars,Notice date,1,"""2026-03-04""","""2026-03-04""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-015,Clean,Charge number,1,"""410-2026-10015""","""410-2026-10015""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-015,Clean,Charging party,1,"""Idris Delacroix""","""Idris Delacroix""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-015,Clean,Respondent,1,"""Westbrook Analytics LLP""","""Westbrook Analytics LLP""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-015,Clean,EEOC office,1,"""Chicago District Office""","""Chicago District Office""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-015,Clean,Bases,1,"[""Disability"", ""National Origin""]","[""Disability"", ""National Origin""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-015,Clean,Issues,1,"[""Reasonable Accommodation""]","[""Reasonable Accommodation""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-015,Clean,Earliest date,1,"""2025-12-03""","""2025-12-03""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-015,Clean,Latest date,1,"""2026-04-22""","""2026-04-22""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-015,Clean,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-015,Clean,Notice date,1,"""2026-06-06""","""2026-06-06""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-016,Clean,Charge number,1,"""410-2026-10016""","""410-2026-10016""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-016,Clean,Charging party,1,"""Cameron Goldsmith""","""Cameron Goldsmith""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-016,Clean,Respondent,1,"""Lakeside Analytics Group""","""Lakeside Analytics Group""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-016,Clean,EEOC office,1,"""Atlanta District Office""","""Atlanta District Office""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-016,Clean,Bases,1,"[""Disability"", ""National Origin"", ""Race""]","[""Disability"", ""National Origin"", ""Race""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-016,Clean,Issues,1,"[""Promotion""]","[""Promotion""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-016,Clean,Earliest date,1,"""2025-12-22""","""2025-12-22""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-016,Clean,Latest date,1,"""2025-12-27""","""2025-12-27""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-016,Clean,Continuing action,1,true,true,False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-016,Clean,Notice date,1,"""2026-03-24""","""2026-03-24""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-017,Clean,Charge number,1,"""410-2026-10017""","""410-2026-10017""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-017,Clean,Charging party,1,"""Omar Castillo""","""Omar Castillo""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-017,Clean,Respondent,1,"""Granite Consulting""","""Granite Consulting""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-017,Clean,EEOC office,1,"""Chicago District Office""","""Chicago District Office""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-017,Clean,Bases,1,"[""Age""]","[""Age""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-017,Clean,Issues,1,"[""Promotion"", ""Terms/Conditions""]","[""Promotion"", ""Terms/Conditions""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-017,Clean,Earliest date,1,"""2025-09-14""","""2025-09-14""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-017,Clean,Latest date,1,"""2025-10-04""","""2025-10-04""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-017,Clean,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-017,Clean,Notice date,1,"""2025-11-16""","""2025-11-16""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-018,Clean,Charge number,1,"""410-2026-10018""","""410-2026-10018""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-018,Clean,Charging party,1,"""Taylor Calloway""","""Taylor Calloway""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-018,Clean,Respondent,1,"""Timberline Electric""","""Timberline Electric""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-018,Clean,EEOC office,1,"""Dallas District Office""","""Dallas District Office""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-018,Clean,Bases,1,"[""Color"", ""Retaliation""]","[""Color"", ""Retaliation""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-018,Clean,Issues,1,"[""Promotion"", ""Terms/Conditions""]","[""Promotion"", ""Terms/Conditions""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-018,Clean,Earliest date,1,"""2025-03-11""","""2025-03-11""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-018,Clean,Latest date,1,"""2025-07-21""","""2025-07-21""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-018,Clean,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-018,Clean,Notice date,1,"""2025-08-25""","""2025-08-25""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-019,Two respondents,Charge number,1,"""410-2026-10019""","""410-2026-10019""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-019,Two respondents,Charging party,1,"""Tatum Fairbanks""","""Tatum Fairbanks""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-019,Two respondents,Respondent,1,"[""Beacon Electric"", ""Ironwood Industries Corp.""]","[""Beacon Electric"", ""Ironwood Industries Corp.""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-019,Two respondents,EEOC office,1,"""Chicago District Office""","""Chicago District Office""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-019,Two respondents,Bases,1,"[""Race""]","[""Race""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-019,Two respondents,Issues,1,"[""Promotion""]","[""Promotion""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-019,Two respondents,Earliest date,1,"""2025-11-11""","""2025-11-11""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-019,Two respondents,Latest date,1,"""2026-02-23""","""2026-02-23""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-019,Two respondents,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-019,Two respondents,Notice date,1,"""2026-04-07""","""2026-04-07""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-020,Clean,Charge number,1,"""410-2026-10020""","""410-2026-10020""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-020,Clean,Charging party,1,"""Sage Jenkins""","""Sage Jenkins""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-020,Clean,Respondent,1,"""Lakeside Logistics Inc.""","""Lakeside Logistics Inc.""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-020,Clean,EEOC office,1,"""Dallas District Office""","""Dallas District Office""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-020,Clean,Bases,1,"[""National Origin""]","[""National Origin""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-020,Clean,Issues,1,"[""Discharge""]","[""Discharge""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-020,Clean,Earliest date,1,"""2025-10-23""","""2025-10-23""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-020,Clean,Latest date,1,"""2026-01-02""","""2026-01-02""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-020,Clean,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-020,Clean,Notice date,1,"""2026-02-18""","""2026-02-18""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-021,Clean,Charge number,1,"""410-2026-10021""","""410-2026-10021""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-021,Clean,Charging party,1,"""Wren Lancaster""","""Wren Lancaster""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-021,Clean,Respondent,1,"""Beacon Builders Corp.""","""Beacon Builders Corp.""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-021,Clean,EEOC office,1,"""Dallas District Office""","""Dallas District Office""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-021,Clean,Bases,1,"[""Age"", ""Color"", ""Race""]","[""Age"", ""Color"", ""Race""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-021,Clean,Issues,1,"[""Promotion""]","[""Promotion""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-021,Clean,Earliest date,1,"""2025-03-04""","""2025-03-04""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-021,Clean,Latest date,1,"""2025-08-26""","""2025-08-26""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-021,Clean,Continuing action,1,true,true,False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-021,Clean,Notice date,1,"""2025-10-30""","""2025-10-30""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-022,Clean,Charge number,1,"""410-2026-10022""","""410-2026-10022""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-022,Clean,Charging party,1,"""Amara Castillo""","""Amara Castillo""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-022,Clean,Respondent,1,"""Vantage Electric LLP""","""Vantage Electric LLP""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-022,Clean,EEOC office,1,"""Chicago District Office""","""Chicago District Office""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-022,Clean,Bases,1,"[""Age"", ""Religion"", ""Sex""]","[""Age"", ""Religion"", ""Sex""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-022,Clean,Issues,1,"[""Discharge"", ""Discipline""]","[""Discharge"", ""Discipline""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-022,Clean,Earliest date,1,"""2025-05-11""","""2025-05-11""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-022,Clean,Latest date,1,"""2025-06-21""","""2025-06-21""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-022,Clean,Continuing action,1,true,true,False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-022,Clean,Notice date,1,"""2025-07-19""","""2025-07-19""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-023,Clean,Charge number,1,"""410-2026-10023""","""410-2026-10023""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-023,Clean,Charging party,1,"""Avery Underwood""","""Avery Underwood""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-023,Clean,Respondent,1,"""Summit Analytics Inc""","""Summit Analytics Inc""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-023,Clean,EEOC office,1,"""Dallas District Office""","""Dallas District Office""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-023,Clean,Bases,1,"[""Color"", ""Race""]","[""Color"", ""Race""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-023,Clean,Issues,1,"[""Harassment""]","[""Harassment""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-023,Clean,Earliest date,1,"""2025-01-10""","""2025-01-10""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-023,Clean,Latest date,1,"""2025-02-10""","""2025-02-10""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-023,Clean,Continuing action,1,true,true,False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-023,Clean,Notice date,1,"""2025-04-15""","""2025-04-15""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-024,Missing charge number,Charge number,1,null,null,False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-024,Missing charge number,Charging party,1,"""Skyler Fairbanks""","""Skyler Fairbanks""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-024,Missing charge number,Respondent,1,"""Pinnacle Medical Co.""","""Pinnacle Medical Co.""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-024,Missing charge number,EEOC office,1,"""Phoenix District Office""","""Phoenix District Office""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-024,Missing charge number,Bases,1,"[""Age"", ""Disability"", ""Race""]","[""Age"", ""Disability"", ""Race""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-024,Missing charge number,Issues,1,"[""Discipline""]","[""Discipline""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-024,Missing charge number,Earliest date,1,"""2025-08-14""","""2025-08-14""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-024,Missing charge number,Latest date,1,"""2026-02-03""","""2026-02-03""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-024,Missing charge number,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-024,Missing charge number,Notice date,1,"""2026-04-11""","""2026-04-11""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-025,Clean,Charge number,1,"""410-2026-10025""","""410-2026-10025""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-025,Clean,Charging party,1,"""Sage Kowalski""","""Sage Kowalski""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-025,Clean,Respondent,1,"""Cobalt Plumbing Group""","""Cobalt Plumbing Group""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-025,Clean,EEOC office,1,"""Dallas District Office""","""Dallas District Office""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-025,Clean,Bases,1,"[""Religion"", ""Retaliation""]","[""Religion"", ""Retaliation""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-025,Clean,Issues,1,"[""Discharge"", ""Promotion""]","[""Discharge"", ""Promotion""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-025,Clean,Earliest date,1,"""2025-01-10""","""2025-01-10""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-025,Clean,Latest date,1,"""2025-07-06""","""2025-07-06""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-025,Clean,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-025,Clean,Notice date,1,"""2025-08-10""","""2025-08-10""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-026,Clean,Charge number,1,"""410-2026-10026""","""410-2026-10026""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-026,Clean,Charging party,1,"""Emerson Kingsley""","""Emerson Kingsley""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-026,Clean,Respondent,1,"""Westbrook Builders Group""","""Westbrook Builders Group""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-026,Clean,EEOC office,1,"""Dallas District Office""","""Dallas District Office""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-026,Clean,Bases,1,"[""Age"", ""Race"", ""Religion""]","[""Age"", ""Race"", ""Religion""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-026,Clean,Issues,1,"[""Discipline""]","[""Discipline""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-026,Clean,Earliest date,1,"""2025-01-24""","""2025-01-24""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-026,Clean,Latest date,1,"""2025-02-21""","""2025-02-21""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-026,Clean,Continuing action,1,true,true,False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-026,Clean,Notice date,1,"""2025-03-28""","""2025-03-28""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-027,Clean,Charge number,1,"""410-2026-10027""","""410-2026-10027""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-027,Clean,Charging party,1,"""Taylor Yamada""","""Taylor Yamada""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-027,Clean,Respondent,1,"""Beacon Holdings LLP""","""Beacon Holdings LLP""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-027,Clean,EEOC office,1,"""Atlanta District Office""","""Atlanta District Office""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-027,Clean,Bases,1,"[""National Origin""]","[""National Origin""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-027,Clean,Issues,1,"[""Discharge"", ""Promotion""]","[""Discharge"", ""Promotion""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-027,Clean,Earliest date,1,"""2025-10-05""","""2025-10-05""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-027,Clean,Latest date,1,"""2026-01-04""","""2026-01-04""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-027,Clean,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-027,Clean,Notice date,1,"""2026-03-13""","""2026-03-13""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-028,Clean,Charge number,1,"""410-2026-10028""","""410-2026-10028""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-028,Clean,Charging party,1,"""Logan Bennett""","""Logan Bennett""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-028,Clean,Respondent,1,"""Acme Analytics LLP""","""Acme Analytics LLP""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-028,Clean,EEOC office,1,"""Chicago District Office""","""Chicago District Office""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-028,Clean,Bases,1,"[""Age""]","[""Age""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-028,Clean,Issues,1,"[""Reasonable Accommodation""]","[""Reasonable Accommodation""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-028,Clean,Earliest date,1,"""2025-12-18""","""2025-12-18""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-028,Clean,Latest date,1,"""2026-06-11""","""2026-06-11""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-028,Clean,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-028,Clean,Notice date,1,"""2026-08-02""","""2026-08-02""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-029,Rotated page,Charge number,1,"""410-2026-10029""","""410-2026-10029""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-029,Rotated page,Charging party,1,"""Hayden Calloway""","""Hayden Calloway""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-029,Rotated page,Respondent,1,"""Harbor Industries""","""Harbor Industries""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-029,Rotated page,EEOC office,1,"""Chicago District Office""","""Chicago District Office""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-029,Rotated page,Bases,1,"[""Race""]","[""Race""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-029,Rotated page,Issues,1,"[""Discipline"", ""Promotion""]","[""Discipline"", ""Promotion""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-029,Rotated page,Earliest date,1,"""2025-07-09""","""2025-07-09""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-029,Rotated page,Latest date,1,"""2025-09-27""","""2025-09-27""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-029,Rotated page,Continuing action,1,true,true,False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-029,Rotated page,Notice date,1,"""2025-10-28""","""2025-10-28""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-030,Clean,Charge number,1,"""410-2026-10030""","""410-2026-10030""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-030,Clean,Charging party,1,"""Santiago Kowalski""","""Santiago Kowalski""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-030,Clean,Respondent,1,"""Cobalt Builders Group""","""Cobalt Builders Group""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-030,Clean,EEOC office,1,"""Dallas District Office""","""Dallas District Office""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-030,Clean,Bases,1,"[""National Origin"", ""Race""]","[""National Origin"", ""Race""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-030,Clean,Issues,1,"[""Reasonable Accommodation""]","[""Reasonable Accommodation""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-030,Clean,Earliest date,1,"""2025-04-16""","""2025-04-16""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-030,Clean,Latest date,1,"""2025-04-30""","""2025-04-30""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-030,Clean,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-030,Clean,Notice date,1,"""2025-07-24""","""2025-07-24""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-031,Clean,Charge number,1,"""410-2026-10031""","""410-2026-10031""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-031,Clean,Charging party,1,"""Kendall Delacroix""","""Kendall Delacroix""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-031,Clean,Respondent,1,"""Quarry Roofing Inc.""","""Quarry Roofing Inc.""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-031,Clean,EEOC office,1,"""Phoenix District Office""","""Phoenix District Office""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-031,Clean,Bases,1,"[""National Origin"", ""Retaliation"", ""Sex""]","[""National Origin"", ""Retaliation"", ""Sex""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-031,Clean,Issues,1,"[""Harassment"", ""Terms/Conditions""]","[""Harassment"", ""Terms/Conditions""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-031,Clean,Earliest date,1,"""2025-06-12""","""2025-06-12""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-031,Clean,Latest date,1,"""2025-10-07""","""2025-10-07""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-031,Clean,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-031,Clean,Notice date,1,"""2026-01-05""","""2026-01-05""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-032,Clean,Charge number,1,"""410-2026-10032""","""410-2026-10032""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-032,Clean,Charging party,1,"""Peyton Castillo""","""Peyton Castillo""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-032,Clean,Respondent,1,"""Delta Dental LLC""","""Delta Dental LLC""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-032,Clean,EEOC office,1,"""Dallas District Office""","""Dallas District Office""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-032,Clean,Bases,1,"[""Age""]","[""Age""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-032,Clean,Issues,1,"[""Harassment"", ""Promotion""]","[""Harassment"", ""Promotion""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-032,Clean,Earliest date,1,"""2025-01-12""","""2025-01-12""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-032,Clean,Latest date,1,"""2025-05-25""","""2025-05-25""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-032,Clean,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-032,Clean,Notice date,1,"""2025-06-18""","""2025-06-18""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-033,Clean,Charge number,1,"""410-2026-10033""","""410-2026-10033""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-033,Clean,Charging party,1,"""Priya Dawson""","""Priya Dawson""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-033,Clean,Respondent,1,"""Lakeside Builders""","""Lakeside Builders""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-033,Clean,EEOC office,1,"""Dallas District Office""","""Dallas District Office""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-033,Clean,Bases,1,"[""Religion"", ""Sex""]","[""Religion"", ""Sex""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-033,Clean,Issues,1,"[""Discharge""]","[""Discharge""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-033,Clean,Earliest date,1,"""2025-09-07""","""2025-09-07""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-033,Clean,Latest date,1,"""2026-03-04""","""2026-03-04""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-033,Clean,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-033,Clean,Notice date,1,"""2026-03-29""","""2026-03-29""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-034,Long particulars,Charge number,1,"""410-2026-10034""","""410-2026-10034""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-034,Long particulars,Charging party,1,"""Leila Bennett""","""Leila Bennett""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-034,Long particulars,Respondent,1,"""Cobalt Builders Inc""","""Cobalt Builders Inc""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-034,Long particulars,EEOC office,1,"""Phoenix District Office""","""Phoenix District Office""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-034,Long particulars,Bases,1,"[""Age"", ""Race"", ""Religion""]","[""Age"", ""Race"", ""Religion""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-034,Long particulars,Issues,1,"[""Harassment""]","[""Harassment""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-034,Long particulars,Earliest date,1,"""2025-12-13""","""2025-12-13""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-034,Long particulars,Latest date,1,"""2026-03-08""","""2026-03-08""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-034,Long particulars,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-034,Long particulars,Notice date,1,"""2026-05-06""","""2026-05-06""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-035,Clean,Charge number,1,"""410-2026-10035""","""410-2026-10035""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-035,Clean,Charging party,1,"""Omar Lindqvist""","""Omar Lindqvist""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-035,Clean,Respondent,1,"""Juniper Electric Group""","""Juniper Electric Group""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-035,Clean,EEOC office,1,"""Chicago District Office""","""Chicago District Office""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-035,Clean,Bases,1,"[""Religion""]","[""Religion""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-035,Clean,Issues,1,"[""Discipline"", ""Terms/Conditions""]","[""Discipline"", ""Terms/Conditions""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-035,Clean,Earliest date,1,"""2025-06-05""","""2025-06-05""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-035,Clean,Latest date,1,"""2025-09-12""","""2025-09-12""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-035,Clean,Continuing action,1,true,true,False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-035,Clean,Notice date,1,"""2025-10-03""","""2025-10-03""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-036,Clean,Charge number,1,"""410-2026-10036""","""410-2026-10036""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-036,Clean,Charging party,1,"""Sage Foster""","""Sage Foster""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-036,Clean,Respondent,1,"""Juniper Plumbing Inc""","""Juniper Plumbing Inc""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-036,Clean,EEOC office,1,"""Dallas District Office""","""Dallas District Office""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-036,Clean,Bases,1,"[""Age"", ""National Origin"", ""Religion""]","[""Age"", ""National Origin"", ""Religion""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-036,Clean,Issues,1,"[""Harassment""]","[""Harassment""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-036,Clean,Earliest date,1,"""2025-06-18""","""2025-06-18""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-036,Clean,Latest date,1,"""2025-07-25""","""2025-07-25""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-036,Clean,Continuing action,1,true,true,False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-036,Clean,Notice date,1,"""2025-08-28""","""2025-08-28""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-037,Clean,Charge number,1,"""410-2026-10037""","""410-2026-10037""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-037,Clean,Charging party,1,"""Rowan Quintero""","""Rowan Quintero""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-037,Clean,Respondent,1,"""Lakeside Analytics Group""","""Lakeside Analytics Group""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-037,Clean,EEOC office,1,"""Atlanta District Office""","""Atlanta District Office""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-037,Clean,Bases,1,"[""Age"", ""Sex""]","[""Age"", ""Sex""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-037,Clean,Issues,1,"[""Discipline"", ""Harassment""]","[""Discipline"", ""Harassment""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-037,Clean,Earliest date,1,"""2025-03-20""","""2025-03-20""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-037,Clean,Latest date,1,"""2025-08-23""","""2025-08-23""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-037,Clean,Continuing action,1,true,true,False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-037,Clean,Notice date,1,"""2025-09-25""","""2025-09-25""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-038,Clean,Charge number,1,"""410-2026-10038""","""410-2026-10038""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-038,Clean,Charging party,1,"""Zion Lindqvist""","""Zion Lindqvist""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-038,Clean,Respondent,1,"""Harbor Analytics""","""Harbor Analytics""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-038,Clean,EEOC office,1,"""Atlanta District Office""","""Atlanta District Office""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-038,Clean,Bases,1,"[""Age"", ""Disability"", ""Sex""]","[""Age"", ""Disability"", ""Sex""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-038,Clean,Issues,1,"[""Discharge"", ""Reasonable Accommodation""]","[""Discharge"", ""Reasonable Accommodation""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-038,Clean,Earliest date,1,"""2025-06-16""","""2025-06-16""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-038,Clean,Latest date,1,"""2025-10-21""","""2025-10-21""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-038,Clean,Continuing action,1,true,true,False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-038,Clean,Notice date,1,"""2026-01-15""","""2026-01-15""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-039,Two respondents,Charge number,1,"""410-2026-10039""","""410-2026-10039""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-039,Two respondents,Charging party,1,"""Aaliyah Kingsley""","""Aaliyah Kingsley""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-039,Two respondents,Respondent,1,"[""Westbrook Electric Inc."", ""Delta Roofing LLC""]","[""Westbrook Electric Inc."", ""Delta Roofing LLC""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-039,Two respondents,EEOC office,1,"""Phoenix District Office""","""Phoenix District Office""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-039,Two respondents,Bases,1,"[""National Origin"", ""Race"", ""Retaliation""]","[""National Origin"", ""Race"", ""Retaliation""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-039,Two respondents,Issues,1,"[""Promotion""]","[""Promotion""]",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-039,Two respondents,Earliest date,1,"""2025-05-09""","""2025-05-09""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-039,Two respondents,Latest date,1,"""2025-11-17""","""2025-11-17""",False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-039,Two respondents,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,charge-039,Two respondents,Notice date,1,"""2025-12-28""","""2025-12-28""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-000,Clean,Charge number,1,"""410-2026-10000""","""410-2026-10000""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-000,Clean,Charging party,1,"""Reese Underwood""","""Reese Underwood""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-000,Clean,Respondent,1,"""Northgate Industries Corp.""","""Northgate Industries Corp.""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-000,Clean,EEOC office,1,"""Atlanta District Office""","""Atlanta District Office""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-000,Clean,Bases,1,"[""Color"", ""Sex""]","[""Color"", ""Sex""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-000,Clean,Issues,1,"[""discipline"", ""reasonable accommodation""]","[""Discipline"", ""Reasonable Accommodation""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-000,Clean,Earliest date,1,"""2025-12-25""","""2025-12-25""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-000,Clean,Latest date,1,"""2026-07-09""","""2026-07-09""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-000,Clean,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-000,Clean,Notice date,1,"""2026-09-23""","""2026-09-23""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-001,Clean,Charge number,1,"""410-2026-10001""","""410-2026-10001""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-001,Clean,Charging party,1,"""Amara Montgomery""","""Amara Montgomery""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-001,Clean,Respondent,1,"""Keystone Analytics""","""Keystone Analytics""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-001,Clean,EEOC office,1,"""Chicago District Office""","""Chicago District Office""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-001,Clean,Bases,1,"[""Sex""]","[""Sex""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-001,Clean,Issues,0,null,"[""Terms/Conditions""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-001,Clean,Earliest date,1,"""2025-02-15""","""2025-02-15""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-001,Clean,Latest date,1,"""2025-02-17""","""2025-02-17""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-001,Clean,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-001,Clean,Notice date,1,"""2025-05-10""","""2025-05-10""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-002,Clean,Charge number,1,"""410-2026-10002""","""410-2026-10002""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-002,Clean,Charging party,1,"""Avery Foster""","""Avery Foster""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-002,Clean,Respondent,1,"""Cedar Plumbing Inc.""","""Cedar Plumbing Inc.""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-002,Clean,EEOC office,1,"""Dallas District Office""","""Dallas District Office""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-002,Clean,Bases,1,"[""Retaliation""]","[""Retaliation""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-002,Clean,Issues,0,null,"[""Reasonable Accommodation"", ""Terms/Conditions""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-002,Clean,Earliest date,1,"""2025-07-24""","""2025-07-24""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-002,Clean,Latest date,1,"""2025-12-02""","""2025-12-02""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-002,Clean,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-002,Clean,Notice date,1,"""2026-02-03""","""2026-02-03""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-003,Clean,Charge number,1,"""410-2026-10003""","""410-2026-10003""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-003,Clean,Charging party,1,"""Avery Goldsmith""","""Avery Goldsmith""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-003,Clean,Respondent,1,"""Summit Consulting Corp.""","""Summit Consulting Corp.""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-003,Clean,EEOC office,1,"""Atlanta District Office""","""Atlanta District Office""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-003,Clean,Bases,1,"[""Age"", ""Disability"", ""Religion""]","[""Age"", ""Disability"", ""Religion""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-003,Clean,Issues,0,null,"[""Reasonable Accommodation""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-003,Clean,Earliest date,1,"""2025-12-23""","""2025-12-23""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-003,Clean,Latest date,1,"""2026-05-19""","""2026-05-19""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-003,Clean,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-003,Clean,Notice date,1,"""2026-07-25""","""2026-07-25""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-004,Missing charge number,Charge number,1,null,null,False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-004,Missing charge number,Charging party,1,"""Cameron Whitaker""","""Cameron Whitaker""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-004,Missing charge number,Respondent,1,"""Ironwood Staffing Inc.""","""Ironwood Staffing Inc.""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-004,Missing charge number,EEOC office,1,"""Dallas District Office""","""Dallas District Office""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-004,Missing charge number,Bases,1,"[""Race"", ""Retaliation""]","[""Race"", ""Retaliation""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-004,Missing charge number,Issues,0,null,"[""Discipline"", ""Reasonable Accommodation""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-004,Missing charge number,Earliest date,1,"""2025-08-28""","""2025-08-28""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-004,Missing charge number,Latest date,1,"""2025-09-26""","""2025-09-26""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-004,Missing charge number,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-004,Missing charge number,Notice date,1,"""2025-12-17""","""2025-12-17""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-005,Clean,Charge number,1,"""410-2026-10005""","""410-2026-10005""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-005,Clean,Charging party,1,"""Kendall Foster""","""Kendall Foster""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-005,Clean,Respondent,1,"""Oakridge Plumbing Co.""","""Oakridge Plumbing Co.""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-005,Clean,EEOC office,1,"""Phoenix District Office""","""Phoenix District Office""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-005,Clean,Bases,1,"[""Disability"", ""Religion"", ""Retaliation""]","[""Disability"", ""Religion"", ""Retaliation""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-005,Clean,Issues,0,null,"[""Discipline"", ""Reasonable Accommodation""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-005,Clean,Earliest date,1,"""2025-01-19""","""2025-01-19""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-005,Clean,Latest date,1,"""2025-03-17""","""2025-03-17""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-005,Clean,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-005,Clean,Notice date,1,"""2025-04-12""","""2025-04-12""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-006,Clean,Charge number,1,"""410-2026-10006""","""410-2026-10006""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-006,Clean,Charging party,1,"""Emerson Pemberton""","""Emerson Pemberton""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-006,Clean,Respondent,1,"""Granite Logistics LLP""","""Granite Logistics LLP""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-006,Clean,EEOC office,1,"""Atlanta District Office""","""Atlanta District Office""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-006,Clean,Bases,1,"[""Disability"", ""Retaliation"", ""Sex""]","[""Disability"", ""Retaliation"", ""Sex""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-006,Clean,Issues,1,"[""discharge"", ""harassment""]","[""Discharge"", ""Harassment""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-006,Clean,Earliest date,1,"""2025-11-23""","""2025-11-23""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-006,Clean,Latest date,1,"""2026-03-19""","""2026-03-19""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-006,Clean,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-006,Clean,Notice date,1,"""2026-06-16""","""2026-06-16""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-007,Clean,Charge number,1,"""410-2026-10007""","""410-2026-10007""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-007,Clean,Charging party,1,"""Zion Beaumont""","""Zion Beaumont""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-007,Clean,Respondent,1,"""Beacon Staffing""","""Beacon Staffing""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-007,Clean,EEOC office,1,"""Dallas District Office""","""Dallas District Office""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-007,Clean,Bases,1,"[""Age"", ""National Origin"", ""Retaliation""]","[""Age"", ""National Origin"", ""Retaliation""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-007,Clean,Issues,1,"[""promotion"", ""reasonable accommodation""]","[""Promotion"", ""Reasonable Accommodation""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-007,Clean,Earliest date,1,"""2025-04-10""","""2025-04-10""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-007,Clean,Latest date,1,"""2025-06-17""","""2025-06-17""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-007,Clean,Continuing action,1,true,true,False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-007,Clean,Notice date,1,"""2025-07-26""","""2025-07-26""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-008,Clean,Charge number,1,"""410-2026-10008""","""410-2026-10008""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-008,Clean,Charging party,1,"""Reese Beaumont""","""Reese Beaumont""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-008,Clean,Respondent,1,"""Northgate Analytics Group""","""Northgate Analytics Group""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-008,Clean,EEOC office,1,"""Phoenix District Office""","""Phoenix District Office""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-008,Clean,Bases,1,"[""Age"", ""Color"", ""Sex""]","[""Age"", ""Color"", ""Sex""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-008,Clean,Issues,1,"[""promotion"", ""reasonable accommodation""]","[""Promotion"", ""Reasonable Accommodation""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-008,Clean,Earliest date,1,"""2025-08-17""","""2025-08-17""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-008,Clean,Latest date,1,"""2026-03-01""","""2026-03-01""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-008,Clean,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-008,Clean,Notice date,1,"""2026-05-15""","""2026-05-15""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-009,Rotated page,Charge number,1,"""410-2026-10009""","""410-2026-10009""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-009,Rotated page,Charging party,1,"""Cameron Abernathy""","""Cameron Abernathy""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-009,Rotated page,Respondent,1,"""Pinnacle Analytics LLC""","""Pinnacle Analytics LLC""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-009,Rotated page,EEOC office,1,"""Atlanta District Office""","""Atlanta District Office""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-009,Rotated page,Bases,1,"[""Disability"", ""National Origin""]","[""Disability"", ""National Origin""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-009,Rotated page,Issues,0,null,"[""Promotion""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-009,Rotated page,Earliest date,1,"""2025-12-23""","""2025-12-23""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-009,Rotated page,Latest date,1,"""2026-07-11""","""2026-07-11""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-009,Rotated page,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-009,Rotated page,Notice date,1,"""2026-09-02""","""2026-09-02""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-010,Clean,Charge number,1,"""410-2026-10010""","""410-2026-10010""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-010,Clean,Charging party,1,"""Skyler Iverson""","""Skyler Iverson""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-010,Clean,Respondent,1,"""Apex Industries Group""","""Apex Industries Group""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-010,Clean,EEOC office,1,"""Phoenix District Office""","""Phoenix District Office""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-010,Clean,Bases,1,"[""Retaliation""]","[""Retaliation""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-010,Clean,Issues,1,"[""discharge"", ""terms/conditions""]","[""Discharge"", ""Terms/Conditions""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-010,Clean,Earliest date,1,"""2025-08-12""","""2025-08-12""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-010,Clean,Latest date,1,"""2025-09-05""","""2025-09-05""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-010,Clean,Continuing action,1,true,true,False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-010,Clean,Notice date,1,"""2025-11-16""","""2025-11-16""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-011,Clean,Charge number,1,"""410-2026-10011""","""410-2026-10011""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-011,Clean,Charging party,1,"""Emerson Fairbanks""","""Emerson Fairbanks""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-011,Clean,Respondent,1,"""Evergreen Industries""","""Evergreen Industries""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-011,Clean,EEOC office,1,"""Chicago District Office""","""Chicago District Office""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-011,Clean,Bases,1,"[""Color"", ""Race""]","[""Color"", ""Race""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-011,Clean,Issues,0,null,"[""Promotion""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-011,Clean,Earliest date,1,"""2025-10-18""","""2025-10-18""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-011,Clean,Latest date,1,"""2025-11-08""","""2025-11-08""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-011,Clean,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-011,Clean,Notice date,1,"""2025-12-23""","""2025-12-23""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-012,Clean,Charge number,1,"""410-2026-10012""","""410-2026-10012""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-012,Clean,Charging party,1,"""Nico Lancaster""","""Nico Lancaster""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-012,Clean,Respondent,1,"""Falcon Staffing Co.""","""Falcon Staffing Co.""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-012,Clean,EEOC office,1,"""Chicago District Office""","""Chicago District Office""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-012,Clean,Bases,1,"[""Race""]","[""Race""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-012,Clean,Issues,0,null,"[""Reasonable Accommodation"", ""Terms/Conditions""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-012,Clean,Earliest date,1,"""2025-03-01""","""2025-03-01""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-012,Clean,Latest date,1,"""2025-05-20""","""2025-05-20""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-012,Clean,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-012,Clean,Notice date,1,"""2025-08-10""","""2025-08-10""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-013,Clean,Charge number,1,"""410-2026-10013""","""410-2026-10013""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-013,Clean,Charging party,1,"""Idris Holloway""","""Idris Holloway""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-013,Clean,Respondent,1,"""Timberline Analytics Group""","""Timberline Analytics Group""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-013,Clean,EEOC office,1,"""Chicago District Office""","""Chicago District Office""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-013,Clean,Bases,1,"[""Color"", ""Disability"", ""Religion""]","[""Color"", ""Disability"", ""Religion""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-013,Clean,Issues,0,null,"[""Discipline""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-013,Clean,Earliest date,1,"""2025-12-17""","""2025-12-17""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-013,Clean,Latest date,1,"""2026-03-01""","""2026-03-01""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-013,Clean,Continuing action,1,true,true,False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-013,Clean,Notice date,1,"""2026-04-10""","""2026-04-10""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-014,Long particulars,Charge number,1,"""410-2026-10014""","""410-2026-10014""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-014,Long particulars,Charging party,1,"""Sawyer Sorensen""","""Sawyer Sorensen""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-014,Long particulars,Respondent,1,"""Falcon Logistics LLC""","""Falcon Logistics LLC""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-014,Long particulars,EEOC office,1,"""Chicago District Office""","""Chicago District Office""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-014,Long particulars,Bases,1,"[""Color"", ""Disability"", ""Religion""]","[""Color"", ""Disability"", ""Religion""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-014,Long particulars,Issues,0,null,"[""Discipline"", ""Harassment""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-014,Long particulars,Earliest date,1,"""2025-04-13""","""2025-04-13""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-014,Long particulars,Latest date,1,"""2025-04-16""","""2025-04-16""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-014,Long particulars,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-014,Long particulars,Notice date,1,"""2025-06-24""","""2025-06-24""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-015,Clean,Charge number,1,"""410-2026-10015""","""410-2026-10015""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-015,Clean,Charging party,1,"""Idris Delacroix""","""Idris Delacroix""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-015,Clean,Respondent,1,"""Westbrook Analytics LLP""","""Westbrook Analytics LLP""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-015,Clean,EEOC office,1,"""Atlanta District Office""","""Atlanta District Office""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-015,Clean,Bases,1,"[""National Origin""]","[""National Origin""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-015,Clean,Issues,1,"[""discharge"", ""reasonable accommodation""]","[""Discharge"", ""Reasonable Accommodation""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-015,Clean,Earliest date,1,"""2025-09-16""","""2025-09-16""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-015,Clean,Latest date,1,"""2025-12-08""","""2025-12-08""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-015,Clean,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-015,Clean,Notice date,1,"""2026-02-23""","""2026-02-23""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-016,Clean,Charge number,1,"""410-2026-10016""","""410-2026-10016""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-016,Clean,Charging party,1,"""Cameron Goldsmith""","""Cameron Goldsmith""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-016,Clean,Respondent,1,"""Lakeside Analytics Group""","""Lakeside Analytics Group""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-016,Clean,EEOC office,1,"""Dallas District Office""","""Dallas District Office""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-016,Clean,Bases,1,"[""Color""]","[""Color""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-016,Clean,Issues,0,null,"[""Discipline"", ""Reasonable Accommodation""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-016,Clean,Earliest date,1,"""2025-03-05""","""2025-03-05""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-016,Clean,Latest date,1,"""2025-08-03""","""2025-08-03""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-016,Clean,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-016,Clean,Notice date,1,"""2025-10-17""","""2025-10-17""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-017,Clean,Charge number,1,"""410-2026-10017""","""410-2026-10017""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-017,Clean,Charging party,1,"""Omar Castillo""","""Omar Castillo""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-017,Clean,Respondent,1,"""Granite Consulting""","""Granite Consulting""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-017,Clean,EEOC office,1,"""Dallas District Office""","""Dallas District Office""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-017,Clean,Bases,1,"[""Disability"", ""National Origin""]","[""Disability"", ""National Origin""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-017,Clean,Issues,0,null,"[""Discipline""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-017,Clean,Earliest date,1,"""2025-07-02""","""2025-07-02""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-017,Clean,Latest date,1,"""2025-08-21""","""2025-08-21""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-017,Clean,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-017,Clean,Notice date,1,"""2025-10-02""","""2025-10-02""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-018,Clean,Charge number,1,"""410-2026-10018""","""410-2026-10018""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-018,Clean,Charging party,1,"""Taylor Calloway""","""Taylor Calloway""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-018,Clean,Respondent,1,"""Timberline Electric""","""Timberline Electric""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-018,Clean,EEOC office,1,"""Atlanta District Office""","""Atlanta District Office""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-018,Clean,Bases,1,"[""Disability"", ""National Origin"", ""Race""]","[""Disability"", ""National Origin"", ""Race""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-018,Clean,Issues,0,null,"[""Promotion""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-018,Clean,Earliest date,1,"""2025-12-22""","""2025-12-22""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-018,Clean,Latest date,1,"""2025-12-27""","""2025-12-27""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-018,Clean,Continuing action,1,true,true,False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-018,Clean,Notice date,1,"""2026-03-24""","""2026-03-24""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-019,Two respondents,Charge number,1,"""410-2026-10019""","""410-2026-10019""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-019,Two respondents,Charging party,1,"""Tatum Fairbanks""","""Tatum Fairbanks""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-019,Two respondents,Respondent,1,"[""Beacon Electric"", ""Ironwood Industries Corp.""]","[""Beacon Electric"", ""Ironwood Industries Corp.""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-019,Two respondents,EEOC office,1,"""Chicago District Office""","""Chicago District Office""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-019,Two respondents,Bases,1,"[""Age"", ""National Origin"", ""Sex""]","[""Age"", ""National Origin"", ""Sex""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-019,Two respondents,Issues,0,null,"[""Promotion""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-019,Two respondents,Earliest date,1,"""2025-05-14""","""2025-05-14""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-019,Two respondents,Latest date,1,"""2025-09-27""","""2025-09-27""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-019,Two respondents,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-019,Two respondents,Notice date,1,"""2025-10-27""","""2025-10-27""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-020,Clean,Charge number,1,"""410-2026-10020""","""410-2026-10020""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-020,Clean,Charging party,1,"""Sage Jenkins""","""Sage Jenkins""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-020,Clean,Respondent,1,"""Lakeside Logistics Inc.""","""Lakeside Logistics Inc.""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-020,Clean,EEOC office,1,"""Phoenix District Office""","""Phoenix District Office""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-020,Clean,Bases,1,"[""Age"", ""Color""]","[""Age"", ""Color""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-020,Clean,Issues,0,null,"[""Terms/Conditions""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-020,Clean,Earliest date,1,"""2025-08-16""","""2025-08-16""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-020,Clean,Latest date,1,"""2026-03-03""","""2026-03-03""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-020,Clean,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-020,Clean,Notice date,1,"""2026-04-28""","""2026-04-28""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-021,Clean,Charge number,1,"""410-2026-10021""","""410-2026-10021""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-021,Clean,Charging party,1,"""Wren Lancaster""","""Wren Lancaster""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-021,Clean,Respondent,1,"""Beacon Builders Corp.""","""Beacon Builders Corp.""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-021,Clean,EEOC office,1,"""Phoenix District Office""","""Phoenix District Office""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-021,Clean,Bases,1,"[""National Origin""]","[""National Origin""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-021,Clean,Issues,1,"[""discharge"", ""promotion""]","[""Discharge"", ""Promotion""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-021,Clean,Earliest date,1,"""2025-09-26""","""2025-09-26""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-021,Clean,Latest date,1,"""2026-02-07""","""2026-02-07""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-021,Clean,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-021,Clean,Notice date,1,"""2026-03-11""","""2026-03-11""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-022,Clean,Charge number,1,"""410-2026-10022""","""410-2026-10022""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-022,Clean,Charging party,1,"""Amara Castillo""","""Amara Castillo""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-022,Clean,Respondent,1,"""Vantage Electric LLP""","""Vantage Electric LLP""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-022,Clean,EEOC office,1,"""Chicago District Office""","""Chicago District Office""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-022,Clean,Bases,1,"[""Race""]","[""Race""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-022,Clean,Issues,0,null,"[""Promotion""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-022,Clean,Earliest date,1,"""2025-11-11""","""2025-11-11""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-022,Clean,Latest date,1,"""2026-02-23""","""2026-02-23""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-022,Clean,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-022,Clean,Notice date,1,"""2026-04-07""","""2026-04-07""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-023,Clean,Charge number,1,"""410-2026-10023""","""410-2026-10023""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-023,Clean,Charging party,1,"""Avery Underwood""","""Avery Underwood""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-023,Clean,Respondent,1,"""Summit Analytics Inc""","""Summit Analytics Inc""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-023,Clean,EEOC office,1,"""Atlanta District Office""","""Atlanta District Office""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-023,Clean,Bases,1,"[""Age"", ""Color""]","[""Age"", ""Color""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-023,Clean,Issues,0,null,"[""Discharge""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-023,Clean,Earliest date,1,"""2025-10-23""","""2025-10-23""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-023,Clean,Latest date,1,"""2026-01-02""","""2026-01-02""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-023,Clean,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-023,Clean,Notice date,1,"""2026-02-18""","""2026-02-18""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-024,Missing charge number,Charge number,1,null,null,False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-024,Missing charge number,Charging party,1,"""Skyler Fairbanks""","""Skyler Fairbanks""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-024,Missing charge number,Respondent,1,"""Pinnacle Medical Co.""","""Pinnacle Medical Co.""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-024,Missing charge number,EEOC office,1,"""Dallas District Office""","""Dallas District Office""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-024,Missing charge number,Bases,1,"[""Color"", ""National Origin"", ""Religion""]","[""Color"", ""National Origin"", ""Religion""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-024,Missing charge number,Issues,1,"[""discharge""]","[""Discharge""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-024,Missing charge number,Earliest date,1,"""2025-05-04""","""2025-05-04""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-024,Missing charge number,Latest date,1,"""2025-08-23""","""2025-08-23""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-024,Missing charge number,Continuing action,1,true,true,False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-024,Missing charge number,Notice date,1,"""2025-09-19""","""2025-09-19""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-025,Clean,Charge number,1,"""410-2026-10025""","""410-2026-10025""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-025,Clean,Charging party,1,"""Sage Kowalski""","""Sage Kowalski""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-025,Clean,Respondent,1,"""Cobalt Plumbing Group""","""Cobalt Plumbing Group""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-025,Clean,EEOC office,1,"""Dallas District Office""","""Dallas District Office""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-025,Clean,Bases,1,"[""Age"", ""National Origin"", ""Retaliation""]","[""Age"", ""National Origin"", ""Retaliation""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-025,Clean,Issues,0,null,"[""Discipline""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-025,Clean,Earliest date,1,"""2025-06-09""","""2025-06-09""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-025,Clean,Latest date,1,"""2025-11-06""","""2025-11-06""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-025,Clean,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-025,Clean,Notice date,1,"""2026-01-02""","""2026-01-02""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-026,Clean,Charge number,1,"""410-2026-10026""","""410-2026-10026""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-026,Clean,Charging party,1,"""Emerson Kingsley""","""Emerson Kingsley""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-026,Clean,Respondent,1,"""Westbrook Builders Group""","""Westbrook Builders Group""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-026,Clean,EEOC office,1,"""Dallas District Office""","""Dallas District Office""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-026,Clean,Bases,1,"[""Religion""]","[""Religion""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-026,Clean,Issues,0,null,"[""Discharge"", ""Reasonable Accommodation""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-026,Clean,Earliest date,1,"""2025-07-28""","""2025-07-28""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-026,Clean,Latest date,1,"""2026-02-11""","""2026-02-11""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-026,Clean,Continuing action,1,true,true,False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-026,Clean,Notice date,1,"""2026-03-04""","""2026-03-04""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-027,Clean,Charge number,1,"""410-2026-10027""","""410-2026-10027""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-027,Clean,Charging party,1,"""Taylor Yamada""","""Taylor Yamada""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-027,Clean,Respondent,1,"""Beacon Holdings LLP""","""Beacon Holdings LLP""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-027,Clean,EEOC office,1,"""Atlanta District Office""","""Atlanta District Office""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-027,Clean,Bases,1,"[""Disability""]","[""Disability""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-027,Clean,Issues,0,null,"[""Terms/Conditions""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-027,Clean,Earliest date,1,"""2025-02-04""","""2025-02-04""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-027,Clean,Latest date,1,"""2025-07-29""","""2025-07-29""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-027,Clean,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-027,Clean,Notice date,1,"""2025-10-01""","""2025-10-01""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-028,Clean,Charge number,1,"""410-2026-10028""","""410-2026-10028""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-028,Clean,Charging party,1,"""Logan Bennett""","""Logan Bennett""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-028,Clean,Respondent,1,"""Acme Analytics LLP""","""Acme Analytics LLP""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-028,Clean,EEOC office,1,"""Dallas District Office""","""Dallas District Office""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-028,Clean,Bases,1,"[""Disability"", ""Race""]","[""Disability"", ""Race""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-028,Clean,Issues,0,null,"[""Discipline"", ""Harassment""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-028,Clean,Earliest date,1,"""2025-10-15""","""2025-10-15""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-028,Clean,Latest date,1,"""2026-02-01""","""2026-02-01""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-028,Clean,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-028,Clean,Notice date,1,"""2026-03-08""","""2026-03-08""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-029,Rotated page,Charge number,1,"""410-2026-10029""","""410-2026-10029""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-029,Rotated page,Charging party,1,"""Hayden Calloway""","""Hayden Calloway""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-029,Rotated page,Respondent,1,"""Harbor Industries""","""Harbor Industries""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-029,Rotated page,EEOC office,1,"""Dallas District Office""","""Dallas District Office""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-029,Rotated page,Bases,1,"[""Age"", ""Disability"", ""Religion""]","[""Age"", ""Disability"", ""Religion""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-029,Rotated page,Issues,0,null,"[""Discharge"", ""Promotion""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-029,Rotated page,Earliest date,1,"""2025-01-10""","""2025-01-10""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-029,Rotated page,Latest date,1,"""2025-07-06""","""2025-07-06""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-029,Rotated page,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-029,Rotated page,Notice date,1,"""2025-08-10""","""2025-08-10""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-030,Clean,Charge number,1,"""410-2026-10030""","""410-2026-10030""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-030,Clean,Charging party,1,"""Santiago Kowalski""","""Santiago Kowalski""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-030,Clean,Respondent,1,"""Cobalt Builders Group""","""Cobalt Builders Group""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-030,Clean,EEOC office,1,"""Dallas District Office""","""Dallas District Office""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-030,Clean,Bases,1,"[""National Origin"", ""Religion""]","[""National Origin"", ""Religion""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-030,Clean,Issues,0,null,"[""Discipline""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-030,Clean,Earliest date,1,"""2025-06-07""","""2025-06-07""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-030,Clean,Latest date,1,"""2025-10-28""","""2025-10-28""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-030,Clean,Continuing action,1,true,true,False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-030,Clean,Notice date,1,"""2025-12-01""","""2025-12-01""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-031,Clean,Charge number,1,"""410-2026-10031""","""410-2026-10031""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-031,Clean,Charging party,1,"""Kendall Delacroix""","""Kendall Delacroix""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-031,Clean,Respondent,1,"""Quarry Roofing Inc.""","""Quarry Roofing Inc.""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-031,Clean,EEOC office,1,"""Chicago District Office""","""Chicago District Office""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-031,Clean,Bases,1,"[""Race"", ""Retaliation"", ""Sex""]","[""Race"", ""Retaliation"", ""Sex""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-031,Clean,Issues,1,"[""discipline""]","[""Discipline""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-031,Clean,Earliest date,1,"""2025-06-20""","""2025-06-20""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-031,Clean,Latest date,1,"""2025-12-02""","""2025-12-02""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-031,Clean,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-031,Clean,Notice date,1,"""2026-01-29""","""2026-01-29""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-032,Clean,Charge number,1,"""410-2026-10032""","""410-2026-10032""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-032,Clean,Charging party,1,"""Peyton Castillo""","""Peyton Castillo""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-032,Clean,Respondent,1,"""Delta Dental LLC""","""Delta Dental LLC""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-032,Clean,EEOC office,1,"""Atlanta District Office""","""Atlanta District Office""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-032,Clean,Bases,1,"[""Age"", ""Color""]","[""Age"", ""Color""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-032,Clean,Issues,1,"[""promotion"", ""reasonable accommodation""]","[""Promotion"", ""Reasonable Accommodation""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-032,Clean,Earliest date,1,"""2025-04-25""","""2025-04-25""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-032,Clean,Latest date,1,"""2025-08-10""","""2025-08-10""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-032,Clean,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-032,Clean,Notice date,1,"""2025-09-15""","""2025-09-15""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-033,Clean,Charge number,1,"""410-2026-10033""","""410-2026-10033""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-033,Clean,Charging party,1,"""Priya Dawson""","""Priya Dawson""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-033,Clean,Respondent,1,"""Lakeside Builders""","""Lakeside Builders""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-033,Clean,EEOC office,1,"""Chicago District Office""","""Chicago District Office""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-033,Clean,Bases,1,"[""National Origin"", ""Race"", ""Retaliation""]","[""National Origin"", ""Race"", ""Retaliation""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-033,Clean,Issues,0,null,"[""Harassment"", ""Terms/Conditions""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-033,Clean,Earliest date,1,"""2025-04-01""","""2025-04-01""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-033,Clean,Latest date,1,"""2025-04-05""","""2025-04-05""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-033,Clean,Continuing action,1,true,true,False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-033,Clean,Notice date,1,"""2025-06-25""","""2025-06-25""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-034,Long particulars,Charge number,1,"""410-2026-10034""","""410-2026-10034""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-034,Long particulars,Charging party,1,"""Leila Bennett""","""Leila Bennett""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-034,Long particulars,Respondent,1,"""Cobalt Builders Inc""","""Cobalt Builders Inc""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-034,Long particulars,EEOC office,1,"""Phoenix District Office""","""Phoenix District Office""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-034,Long particulars,Bases,1,"[""National Origin"", ""Sex""]","[""National Origin"", ""Sex""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-034,Long particulars,Issues,0,null,"[""Harassment""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-034,Long particulars,Earliest date,1,"""2025-09-02""","""2025-09-02""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-034,Long particulars,Latest date,1,"""2026-02-15""","""2026-02-15""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-034,Long particulars,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-034,Long particulars,Notice date,1,"""2026-05-11""","""2026-05-11""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-035,Clean,Charge number,1,"""410-2026-10035""","""410-2026-10035""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-035,Clean,Charging party,1,"""Omar Lindqvist""","""Omar Lindqvist""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-035,Clean,Respondent,1,"""Juniper Electric Group""","""Juniper Electric Group""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-035,Clean,EEOC office,1,"""Dallas District Office""","""Dallas District Office""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-035,Clean,Bases,1,"[""National Origin"", ""Race""]","[""National Origin"", ""Race""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-035,Clean,Issues,0,null,"[""Reasonable Accommodation""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-035,Clean,Earliest date,1,"""2025-04-16""","""2025-04-16""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-035,Clean,Latest date,1,"""2025-04-30""","""2025-04-30""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-035,Clean,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-035,Clean,Notice date,1,"""2025-07-24""","""2025-07-24""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-036,Clean,Charge number,1,"""410-2026-10036""","""410-2026-10036""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-036,Clean,Charging party,1,"""Sage Foster""","""Sage Foster""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-036,Clean,Respondent,1,"""Juniper Plumbing Inc""","""Juniper Plumbing Inc""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-036,Clean,EEOC office,1,"""Chicago District Office""","""Chicago District Office""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-036,Clean,Bases,1,"[""Age"", ""National Origin"", ""Retaliation""]","[""Age"", ""National Origin"", ""Retaliation""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-036,Clean,Issues,0,null,"[""Discipline""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-036,Clean,Earliest date,1,"""2025-05-11""","""2025-05-11""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-036,Clean,Latest date,1,"""2025-07-01""","""2025-07-01""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-036,Clean,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-036,Clean,Notice date,1,"""2025-09-17""","""2025-09-17""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-037,Clean,Charge number,1,"""410-2026-10037""","""410-2026-10037""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-037,Clean,Charging party,1,"""Rowan Quintero""","""Rowan Quintero""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-037,Clean,Respondent,1,"""Lakeside Analytics Group""","""Lakeside Analytics Group""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-037,Clean,EEOC office,1,"""Phoenix District Office""","""Phoenix District Office""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-037,Clean,Bases,1,"[""Color"", ""National Origin"", ""Retaliation""]","[""Color"", ""National Origin"", ""Retaliation""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-037,Clean,Issues,0,null,"[""Harassment"", ""Reasonable Accommodation""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-037,Clean,Earliest date,1,"""2025-11-14""","""2025-11-14""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-037,Clean,Latest date,1,"""2025-12-23""","""2025-12-23""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-037,Clean,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-037,Clean,Notice date,1,"""2026-01-12""","""2026-01-12""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-038,Clean,Charge number,1,"""410-2026-10038""","""410-2026-10038""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-038,Clean,Charging party,1,"""Zion Lindqvist""","""Zion Lindqvist""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-038,Clean,Respondent,1,"""Harbor Analytics""","""Harbor Analytics""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-038,Clean,EEOC office,1,"""Dallas District Office""","""Dallas District Office""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-038,Clean,Bases,1,"[""Color"", ""Race"", ""Retaliation""]","[""Color"", ""Race"", ""Retaliation""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-038,Clean,Issues,1,"[""discharge""]","[""Discharge""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-038,Clean,Earliest date,1,"""2025-05-12""","""2025-05-12""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-038,Clean,Latest date,1,"""2025-09-28""","""2025-09-28""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-038,Clean,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-038,Clean,Notice date,1,"""2025-11-04""","""2025-11-04""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-039,Two respondents,Charge number,1,"""410-2026-10039""","""410-2026-10039""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-039,Two respondents,Charging party,1,"""Aaliyah Kingsley""","""Aaliyah Kingsley""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-039,Two respondents,Respondent,1,"[""Westbrook Electric Inc."", ""Delta Roofing LLC""]","[""Westbrook Electric Inc."", ""Delta Roofing LLC""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-039,Two respondents,EEOC office,1,"""Atlanta District Office""","""Atlanta District Office""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-039,Two respondents,Bases,1,"[""Disability""]","[""Disability""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-039,Two respondents,Issues,1,"[""discharge"", ""discipline""]","[""Discharge"", ""Discipline""]",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-039,Two respondents,Earliest date,1,"""2025-07-13""","""2025-07-13""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-039,Two respondents,Latest date,1,"""2025-11-27""","""2025-11-27""",False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-039,Two respondents,Continuing action,1,false,false,False
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,charge-039,Two respondents,Notice date,1,"""2026-02-21""","""2026-02-21""",False
