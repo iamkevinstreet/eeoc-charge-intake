@@ -21,6 +21,8 @@ git); live runs in eeoc_intake/evals/results/live/, which is committed so the ca
 from __future__ import annotations
 
 import argparse
+import json
+from datetime import UTC, datetime
 from pathlib import Path
 
 from kds.evals.case import EvalCase, load_cases
@@ -80,9 +82,18 @@ def main() -> None:
     ap.add_argument(
         "--out", type=Path, default=None, help="default: results/smoke for --fake, results/live otherwise"
     )
+    ap.add_argument(
+        "--dump",
+        type=int,
+        default=0,
+        help="also write the full extraction (record, raw output, pages) for the first N cases",
+    )
     args = ap.parse_args()
     if args.out is None:
         args.out = RESULTS_DIR / ("smoke" if args.fake else "live")
+    dump_dir = (
+        args.out / "extractions" / f"{args.name}-{datetime.now(UTC):%Y%m%dT%H%M%SZ}" if args.dump else None
+    )
 
     cases = load_cases(args.cases)[: args.limit]
     adapter = (
@@ -91,8 +102,33 @@ def main() -> None:
         else ModelAdapter()
     )
 
+    dumped = 0
+
     def system_fn(case: EvalCase) -> Extraction:
-        return extract(adapter, case.input["charge_pdf"], case.input["notice_pdf"])
+        nonlocal dumped
+        ex = extract(adapter, case.input["charge_pdf"], case.input["notice_pdf"])
+        if dump_dir is not None and dumped < args.dump:
+            dump_dir.mkdir(parents=True, exist_ok=True)
+            (dump_dir / f"{case.id}.json").write_text(
+                json.dumps(
+                    {
+                        "case_id": case.id,
+                        "tags": case.tags,
+                        "expected": case.expected,
+                        "model": ex.model,
+                        "cost_usd": ex.cost_usd,
+                        "latency_ms": ex.latency_ms,
+                        "record": ex.record.model_dump(),
+                        "raw": ex.raw.model_dump(),
+                        "removed": ex.removed,
+                        "pages": {"charge": ex.charge_pages, "notice": ex.notice_pages},
+                    },
+                    indent=1,
+                ),
+                encoding="utf-8",
+            )
+            dumped += 1
+        return ex
 
     run = run_eval(
         name=args.name,

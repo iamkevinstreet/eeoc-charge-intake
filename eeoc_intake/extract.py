@@ -30,8 +30,12 @@ Rules:
   whose `page` refers to the NOTICE document.
 - If the document does not support a value, leave `value` null, set `confidence` to 0 and explain in `reason`.
   Never guess. A blank line where a value should be means the value is missing.
-- Dates are ISO (YYYY-MM-DD). `bases` and `issues` are lists of the labels as written. `respondent` is a single
-  string, or a list when the charge names more than one.
+- Dates are ISO (YYYY-MM-DD). `bases` is the list of protected bases as written on the form. `respondent` is a
+  single string, or a list when the charge names more than one.
+- `issues` is the list of employment actions the particulars describe, using the EEOC labels: Discharge,
+  Harassment, Terms/Conditions, Promotion, Discipline, Reasonable Accommodation. The particulars describe what
+  happened in plain words (a denied promotion, a written warning, a termination); map each to its label and
+  quote the sentence that describes it. Leave `issues` empty only if the particulars describe no action.
 - `continuing_action` is true only if the form marks it; otherwise false with no span.
 - `summary` is at most three sentences, drawn only from the particulars; it has no span.
 - `confidence` is your own estimate from 0 to 1 that the value is correct."""

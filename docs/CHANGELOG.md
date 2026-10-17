@@ -1,5 +1,14 @@
 # Changelog
 
+## v0.3, Oct 17, 2026
+
+- First live run (claude-sonnet-5-5, 40 documents): field accuracy 93.0%, zero unsupported outputs, zero
+  guesses; every miss was the `issues` field, left empty on 28 of 40 documents.
+- Prompt: `issues` are the employment actions the particulars describe, mapped to the EEOC labels.
+- Generator: particulars describe what happened (a denied promotion, written discipline) instead of naming
+  the issue label.
+- `--dump N` writes the full extraction for the first N documents; the live workflow keeps eight.
+
 ## v0.2, Oct 15, 2026
 
 - Review screen (React, Vite, TypeScript) served by the API: the record beside the document, the quoted

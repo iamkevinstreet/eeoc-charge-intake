@@ -34,6 +34,46 @@ ISSUES = [
 ]
 
 
+ISSUE_SENTENCES = {
+    "Discharge": "On or about {latest}, I was discharged from my position.",
+    "Harassment": "Throughout this period I was subjected to harassment by my supervisor, including repeated "
+    "remarks about my {basis} that made it difficult to do my job.",
+    "Terms/Conditions": "My schedule, duties and pay were changed to less favorable terms and conditions of "
+    "employment than those of my coworkers.",
+    "Promotion": "I applied for a promotion for which I was qualified and was denied it in favor of a less "
+    "experienced employee.",
+    "Discipline": "I was issued written discipline for conduct that similarly situated employees engaged in "
+    "without consequence.",
+    "Reasonable Accommodation": "I requested a reasonable accommodation and my request was denied without "
+    "discussion.",
+}
+FILLER = (
+    "Paragraph {n} of additional background. I reported my concerns to human resources in writing and received "
+    "no response. I have kept copies of my emails, schedules and performance reviews from this period."
+)
+
+
+def particulars(
+    respondent: str, bases: list[str], issues: list[str], earliest: date, latest: date, rng: random.Random
+) -> list[str]:
+    """Plain-language particulars, the way a charging party writes them. The issues are described, not named."""
+    opening = (
+        f"I was employed by {respondent.rstrip('.')} beginning before {earliest:%B %d, %Y}. "
+        f"The conduct described below began on or about {earliest:%B %d, %Y} and continued through "
+        f"{latest:%B %d, %Y}."
+    )
+    events = [
+        ISSUE_SENTENCES[i].format(latest=f"{latest:%B %d, %Y}", basis=rng.choice(bases).lower())
+        for i in issues
+    ]
+    closing = (
+        "I believe I have been discriminated against because of my "
+        + " and ".join(b.lower() for b in bases)
+        + ", in violation of applicable federal law."
+    )
+    return [opening, *events, closing]
+
+
 def make_one(i: int, rng: random.Random, gen: NameGen, out: Path) -> dict:
     hard = i % 5 == 4
     kind = ["missing_number", "rotated", "long", "two_respondents"][(i // 5) % 4] if hard else "clean"
@@ -66,15 +106,12 @@ def make_one(i: int, rng: random.Random, gen: NameGen, out: Path) -> dict:
         charge.line("[X] CONTINUING ACTION")
     charge.line("")
     charge.line("THE PARTICULARS ARE:")
-    paragraphs = 2 if kind != "long" else 9
-    for p in range(paragraphs):
-        charge.para(
-            f"{p + 1}. I was employed by {respondent.rstrip('.')}. I believe I was subjected to "
-            f"{' and '.join(i.lower() for i in issues)} because of my {' and '.join(b.lower() for b in bases)}, "
-            f"in violation of applicable law. On or about {earliest:%B %d, %Y} the conduct began and it "
-            f"continued through {latest:%B %d, %Y}."
-        )
-        if kind == "long" and p % 3 == 2:
+    paragraphs = particulars(respondent, bases, issues, earliest, latest, rng)
+    if kind == "long":
+        paragraphs = paragraphs + [FILLER.format(n=i) for i in range(1, 7)]
+    for n, text in enumerate(paragraphs, start=1):
+        charge.para(f"{n}. {text}")
+        if kind == "long" and n % 3 == 0:
             charge.page_break()
     charge.write(rotate_pages={1} if kind == "rotated" else None)
 

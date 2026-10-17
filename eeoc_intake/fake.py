@@ -66,6 +66,8 @@ def find_span(field: str, value: object, pages: list[str]) -> str | None:
     if value in (None, "", []):
         return None
     probe = value[0] if isinstance(value, list) else str(value)
+    if field == "issues":  # the particulars describe the action; these words appear in the sentence
+        probe = {"Terms/Conditions": "terms and conditions", "Discharge": "discharged"}.get(probe, probe)
     if field in ("earliest_date", "latest_date", "notice_date"):
         y, m, d = str(value).split("-")
         probe = f"{m}/{d}/{y}"

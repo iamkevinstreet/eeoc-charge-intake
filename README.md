@@ -70,12 +70,31 @@ Every generated document has known answers, so each run reports, per field and p
 Case kinds: clean, missing charge number, rotated page, long particulars, two respondents. The offline smoke
 run answers from the ground truth and only proves the pipeline; the numbers that matter come from live runs.
 
+## Results
+
+Live runs are committed under `eeoc_intake/evals/results/live/`; the run log is public on the Actions tab.
+
+| Run | Field accuracy | Unsupported outputs | Guesses | False abstentions per document | Median time | Cost per document |
+| --- | --- | --- | --- | --- | --- | --- |
+| v0.2, claude-sonnet-5-5, 40 documents, Oct 17, 2026 | 93.0% | 0 | 0 | 0.70 | 4.3 s | $0.0119 |
+
+What the first run said: nine of the ten scored fields were right on every document, including the hard cases
+(missing charge number, rotated page, long particulars, two respondents). Every miss was the `issues` field,
+which the model left empty on 28 of 40 documents. The form has no line that names the issues; they have to be
+read out of the particulars, and the prompt had told the model to quote labels "as written", so it abstained.
+It never guessed and never cited text that was not there. v0.3 changes the prompt to say where issues come
+from and which labels to use, and makes the generated particulars read the way a charging party writes them.
+The next run shows whether that closed the gap.
+
 ## Data
 
 All documents are generated. No real charge, person or company appears anywhere in this project.
 
 ## Changelog
 
+- v0.3, Oct 17, 2026. Prompt says where `issues` come from and which labels to use. Generated particulars
+  describe the actions in plain words instead of naming them. Live runs also save the full extraction for the
+  first eight documents, which the interactive demo on the case study uses.
 - v0.2, Oct 15, 2026. Review screen with evidence highlighting and gated export; demo mode; per-field
   scoring; live evaluation workflow; Dash dashboard and Tableau export; 18 tests.
 - v0.0, Oct 13, 2026. Scaffold: schema, generator, extraction with span verification, service, evaluation.

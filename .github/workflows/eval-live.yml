@@ -70,7 +70,8 @@ jobs:
           python -m eeoc_intake.evals.run \
             --cases eeoc_intake/data/generated/cases.jsonl \
             --name "live-${{ inputs.model }}" \
-            --out eeoc_intake/evals/results/live
+            --out eeoc_intake/evals/results/live \
+            --dump 8
 
       - name: Job summary
         run: cat "eeoc_intake/evals/results/live/live-${{ inputs.model }}-latest.md" >> "$GITHUB_STEP_SUMMARY"
