@@ -51,6 +51,8 @@ def load_runs(results_dir: Path = RESULTS_DIR) -> list[dict]:
     for folder in ("live", "smoke"):
         for path in sorted((results_dir / folder).glob("*.json")):
             run = json.loads(path.read_text(encoding="utf-8"))
+            if "results" not in run:  # index.json, figures.json and anything else that is not a run
+                continue
             run["run_id"] = path.stem
             run["kind"] = folder
             runs.append(run)
@@ -202,10 +204,9 @@ def fig_heatmap(fields: pd.DataFrame, run_id: str):
             hovertemplate="%{y}, %{x}: %{z:.1%}<extra></extra>",
         )
     )
-    fig.update_layout(
-        title="Accuracy by field and case kind (cases in parentheses)", yaxis={"autorange": "reversed"}
-    )
-    return _base(fig, 60 + 34 * len(SCORED_FIELDS))
+    fig.update_layout(title="Accuracy by field and case kind", yaxis={"autorange": "reversed"})
+    fig.update_xaxes(tickangle=0, showgrid=False)
+    return _base(fig, 90 + 34 * len(SCORED_FIELDS))
 
 
 def fig_latency(cases: pd.DataFrame, run_ids: list[str]):
