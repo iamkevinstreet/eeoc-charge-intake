@@ -1,0 +1,209 @@
+{
+ "case_id": "charge-006",
+ "tags": [
+  "clean"
+ ],
+ "expected": {
+  "charge_number": "410-2026-10006",
+  "charging_party": "Emerson Pemberton",
+  "respondent": "Granite Logistics LLP",
+  "eeoc_office": "Phoenix District Office",
+  "bases": [
+   "Color",
+   "National Origin",
+   "Religion"
+  ],
+  "issues": [
+   "Promotion",
+   "Reasonable Accommodation"
+  ],
+  "earliest_date": "2025-04-10",
+  "latest_date": "2025-06-17",
+  "continuing_action": true,
+  "notice_date": "2025-07-26"
+ },
+ "model": "claude-sonnet-5-5",
+ "cost_usd": 0.013844,
+ "latency_ms": 4839,
+ "record": {
+  "charge_number": {
+   "value": "410-2026-10006",
+   "page": 1,
+   "span": "Charge No. 410-2026-10006",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "charging_party": {
+   "value": "Emerson Pemberton",
+   "page": 1,
+   "span": "Charging Party: Emerson Pemberton",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "respondent": {
+   "value": "Granite Logistics LLP",
+   "page": 1,
+   "span": "Respondent: Granite Logistics LLP",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "eeoc_office": {
+   "value": "Phoenix District Office",
+   "page": 1,
+   "span": "EEOC Office: Phoenix District Office",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "bases": {
+   "value": [
+    "Color",
+    "National Origin",
+    "Religion"
+   ],
+   "page": 1,
+   "span": "DISCRIMINATION BASED ON: Color, National Origin, Religion",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "issues": {
+   "value": [
+    "Promotion",
+    "Reasonable Accommodation"
+   ],
+   "page": 1,
+   "span": "I applied for a promotion for which I was qualified and was denied it in favor of a less",
+   "confidence": 0.9,
+   "reason": null
+  },
+  "earliest_date": {
+   "value": "2025-04-10",
+   "page": 1,
+   "span": "Earliest 04/10/2025",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "latest_date": {
+   "value": "2025-06-17",
+   "page": 1,
+   "span": "Latest 06/17/2025",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "continuing_action": {
+   "value": true,
+   "page": 1,
+   "span": "[X] CONTINUING ACTION",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "notice_date": {
+   "value": "2025-07-26",
+   "page": 1,
+   "span": "Date of Notice: 07/26/2025",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "summary": {
+   "value": "The charging party says that between April 10, 2025 and June 17, 2025 he was denied a promotion for which he was qualified, which went to a less experienced employee. He also says his request for a reasonable accommodation was denied without discussion. He believes this was because of his color, national origin and religion.",
+   "page": null,
+   "span": null,
+   "confidence": 0.9,
+   "reason": null
+  }
+ },
+ "raw": {
+  "charge_number": {
+   "value": "410-2026-10006",
+   "page": 1,
+   "span": "Charge No. 410-2026-10006",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "charging_party": {
+   "value": "Emerson Pemberton",
+   "page": 1,
+   "span": "Charging Party: Emerson Pemberton",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "respondent": {
+   "value": "Granite Logistics LLP",
+   "page": 1,
+   "span": "Respondent: Granite Logistics LLP",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "eeoc_office": {
+   "value": "Phoenix District Office",
+   "page": 1,
+   "span": "EEOC Office: Phoenix District Office",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "bases": {
+   "value": [
+    "Color",
+    "National Origin",
+    "Religion"
+   ],
+   "page": 1,
+   "span": "DISCRIMINATION BASED ON: Color, National Origin, Religion",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "issues": {
+   "value": [
+    "Promotion",
+    "Reasonable Accommodation"
+   ],
+   "page": 1,
+   "span": "I applied for a promotion for which I was qualified and was denied it in favor of a less",
+   "confidence": 0.9,
+   "reason": null
+  },
+  "earliest_date": {
+   "value": "2025-04-10",
+   "page": 1,
+   "span": "Earliest 04/10/2025",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "latest_date": {
+   "value": "2025-06-17",
+   "page": 1,
+   "span": "Latest 06/17/2025",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "continuing_action": {
+   "value": true,
+   "page": 1,
+   "span": "[X] CONTINUING ACTION",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "notice_date": {
+   "value": "2025-07-26",
+   "page": 1,
+   "span": "Date of Notice: 07/26/2025",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "summary": {
+   "value": "The charging party says that between April 10, 2025 and June 17, 2025 he was denied a promotion for which he was qualified, which went to a less experienced employee. He also says his request for a reasonable accommodation was denied without discussion. He believes this was because of his color, national origin and religion.",
+   "page": null,
+   "span": null,
+   "confidence": 0.9,
+   "reason": null
+  }
+ },
+ "removed": [],
+ "pages": {
+  "charge": [
+   "EEOC FORM 5 (11/09)\nCHARGE OF DISCRIMINATION\nCharge No. 410-2026-10006\nEEOC Office: Phoenix District Office\nCharging Party: Emerson Pemberton\nCity/State: Dallas, TX\nRespondent: Granite Logistics LLP\nDISCRIMINATION BASED ON: Color, National Origin, Religion\nDATE(S) DISCRIMINATION TOOK PLACE: Earliest 04/10/2025 Latest 06/17/2025\n[X] CONTINUING ACTION\nTHE PARTICULARS ARE:\n1. I was employed by Granite Logistics LLP beginning before April 10, 2025. The conduct\ndescribed below began on or about April 10, 2025 and continued through June 17, 2025.\n2. I applied for a promotion for which I was qualified and was denied it in favor of a less\nexperienced employee.\n3. I requested a reasonable accommodation and my request was denied without discussion.\n4. I believe I have been discriminated against because of my color and national origin and\nreligion, in violation of applicable federal law.\n"
+  ],
+  "notice": [
+   "U.S. EQUAL EMPLOYMENT OPPORTUNITY COMMISSION\nPhoenix District Office\nNOTICE OF CHARGE OF DISCRIMINATION\nDate of Notice: 07/26/2025\nTo: Granite Logistics LLP\nRe: Charge No. 410-2026-10006\nThis is notice that a charge of employment discrimination has been filed against your\norganization. No action is required on your part at this time. A position statement may be\nrequested.\n"
+  ]
+ }
+}
