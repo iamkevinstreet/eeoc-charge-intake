@@ -1,0 +1,206 @@
+{
+ "case_id": "charge-004",
+ "tags": [
+  "missing_number"
+ ],
+ "expected": {
+  "charge_number": null,
+  "charging_party": "Cameron Whitaker",
+  "respondent": "Ironwood Staffing Inc.",
+  "eeoc_office": "Atlanta District Office",
+  "bases": [
+   "Color",
+   "Disability"
+  ],
+  "issues": [
+   "Discipline",
+   "Promotion"
+  ],
+  "earliest_date": "2025-08-17",
+  "latest_date": "2025-12-27",
+  "continuing_action": false,
+  "notice_date": "2026-02-13"
+ },
+ "model": "claude-sonnet-5-5",
+ "cost_usd": 0.013882,
+ "latency_ms": 4741,
+ "record": {
+  "charge_number": {
+   "value": null,
+   "page": 1,
+   "span": null,
+   "confidence": 0.0,
+   "reason": "The Charge No. line is blank on the form."
+  },
+  "charging_party": {
+   "value": "Cameron Whitaker",
+   "page": 1,
+   "span": "Charging Party: Cameron Whitaker",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "respondent": {
+   "value": "Ironwood Staffing Inc.",
+   "page": 1,
+   "span": "Respondent: Ironwood Staffing Inc.",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "eeoc_office": {
+   "value": "Atlanta District Office",
+   "page": 1,
+   "span": "EEOC Office: Atlanta District Office",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "bases": {
+   "value": [
+    "Color",
+    "Disability"
+   ],
+   "page": 1,
+   "span": "DISCRIMINATION BASED ON: Color, Disability",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "issues": {
+   "value": [
+    "Discipline",
+    "Promotion"
+   ],
+   "page": 1,
+   "span": "I was issued written discipline for conduct that similarly situated employees engaged in",
+   "confidence": 0.93,
+   "reason": null
+  },
+  "earliest_date": {
+   "value": "2025-08-17",
+   "page": 1,
+   "span": "Earliest 08/17/2025",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "latest_date": {
+   "value": "2025-12-27",
+   "page": 1,
+   "span": "Latest 12/27/2025",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "continuing_action": {
+   "value": false,
+   "page": null,
+   "span": null,
+   "confidence": 0.9,
+   "reason": "The form does not mark continuing action."
+  },
+  "notice_date": {
+   "value": "2026-02-13",
+   "page": 1,
+   "span": "Date of Notice: 02/13/2026",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "summary": {
+   "value": "Cameron Whitaker alleges that Ironwood Staffing Inc. issued written discipline for conduct that similarly situated employees engaged in without consequence. Whitaker also alleges being denied a promotion for which they were qualified in favor of a less experienced employee. Whitaker believes this was because of color and disability, between August 17, 2025 and December 27, 2025.",
+   "page": null,
+   "span": null,
+   "confidence": 0.9,
+   "reason": null
+  }
+ },
+ "raw": {
+  "charge_number": {
+   "value": null,
+   "page": 1,
+   "span": null,
+   "confidence": 0.0,
+   "reason": "The Charge No. line is blank on the form."
+  },
+  "charging_party": {
+   "value": "Cameron Whitaker",
+   "page": 1,
+   "span": "Charging Party: Cameron Whitaker",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "respondent": {
+   "value": "Ironwood Staffing Inc.",
+   "page": 1,
+   "span": "Respondent: Ironwood Staffing Inc.",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "eeoc_office": {
+   "value": "Atlanta District Office",
+   "page": 1,
+   "span": "EEOC Office: Atlanta District Office",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "bases": {
+   "value": [
+    "Color",
+    "Disability"
+   ],
+   "page": 1,
+   "span": "DISCRIMINATION BASED ON: Color, Disability",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "issues": {
+   "value": [
+    "Discipline",
+    "Promotion"
+   ],
+   "page": 1,
+   "span": "I was issued written discipline for conduct that similarly situated employees engaged in",
+   "confidence": 0.93,
+   "reason": null
+  },
+  "earliest_date": {
+   "value": "2025-08-17",
+   "page": 1,
+   "span": "Earliest 08/17/2025",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "latest_date": {
+   "value": "2025-12-27",
+   "page": 1,
+   "span": "Latest 12/27/2025",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "continuing_action": {
+   "value": false,
+   "page": null,
+   "span": null,
+   "confidence": 0.9,
+   "reason": "The form does not mark continuing action."
+  },
+  "notice_date": {
+   "value": "2026-02-13",
+   "page": 1,
+   "span": "Date of Notice: 02/13/2026",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "summary": {
+   "value": "Cameron Whitaker alleges that Ironwood Staffing Inc. issued written discipline for conduct that similarly situated employees engaged in without consequence. Whitaker also alleges being denied a promotion for which they were qualified in favor of a less experienced employee. Whitaker believes this was because of color and disability, between August 17, 2025 and December 27, 2025.",
+   "page": null,
+   "span": null,
+   "confidence": 0.9,
+   "reason": null
+  }
+ },
+ "removed": [],
+ "pages": {
+  "charge": [
+   "EEOC FORM 5 (11/09)\nCHARGE OF DISCRIMINATION\nCharge No. ____________\nEEOC Office: Atlanta District Office\nCharging Party: Cameron Whitaker\nCity/State: Columbus, OH\nRespondent: Ironwood Staffing Inc.\nDISCRIMINATION BASED ON: Color, Disability\nDATE(S) DISCRIMINATION TOOK PLACE: Earliest 08/17/2025 Latest 12/27/2025\nTHE PARTICULARS ARE:\n1. I was employed by Ironwood Staffing Inc beginning before August 17, 2025. The conduct\ndescribed below began on or about August 17, 2025 and continued through December 27, 2025.\n2. I was issued written discipline for conduct that similarly situated employees engaged in\nwithout consequence.\n3. I applied for a promotion for which I was qualified and was denied it in favor of a less\nexperienced employee.\n4. I believe I have been discriminated against because of my color and disability, in violation\nof applicable federal law.\n"
+  ],
+  "notice": [
+   "U.S. EQUAL EMPLOYMENT OPPORTUNITY COMMISSION\nAtlanta District Office\nNOTICE OF CHARGE OF DISCRIMINATION\nDate of Notice: 02/13/2026\nTo: Ironwood Staffing Inc.\nRe: Charge pending assignment of number\nThis is notice that a charge of employment discrimination has been filed against your\norganization. No action is required on your part at this time. A position statement may be\nrequested.\n"
+  ]
+ }
+}
