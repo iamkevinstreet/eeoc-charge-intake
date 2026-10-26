@@ -33,6 +33,31 @@ the current ones can be downloaded from the repository without running anything.
 A dashboard with the accuracy bar, the field by case kind grid and the failure table reads well on one screen;
 put the run filter (`run`) at the top and apply it to all sheets.
 
+## Style
+
+The published dashboard follows the design of kevindstreet.com and of the Dash app, so it sits in the case
+study without looking pasted in. Tableau Public draws with its own fonts; Tableau Book for text and Tableau
+Medium for titles are the closest to Geist. Publish a light and a dark version; the case study can then show
+the one that matches the visitor's setting.
+
+| Part | Light | Dark |
+| --- | --- | --- |
+| Dashboard and sheet background | `#ffffff` | `#121419` |
+| Outer padding and gaps | `#f5f5f2` | `#0a0b0e` |
+| Text | `#111214` | `#f2f3f5` |
+| Labels, axis text | `#585d66` | `#9aa1ac` |
+| Gridlines, dividers | `#ecece8`, 1 px, solid | `#1a1d24`, 1 px, solid |
+| Run in focus | `#111214` | `#f2f3f5` |
+| Earlier run | `#80868f` | `#7d8490` |
+| Row that changed (reference band) | `#ffe45c` at 45% | `#f3cf4a` at 15% |
+| Field by kind grid, 0% to 100% | `#ecece8` to `#13794a` | `#1a1d24` to `#5dd39e` |
+
+- Accuracy by field as dots, one per run, joined by a line where the runs differ; label only those values.
+- The field by kind grid labels only the cells below 100%; the colour carries the rest.
+- Titles in sentence case and the same words as the Dash app; no workbook title bar, no toolbar, no
+  borders around sheets.
+- The run filter at the top, applied to every sheet.
+
 ## Publishing
 
 Tableau Public workbooks are public by definition, and only Tableau Public vizzes can be embedded on a public
