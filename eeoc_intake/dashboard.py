@@ -4,12 +4,16 @@
 
 Reads every results file under eeoc_intake/evals/results/{live,smoke}/. The same tidy frames feed the CSV
 export for Tableau (`python -m eeoc_intake.evals.export`), so the three views agree with each other.
+
+The look follows the design system of kevindstreet.com (Geist, a near-black or paper ground, one yellow
+highlight, green for right), in light and dark, so the app and the case study read as one product.
 """
 
 from __future__ import annotations
 
 import json
 import os
+from datetime import datetime
 from pathlib import Path
 
 import pandas as pd
@@ -38,11 +42,52 @@ KIND_LABELS = {
     "long": "Long particulars",
     "two_respondents": "Two respondents",
 }
+# Column heads for the heatmap, short enough to sit under a cell.
+KIND_TICKS = {
+    "Clean": "Standard",
+    "Missing charge number": "No charge<br>number",
+    "Rotated page": "Rotated<br>page",
+    "Long particulars": "Long<br>particulars",
+    "Two respondents": "Two<br>respondents",
+}
 
-# Colour roles. Categorical slots validated for both surfaces (dataviz method); one sequential hue for magnitude.
-INK, INK2, RULE, PAPER, PAPER2 = "#141b22", "#4f5b67", "#c6cfd8", "#f4f6f8", "#e9edf1"
-SERIES = ["#2a78d6", "#eb6834", "#1baf7a"]
-SEQUENTIAL = ["#e9edf1", "#b9cfe8", "#7fa6d6", "#3f79bf", "#1d4f8a"]
+# ---------- design tokens ----------
+# The values of kevindstreet.com. Runs are an ordered ramp: the run you are looking at in full ink, earlier runs
+# in lighter steps of the same gray (validated: monotone, visible steps, the light end clears the surface).
+# Accuracy is one sequential hue, from the surface to the green the site uses for "right".
+THEMES: dict[str, dict] = {
+    "light": {
+        "ground": "#f5f5f2",
+        "surface": "#ffffff",
+        "surface2": "#ecece8",
+        "ink": "#111214",
+        "ink2": "#585d66",
+        "ink3": "#868c96",
+        "grid": "rgba(17,18,20,0.08)",
+        "rule": "rgba(17,18,20,0.20)",
+        "mark": "#ffe45c",
+        "mark_wash": "rgba(255,228,92,0.42)",
+        "pass": "#13794a",
+        "miss": "#b5641a",
+        "runs": ["#111214", "#80868f", "#a7acb4"],
+    },
+    "dark": {
+        "ground": "#0a0b0e",
+        "surface": "#121419",
+        "surface2": "#1a1d24",
+        "ink": "#f2f3f5",
+        "ink2": "#9aa1ac",
+        "ink3": "#6e7581",
+        "grid": "rgba(255,255,255,0.07)",
+        "rule": "rgba(255,255,255,0.22)",
+        "mark": "#f3cf4a",
+        "mark_wash": "rgba(243,207,74,0.14)",
+        "pass": "#5dd39e",
+        "miss": "#f0b14c",
+        "runs": ["#f2f3f5", "#7d8490", "#4a505b"],
+    },
+}
+FONT = "Geist, 'Geist Variable', ui-sans-serif, system-ui, 'Helvetica Neue', Arial, sans-serif"
 
 
 # ---------- data ----------
@@ -126,202 +171,455 @@ def frames(runs: list[dict]) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     return pd.DataFrame(run_rows), pd.DataFrame(case_rows), pd.DataFrame(field_rows)
 
 
+def run_labels(runs_df: pd.DataFrame, run_ids: list[str]) -> dict[str, str]:
+    """Short names for the selected runs: the start time, plus the model when the selection mixes models."""
+    sub = runs_df.set_index("run_id").loc[[r for r in run_ids if r in set(runs_df.run_id)]]
+    mixed = sub.model.nunique() > 1
+    out = {}
+    for rid, row in sub.iterrows():
+        when = datetime.fromisoformat(str(row.started_at).replace("Z", "+00:00"))
+        label = f"{when.strftime('%b')} {when.day}, {when.strftime('%H:%M')} UTC"
+        if mixed:
+            label = f"{row.model}, {label}"
+        if row.kind == "smoke":
+            label += " (smoke)"
+        out[rid] = label
+    return out
+
+
+def _ids(run_ids: str | list[str]) -> list[str]:
+    return [run_ids] if isinstance(run_ids, str) else list(run_ids)
+
+
+def _readable(raw: str | None) -> str:
+    """A value from the results file as a person would write it: lists joined, nothing shown as empty."""
+    v = json.loads(raw) if raw else None
+    if v is None or v == []:
+        return "empty"
+    if isinstance(v, list):
+        return ", ".join(str(x) for x in v)
+    if isinstance(v, bool):
+        return "Yes" if v else "No"
+    return str(v)
+
+
+def _pct(v: float) -> str:
+    return f"{v:.0%}"
+
+
 # ---------- figures ----------
-def _base(fig, height: int):
+def _base(fig, height: int, theme: str, legend: bool = False):
+    t = THEMES[theme]
     fig.update_layout(
-        template="simple_white",
+        template="none",
         height=height,
-        margin={"l": 10, "r": 10, "t": 36, "b": 10},
-        font={"family": "IBM Plex Sans, Helvetica Neue, Arial, sans-serif", "size": 13, "color": INK},
-        paper_bgcolor=PAPER,
-        plot_bgcolor=PAPER,
-        legend={"orientation": "h", "y": -0.15, "title": None},
-        hoverlabel={"bgcolor": PAPER2, "font": {"color": INK}},
+        margin={"l": 8, "r": 12, "t": 34 if legend else 8, "b": 8},
+        font={"family": FONT, "size": 12, "color": t["ink2"]},
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
+        showlegend=legend,
+        legend={
+            "orientation": "h",
+            "x": 0,
+            "xanchor": "left",
+            "y": 1.0,
+            "yanchor": "bottom",
+            "font": {"color": t["ink2"], "size": 12},
+            "bgcolor": "rgba(0,0,0,0)",
+            "itemclick": "toggleothers",
+        },
+        hoverlabel={
+            "bgcolor": t["surface2"],
+            "bordercolor": t["rule"],
+            "font": {"family": FONT, "color": t["ink"], "size": 12},
+        },
+        hovermode="closest",
     )
-    fig.update_xaxes(showgrid=True, gridcolor=PAPER2, zeroline=False, linecolor=RULE)
-    fig.update_yaxes(showgrid=False, zeroline=False, linecolor=RULE)
+    fig.update_xaxes(
+        automargin=True,
+        showgrid=True,
+        gridcolor=t["grid"],
+        gridwidth=1,
+        zeroline=False,
+        showline=False,
+        ticks="",
+        tickfont={"color": t["ink3"], "size": 11},
+    )
+    fig.update_yaxes(
+        automargin=True,
+        showgrid=False,
+        zeroline=False,
+        showline=False,
+        ticks="",
+        ticklabelstandoff=10,
+        tickfont={"color": t["ink2"], "size": 12},
+    )
     return fig
 
 
-def fig_accuracy_by_field(fields: pd.DataFrame, run_ids: list[str]):
+def fig_accuracy_by_field(fields: pd.DataFrame, run_ids: list[str], theme: str = "light", labels=None):
+    """A dot per run on each field, joined where the runs disagree; rows that changed get the highlight."""
     import plotly.graph_objects as go
 
-    sub = fields[fields.run_id.isin(run_ids)]
-    acc = sub.groupby(["run", "field"], sort=False)["correct"].mean().reset_index()
-    order = [FIELD_LABELS[f] for f in SCORED_FIELDS]
+    t = THEMES[theme]
+    run_ids = [r for r in _ids(run_ids) if r in set(fields.run_id)][:3]
+    labels = labels or {r: fields[fields.run_id == r].run.iloc[0] for r in run_ids}
+    acc = fields[fields.run_id.isin(run_ids)].groupby(["run_id", "field"])["correct"].mean()
+    order = [FIELD_LABELS[f] for f in SCORED_FIELDS if (FIELD_LABELS[f] in set(fields.field))]
     fig = go.Figure()
-    runs = list(dict.fromkeys(sub.run))
-    for i, run in enumerate(runs):
-        a = acc[acc.run == run].set_index("field").reindex(order)
-        fig.add_bar(
+
+    changed = []
+    for i, f in enumerate(order):
+        vals = [acc[(r, f)] for r in run_ids if (r, f) in acc]
+        if len(vals) > 1 and max(vals) - min(vals) > 0.001:
+            changed.append(f)
+            fig.add_shape(
+                type="rect",
+                xref="paper",
+                x0=0,
+                x1=1,
+                yref="y",
+                y0=i - 0.42,
+                y1=i + 0.42,
+                fillcolor=t["mark_wash"],
+                line={"width": 0},
+                layer="below",
+                name="highlight",
+            )
+            fig.add_scatter(
+                x=[min(vals), max(vals)],
+                y=[f, f],
+                mode="lines",
+                line={"color": t["rule"], "width": 2},
+                hoverinfo="skip",
+                showlegend=False,
+                meta={"role": "connector"},
+            )
+
+    # Earlier runs first, so the run in focus is drawn on top.
+    for i in reversed(range(len(run_ids))):
+        rid = run_ids[i]
+        xs = [acc.get((rid, f)) for f in order]
+        fig.add_scatter(
+            x=xs,
             y=order,
-            x=a["correct"],
-            name=run,
-            orientation="h",
-            marker={"color": SERIES[i % len(SERIES)], "line": {"width": 0}},
-            text=[f"{v:.0%}" for v in a["correct"].fillna(0)],
-            textposition="outside",
+            mode="markers+text",
+            name=labels[rid],
+            marker={"size": 12, "color": t["runs"][i], "line": {"color": t["surface"], "width": 2}},
+            text=[
+                _pct(v) if (f in changed and v is not None) else "" for v, f in zip(xs, order, strict=True)
+            ],
+            textposition="middle right" if i == 0 else "middle left",
+            textfont={"color": t["ink2"], "size": 12},
             cliponaxis=False,
-            hovertemplate="%{y}: %{x:.1%}<extra>%{fullData.name}</extra>",
+            hovertemplate="<b>%{x:.0%}</b>  %{y}<extra>" + labels[rid] + "</extra>",
+            meta={"role": f"run-{i}"},
         )
+    # The category order is set here, not left to the order traces happen to name the fields.
     fig.update_layout(
-        title="Accuracy by field",
-        barmode="group",
-        bargap=0.5,
-        bargroupgap=0.1,
-        showlegend=len(runs) > 1,
-        xaxis={"tickformat": ".0%", "range": [0, 1.08]},
-        yaxis={"autorange": "reversed"},
+        xaxis={"range": [-0.02, 1.13], "tickvals": [0, 0.25, 0.5, 0.75, 1], "tickformat": ".0%"},
+        yaxis={
+            "categoryorder": "array",
+            "categoryarray": order,
+            "autorange": "reversed",
+            "showgrid": True,
+            "gridcolor": t["grid"],
+        },
     )
-    return _base(fig, 70 + (16 + 12 * len(runs)) * len(order))
+    # The runs' key sits above all the charts, so the chart carries none of its own.
+    return _base(fig, 48 + 30 * len(order), theme)
 
 
-def fig_heatmap(fields: pd.DataFrame, run_id: str):
+def fig_heatmap(fields: pd.DataFrame, run_ids: str | list[str], theme: str = "light", labels=None):
+    """Fields right for each field and kind of document, one panel per run on the same scale."""
     import plotly.graph_objects as go
+    from plotly.subplots import make_subplots
 
-    sub = fields[fields.run_id == run_id]
-    if sub.empty:
-        return _base(go.Figure(layout={"title": "Accuracy by field and case kind"}), 300)
-    pivot = sub.pivot_table(index="field", columns="case_kind", values="correct", aggfunc="mean")
-    counts = sub.groupby("case_kind")["case_id"].nunique()
-    pivot = pivot.reindex([FIELD_LABELS[f] for f in SCORED_FIELDS])
-    cols = [c for c in KIND_LABELS.values() if c in pivot.columns]
-    pivot = pivot[cols]
-    fig = go.Figure(
-        go.Heatmap(
-            z=pivot.values,
-            x=[f"{c} ({counts[c]})" for c in cols],
-            y=pivot.index,
-            zmin=0,
-            zmax=1,
-            colorscale=[[i / (len(SEQUENTIAL) - 1), c] for i, c in enumerate(SEQUENTIAL)],
-            xgap=2,
-            ygap=2,
-            text=[[f"{v:.0%}" if pd.notna(v) else "" for v in row] for row in pivot.values],
-            texttemplate="%{text}",
-            textfont={"size": 12},
-            colorbar={"tickformat": ".0%", "thickness": 10, "len": 0.8, "title": None},
-            hovertemplate="%{y}, %{x}: %{z:.1%}<extra></extra>",
+    t = THEMES[theme]
+    run_ids = [r for r in _ids(run_ids) if r in set(fields.run_id)][:3]
+    if not run_ids:
+        return _base(go.Figure(), 300, theme)
+    labels = labels or {r: fields[fields.run_id == r].run.iloc[0] for r in run_ids}
+    order = [FIELD_LABELS[f] for f in SCORED_FIELDS if (FIELD_LABELS[f] in set(fields.field))]
+    fig = make_subplots(
+        rows=1,
+        cols=len(run_ids),
+        shared_yaxes=True,
+        horizontal_spacing=0.035,
+        subplot_titles=[labels[r] for r in run_ids] if len(run_ids) > 1 else None,
+    )
+    for i, rid in enumerate(run_ids, start=1):
+        sub = fields[fields.run_id == rid]
+        pivot = sub.pivot_table(index="field", columns="case_kind", values="correct", aggfunc="mean")
+        counts = sub.groupby("case_kind")["case_id"].nunique()
+        pivot = pivot.reindex(order)
+        cols = [c for c in KIND_LABELS.values() if c in pivot.columns]
+        pivot = pivot[cols]
+        fig.add_trace(
+            go.Heatmap(
+                z=pivot.values,
+                x=[f"{KIND_TICKS.get(c, c)} ({counts[c]})" for c in cols],
+                y=list(pivot.index),
+                zmin=0,
+                zmax=1,
+                colorscale=[[0, t["surface2"]], [1, t["pass"]]],
+                xgap=3,
+                ygap=3,
+                # Only the cells that are not all right carry a number; the colour says the rest.
+                text=[["" if pd.isna(v) or v >= 0.995 else _pct(v) for v in row] for row in pivot.values],
+                texttemplate="%{text}",
+                textfont={"size": 12},
+                showscale=i == len(run_ids),
+                colorbar={
+                    "tickformat": ".0%",
+                    "tickvals": [0, 0.5, 1],
+                    "thickness": 8,
+                    "len": 0.9,
+                    "outlinewidth": 0,
+                    "tickfont": {"color": t["ink3"], "size": 11},
+                },
+                customdata=[[c.replace("<br>", " ") for c in cols]] * len(pivot.index),
+                hovertemplate="<b>%{z:.0%}</b>  %{y}, %{customdata}<extra>" + labels[rid] + "</extra>",
+                meta={"role": "accuracy"},
+            ),
+            row=1,
+            col=i,
         )
-    )
-    fig.update_layout(title="Accuracy by field and case kind", yaxis={"autorange": "reversed"})
-    fig.update_xaxes(tickangle=0, showgrid=False)
-    return _base(fig, 90 + 34 * len(SCORED_FIELDS))
+    fig.update_yaxes(autorange="reversed", categoryorder="array", categoryarray=order)
+    fig.update_xaxes(showgrid=False, tickangle=0, tickfont={"size": 11})
+    for i, a in enumerate(fig.layout.annotations, start=1):  # the panel titles, over each panel's left edge
+        domain = fig.layout[f"xaxis{'' if i == 1 else i}"].domain
+        a.update(font={"color": t["ink2"], "size": 12}, xanchor="left", x=domain[0])
+    fig = _base(fig, 96 + 32 * len(order) + (24 if len(run_ids) > 1 else 0), theme)
+    fig.update_layout(margin={"t": 30 if len(run_ids) > 1 else 8, "b": 40})
+    fig.update_xaxes(showgrid=False)
+    return fig
 
 
-def fig_latency(cases: pd.DataFrame, run_ids: list[str]):
+def fig_latency(cases: pd.DataFrame, run_ids: list[str], theme: str = "light", labels=None):
+    """Every document's time as a dot, with the box of the middle half; each row names its typical time."""
     import plotly.graph_objects as go
 
-    sub = cases[cases.run_id.isin(run_ids)]
+    t = THEMES[theme]
+    run_ids = [r for r in _ids(run_ids) if r in set(cases.run_id)][:3]
+    labels = labels or {r: cases[cases.run_id == r].run.iloc[0] for r in run_ids}
     fig = go.Figure()
-    for i, run in enumerate(dict.fromkeys(sub.run)):
-        c = sub[sub.run == run]
+    rows = []
+    for i, rid in enumerate(run_ids):
+        c = cases[cases.run_id == rid]
+        secs = c["latency_ms"] / 1000
+        row = f"{labels[rid]}<br><b>{secs.median():.1f} s</b> typical"
+        rows.append(row)
         fig.add_box(
-            x=c["latency_ms"] / 1000,
-            name=run,
+            x=secs,
+            y=[row] * len(c),
+            name=labels[rid],
+            orientation="h",
             boxpoints="all",
-            jitter=0.4,
+            jitter=0.6,
             pointpos=0,
-            marker={"color": SERIES[i % len(SERIES)], "size": 6},
-            line={"color": SERIES[i % len(SERIES)], "width": 1.5},
+            width=0.36,
+            whiskerwidth=0.6,
+            marker={
+                "color": t["runs"][i],
+                "size": 7,
+                "opacity": 0.8,
+                "line": {"color": t["surface"], "width": 1},
+            },
+            line={"color": t["runs"][i], "width": 1.5},
             fillcolor="rgba(0,0,0,0)",
-            hovertemplate="%{x:.1f} s<extra>%{text}</extra>",
+            hovertemplate="<b>%{x:.1f} s</b>  %{text}<extra>" + labels[rid] + "</extra>",
             text=c["case_id"],
+            meta={"role": f"run-{i}"},
         )
     fig.update_layout(
-        title="Seconds per document", showlegend=False, xaxis={"title": None, "rangemode": "tozero"}
+        yaxis={"categoryorder": "array", "categoryarray": rows, "autorange": "reversed"},
+        xaxis={"rangemode": "tozero", "ticksuffix": " s"},
     )
-    return _base(fig, 120 + 50 * max(1, len(run_ids)))
+    return _base(fig, 64 + 62 * max(1, len(run_ids)), theme)
 
 
-def fig_cost(runs_df: pd.DataFrame, run_ids: list[str]):
+def fig_cost(runs_df: pd.DataFrame, run_ids: list[str], theme: str = "light", labels=None):
+    """Cost per document at list prices, one bar per run with its value at the end."""
     import plotly.graph_objects as go
 
-    sub = runs_df[runs_df.run_id.isin(run_ids)]
-    fig = go.Figure(
-        go.Bar(
-            y=sub["run"],
-            x=sub["cost_per_case_usd"],
+    t = THEMES[theme]
+    run_ids = [r for r in _ids(run_ids) if r in set(runs_df.run_id)][:3]
+    labels = labels or {r: runs_df[runs_df.run_id == r].run.iloc[0] for r in run_ids}
+    fig = go.Figure()
+    top = 0.0
+    for i, rid in enumerate(run_ids):
+        v = float(runs_df.loc[runs_df.run_id == rid, "cost_per_case_usd"].fillna(0).iloc[0])
+        top = max(top, v)
+        fig.add_bar(
+            x=[v],
+            y=[labels[rid]],
+            name=labels[rid],
             orientation="h",
-            marker={"color": [SERIES[i % len(SERIES)] for i in range(len(sub))], "line": {"width": 0}},
-            text=[f"${v:.4f}" for v in sub["cost_per_case_usd"].fillna(0)],
+            width=0.34,
+            marker={"color": t["runs"][i], "line": {"width": 0}, "cornerradius": 4},
+            text=[f"${v:.4f}"],
             textposition="outside",
+            textfont={"color": t["ink2"], "size": 12},
             cliponaxis=False,
-            hovertemplate="%{y}: $%{x:.4f} per document<extra></extra>",
+            hovertemplate="<b>$%{x:.4f}</b> per document<extra>" + labels[rid] + "</extra>",
+            meta={"role": f"run-{i}"},
         )
-    )
-    top = float(sub["cost_per_case_usd"].fillna(0).max() or 0)
     fig.update_layout(
-        title="Cost per document (list prices)",
-        bargap=0.5,
-        xaxis={"tickprefix": "$", "tickformat": ".3f", "range": [0, max(0.01, top * 1.35)]},
+        barmode="overlay",
+        yaxis={
+            "categoryorder": "array",
+            "categoryarray": [labels[r] for r in run_ids],
+            "autorange": "reversed",
+        },
+        xaxis={"tickprefix": "$", "tickformat": ".3f", "range": [0, max(0.01, top * 1.32)]},
     )
-    return _base(fig, 120 + 40 * max(1, len(sub)))
+    return _base(fig, 64 + 52 * max(1, len(run_ids)), theme)
+
+
+# ---------- tiles ----------
+# Plain-language measures, in the words the case study uses. "better" says which way is good.
+TILES = [
+    ("field_accuracy", "Fields right", lambda v: f"{v:.0%}" if v >= 0.995 else f"{v:.1%}", "up"),
+    ("unsupported_rate", "Quotes that did not match the page", lambda v: f"{v:.1%}", "down"),
+    ("guesses", "Made-up values per document", lambda v: f"{v:.2f}", "down"),
+    ("false_abstentions", "Fields wrongly left blank, per document", lambda v: f"{v:.2f}", "down"),
+    ("latency_p50_ms", "Seconds per document, typical", lambda v: f"{v / 1000:.1f} s", "down"),
+    ("cost_per_case_usd", "Cost per document", lambda v: f"${v:.4f}", "down"),
+]
+
+
+def tile_rows(runs_df: pd.DataFrame, run_ids: list[str]) -> list[dict]:
+    """Each measure for the run in focus, and how it moved against the next selected run."""
+    if not run_ids:
+        return []
+    by_id = runs_df.set_index("run_id")
+    now = by_id.loc[run_ids[0]]
+    then = by_id.loc[run_ids[1]] if len(run_ids) > 1 else None
+    rows = []
+    for key, label, fmt, better in TILES:
+        v = float(now[key] or 0)
+        row = {"key": key, "label": label, "value": fmt(v), "delta": None, "good": None}
+        if then is not None:
+            d = v - float(then[key] or 0)
+            if abs(d) > 1e-9:
+                if key == "field_accuracy" or key == "unsupported_rate":
+                    text = f"{abs(d) * 100:.1f} pts"
+                elif key == "latency_p50_ms":
+                    text = f"{abs(d) / 1000:.1f} s"
+                elif key == "cost_per_case_usd":
+                    text = f"${abs(d):.4f}"
+                else:
+                    text = f"{abs(d):.2f}"
+                row["delta"] = ("up " if d > 0 else "down ") + text
+                row["good"] = (d > 0) == (better == "up")
+            else:
+                row["delta"] = "no change"
+        rows.append(row)
+    return rows
 
 
 # ---------- app ----------
 def build_app(results_dir: Path = RESULTS_DIR):
     from dash import Dash, Input, Output, dash_table, dcc, html
+    from dash.dash_table.Format import Format, Scheme, Symbol
 
     runs = load_runs(results_dir)
     runs_df, cases_df, fields_df = frames(runs)
-    options = [{"label": r["run"], "value": r["run_id"]} for r in runs_df.to_dict("records")]
+    names = run_labels(runs_df, list(runs_df.run_id))
+    options = [{"label": names[r], "value": r} for r in runs_df.run_id]
     default = [options[0]["value"]] if options else []
+
+    def card(title: str, graph_id: str, wide: bool = False):
+        return html.Section(
+            className="card wide" if wide else "card",
+            children=[html.H3(title), dcc.Graph(id=graph_id, config={"displayModeBar": False})],
+        )
+
+    pct = Format(precision=1, scheme=Scheme.percentage)
+    two = Format(precision=2, scheme=Scheme.fixed)
+    whole = Format(precision=0, scheme=Scheme.fixed, group=True)
+    money = Format(precision=4, scheme=Scheme.fixed, symbol=Symbol.yes, symbol_prefix="$")
+
+    table_cell = {
+        "fontFamily": "var(--font)",
+        "fontSize": 13,
+        "padding": "10px 12px",
+        "textAlign": "left",
+        "whiteSpace": "normal",
+        "height": "auto",
+        "backgroundColor": "var(--surface)",
+        "color": "var(--ink)",
+        "border": "none",
+        "borderBottom": "1px solid var(--line)",
+    }
+    table_header = {
+        "fontWeight": 500,
+        "color": "var(--ink-2)",
+        "backgroundColor": "var(--surface)",
+        "borderBottom": "1px solid var(--line-strong)",
+    }
 
     app = Dash(__name__, title="EEOC charge intake: evaluation")
     app.layout = html.Div(
         className="wrap",
         children=[
-            html.H1("EEOC charge intake: evaluation runs"),
-            html.P(
-                "Every run extracts the same generated documents and scores each field against the ground truth. "
-                "Pick up to three runs to compare. Smoke runs answer from the ground truth and only check the pipeline.",
-                className="lede",
+            dcc.Location(id="url"),
+            dcc.Store(id="scheme"),
+            html.Header(
+                className="head",
+                children=[
+                    html.P("EEOC charge intake", className="eyebrow"),
+                    html.H1("Evaluation runs"),
+                    html.P(
+                        "Every run extracts the same generated documents and scores each field against the known "
+                        "answer. Pick up to three runs to compare; the first one you pick is the one in focus. "
+                        "Smoke runs answer from the known answers and only check the pipeline.",
+                        className="lede",
+                    ),
+                ],
             ),
             html.Div(
                 className="controls",
                 children=[
-                    html.Label("Runs"),
+                    html.Label("Runs", htmlFor="runs"),
                     dcc.Dropdown(id="runs", options=options, value=default, multi=True, clearable=False),
                 ],
             ),
+            html.Div(id="legend", className="legend"),
             html.Div(id="tiles", className="tiles"),
-            dcc.Graph(id="by-field", config={"displayModeBar": False}),
-            dcc.Graph(id="heatmap", config={"displayModeBar": False}),
             html.Div(
-                className="row",
+                className="grid",
                 children=[
-                    dcc.Graph(id="latency", config={"displayModeBar": False}),
-                    dcc.Graph(id="cost", config={"displayModeBar": False}),
+                    card("Fields right, by field", "by-field", wide=True),
+                    card("Fields right, by field and kind of document", "heatmap", wide=True),
+                    card("Seconds per document", "latency"),
+                    card("Cost per document, at list prices", "cost"),
                 ],
             ),
             html.H2("Runs"),
             dash_table.DataTable(
                 id="runs-table",
                 columns=[
-                    {"name": n, "id": i}
-                    for i, n in [
-                        ("run", "Run"),
-                        ("cases", "Cases"),
-                        ("failures", "Failures"),
-                        ("field_accuracy", "Field accuracy"),
-                        ("unsupported_rate", "Unsupported rate"),
-                        ("false_abstentions", "False abstentions"),
-                        ("guesses", "Guesses"),
-                        ("latency_p50_ms", "p50 ms"),
-                        ("latency_p95_ms", "p95 ms"),
-                        ("cost_per_case_usd", "Cost per case"),
+                    {"name": n, "id": i, **({"type": "numeric", "format": f} if f else {})}
+                    for i, n, f in [
+                        ("run", "Run", None),
+                        ("cases", "Documents", whole),
+                        ("failures", "Failures", whole),
+                        ("field_accuracy", "Fields right", pct),
+                        ("unsupported_rate", "Unmatched quotes", pct),
+                        ("false_abstentions", "Wrongly blank", two),
+                        ("guesses", "Made-up values", two),
+                        ("latency_p50_ms", "Typical ms", whole),
+                        ("latency_p95_ms", "Slow-end ms", whole),
+                        ("cost_per_case_usd", "Cost per document", money),
                     ]
                 ],
-                data=runs_df.round(4).to_dict("records"),
+                data=runs_df.to_dict("records"),
                 style_as_list_view=True,
-                style_cell={
-                    "fontFamily": "IBM Plex Sans, sans-serif",
-                    "fontSize": 13,
-                    "padding": "6px 8px",
-                    "textAlign": "left",
-                },
-                style_header={"fontWeight": "500", "borderBottom": f"2px solid {INK}"},
+                cell_selectable=False,
+                style_cell=table_cell,
+                style_header=table_header,
             ),
             html.H2("Fields that went wrong"),
             html.P(
@@ -335,7 +633,7 @@ def build_app(results_dir: Path = RESULTS_DIR):
                     for i, n in [
                         ("run", "Run"),
                         ("case_id", "Document"),
-                        ("case_kind", "Case kind"),
+                        ("case_kind", "Kind of document"),
                         ("field", "Field"),
                         ("value", "Returned"),
                         ("expected", "Expected"),
@@ -344,19 +642,23 @@ def build_app(results_dir: Path = RESULTS_DIR):
                 ],
                 page_size=15,
                 style_as_list_view=True,
-                style_cell={
-                    "fontFamily": "IBM Plex Sans, sans-serif",
-                    "fontSize": 13,
-                    "padding": "6px 8px",
-                    "textAlign": "left",
-                    "whiteSpace": "normal",
-                },
-                style_header={"fontWeight": "500", "borderBottom": f"2px solid {INK}"},
+                cell_selectable=False,
+                style_cell=table_cell,
+                style_header=table_header,
             ),
         ],
     )
 
+    # The figures need real colours, so the browser tells the server which scheme it is in.
+    app.clientside_callback(
+        "function(_) { return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches"
+        " ? 'dark' : 'light'; }",
+        Output("scheme", "data"),
+        Input("url", "pathname"),
+    )
+
     @app.callback(
+        Output("legend", "children"),
         Output("tiles", "children"),
         Output("by-field", "figure"),
         Output("heatmap", "figure"),
@@ -364,76 +666,180 @@ def build_app(results_dir: Path = RESULTS_DIR):
         Output("cost", "figure"),
         Output("wrong-table", "data"),
         Input("runs", "value"),
+        Input("scheme", "data"),
     )
-    def update(selected):
+    def update(selected, scheme):
+        theme = scheme if scheme in THEMES else "light"
         selected = (selected or default)[:3]
-        primary = runs_df[runs_df.run_id == selected[0]].iloc[0] if selected else None
-        tiles = []
-        if primary is not None:
-            tiles = [
-                tile(f"{primary.field_accuracy:.1%}", "Field accuracy", primary.run),
-                tile(f"{(primary.unsupported_rate or 0):.1%}", "Unsupported outputs removed"),
-                tile(f"{(primary.false_abstentions or 0):.2f}", "False abstentions per document"),
-                tile(f"{(primary.guesses or 0):.2f}", "Guesses per document"),
-                tile(f"{primary.latency_p50_ms / 1000:.1f} s", "Median time per document"),
-                tile(f"${(primary.cost_per_case_usd or 0):.4f}", "Cost per document"),
-            ]
-        wrong = fields_df[(fields_df.run_id.isin(selected)) & (fields_df.correct == 0)]
+        labels = run_labels(runs_df, selected)
+        legend = [
+            html.Span(
+                className="key",
+                children=[html.Span(className=f"dot run-{i}"), labels[r] + (" (in focus)" if i == 0 else "")],
+            )
+            for i, r in enumerate(selected)
+        ]
+        tiles = [tile(row) for row in tile_rows(runs_df, selected)]
+        wrong = fields_df[(fields_df.run_id.isin(selected)) & (fields_df.correct == 0)].copy()
+        for col in ("value", "expected"):
+            wrong[col] = wrong[col].map(_readable)
+        wrong["removed_by_verification"] = wrong["removed_by_verification"].map({True: "Yes", False: "No"})
         return (
+            legend,
             tiles,
-            fig_accuracy_by_field(fields_df, selected),
-            fig_heatmap(fields_df, selected[0] if selected else ""),
-            fig_latency(cases_df, selected),
-            fig_cost(runs_df, selected),
+            fig_accuracy_by_field(fields_df, selected, theme, labels),
+            fig_heatmap(fields_df, selected, theme, labels),
+            fig_latency(cases_df, selected, theme, labels),
+            fig_cost(runs_df, selected, theme, labels),
             wrong.to_dict("records"),
         )
 
-    def tile(value: str, label: str, note: str | None = None):
-        return html.Div(
-            className="tile",
-            children=[html.Div(value, className="tile-value"), html.Div(label, className="tile-label")]
-            + ([html.Div(note, className="tile-note")] if note else []),
-        )
+    def tile(row: dict):
+        children = [
+            html.Div(row["value"], className="tile-value"),
+            html.Div(row["label"], className="tile-label"),
+        ]
+        if row["delta"]:
+            tone = "flat" if row["good"] is None else ("good" if row["good"] else "bad")
+            way = row["delta"].split(" ")[0]  # up, down or no
+            children.append(
+                html.Div(
+                    className=f"tile-delta {tone}",
+                    children=[html.Span(className=f"arrow {way}", **{"aria-hidden": "true"}), row["delta"]],
+                )
+            )
+        return html.Div(className="tile", children=children)
 
     app.index_string = INDEX
     return app
 
 
 INDEX = """<!DOCTYPE html>
-<html><head>{%metas%}<title>{%title%}</title>{%favicon%}{%css%}
+<html lang="en"><head>{%metas%}<title>{%title%}</title>{%favicon%}
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+{%css%}
 <style>
-  body { margin: 0; background: #f4f6f8; color: #141b22; font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif; }
-  .wrap { max-width: 68rem; margin: 0 auto; padding: 1.5rem 1.25rem 3rem; }
-  h1, h2 { font-family: 'Newsreader', 'Iowan Old Style', Georgia, serif; font-weight: 500; letter-spacing: -0.01em; }
-  h1 { font-size: 1.9rem; margin: 0 0 0.5rem; } h2 { font-size: 1.3rem; margin: 2rem 0 0.5rem; }
-  .lede { color: #4f5b67; max-width: 62ch; margin: 0 0 1rem; }
-  .controls { max-width: 36rem; margin-bottom: 1rem; } .controls label { font-size: 0.85rem; color: #4f5b67; }
-  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); gap: 1rem 1.5rem; border-top: 2px solid #141b22; padding-top: 1rem; margin: 1rem 0; }
-  .tile-value { font-family: 'Newsreader', Georgia, serif; font-size: 1.8rem; line-height: 1.1; }
-  .tile-label { font-size: 0.85rem; } .tile-note { font-size: 0.78rem; color: #4f5b67; }
-  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; } @media (max-width: 50rem) { .row { grid-template-columns: 1fr; } }
+  :root {
+    color-scheme: light dark;
+    --ground: #f5f5f2; --surface: #ffffff; --surface-2: #ecece8;
+    --ink: #111214; --ink-2: #585d66; --ink-3: #868c96;
+    --line: rgba(17,18,20,0.1); --line-2: rgba(17,18,20,0.18); --line-strong: rgba(17,18,20,0.92);
+    --mark: #ffe45c; --pass: #13794a; --miss: #b5641a;
+    --run-0: #111214; --run-1: #80868f; --run-2: #a7acb4;
+    --shadow: 0 1px 2px rgba(17,18,20,0.06), 0 12px 40px -12px rgba(17,18,20,0.18);
+    --font: Geist, 'Geist Variable', ui-sans-serif, system-ui, 'Helvetica Neue', Arial, sans-serif;
+    --mono: 'Geist Mono', ui-monospace, Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ground: #0a0b0e; --surface: #121419; --surface-2: #1a1d24;
+      --ink: #f2f3f5; --ink-2: #9aa1ac; --ink-3: #6e7581;
+      --line: rgba(255,255,255,0.08); --line-2: rgba(255,255,255,0.16); --line-strong: rgba(255,255,255,0.92);
+      --mark: #f3cf4a; --pass: #5dd39e; --miss: #f0b14c;
+      --run-0: #f2f3f5; --run-1: #7d8490; --run-2: #4a505b;
+      --shadow: 0 1px 2px rgba(0,0,0,0.5), 0 24px 60px -20px rgba(0,0,0,0.7);
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--ground); color: var(--ink); font-family: var(--font); font-size: 15px;
+    line-height: 1.55; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 76rem; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+  .eyebrow { margin: 0 0 0.5rem; font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.04em;
+    text-transform: uppercase; color: var(--ink-3); }
+  h1, h2, h3 { font-weight: 500; letter-spacing: -0.022em; margin: 0; }
+  h1 { font-size: 2.6rem; line-height: 1.05; }
+  h2 { font-size: 1.4rem; margin: 3rem 0 0.75rem; }
+  h3 { font-size: 0.95rem; letter-spacing: -0.01em; margin: 0 0 0.5rem; }
+  .lede { color: var(--ink-2); max-width: 44rem; margin: 0.75rem 0 1.5rem; }
+  ::selection { background: var(--mark); color: #111214; }
+  .controls { display: grid; gap: 0.4rem; max-width: 40rem; margin-bottom: 1rem; }
+  .controls label { font-size: 0.8rem; font-weight: 500; color: var(--ink-3); }
+  .legend { display: flex; flex-wrap: wrap; gap: 0.5rem 1.25rem; margin: 0 0 1.25rem; font-size: 0.85rem;
+    color: var(--ink-2); }
+  .key { display: inline-flex; align-items: center; gap: 0.5rem; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot.run-0 { background: var(--run-0); } .dot.run-1 { background: var(--run-1); }
+  .dot.run-2 { background: var(--run-2); }
+  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(10.5rem, 1fr)); gap: 1px;
+    background: var(--line); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; margin-bottom: 1.25rem; }
+  .tile { background: var(--surface); padding: 1rem 1.1rem 1.1rem; display: grid; align-content: start; gap: 0.2rem; }
+  .tile-value { font-size: 1.9rem; font-weight: 500; letter-spacing: -0.03em; line-height: 1.1; }
+  .tile-label { font-size: 0.8rem; color: var(--ink-2); line-height: 1.35; }
+  .tile-delta { margin-top: 0.35rem; font-size: 0.75rem; font-weight: 500; display: inline-flex; gap: 0.35rem;
+    align-items: center; color: var(--ink-3); }
+  .tile-delta.good { color: var(--pass); } .tile-delta.bad { color: var(--miss); }
+  .tile-delta .arrow { width: 0; height: 0; border-left: 4px solid transparent; border-right: 4px solid transparent; }
+  .tile-delta .arrow.up { border-bottom: 6px solid currentColor; }
+  .tile-delta .arrow.down { border-top: 6px solid currentColor; }
+  .tile-delta .arrow.no { width: 8px; height: 2px; border: 0; background: currentColor; }
+  .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 1rem 1.1rem 0.75rem;
+    box-shadow: var(--shadow); min-width: 0; }
+  .card.wide { grid-column: 1 / -1; }
+  @media (max-width: 52rem) { .grid { grid-template-columns: minmax(0, 1fr); } h1 { font-size: 2rem; } }
+  /* Dash's own widgets in the same skin. Dash 4 themes its components through these variables; they are set on
+     body so they also reach menus that open outside the app's container. */
+  body {
+    --Dash-Fill-Inverse-Strong: var(--surface);
+    --Dash-Fill-Interactive-Strong: var(--ink);
+    --Dash-Fill-Interactive-Weak: var(--surface-2);
+    --Dash-Fill-Primary-Hover: var(--surface-2);
+    --Dash-Fill-Primary-Active: var(--surface-2);
+    --Dash-Fill-Disabled: var(--surface-2);
+    --Dash-Stroke-Strong: var(--line-2);
+    --Dash-Stroke-Weak: var(--line);
+    --Dash-Text-Primary: var(--ink);
+    --Dash-Text-Strong: var(--ink);
+    --Dash-Text-Weak: var(--ink-2);
+    --Dash-Text-Disabled: var(--ink-3);
+    --Dash-Shading-Strong: rgba(0, 0, 0, 0.35);
+    --Dash-Shading-Weak: rgba(0, 0, 0, 0.2);
+  }
+  .dash-dropdown, .dash-dropdown-options { font-family: var(--font); font-size: 14px; border-radius: 10px; }
+  .dash-dropdown { min-height: 2.75rem; background: var(--surface); border: 1px solid var(--line-2); }
+  .dash-dropdown-value-item { background: var(--surface-2); border-radius: 999px; padding: 0.1rem 0.6rem; }
+  .dash-table-container .dash-spreadsheet-container .dash-spreadsheet-inner td,
+  .dash-table-container .dash-spreadsheet-container .dash-spreadsheet-inner th { font-family: var(--font) !important; }
+  .dash-table-container { border-top: 1px solid var(--line-strong); }
+  .previous-next-container, .page-number { color: var(--ink-2); font-family: var(--font); }
+  .previous-next-container button { background: var(--surface); color: var(--ink); border: 1px solid var(--line-2);
+    border-radius: 999px; }
 </style></head>
 <body>{%app_entry%}<footer>{%config%}{%scripts%}{%renderer%}</footer></body></html>"""
 
 
 def export_figures(results_dir: Path, out: Path) -> dict:
-    """Plotly JSON for the latest live run (and the one before it, for the comparison), for the case study."""
+    """Plotly JSON for the latest live run and the one before it, for the case study.
+
+    Each trace carries its part in `meta.role` (run-0 is the run in focus, run-1 the one before, connector,
+    accuracy) and each highlight shape is named, so a page with its own palette can restyle them. The titles
+    stay in the layout for pages that draw them from there.
+    """
     runs = [r for r in load_runs(results_dir) if r["kind"] == "live"]
     if not runs:
         raise SystemExit("no live runs to export")
     runs_df, cases_df, fields_df = frames(runs)
     ids = list(runs_df.run_id[:2])
+    labels = run_labels(runs_df, ids)
     latest = runs_df.iloc[0]
     figs = [
-        ("by_field", "Accuracy by field", fig_accuracy_by_field(fields_df, ids)),
-        ("heatmap", "Accuracy by field and case kind", fig_heatmap(fields_df, ids[0])),
-        ("latency", "Seconds per document", fig_latency(cases_df, ids)),
-        ("cost", "Cost per document", fig_cost(runs_df, ids)),
+        ("by_field", "Fields right, by field", fig_accuracy_by_field(fields_df, ids, "light", labels)),
+        (
+            "heatmap",
+            "Fields right, by field and kind of document",
+            fig_heatmap(fields_df, ids, "light", labels),
+        ),
+        ("latency", "Seconds per document", fig_latency(cases_df, ids, "light", labels)),
+        ("cost", "Cost per document, at list prices", fig_cost(runs_df, ids, "light", labels)),
     ]
+    for _, title, fig in figs:
+        fig.update_layout(title={"text": title, "x": 0, "xanchor": "left", "font": {"size": 14}})
     payload = {
         "run_id": latest.run_id,
         "model": latest.model,
         "started_at": latest.started_at,
+        "runs": [{"run_id": r, "label": labels[r]} for r in ids],
         "figures": [{"name": n, "title": t, "spec": json.loads(f.to_json())} for n, t, f in figs],
     }
     out.parent.mkdir(parents=True, exist_ok=True)

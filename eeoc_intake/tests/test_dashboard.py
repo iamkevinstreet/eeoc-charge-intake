@@ -1,9 +1,20 @@
 """The dashboard and the Tableau export read the same results and agree with the runner's summary."""
 
+import copy
 import json
 from pathlib import Path
 
-from eeoc_intake.dashboard import build_app, fig_accuracy_by_field, fig_heatmap, frames, load_runs
+from eeoc_intake.dashboard import (
+    build_app,
+    export_figures,
+    fig_accuracy_by_field,
+    fig_cost,
+    fig_heatmap,
+    fig_latency,
+    frames,
+    load_runs,
+    tile_rows,
+)
 from eeoc_intake.evals.export import export
 
 RUN = {
@@ -76,6 +87,44 @@ def test_export_writes_three_csvs(tmp_path):
     written = export(_results_dir(tmp_path), tmp_path / "out")
     assert [p.name for p in written] == ["runs.csv", "documents.csv", "fields.csv"]
     assert (tmp_path / "out" / "fields.csv").read_text().count("\n") == 5  # header + 4 rows
+
+
+def _two_runs(tmp_path: Path) -> Path:
+    """A second, later run that gets charge_number right on charge-004 and costs a little more."""
+    later = copy.deepcopy(RUN)
+    later["started_at"] = "2026-10-15T01:00:00+00:00"
+    later["summary"] = {**RUN["summary"], "field_accuracy": 1.0, "cost_per_case_usd": 0.002}
+    later["results"][1]["scores"]["f_charge_number"] = 1
+    live = tmp_path / "live"
+    live.mkdir()
+    (live / "t-1.json").write_text(
+        json.dumps({**RUN, "summary": {**RUN["summary"], "cost_per_case_usd": 0.0015}})
+    )
+    (live / "t-2.json").write_text(json.dumps(later))
+    return tmp_path
+
+
+def test_comparison_marks_what_changed(tmp_path):
+    runs_df, cases_df, fields_df = frames(load_runs(_two_runs(tmp_path)))
+    ids = list(runs_df.run_id)  # newest first: t-2, then t-1
+    fig = fig_accuracy_by_field(fields_df, ids)
+    roles = [tr.meta["role"] for tr in fig.data]
+    assert roles.count("connector") == 1  # only Charge number moved
+    assert [s.name for s in fig.layout.shapes] == ["highlight"]
+    assert roles[-1] == "run-0"  # the run in focus is drawn last, on top
+    assert len(fig_heatmap(fields_df, ids).data) == 2  # one panel per run
+    assert [tr.meta["role"] for tr in fig_latency(cases_df, ids).data] == ["run-0", "run-1"]
+    assert [tr.meta["role"] for tr in fig_cost(runs_df, ids).data] == ["run-0", "run-1"]
+    tiles = {t["key"]: t for t in tile_rows(runs_df, ids)}
+    assert tiles["field_accuracy"]["delta"] == "up 5.0 pts" and tiles["field_accuracy"]["good"] is True
+    assert tiles["cost_per_case_usd"]["good"] is False
+
+
+def test_export_figures_carries_roles(tmp_path):
+    payload = export_figures(_two_runs(tmp_path), tmp_path / "figures.json")
+    assert [f["name"] for f in payload["figures"]] == ["by_field", "heatmap", "latency", "cost"]
+    assert [r["run_id"] for r in payload["runs"]] == ["t-2", "t-1"]
+    assert all(tr["meta"]["role"] for f in payload["figures"] for tr in f["spec"]["data"])
 
 
 def test_app_builds(tmp_path):

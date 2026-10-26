@@ -1,5 +1,15 @@
 # Changelog
 
+## v0.3.1, Oct 26, 2026
+
+- Dashboard: the design of kevindstreet.com (Geist, light and dark, one yellow highlight, green for right).
+  Fields right by field is a dot plot that joins the runs and highlights the rows that changed; the field by
+  kind of document grid has one panel per selected run on the same scale; the tiles show how each measure
+  moved against the next selected run; the misses table shows values as written.
+- `figures.json` names each trace's part in `meta.role`, so the case study can draw the figures in its own
+  palette.
+- 20 tests.
+
 ## v0.3, Oct 17, 2026
 
 - First live run (claude-sonnet-5-5, 40 documents): field accuracy 93.0%, zero unsupported outputs, zero

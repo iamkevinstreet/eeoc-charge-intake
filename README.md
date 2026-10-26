@@ -42,7 +42,7 @@ Case study with the evaluation plan and results: https://kevindstreet.com/projec
 ```sh
 make install                       # uv venv, project and dev dependencies, pre-commit
 make smoke                         # generate 10 documents and run the offline evaluation (no API calls)
-make test                          # 18 tests
+make test                          # 20 tests
 make run                           # build the review screen and serve it at http://127.0.0.1:8000
 make dashboard                     # evaluation dashboard at http://127.0.0.1:8050
 make export                        # CSV files for Tableau in eeoc_intake/evals/results/export/
@@ -97,6 +97,9 @@ All documents are generated. No real charge, person or company appears anywhere 
 
 ## Changelog
 
+- v0.3.1, Oct 26, 2026. Dashboard in the same design as the case study, light and dark: a dot plot of fields
+  right with the rows that changed highlighted, one heatmap panel per run, tiles that show the change against
+  the earlier run. 20 tests.
 - v0.3, Oct 17, 2026. Prompt says where `issues` come from and which labels to use. Generated particulars
   describe the actions in plain words instead of naming them. Live runs also save the full extraction for the
   first eight documents, which the interactive demo on the case study uses.
