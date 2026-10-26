@@ -398,7 +398,7 @@ select:focus-visible {
 }
 
 .field-evidence q {
-  quotes: '\201C' '\201D';
+  quotes: '"' '"';
   background: var(--mark);
   color: var(--mark-ink);
   padding: 0 0.2rem;
