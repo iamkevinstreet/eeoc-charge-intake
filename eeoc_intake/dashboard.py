@@ -478,14 +478,39 @@ def fig_cost(runs_df: pd.DataFrame, run_ids: list[str], theme: str = "light", la
 
 
 # ---------- tiles ----------
-# Plain-language measures, in the words the case study uses. "better" says which way is good.
+# Plain-language measures, in the words the case study uses: the column, its label, how to write the value,
+# how to write a change, and which way is better.
 TILES = [
-    ("field_accuracy", "Fields right", lambda v: f"{v:.0%}" if v >= 0.995 else f"{v:.1%}", "up"),
-    ("unsupported_rate", "Quotes that did not match the page", lambda v: f"{v:.1%}", "down"),
-    ("guesses", "Made-up values per document", lambda v: f"{v:.2f}", "down"),
-    ("false_abstentions", "Fields wrongly left blank, per document", lambda v: f"{v:.2f}", "down"),
-    ("latency_p50_ms", "Seconds per document, typical", lambda v: f"{v / 1000:.1f} s", "down"),
-    ("cost_per_case_usd", "Cost per document", lambda v: f"${v:.4f}", "down"),
+    (
+        "field_accuracy",
+        "Fields right",
+        lambda v: f"{v:.0%}" if v >= 0.995 else f"{v:.1%}",
+        lambda d: f"{abs(d) * 100:.1f} pts",
+        "up",
+    ),
+    (
+        "unsupported_rate",
+        "Quotes that did not match the page",
+        lambda v: f"{v:.1%}",
+        lambda d: f"{abs(d) * 100:.1f} pts",
+        "down",
+    ),
+    ("guesses", "Made-up values per document", lambda v: f"{v:.2f}", lambda d: f"{abs(d):.2f}", "down"),
+    (
+        "false_abstentions",
+        "Fields wrongly left blank, per document",
+        lambda v: f"{v:.2f}",
+        lambda d: f"{abs(d):.2f}",
+        "down",
+    ),
+    (
+        "latency_p50_ms",
+        "Seconds per document, typical",
+        lambda v: f"{v / 1000:.1f} s",
+        lambda d: f"{abs(d) / 1000:.1f} s",
+        "down",
+    ),
+    ("cost_per_case_usd", "Cost per document", lambda v: f"${v:.4f}", lambda d: f"${abs(d):.4f}", "down"),
 ]
 
 
@@ -497,21 +522,13 @@ def tile_rows(runs_df: pd.DataFrame, run_ids: list[str]) -> list[dict]:
     now = by_id.loc[run_ids[0]]
     then = by_id.loc[run_ids[1]] if len(run_ids) > 1 else None
     rows = []
-    for key, label, fmt, better in TILES:
-        v = float(now[key] or 0)
-        row = {"key": key, "label": label, "value": fmt(v), "delta": None, "good": None}
+    for column, label, fmt, change, better in TILES:
+        v = float(now[column] or 0)
+        row = {"measure": column, "label": label, "value": fmt(v), "delta": None, "good": None}
         if then is not None:
-            d = v - float(then[key] or 0)
+            d = v - float(then[column] or 0)
             if abs(d) > 1e-9:
-                if key == "field_accuracy" or key == "unsupported_rate":
-                    text = f"{abs(d) * 100:.1f} pts"
-                elif key == "latency_p50_ms":
-                    text = f"{abs(d) / 1000:.1f} s"
-                elif key == "cost_per_case_usd":
-                    text = f"${abs(d):.4f}"
-                else:
-                    text = f"{abs(d):.2f}"
-                row["delta"] = ("up " if d > 0 else "down ") + text
+                row["delta"] = ("up " if d > 0 else "down ") + change(d)
                 row["good"] = (d > 0) == (better == "up")
             else:
                 row["delta"] = "no change"

@@ -1,0 +1,3 @@
+# False positive: the generic API key rule matched a comparison of a dictionary key with a column name in the
+# dashboard's tile code. The code no longer compares that way.
+33e8f5bd0981b80f2a0c7e404ccc4e23c576ccb4:eeoc_intake/dashboard.py:generic-api-key:508

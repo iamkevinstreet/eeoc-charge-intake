@@ -115,7 +115,7 @@ def test_comparison_marks_what_changed(tmp_path):
     assert len(fig_heatmap(fields_df, ids).data) == 2  # one panel per run
     assert [tr.meta["role"] for tr in fig_latency(cases_df, ids).data] == ["run-0", "run-1"]
     assert [tr.meta["role"] for tr in fig_cost(runs_df, ids).data] == ["run-0", "run-1"]
-    tiles = {t["key"]: t for t in tile_rows(runs_df, ids)}
+    tiles = {t["measure"]: t for t in tile_rows(runs_df, ids)}
     assert tiles["field_accuracy"]["delta"] == "up 5.0 pts" and tiles["field_accuracy"]["good"] is True
     assert tiles["cost_per_case_usd"]["good"] is False
 
