@@ -14,8 +14,17 @@ from __future__ import annotations
 
 import math
 from collections.abc import Sequence
+from decimal import ROUND_HALF_UP, Decimal
 
 ALPHA = 0.05
+
+
+def fixed(x: float, places: int) -> str:
+    """x to `places` decimals the way JavaScript's toFixed does it: the exact stored value, halves rounded up.
+    The case study and the Dash app then show the same digits; Python's own format rounds halves to even."""
+    if x < 0:
+        return "-" + fixed(-x, places)
+    return str(Decimal(x).quantize(Decimal(1).scaleb(-places), rounding=ROUND_HALF_UP))
 
 
 def pct_label(v: float, places: int | None = None) -> str:
@@ -28,20 +37,20 @@ def pct_label(v: float, places: int | None = None) -> str:
             return f"{100 if v >= 1 else 0:.{places}f}%"
         if v * 100 < step / 2:
             return f"<{step:.{places}f}%"
-        shown = f"{v * 100:.{places}f}"
+        shown = fixed(v * 100, places)
         return (f"{100 - step:.{places}f}" if float(shown) >= 100 else shown) + "%"
     if v >= 1:
         return "100%"
     if v <= 0:
         return "0%"
     p = v * 100
-    if p < 0.1:
+    if p < 0.05:
         return "<0.1%"
-    if p < 10:
-        return f"{p:.1f}%"
+    if p < 9.95:
+        return f"{fixed(p, 1)}%"
     if p > 99:
-        return f"{math.floor(p * 10) / 10:.1f}%"
-    return f"{round(p):.0f}%"
+        return f"{math.floor(p * 10 + 1e-9) / 10:.1f}%"
+    return f"{fixed(p, 0)}%"
 
 
 def _phi(z: float) -> float:

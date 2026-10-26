@@ -12,14 +12,13 @@ highlight, green for right), in light and dark, so the app and the case study re
 from __future__ import annotations
 
 import json
-import math
 import os
 from datetime import datetime
 from pathlib import Path
 
 import pandas as pd
 
-from eeoc_intake.evals.stats import clear_change, pct_label
+from eeoc_intake.evals.stats import clear_change, fixed, pct_label
 from eeoc_intake.fake import SCORED_FIELDS
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -435,7 +434,7 @@ def fig_latency(cases: pd.DataFrame, run_ids: list[str], theme: str = "light", l
     for i, rid in enumerate(run_ids):
         c = cases[cases.run_id == rid]
         secs = secs_by_run[rid]
-        row = f"{labels[rid]}<br><b>{secs.median():.1f} s</b> typical"
+        row = f"{labels[rid]}<br><b>{fixed(secs.median(), 1)} s</b> typical"
         rows.append(row)
         past = secs[secs > x_range[1]]
         if len(past):
@@ -449,7 +448,7 @@ def fig_latency(cases: pd.DataFrame, run_ids: list[str], theme: str = "light", l
                 yref="y",
                 showarrow=False,
                 align="left",
-                text=f"{len(past)} slower,<br>up to {past.max():.1f} s",
+                text=f"{len(past)} slower,<br>up to {fixed(past.max(), 1)} s",
                 font={"color": t["ink2"], "size": 11},
                 name="beyond",
             )
@@ -504,7 +503,7 @@ def fig_cost(runs_df: pd.DataFrame, run_ids: list[str], theme: str = "light", la
             orientation="h",
             width=0.34,
             marker={"color": t["runs"][i], "line": {"width": 0}, "cornerradius": 4},
-            text=[f"${v:.4f}"],
+            text=[f"${fixed(v, 4)}"],
             textposition="outside",
             textfont={"color": t["ink2"], "size": 12},
             cliponaxis=False,
@@ -530,33 +529,39 @@ TILES = [
     (
         "field_accuracy",
         "Fields right",
-        lambda v: "100%" if v >= 1 else f"{math.floor(v * 1000) / 10:.1f}%",
-        lambda d: f"{abs(d) * 100:.1f} pts",
+        lambda v: "100%" if v >= 1 else pct_label(v, 1),
+        lambda d: f"{fixed(abs(d) * 100, 1)} pts",
         "up",
     ),
     (
         "unsupported_rate",
         "Quotes that did not match the page",
         pct_label,
-        lambda d: f"{abs(d) * 100:.1f} pts",
+        lambda d: f"{fixed(abs(d) * 100, 1)} pts",
         "down",
     ),
-    ("guesses", "Made-up values per document", lambda v: f"{v:.2f}", lambda d: f"{abs(d):.2f}", "down"),
+    ("guesses", "Made-up values per document", lambda v: fixed(v, 2), lambda d: fixed(abs(d), 2), "down"),
     (
         "false_abstentions",
         "Fields wrongly left blank, per document",
-        lambda v: f"{v:.2f}",
-        lambda d: f"{abs(d):.2f}",
+        lambda v: fixed(v, 2),
+        lambda d: fixed(abs(d), 2),
         "down",
     ),
     (
         "latency_p50_ms",
         "Seconds per document, typical",
-        lambda v: f"{v / 1000:.1f} s",
-        lambda d: f"{abs(d) / 1000:.1f} s",
+        lambda v: f"{fixed(v / 1000, 1)} s",
+        lambda d: f"{fixed(abs(d) / 1000, 1)} s",
         "down",
     ),
-    ("cost_per_case_usd", "Cost per document", lambda v: f"${v:.4f}", lambda d: f"${abs(d):.4f}", "down"),
+    (
+        "cost_per_case_usd",
+        "Cost per document",
+        lambda v: f"${fixed(v, 4)}",
+        lambda d: f"${fixed(abs(d), 4)}",
+        "down",
+    ),
 ]
 
 

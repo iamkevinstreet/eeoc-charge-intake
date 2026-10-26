@@ -1,6 +1,6 @@
 """The statistics behind the tiles' arrows, and how a share is written."""
 
-from eeoc_intake.evals.stats import clear_change, mann_whitney_p, pct_label, welch_p
+from eeoc_intake.evals.stats import clear_change, fixed, mann_whitney_p, pct_label, welch_p
 
 
 def test_pct_label_never_rounds_to_all_or_nothing():
@@ -16,6 +16,17 @@ def test_pct_label_never_rounds_to_all_or_nothing():
     assert pct_label(0.93, 1) == "93.0%"
     assert pct_label(0.0003, 1) == "<0.1%"
     assert pct_label(0, 1) == "0.0%"
+
+
+def test_fixed_rounds_halves_up_like_the_browser():
+    # Python's own format would give 0.12 and 12; toFixed and Tableau give 0.13 and 13.
+    assert fixed(0.125, 2) == "0.13"
+    assert fixed(12.5, 0) == "13"
+    assert fixed(-0.125, 2) == "-0.13"
+    assert fixed(2.675, 2) == "2.67"  # 2.675 is stored as 2.67499..., in every language
+    assert fixed(0.0134, 4) == "0.0134"
+    assert pct_label(0.0996) == "10%"
+    assert pct_label(0.0007) == "0.1%"
 
 
 def test_welch_matches_a_worked_example():
