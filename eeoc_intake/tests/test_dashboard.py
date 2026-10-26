@@ -16,6 +16,7 @@ from eeoc_intake.dashboard import (
     tile_rows,
 )
 from eeoc_intake.evals.export import export
+from eeoc_intake.evals.stats import clear_change
 
 RUN = {
     "name": "t",
@@ -170,13 +171,24 @@ def test_tiles_call_only_changes_bigger_than_noise(tmp_path):
     _run_with(tmp_path, "t-2", "2026-10-15T01:00:00+00:00", [t + 60 for t in same], 0.013375)
     _run_with(tmp_path, "t-3", "2026-10-15T02:00:00+00:00", [t + 2000 for t in same], 0.013375)
     runs_df, cases_df, _ = frames(load_runs(tmp_path))
-    ids = list(runs_df.run_id)  # newest first: t-3, t-2, t-1
-    near = {t["measure"]: t for t in tile_rows(runs_df, [ids[1], ids[2]], cases_df)}
+    near = {t["measure"]: t for t in tile_rows(runs_df, ["t-2", "t-1"], cases_df)}
     # 0.1 s slower shows on the tile, but 60 ms is well inside the spread of these times
     assert near["latency_p50_ms"]["delta"] == "no clear change" and near["latency_p50_ms"]["good"] is None
     assert near["cost_per_case_usd"]["delta"] == "no change"  # $0.000012 rounds to nothing at four places
-    far = {t["measure"]: t for t in tile_rows(runs_df, [ids[0], ids[2]], cases_df)}
+    far = {t["measure"]: t for t in tile_rows(runs_df, ["t-3", "t-1"], cases_df)}
     assert far["latency_p50_ms"]["delta"] == "up 2.0 s" and far["latency_p50_ms"]["good"] is False
+
+
+def test_tiles_are_judged_together(tmp_path):
+    """110 ms slower clears the 0.05 line on its own (p about 0.02), but not Holm's 0.05 / 6 for six tiles."""
+    same = [4000 + 53 * i % 700 for i in range(40)]
+    slower = [t + 110 for t in same]
+    assert clear_change(same, slower, "rank")
+    _run_with(tmp_path, "t-1", "2026-10-15T00:00:00+00:00", same, 0.013363)
+    _run_with(tmp_path, "t-2", "2026-10-15T01:00:00+00:00", slower, 0.013363)
+    runs_df, cases_df, _ = frames(load_runs(tmp_path))
+    tiles = {t["measure"]: t for t in tile_rows(runs_df, ["t-2", "t-1"], cases_df)}
+    assert tiles["latency_p50_ms"]["delta"] == "no clear change" and tiles["latency_p50_ms"]["good"] is None
 
 
 def test_export_figures_keeps_three_runs(tmp_path):

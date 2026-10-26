@@ -1,5 +1,14 @@
 # Changelog
 
+## v0.3.4, Oct 26, 2026
+
+- The six tiles are judged together with Holm's step-down correction, so when nothing has changed between two
+  runs, the chance of even one false arrow among them is at most 5%. On the live runs, the third run's 0.3 s
+  slowdown (p = 0.010, against 0.05 / 6) and the second run's $0.0014 rise in cost per document (p = 0.034,
+  against 0.05 / 4) now say no clear change. The 7.0-point gain in fields right and the drop in fields wrongly
+  left blank keep their arrows (p below 1e-11).
+- 29 tests.
+
 ## v0.3.3, Oct 26, 2026
 
 - Seconds per document fits its axis to the documents instead of starting at zero, since a box plot shows

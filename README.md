@@ -105,6 +105,8 @@ All documents are generated. No real charge, person or company appears anywhere 
 
 ## Changelog
 
+- v0.3.4, Oct 26, 2026. The six tiles are judged together (Holm's correction), so when nothing has changed the
+  chance of even one false arrow is at most 5%. 29 tests.
 - v0.3.3, Oct 26, 2026. Seconds per document fits its axis to the documents and counts the few slow ones at
   the edge. Tiles mark a change only when it is bigger than run-to-run noise at 95% confidence, and shares
   never round up to 100%. 27 tests.

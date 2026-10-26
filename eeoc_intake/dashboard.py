@@ -18,7 +18,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from eeoc_intake.evals.stats import clear_change, fixed, pct_label
+from eeoc_intake.evals.stats import fixed, holm, p_value, pct_label
 from eeoc_intake.fake import SCORED_FIELDS
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -571,6 +571,7 @@ TILES = [
 
 
 # Each tile's per-document values, and the test that says whether two runs really differ (see evals/stats.py).
+# The six are judged together with Holm's correction.
 TILE_TESTS = {
     "field_accuracy": ("field_accuracy", "welch"),
     "unsupported_rate": ("unsupported_removed", "welch"),
@@ -585,14 +586,23 @@ def tile_rows(runs_df: pd.DataFrame, run_ids: list[str], cases_df: pd.DataFrame 
     """Each measure for the run in focus, and how it moved against the next selected run.
 
     A change that rounds to nothing at the precision shown is no change. With the per-document rows, a change
-    gets a direction and a colour only when it is bigger than run-to-run noise at 95% confidence; a smaller one
-    is no clear change.
+    gets a direction and a colour only when it is bigger than run-to-run noise. The six tiles are judged
+    together (Holm), so when nothing changed the chance of even one false arrow is at most 5%; a change that
+    does not clear its threshold is no clear change.
     """
     if not run_ids:
         return []
     by_id = runs_df.set_index("run_id")
     now = by_id.loc[run_ids[0]]
     then = by_id.loc[run_ids[1]] if len(run_ids) > 1 else None
+    called: dict[str, bool] = {}
+    if then is not None and cases_df is not None:
+        ps = {}
+        for column, (per_doc, test) in TILE_TESTS.items():
+            a = cases_df.loc[cases_df.run_id == run_ids[1], per_doc].dropna().astype(float).tolist()
+            b = cases_df.loc[cases_df.run_id == run_ids[0], per_doc].dropna().astype(float).tolist()
+            ps[column] = p_value(a, b, test)
+        called = dict(zip(ps, holm(list(ps.values())), strict=True))
     rows = []
     for column, label, fmt, change, better in TILES:
         v = float(now[column] or 0)
@@ -602,11 +612,8 @@ def tile_rows(runs_df: pd.DataFrame, run_ids: list[str], cases_df: pd.DataFrame 
             shown = change(d)
             if abs(d) < 1e-12 or not any(ch in "123456789" for ch in shown):
                 row["delta"] = "no change"
-            elif cases_df is not None and column in TILE_TESTS:
-                per_doc, test = TILE_TESTS[column]
-                a = cases_df.loc[cases_df.run_id == run_ids[1], per_doc].dropna().astype(float).tolist()
-                b = cases_df.loc[cases_df.run_id == run_ids[0], per_doc].dropna().astype(float).tolist()
-                if clear_change(a, b, test):
+            elif column in called:
+                if called[column]:
                     row["delta"] = ("up " if d > 0 else "down ") + shown
                     row["good"] = (d > 0) == (better == "up")
                 else:

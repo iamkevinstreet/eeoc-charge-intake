@@ -7,7 +7,9 @@ The dashboard and the case study use the same rules, so a change gets an arrow i
 - The other measures are averages per document (fields right, made-up values, fields wrongly left blank,
   quotes thrown out, cost), compared with Welch's t-test. The document is the unit, so the ten fields of one
   document are not counted as ten independent tries.
-- A change is called when the two-sided p-value is below 0.05; otherwise it is no clear change.
+- The six headline numbers are judged together with Holm's step-down correction, so when nothing has changed
+  between two runs, the chance of even one false call among the six is at most 5%. A number whose test does not
+  clear its Holm threshold is no clear change.
 """
 
 from __future__ import annotations
@@ -141,7 +143,26 @@ def mann_whitney_p(a: Sequence[float], b: Sequence[float]) -> float:
     return 2 * (1 - _phi(z))
 
 
+def p_value(a: Sequence[float], b: Sequence[float], test: str = "welch") -> float:
+    """Two-sided p-value for a difference between two runs: the rank test for time, Welch's t-test otherwise."""
+    return mann_whitney_p(a, b) if test == "rank" else welch_p(a, b)
+
+
 def clear_change(a: Sequence[float], b: Sequence[float], test: str = "welch") -> bool:
-    """Whether two runs differ by more than run-to-run noise, at 95% confidence."""
-    p = mann_whitney_p(a, b) if test == "rank" else welch_p(a, b)
-    return p < ALPHA
+    """Whether two runs differ by more than run-to-run noise, at 95% confidence, for one number on its own."""
+    return p_value(a, b, test) < ALPHA
+
+
+def holm(pvalues: Sequence[float], alpha: float = ALPHA) -> list[bool]:
+    """Which of several tests hold up under Holm's step-down correction, in the order given.
+
+    The smallest p-value must beat alpha / m, the next alpha / (m - 1), and so on; the first one that misses
+    stops the rest. Taken together, the chance of even one false call when nothing changed is at most alpha.
+    """
+    m = len(pvalues)
+    called = [False] * m
+    for rank, i in enumerate(sorted(range(m), key=lambda k: pvalues[k])):
+        if pvalues[i] >= alpha / (m - rank):
+            break
+        called[i] = True
+    return called

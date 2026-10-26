@@ -1,6 +1,6 @@
 """The statistics behind the tiles' arrows, and how a share is written."""
 
-from eeoc_intake.evals.stats import clear_change, fixed, mann_whitney_p, pct_label, welch_p
+from eeoc_intake.evals.stats import clear_change, fixed, holm, mann_whitney_p, pct_label, welch_p
 
 
 def test_pct_label_never_rounds_to_all_or_nothing():
@@ -44,3 +44,13 @@ def test_rank_test_separates_shifted_samples_only():
     assert mann_whitney_p(slow, list(reversed(slow))) > 0.9
     assert clear_change(slow, [x + 1 for x in slow], "rank")
     assert not clear_change(slow, [x + 0.01 for x in slow], "rank")
+
+
+def test_holm_steps_down_and_stops_at_the_first_miss():
+    # Sorted: 0.005 < 0.05/4, 0.01 < 0.05/3, then 0.03 misses 0.05/2, which stops 0.04 too.
+    assert holm([0.01, 0.04, 0.03, 0.005]) == [True, False, False, True]
+    # The live runs, third against second: the time's p of 0.010 misses 0.05 / 6.
+    assert holm([1.0, 1.0, 1.0, 1.0, 0.0100, 0.987]) == [False] * 6
+    # Second against first: fields right and fields left blank hold up; cost (0.034) misses 0.05 / 4.
+    assert holm([9.6e-12, 1.0, 1.0, 9.6e-12, 0.62, 0.034]) == [True, False, False, True, False, False]
+    assert holm([]) == []
