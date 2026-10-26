@@ -24,7 +24,7 @@ the current ones can be downloaded from the repository without running anything.
 | Sheet | Rows | Columns | Marks | Note |
 | --- | --- | --- | --- | --- |
 | Accuracy by field | `field` | `AVG(correct)` | bar | Same field order as the Dash app; label only the bars below 100%; one colour. |
-| Field by case kind | `field` | `case_kind` | square, colour `AVG(correct)` | Sequential single-hue colour, 0 to 1. Add `COUNTD(case_id)` to the column header. |
+| Field by case kind | `field` | `case_kind`, then `Documents of this kind` | square, colour `AVG(correct)` | Sequential single-hue colour, 0 to 1. The second column field puts the number of documents under each kind. |
 | Runs over time | `started_at` (exact date) | `AVG(field_accuracy)` from documents | line, colour `model` | One line per model, label the last point. |
 | Time per document | `run` | `latency_ms` / 1000 | box plot | Each dot is a document; hover shows `case_id`. |
 | Cost per document | `run` | `AVG(cost_usd)` | bar | List prices as of the run; see `prices_as_of` in the results JSON. |
@@ -50,8 +50,17 @@ Medium for titles are the closest to Geist.
 - The workbook uses the Dash app's words for the columns: Document, Kind of document, Returned, Expected.
 - The run is a single-value dropdown at the top, applied to every sheet, with no "All" choice. The
   dashboard opens on the first run, the one with misses.
-- Fields right by field as bars in the Dash app's field order, labelled only where a field is below 100%.
-- The field by kind grid labels only the cells below 100%; the colour and its legend carry the rest.
+- Fields right by field as bars from zero in the Dash app's field order, labelled only where a field is below
+  100%.
+- The field by kind grid labels only the cells below 100%; the colour and its legend carry the rest. Each kind
+  of document shows its number of documents under its name, `"(" + STR({FIXED [Run], [Kind of document] :
+  COUNTD([Document])}) + ")"`, so a 0% over two documents does not read like a 0% over thirty.
+- A label never rounds a share up to 100% or down to 0%, the same rule as the Dash app and the case study.
+  Tableau formats a number with a fixed count of decimals, so the label is two calculated fields side by side,
+  and only one of them has a value: `Label below 100%` holds whole percents from 10% to 99% (format `0"%"`),
+  and `Label below 100%, decimal` holds one decimal above 99% (floored) and below 10% (format `0.0"%"`).
+- Tooltips read "Right in 31% of 32 documents": `Share right` is the share as text under the same rule, and
+  `Documents` is `COUNTD([Document])`.
 - What went wrong is a list with row lines and no banding, and a note under the title that it is empty
   when every field was right.
 - Titles in sentence case and the same words as the Dash app. No dashboard title (the case study's frame

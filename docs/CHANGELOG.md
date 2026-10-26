@@ -13,6 +13,8 @@
 - Shares are never rounded up to 100% or down to 0%, in the tiles, the labels, the hover text or the runs
   table: 100% means every field was right, and a value just under it keeps one decimal. Every heatmap cell
   below 100% carries its number, and the hover gives the number of documents behind the cell.
+- Tableau workbook: the field by kind grid shows the number of documents under each kind, labels follow the
+  same share rule, and tooltips give the share and the number of documents behind it.
 - Numbers round halves up from the exact stored value, as the browser does, so the case study and the Dash
   app show the same digits (Python's own formatting rounds halves to even).
 - `eeoc_intake/evals/stats.py` holds the tests, the share rule and the rounding, standard library only, so the
