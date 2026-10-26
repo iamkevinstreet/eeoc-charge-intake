@@ -1,5 +1,15 @@
 # Changelog
 
+## v0.3.2, Oct 26, 2026
+
+- Third live run (claude-sonnet-5-5, 200 documents, the same setup as the second run): field accuracy 100%,
+  zero unsupported outputs, zero guesses, zero false abstentions; 4.5 s median, $0.0134 per document, $2.67
+  for the run. Each of the four hard cases had ten documents instead of two. With no document wrong out of
+  200, the share of documents like these with any field wrong is below 1.5% at 95% confidence.
+- `figures.json` for the case study carries the latest three runs, the most the charts draw.
+- The review screen quotes evidence with straight quotes.
+- 21 tests.
+
 ## v0.3.1, Oct 26, 2026
 
 - Dashboard: the design of kevindstreet.com (Geist, light and dark, one yellow highlight, green for right).

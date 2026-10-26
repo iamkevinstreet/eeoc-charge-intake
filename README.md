@@ -76,6 +76,7 @@ Live runs are committed under `eeoc_intake/evals/results/live/`; the run log is 
 
 | Run | Field accuracy | Unsupported outputs | Guesses | False abstentions per document | Median time | Cost per document |
 | --- | --- | --- | --- | --- | --- | --- |
+| v0.3, claude-sonnet-5-5, 200 documents, Oct 26, 2026 | 100% | 0 | 0 | 0 | 4.5 s | $0.0134 |
 | v0.3, claude-sonnet-5-5, 40 documents, Oct 17, 2026 | 100% | 0 | 0 | 0 | 4.2 s | $0.0134 |
 | v0.2, claude-sonnet-5-5, 40 documents, Oct 17, 2026 | 93.0% | 0 | 0 | 0.70 | 4.3 s | $0.0119 |
 
@@ -91,12 +92,21 @@ documents cannot show: generated particulars are cleaner and more regular than r
 ceiling for the pipeline, not a forecast for real intake. The next step is a harder test set: varied wording,
 irrelevant detail, scanned-looking pages.
 
+What the third run said: the same setup on 200 documents instead of 40, so each of the four hard cases had ten
+documents instead of two, and every field was right on every document again. With no document wrong out of
+200, the share of documents like these with any field wrong is below 1.5% at 95% confidence (the exact
+binomial bound, 1 - 0.05^(1/200)); at 40 documents the same bound was 7.2%. That narrows what these documents
+can say, not what they cannot: they are still generated, so the harder test set is still the next step.
+
 ## Data
 
 All documents are generated. No real charge, person or company appears anywhere in this project.
 
 ## Changelog
 
+- v0.3.2, Oct 26, 2026. Third live run, 200 documents on the v0.3 setup: 100% again, with ten documents for
+  each hard case. The case study's figures carry the latest three runs; the review screen uses straight
+  quotes. 21 tests.
 - v0.3.1, Oct 26, 2026. Dashboard in the same design as the case study, light and dark: a dot plot of fields
   right with the rows that changed highlighted, one heatmap panel per run, tiles that show the change against
   the earlier run. 20 tests.
