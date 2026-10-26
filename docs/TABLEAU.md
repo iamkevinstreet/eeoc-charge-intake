@@ -23,7 +23,7 @@ the current ones can be downloaded from the repository without running anything.
 
 | Sheet | Rows | Columns | Marks | Note |
 | --- | --- | --- | --- | --- |
-| Accuracy by field | `field` | `AVG(correct)` | bar | Sort descending; label the bar ends; one colour. |
+| Accuracy by field | `field` | `AVG(correct)` | bar | Same field order as the Dash app; label only the bars below 100%; one colour. |
 | Field by case kind | `field` | `case_kind` | square, colour `AVG(correct)` | Sequential single-hue colour, 0 to 1. Add `COUNTD(case_id)` to the column header. |
 | Runs over time | `started_at` (exact date) | `AVG(field_accuracy)` from documents | line, colour `model` | One line per model, label the last point. |
 | Time per document | `run` | `latency_ms` / 1000 | box plot | Each dot is a document; hover shows `case_id`. |
@@ -37,26 +37,29 @@ put the run filter (`run`) at the top and apply it to all sheets.
 
 The published dashboard follows the design of kevindstreet.com and of the Dash app, so it sits in the case
 study without looking pasted in. Tableau Public draws with its own fonts; Tableau Book for text and Tableau
-Medium for titles are the closest to Geist. Publish a light and a dark version; the case study can then show
-the one that matches the visitor's setting.
+Medium for titles are the closest to Geist.
 
-| Part | Light | Dark |
-| --- | --- | --- |
-| Dashboard and sheet background | `#ffffff` | `#121419` |
-| Outer padding and gaps | `#f5f5f2` | `#0a0b0e` |
-| Text | `#111214` | `#f2f3f5` |
-| Labels, axis text | `#585d66` | `#9aa1ac` |
-| Gridlines, dividers | `#ecece8`, 1 px, solid | `#1a1d24`, 1 px, solid |
-| Run in focus | `#111214` | `#f2f3f5` |
-| Earlier run | `#80868f` | `#7d8490` |
-| Row that changed (reference band) | `#ffe45c` at 45% | `#f3cf4a` at 15% |
-| Field by kind grid, 0% to 100% | `#ecece8` to `#13794a` | `#1a1d24` to `#5dd39e` |
+| Part | Colour |
+| --- | --- |
+| Dashboard and sheet background | `#ffffff` |
+| Text, and the bars for the run shown | `#111214` |
+| Labels, axis text, the note under a title | `#585d66` |
+| Gridlines, dividers | `#ecece8`, 1 px, solid |
+| Field by kind grid, 0% to 100% | `#ecece8` to `#13794a` |
 
-- Accuracy by field as dots, one per run, joined by a line where the runs differ; label only those values.
-- The field by kind grid labels only the cells below 100%; the colour carries the rest.
-- Titles in sentence case and the same words as the Dash app; no workbook title bar, no toolbar, no
-  borders around sheets.
-- The run filter at the top, applied to every sheet.
+- The workbook uses the Dash app's words for the columns: Document, Kind of document, Returned, Expected.
+- The run is a single-value dropdown at the top, applied to every sheet, with no "All" choice. The
+  dashboard opens on the first run, the one with misses.
+- Fields right by field as bars in the Dash app's field order, labelled only where a field is below 100%.
+- The field by kind grid labels only the cells below 100%; the colour and its legend carry the rest.
+- What went wrong is a list with row lines and no banding, and a note under the title that it is empty
+  when every field was right.
+- Titles in sentence case and the same words as the Dash app. No dashboard title (the case study's frame
+  names it), no toolbar, no borders around sheets. Tooltips name the field and give the share of documents
+  that got it right.
+- Tableau Public serves one design. In dark mode the case study inverts the embed with a CSS filter and
+  turns the hues back, which puts it on a near-black background with light text and lighter greens for
+  higher values, close to the dark colours of the Dash app.
 
 ## Publishing
 

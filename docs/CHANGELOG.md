@@ -8,6 +8,8 @@
   moved against the next selected run; the misses table shows values as written.
 - `figures.json` names each trace's part in `meta.role`, so the case study can draw the figures in its own
   palette.
+- Tableau Public dashboard in the same design: the run as a dropdown at the top, labels only below 100%, the
+  Dash app's column names, and tooltips in plain words. `docs/TABLEAU.md` lists the settings.
 - 20 tests.
 
 ## v0.3, Oct 17, 2026
