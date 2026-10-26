@@ -71,3 +71,32 @@ or Desktop.
 
 Web authoring on Tableau Public: sign in at public.tableau.com, choose Create, then Web Authoring, upload
 `fields.csv`, and build the sheets above. Publish, open the viz, and use Share to get the embed code.
+
+## After a new live run
+
+The published workbook holds a copy of the data, so a new run reaches it only when the data is replaced.
+
+1. Take `eeoc_intake/evals/results/live/export/fields.csv` from the repository; it covers every live run.
+2. On Tableau Public, open the workbook, choose Edit, and go to the Data Source tab. On the `fields`
+   connection's menu choose Edit Connection, upload the new `fields.csv`, and choose Replace and Update when
+   it asks about the file name. Create the extract again.
+3. Name the new run the way the others are named: on any sheet, open the Run field's menu, choose Aliases,
+   and give the new value a name such as "Third run, Oct 26, 15:39 UTC". The kinds of document keep their
+   names, since their values do not change.
+4. Leave the run filter on the first run and Publish. The workbook keeps its name, so the embed address on
+   the case study stays the same.
+
+## On the case study
+
+The case study embeds the dashboard with the Tableau Embedding API (v3) and keeps it in step with the page's
+run switch, which also drives the React view and the Dash app's figures.
+
+- A `<viz-filter field="Run">` with the run's value opens the dashboard on the run the page shows, so it
+  draws once.
+- The page's switch calls `applyFilterAsync('Run', [alias], 'replace')` on the first worksheet. The API
+  filters on what the viewer sees, so it takes the run's alias, read from `getDomainAsync('database')`. The
+  filter covers the whole data source, so all three sheets follow.
+- A run picked in the dashboard's own dropdown fires `filterchanged` once per sheet, carrying the run's
+  value, and the page's switch moves to it. The echo of a run the page set itself is ignored.
+- Until the data is replaced after a new run, the page says that run is not in the workbook yet and shows
+  the latest run the workbook has.
