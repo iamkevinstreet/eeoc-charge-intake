@@ -127,6 +127,18 @@ def test_export_figures_carries_roles(tmp_path):
     assert all(tr["meta"]["role"] for f in payload["figures"] for tr in f["spec"]["data"])
 
 
+def test_export_figures_keeps_three_runs(tmp_path):
+    """The case study draws up to three runs, newest first, so the export keeps the latest three."""
+    results = _two_runs(tmp_path)
+    third = copy.deepcopy(RUN)
+    third["started_at"] = "2026-10-15T02:00:00+00:00"
+    (results / "live" / "t-3.json").write_text(json.dumps(third))
+    payload = export_figures(results, tmp_path / "figures.json")
+    assert [r["run_id"] for r in payload["runs"]] == ["t-3", "t-2", "t-1"]
+    roles = {tr["meta"]["role"] for tr in payload["figures"][0]["spec"]["data"]}
+    assert {"run-0", "run-1", "run-2"} <= roles
+
+
 def test_app_builds(tmp_path):
     app = build_app(_results_dir(tmp_path))
     assert app.layout is not None

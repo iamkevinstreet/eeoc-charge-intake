@@ -827,17 +827,18 @@ INDEX = """<!DOCTYPE html>
 
 
 def export_figures(results_dir: Path, out: Path) -> dict:
-    """Plotly JSON for the latest live run and the one before it, for the case study.
+    """Plotly JSON for the latest live runs, up to three (as many as the charts draw), for the case study.
 
-    Each trace carries its part in `meta.role` (run-0 is the run in focus, run-1 the one before, connector,
-    accuracy) and each highlight shape is named, so a page with its own palette can restyle them. The titles
-    stay in the layout for pages that draw them from there.
+    Each trace carries its part in `meta.role` (run-0 is the latest run, run-1 the one before it, run-2 the one
+    before that, connector, accuracy) and each highlight shape is named, so a page with its own palette can
+    restyle them and pick which run to put in focus. The titles stay in the layout for pages that draw them
+    from there.
     """
     runs = [r for r in load_runs(results_dir) if r["kind"] == "live"]
     if not runs:
         raise SystemExit("no live runs to export")
     runs_df, cases_df, fields_df = frames(runs)
-    ids = list(runs_df.run_id[:2])
+    ids = list(runs_df.run_id[:3])
     labels = run_labels(runs_df, ids)
     latest = runs_df.iloc[0]
     figs = [
