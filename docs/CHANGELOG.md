@@ -1,5 +1,22 @@
 # Changelog
 
+## v0.3.3, Oct 26, 2026
+
+- Seconds per document fits its axis to the documents instead of starting at zero, since a box plot shows
+  position, not length. Documents slower than the far-out fence (third quartile plus three times the
+  interquartile range) are counted beside their run's row, with the slowest time, instead of stretching the
+  axis.
+- The tiles show an arrow and a colour only for a change bigger than run-to-run noise at 95% confidence: a rank
+  test (Mann-Whitney U) for time, whose typical value is a median, and Welch's t-test for the averages per
+  document, with the document as the unit. A smaller change says "no clear change", and a change that rounds
+  to nothing at the precision shown says "no change".
+- Shares are never rounded up to 100% or down to 0%, in the tiles, the labels, the hover text or the runs
+  table: 100% means every field was right, and a value just under it keeps one decimal. Every heatmap cell
+  below 100% carries its number, and the hover gives the number of documents behind the cell.
+- `eeoc_intake/evals/stats.py` holds the tests and the share rule, standard library only, so the case study
+  can apply the same rules.
+- 26 tests.
+
 ## v0.3.2, Oct 26, 2026
 
 - Third live run (claude-sonnet-5-5, 200 documents, the same setup as the second run): field accuracy 100%,

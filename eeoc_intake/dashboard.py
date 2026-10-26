@@ -12,12 +12,14 @@ highlight, green for right), in light and dark, so the app and the case study re
 from __future__ import annotations
 
 import json
+import math
 import os
 from datetime import datetime
 from pathlib import Path
 
 import pandas as pd
 
+from eeoc_intake.evals.stats import clear_change, pct_label
 from eeoc_intake.fake import SCORED_FIELDS
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -204,7 +206,7 @@ def _readable(raw: str | None) -> str:
 
 
 def _pct(v: float) -> str:
-    return f"{v:.0%}"
+    return pct_label(v)
 
 
 # ---------- figures ----------
@@ -312,7 +314,9 @@ def fig_accuracy_by_field(fields: pd.DataFrame, run_ids: list[str], theme: str =
             textposition="middle right" if i == 0 else "middle left",
             textfont={"color": t["ink2"], "size": 12},
             cliponaxis=False,
-            hovertemplate="<b>%{x:.0%}</b>  %{y}<extra>" + labels[rid] + "</extra>",
+            # The share is written out here, so the hover never rounds a value just under 100% up to it.
+            customdata=[_pct(v) if v is not None else "" for v in xs],
+            hovertemplate="<b>%{customdata}</b>  %{y}<extra>" + labels[rid] + "</extra>",
             meta={"role": f"run-{i}"},
         )
     # The category order is set here, not left to the order traces happen to name the fields.
@@ -366,7 +370,7 @@ def fig_heatmap(fields: pd.DataFrame, run_ids: str | list[str], theme: str = "li
                 xgap=3,
                 ygap=3,
                 # Only the cells that are not all right carry a number; the colour says the rest.
-                text=[["" if pd.isna(v) or v >= 0.995 else _pct(v) for v in row] for row in pivot.values],
+                text=[["" if pd.isna(v) or v >= 1 else _pct(v) for v in row] for row in pivot.values],
                 texttemplate="%{text}",
                 textfont={"size": 12},
                 showscale=i == len(run_ids),
@@ -378,8 +382,16 @@ def fig_heatmap(fields: pd.DataFrame, run_ids: str | list[str], theme: str = "li
                     "outlinewidth": 0,
                     "tickfont": {"color": t["ink3"], "size": 11},
                 },
-                customdata=[[c.replace("<br>", " ") for c in cols]] * len(pivot.index),
-                hovertemplate="<b>%{z:.0%}</b>  %{y}, %{customdata}<extra>" + labels[rid] + "</extra>",
+                customdata=[
+                    [
+                        "no documents"
+                        if pd.isna(v)
+                        else f"<b>{_pct(v)}</b>  {f}, {KIND_TICKS.get(c, c).replace('<br>', ' ')} ({counts[c]} documents)"
+                        for v, c in zip(row, cols, strict=True)
+                    ]
+                    for f, row in zip(pivot.index, pivot.values, strict=True)
+                ],
+                hovertemplate="%{customdata}<extra>" + labels[rid] + "</extra>",
                 meta={"role": "accuracy"},
             ),
             row=1,
@@ -405,11 +417,42 @@ def fig_latency(cases: pd.DataFrame, run_ids: list[str], theme: str = "light", l
     labels = labels or {r: cases[cases.run_id == r].run.iloc[0] for r in run_ids}
     fig = go.Figure()
     rows = []
+    # The axis fits where documents fall. Times have a long right tail, so it stops at the far-out fence
+    # (upper quartile plus three times the spread of the middle half) of the most spread-out run; documents
+    # past it are counted at the right edge with the slowest time, not stretched across the chart.
+    secs_by_run = {rid: cases[cases.run_id == rid]["latency_ms"] / 1000 for rid in run_ids}
+    shown = [s for s in secs_by_run.values() if len(s)]
+    fastest = min(float(s.min()) for s in shown) if shown else 0.0
+    slowest = max(float(s.max()) for s in shown) if shown else 1.0
+    fence = (
+        max(float(s.quantile(0.75) + 3 * (s.quantile(0.75) - s.quantile(0.25))) for s in shown)
+        if shown
+        else 1.0
+    )
+    top = min(slowest, fence)
+    pad = max(0.15, (top - fastest) * 0.06)
+    x_range = [max(0.0, fastest - pad), top + pad if slowest <= fence else fence]
     for i, rid in enumerate(run_ids):
         c = cases[cases.run_id == rid]
-        secs = c["latency_ms"] / 1000
+        secs = secs_by_run[rid]
         row = f"{labels[rid]}<br><b>{secs.median():.1f} s</b> typical"
         rows.append(row)
+        past = secs[secs > x_range[1]]
+        if len(past):
+            # In the margin beside the row, so the count never sits on the dots or on the axis labels.
+            fig.add_annotation(
+                x=1,
+                xref="paper",
+                xanchor="left",
+                xshift=10,
+                y=row,
+                yref="y",
+                showarrow=False,
+                align="left",
+                text=f"{len(past)} slower,<br>up to {past.max():.1f} s",
+                font={"color": t["ink2"], "size": 11},
+                name="beyond",
+            )
         fig.add_box(
             x=secs,
             y=[row] * len(c),
@@ -434,9 +477,12 @@ def fig_latency(cases: pd.DataFrame, run_ids: list[str], theme: str = "light", l
         )
     fig.update_layout(
         yaxis={"categoryorder": "array", "categoryarray": rows, "autorange": "reversed"},
-        xaxis={"rangemode": "tozero", "ticksuffix": " s"},
+        xaxis={"range": x_range, "ticksuffix": " s"},
     )
-    return _base(fig, 64 + 62 * max(1, len(run_ids)), theme)
+    fig = _base(fig, 64 + 62 * max(1, len(run_ids)), theme)
+    if fig.layout.annotations:
+        fig.update_layout(margin={"r": 88})
+    return fig
 
 
 def fig_cost(runs_df: pd.DataFrame, run_ids: list[str], theme: str = "light", labels=None):
@@ -484,14 +530,14 @@ TILES = [
     (
         "field_accuracy",
         "Fields right",
-        lambda v: f"{v:.0%}" if v >= 0.995 else f"{v:.1%}",
+        lambda v: "100%" if v >= 1 else f"{math.floor(v * 1000) / 10:.1f}%",
         lambda d: f"{abs(d) * 100:.1f} pts",
         "up",
     ),
     (
         "unsupported_rate",
         "Quotes that did not match the page",
-        lambda v: f"{v:.1%}",
+        pct_label,
         lambda d: f"{abs(d) * 100:.1f} pts",
         "down",
     ),
@@ -514,8 +560,24 @@ TILES = [
 ]
 
 
-def tile_rows(runs_df: pd.DataFrame, run_ids: list[str]) -> list[dict]:
-    """Each measure for the run in focus, and how it moved against the next selected run."""
+# Each tile's per-document values, and the test that says whether two runs really differ (see evals/stats.py).
+TILE_TESTS = {
+    "field_accuracy": ("field_accuracy", "welch"),
+    "unsupported_rate": ("unsupported_removed", "welch"),
+    "guesses": ("guesses", "welch"),
+    "false_abstentions": ("false_abstentions", "welch"),
+    "latency_p50_ms": ("latency_ms", "rank"),
+    "cost_per_case_usd": ("cost_usd", "welch"),
+}
+
+
+def tile_rows(runs_df: pd.DataFrame, run_ids: list[str], cases_df: pd.DataFrame | None = None) -> list[dict]:
+    """Each measure for the run in focus, and how it moved against the next selected run.
+
+    A change that rounds to nothing at the precision shown is no change. With the per-document rows, a change
+    gets a direction and a colour only when it is bigger than run-to-run noise at 95% confidence; a smaller one
+    is no clear change.
+    """
     if not run_ids:
         return []
     by_id = runs_df.set_index("run_id")
@@ -527,11 +589,21 @@ def tile_rows(runs_df: pd.DataFrame, run_ids: list[str]) -> list[dict]:
         row = {"measure": column, "label": label, "value": fmt(v), "delta": None, "good": None}
         if then is not None:
             d = v - float(then[column] or 0)
-            if abs(d) > 1e-9:
-                row["delta"] = ("up " if d > 0 else "down ") + change(d)
-                row["good"] = (d > 0) == (better == "up")
-            else:
+            shown = change(d)
+            if abs(d) < 1e-12 or not any(ch in "123456789" for ch in shown):
                 row["delta"] = "no change"
+            elif cases_df is not None and column in TILE_TESTS:
+                per_doc, test = TILE_TESTS[column]
+                a = cases_df.loc[cases_df.run_id == run_ids[1], per_doc].dropna().astype(float).tolist()
+                b = cases_df.loc[cases_df.run_id == run_ids[0], per_doc].dropna().astype(float).tolist()
+                if clear_change(a, b, test):
+                    row["delta"] = ("up " if d > 0 else "down ") + shown
+                    row["good"] = (d > 0) == (better == "up")
+                else:
+                    row["delta"] = "no clear change"
+            else:
+                row["delta"] = ("up " if d > 0 else "down ") + shown
+                row["good"] = (d > 0) == (better == "up")
         rows.append(row)
     return rows
 
@@ -553,7 +625,6 @@ def build_app(results_dir: Path = RESULTS_DIR):
             children=[html.H3(title), dcc.Graph(id=graph_id, config={"displayModeBar": False})],
         )
 
-    pct = Format(precision=1, scheme=Scheme.percentage)
     two = Format(precision=2, scheme=Scheme.fixed)
     whole = Format(precision=0, scheme=Scheme.fixed, group=True)
     money = Format(precision=4, scheme=Scheme.fixed, symbol=Symbol.yes, symbol_prefix="$")
@@ -623,8 +694,8 @@ def build_app(results_dir: Path = RESULTS_DIR):
                         ("run", "Run", None),
                         ("cases", "Documents", whole),
                         ("failures", "Failures", whole),
-                        ("field_accuracy", "Fields right", pct),
-                        ("unsupported_rate", "Unmatched quotes", pct),
+                        ("field_accuracy", "Fields right", None),
+                        ("unsupported_rate", "Unmatched quotes", None),
                         ("false_abstentions", "Wrongly blank", two),
                         ("guesses", "Made-up values", two),
                         ("latency_p50_ms", "Typical ms", whole),
@@ -632,7 +703,11 @@ def build_app(results_dir: Path = RESULTS_DIR):
                         ("cost_per_case_usd", "Cost per document", money),
                     ]
                 ],
-                data=runs_df.to_dict("records"),
+                # Shares as text, so a value just under 100% is never shown as 100.0%.
+                data=runs_df.assign(
+                    field_accuracy=runs_df.field_accuracy.map(lambda v: pct_label(v, 1)),
+                    unsupported_rate=runs_df.unsupported_rate.map(lambda v: pct_label(v, 1)),
+                ).to_dict("records"),
                 style_as_list_view=True,
                 cell_selectable=False,
                 style_cell=table_cell,
@@ -696,7 +771,7 @@ def build_app(results_dir: Path = RESULTS_DIR):
             )
             for i, r in enumerate(selected)
         ]
-        tiles = [tile(row) for row in tile_rows(runs_df, selected)]
+        tiles = [tile(row) for row in tile_rows(runs_df, selected, cases_df)]
         wrong = fields_df[(fields_df.run_id.isin(selected)) & (fields_df.correct == 0)].copy()
         for col in ("value", "expected"):
             wrong[col] = wrong[col].map(_readable)

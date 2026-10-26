@@ -127,6 +127,55 @@ def test_export_figures_carries_roles(tmp_path):
     assert all(tr["meta"]["role"] for f in payload["figures"] for tr in f["spec"]["data"])
 
 
+def _run_with(tmp_path: Path, name: str, started: str, latencies_ms: list[int], cost: float) -> None:
+    """A live run of documents that are all right, with the given times and the same cost each."""
+    run = copy.deepcopy(RUN)
+    run["started_at"] = started
+    base = run["results"][0]
+    run["results"] = []
+    for i, ms in enumerate(latencies_ms):
+        r = copy.deepcopy(base)
+        r["case_id"] = f"charge-{i:03d}"
+        r["latency_ms"] = ms
+        r["cost_usd"] = cost
+        run["results"].append(r)
+    run["cases"] = len(latencies_ms)
+    run["summary"] = {
+        **RUN["summary"],
+        "field_accuracy": 1.0,
+        "latency_p50_ms": sorted(latencies_ms)[len(latencies_ms) // 2],
+        "cost_per_case_usd": cost,
+    }
+    live = tmp_path / "live"
+    live.mkdir(exist_ok=True)
+    (live / f"{name}.json").write_text(json.dumps(run))
+
+
+def test_time_axis_fits_most_documents(tmp_path):
+    times = [4000 + 37 * i % 900 for i in range(30)] + [16000]
+    _run_with(tmp_path, "t-1", "2026-10-15T00:00:00+00:00", times, 0.001)
+    runs_df, cases_df, _ = frames(load_runs(tmp_path))
+    fig = fig_latency(cases_df, list(runs_df.run_id))
+    low, high = fig.layout.xaxis.range
+    assert 3 < low < 4 and high < 8  # no zero start, and the one slow document doesn't stretch the axis
+    assert [a.text for a in fig.layout.annotations] == ["1 slower,<br>up to 16.0 s"]
+
+
+def test_tiles_call_only_changes_bigger_than_noise(tmp_path):
+    same = [4000 + 53 * i % 700 for i in range(40)]
+    _run_with(tmp_path, "t-1", "2026-10-15T00:00:00+00:00", same, 0.013363)
+    _run_with(tmp_path, "t-2", "2026-10-15T01:00:00+00:00", [t + 60 for t in same], 0.013375)
+    _run_with(tmp_path, "t-3", "2026-10-15T02:00:00+00:00", [t + 2000 for t in same], 0.013375)
+    runs_df, cases_df, _ = frames(load_runs(tmp_path))
+    ids = list(runs_df.run_id)  # newest first: t-3, t-2, t-1
+    near = {t["measure"]: t for t in tile_rows(runs_df, [ids[1], ids[2]], cases_df)}
+    # 0.1 s slower shows on the tile, but 60 ms is well inside the spread of these times
+    assert near["latency_p50_ms"]["delta"] == "no clear change" and near["latency_p50_ms"]["good"] is None
+    assert near["cost_per_case_usd"]["delta"] == "no change"  # $0.000012 rounds to nothing at four places
+    far = {t["measure"]: t for t in tile_rows(runs_df, [ids[0], ids[2]], cases_df)}
+    assert far["latency_p50_ms"]["delta"] == "up 2.0 s" and far["latency_p50_ms"]["good"] is False
+
+
 def test_export_figures_keeps_three_runs(tmp_path):
     """The case study draws up to three runs, newest first, so the export keeps the latest three."""
     results = _two_runs(tmp_path)

@@ -33,6 +33,7 @@ Case study with the evaluation plan and results: https://kevindstreet.com/projec
 | `eeoc_intake/evals/run.py` | The evaluation: accuracy per field, unsupported outputs, abstentions, guesses, time, cost |
 | `eeoc_intake/evals/export.py` | Tidy CSV files for Tableau (see `docs/TABLEAU.md`) |
 | `eeoc_intake/dashboard.py` | Plotly Dash dashboard comparing runs |
+| `eeoc_intake/evals/stats.py` | When a change between runs is bigger than noise, and how a share is written |
 | `eeoc_intake/tests/` | Span verification, the review service, the dashboard frames |
 | `ui/` | Review screen: React, Vite, TypeScript |
 | `.github/workflows/eval-live.yml` | Live evaluation against a real model, started by hand |
@@ -104,6 +105,9 @@ All documents are generated. No real charge, person or company appears anywhere 
 
 ## Changelog
 
+- v0.3.3, Oct 26, 2026. Seconds per document fits its axis to the documents and counts the few slow ones at
+  the edge. Tiles mark a change only when it is bigger than run-to-run noise at 95% confidence, and shares
+  never round up to 100%. 26 tests.
 - v0.3.2, Oct 26, 2026. Third live run, 200 documents on the v0.3 setup: 100% again, with ten documents for
   each hard case. The case study's figures carry the latest three runs; the review screen uses straight
   quotes. 21 tests.
