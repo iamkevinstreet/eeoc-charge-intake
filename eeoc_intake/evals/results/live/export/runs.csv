@@ -1,0 +1,4 @@
+run_id,run,model,provider,started_at,kind,cases,failures,field_accuracy,unsupported_rate,false_abstentions,guesses,latency_p50_ms,latency_p95_ms,cost_per_case_usd,cost_total_usd
+live-claude-sonnet-5-5-20261026T153906Z,claude-sonnet-5-5 2026-10-26 15:39,claude-sonnet-5-5,anthropic,2026-10-26T15:39:06+00:00,live,200,0,1.0,0.0,0.0,0.0,4510.0,5572.0,0.013375,2.6749
+live-claude-sonnet-5-5-20261017T020132Z,claude-sonnet-5-5 2026-10-17 02:01,claude-sonnet-5-5,anthropic,2026-10-17T02:01:32+00:00,live,40,0,1.0,0.0,0.0,0.0,4200.0,6537.0,0.013363,0.5345
+live-claude-sonnet-5-5-20261017T015121Z,claude-sonnet-5-5 2026-10-17 01:51,claude-sonnet-5-5,anthropic,2026-10-17T01:51:21+00:00,live,40,0,0.93,0.0,0.7,0.0,4253.0,4828.0,0.011921,0.4768

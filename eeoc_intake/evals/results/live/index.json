@@ -1,0 +1,30 @@
+{
+  "runs": [
+    "live-claude-sonnet-5-5-20261017T015121Z.json",
+    "live-claude-sonnet-5-5-20261017T020132Z.json",
+    "live-claude-sonnet-5-5-20261026T153906Z.json"
+  ],
+  "extractions": {
+    "live-claude-sonnet-5-5-20261017T020131Z": [
+      "charge-000.json",
+      "charge-001.json",
+      "charge-002.json",
+      "charge-003.json",
+      "charge-004.json",
+      "charge-005.json",
+      "charge-006.json",
+      "charge-007.json"
+    ],
+    "live-claude-sonnet-5-5-20261026T153905Z": [
+      "charge-000.json",
+      "charge-001.json",
+      "charge-002.json",
+      "charge-003.json",
+      "charge-004.json",
+      "charge-005.json",
+      "charge-006.json",
+      "charge-007.json"
+    ]
+  },
+  "figures": "figures.json"
+}

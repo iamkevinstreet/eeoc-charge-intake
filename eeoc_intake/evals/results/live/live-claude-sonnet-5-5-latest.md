@@ -1,6 +1,6 @@
 # live-claude-sonnet-5-5
 
-Model: `claude-sonnet-5-5` (anthropic). Cases: 40. Failures: 0. Run: 2026-10-17T02:01:32+00:00. Prices as of 2026-10-15.
+Model: `claude-sonnet-5-5` (anthropic). Cases: 200. Failures: 0. Run: 2026-10-26T15:39:06+00:00. Prices as of 2026-10-15.
 
 | Measure | Value |
 | --- | --- |
@@ -19,13 +19,13 @@ Model: `claude-sonnet-5-5` (anthropic). Cases: 40. Failures: 0. Run: 2026-10-17T
 | false_abstentions | 0 |
 | field_accuracy | 1 |
 | guesses | 0 |
-| model_latency_ms | 4,708 |
+| model_latency_ms | 4,805 |
 | raw_filled_fields | 9.95 |
 | unsupported_rate | 0 |
 | unsupported_removed | 0 |
-| latency_p50_ms | 4,200 |
-| latency_p95_ms | 6,537 |
-| cost_total_usd | 0.5345 |
+| latency_p50_ms | 4,510 |
+| latency_p95_ms | 5,572 |
+| cost_total_usd | 2.6749 |
 | cost_per_case_usd | 0.0134 |
 | failure_rate | 0 |
 
@@ -33,8 +33,8 @@ Model: `claude-sonnet-5-5` (anthropic). Cases: 40. Failures: 0. Run: 2026-10-17T
 
 | Tag | Cases | empty_precision | empty_recall | f_bases | f_charge_number | f_charging_party | f_continuing_action | f_earliest_date | f_eeoc_office | f_issues | f_latest_date | f_notice_date | f_respondent | false_abstentions | field_accuracy | guesses | model_latency_ms | raw_filled_fields | unsupported_rate | unsupported_removed |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| clean | 32 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 0 | 1 | 0 | 4,752 | 10 | 0 | 0 |
-| long | 2 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 0 | 1 | 0 | 4,731 | 10 | 0 | 0 |
-| missing_number | 2 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 0 | 1 | 0 | 4,884 | 9 | 0 | 0 |
-| rotated | 2 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 0 | 1 | 0 | 4,550 | 10 | 0 | 0 |
-| two_respondents | 2 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 0 | 1 | 0 | 3,973 | 10 | 0 | 0 |
+| clean | 160 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 0 | 1 | 0 | 4,850 | 10 | 0 | 0 |
+| long | 10 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 0 | 1 | 0 | 4,620 | 10 | 0 | 0 |
+| missing_number | 10 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 0 | 1 | 0 | 4,754 | 9 | 0 | 0 |
+| rotated | 10 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 0 | 1 | 0 | 4,641 | 10 | 0 | 0 |
+| two_respondents | 10 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 0 | 1 | 0 | 4,487 | 10 | 0 | 0 |
