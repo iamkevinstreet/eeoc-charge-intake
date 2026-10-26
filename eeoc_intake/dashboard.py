@@ -42,7 +42,7 @@ KIND_LABELS = {
     "long": "Long particulars",
     "two_respondents": "Two respondents",
 }
-# Column heads for the heatmap, short enough to sit under a cell.
+# Column heads for the heatmap: short lines, so each fits under its cell even when the panels are narrow.
 KIND_TICKS = {
     "Clean": "Standard",
     "Missing charge number": "No charge<br>number",
@@ -358,7 +358,7 @@ def fig_heatmap(fields: pd.DataFrame, run_ids: str | list[str], theme: str = "li
         fig.add_trace(
             go.Heatmap(
                 z=pivot.values,
-                x=[f"{KIND_TICKS.get(c, c)} ({counts[c]})" for c in cols],
+                x=[f"{KIND_TICKS.get(c, c)}<br>({counts[c]})" for c in cols],
                 y=list(pivot.index),
                 zmin=0,
                 zmax=1,
