@@ -452,11 +452,16 @@ def fig_latency(cases: pd.DataFrame, run_ids: list[str], theme: str = "light", l
                 font={"color": t["ink2"], "size": 11},
                 name="beyond",
             )
+        # The box and its quartiles come from every document; dots past the axis are drawn clear rather than
+        # cut in half at its edge, since the note beside the row counts them.
+        inside = [i for i, v in enumerate(secs) if v <= x_range[1]]
         fig.add_box(
             x=secs,
             y=[row] * len(c),
             name=labels[rid],
             orientation="h",
+            selectedpoints=inside if len(past) else None,
+            unselected={"marker": {"opacity": 0}},
             boxpoints="all",
             jitter=0.6,
             pointpos=0,

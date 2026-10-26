@@ -159,6 +159,9 @@ def test_time_axis_fits_most_documents(tmp_path):
     low, high = fig.layout.xaxis.range
     assert 3 < low < 4 and high < 8  # no zero start, and the one slow document doesn't stretch the axis
     assert [a.text for a in fig.layout.annotations] == ["1 slower,<br>up to 16.0 s"]
+    assert (
+        len(fig.data[0].selectedpoints) == 30
+    )  # the slow one is counted beside the row, not drawn at the edge
 
 
 def test_tiles_call_only_changes_bigger_than_noise(tmp_path):
