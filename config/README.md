@@ -1,21 +1,27 @@
 # config
 
-[`settings.toml`](settings.toml) lists every setting the service, the evaluation and the dashboard
-read, at its default. It holds no secrets: those go in `.env` (copy
-[`.env.example`](../.env.example)), and the service refuses to start if a secret is written here.
+[`config.toml`](config.toml) lists every setting the service, the evaluation, the dashboard and the
+review screen read, at its default, and every value two parts of the code share. It holds no
+secrets: those go in `config/.env` (copy [`.env.example`](.env.example), which names each one), and
+the service refuses to start if a secret is written in `config.toml`.
 
 ## How a value is chosen
 
-Highest first: an environment variable, then `.env`, then this file, then the default in
+Highest first: an environment variable, then `config/.env`, then `config.toml`, then the default in
 [`backend/src/eeoc_intake/config.py`](../backend/src/eeoc_intake/config.py). Each key's
 environment name is its section and key joined by an underscore, in capitals: `[samples] count` is
-`SAMPLES_COUNT`.
+`SAMPLES_COUNT`. A nested table is one setting: `[labels.fields]` is `labels_fields`.
 `SETTINGS_FILE` points the service at a different file. Every setting is logged at startup, secrets
 masked, in the `service.start` event.
 
-A test (`backend/tests/test_config.py`) keeps this file equal to the defaults in code, so the two
+A test (`backend/tests/test_config.py`) keeps `config.toml` equal to the defaults in code, so the two
 cannot drift. The service and the dashboard have no sign-in, so a host other than this machine's
 stops either one at startup.
+
+The review screen reads the few keys it needs from `config.toml` when it is built (the list is in
+[`frontend/vite.config.ts`](../frontend/vite.config.ts)), never anything from `config/.env`. An
+environment variable changes the backend only; rebuild the review screen after changing a key it
+reads.
 
 ## Every setting
 
@@ -41,6 +47,7 @@ stops either one at startup.
 | `[data] smoke` | `data/evals/smoke` | Offline smoke results, never committed |
 | `[data] extractions` | `data/extractions` | Whole extractions a live run saves for the case study |
 | `[data] export` | `data/export` | The CSV files for Tableau |
+| `[data] figures` | `figures.json` | The case study's figures, written into the results folder |
 | `[samples] count` | `30` | How many documents to generate |
 | `[samples] seed` | `2026` | The seed; the same seed always makes the same documents |
 | `[samples] hard_every` | `5` | Every fifth document is a hard case |
@@ -56,3 +63,22 @@ stops either one at startup.
 | `[dashboard] host` | `127.0.0.1` | The address the dashboard listens on: this machine only |
 | `[dashboard] port` | `8050` | The dashboard's port |
 | `[ui] dist` | `frontend/dist` | The built review screen the service serves at `/` |
+
+## Values the code shares
+
+These tables tune nothing. Each names something two parts of the code must agree on, so it is
+written once, here, with a comment on every key in `config.toml`. Change one only together with
+whatever else depends on it: a column name, say, changes the Tableau CSV files too.
+
+| Table | What it holds | Read by |
+| --- | --- | --- |
+| `[api] prefix`, `[api] request_id_header` | The routes' prefix, `/api/v1`, and the header that carries a request's id | The service and the review screen |
+| `[demo] provider` | The provider that means demo mode, `fake` | The service, the evaluation and the review screen |
+| `[record]` | The fields the code names one by one: the notice date, the summary, the yes or no field, the list fields | The extraction, the reviews and the review screen |
+| `[scores]` | The names of the scores a document gets, and the prefix of each field's own score | The scoring, the dashboard and the review screen |
+| `[labels]`, `[labels.fields]`, `[labels.kinds]` | The words people read: yes and no, what joins a list, each field's and each kind of document's name | The dashboard and the review screen |
+| `[units]`, `[files] encoding` | Milliseconds in a second, percent in a whole, and the encoding of every file read or written | The backend; the review screen reads `[units]` too |
+| `[eval] results_key`, `[samples] cases`, `clean`, `charge_input`, `notice_input` | How a run file and a case are written and read | The generator, the evaluation, the service and the dashboard |
+| `[stats]` | The two tests that decide whether a change between runs is bigger than noise | The change tests and the dashboard's tiles |
+| `[dashboard_ids]`, `[columns]`, `[charts]`, `[charts.kind_heads]` | The dashboard's part ids, the evaluation tables' column names, and the charts' schemes, sizes and titles | The dashboard, the case study's figures and the Tableau files |
+| `[ui]` (but `dist`), `[ui.keys]` | The code link, the commands the screens suggest, two names the screens share, and the review keys | The review screen |

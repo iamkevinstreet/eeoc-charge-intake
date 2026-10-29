@@ -1,18 +1,18 @@
 ########################################################################
 #                               Makefile                               #
 ########################################################################
-#  Author:            Kevin Street                                     #
-#  Created on:        2026-10-14                                       #
-#  Last modified on:  2026-10-29                                       #
-#  Purpose:           One command for each routine task: install, run, #
-#                     samples, check, test, eval, publish, audit.      #
-########################################################################
-# CI runs the same targets. Run them from the repository root, where
-# config/settings.toml and data/ are found.
+# Author:            Kevin Street
+# Created on:        2026-10-14
+# Last modified on:  2026-10-29
+#
+# Runs each routine task with one command: install, run, samples,
+# check, test, eval, publish and audit. CI runs the same targets. Run
+# them from the repository root, where config/ and data/ are found.
+
 UV := uv run --project backend --no-sync
 NPM := npm --prefix frontend
 # Our own packages install from git, not PyPI, so the PyPI audit leaves them out.
-KDS := kds-settings kds-logs kds-llm kds-evals kds-synthetic kds-standards kds-diagrams
+KDS := kds-args kds-settings kds-logs kds-llm kds-evals kds-synthetic kds-standards kds-diagrams
 AUDIT_FILE := data/generated/requirements-audit.txt
 
 .PHONY: install run api web samples dashboard check check-backend check-frontend test \
@@ -28,7 +28,7 @@ run:  ## The API on :8000 and the review screen on :5173 together; Ctrl-C stops 
 api:  ## The review service alone; in demo mode it answers for the generated samples
 	$(UV) python -m eeoc_intake.api
 
-web:  ## The review screen alone; it proxies /api to :8000
+web:  ## The review screen alone; it proxies /api/v1 to :8000
 	$(NPM) run dev
 
 samples:  ## Generate the test documents and cases.jsonl into data/generated
@@ -58,7 +58,7 @@ test-backend:
 test-frontend:
 	$(NPM) test
 
-eval: samples  ## The offline smoke run: the stand-in answers, whatever .env says; no key, no network
+eval: samples  ## The offline smoke run: the stand-in answers; no key, no network
 	LLM_PROVIDER=fake $(UV) python -m eeoc_intake.evals.run --name offline
 
 publish:  ## After a live run: the figures, the Tableau CSV files and the index the case study reads

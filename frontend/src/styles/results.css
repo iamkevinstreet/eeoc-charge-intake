@@ -2,18 +2,22 @@
 ########################################################################
 #                   frontend/src/styles/results.css                    #
 ########################################################################
-#  Author:            Kevin Street                                     #
-#  Created on:        2026-10-29                                       #
-#  Last modified on:  2026-10-29                                       #
-#  Purpose:           The evaluation screen: the numbers, the accuracy #
-#                     chart, and the table by case kind.               #
+*/
+/*
+ * Author:            Kevin Street
+ * Created on:        2026-10-29
+ * Last modified on:  2026-10-29
+ *
+ * The evaluation screen: the row of headline numbers, the accuracy by
+ * field chart, and the table by kind of case, which uses the shared
+ * ledger style.
+ */
+
+/*
+########################################################################
+#                          Evaluation screen                           #
 ########################################################################
 */
-
-/* The evaluation screen: the row of headline numbers, the accuracy by
-   field chart, and the table by kind of case, which uses the shared
-   ledger style. */
-
 .ec-results {
   max-width: 64rem;
 }

@@ -2,19 +2,23 @@
 ########################################################################
 #                   frontend/src/styles/document.css                   #
 ########################################################################
-#  Author:            Kevin Street                                     #
-#  Created on:        2026-10-29                                       #
-#  Last modified on:  2026-10-29                                       #
-#  Purpose:           The document pane: tabs, pages, and the marked   #
-#                     quote.                                           #
+*/
+/*
+ * Author:            Kevin Street
+ * Created on:        2026-10-29
+ * Last modified on:  2026-10-29
+ *
+ * The document pane: it stays in view beside the field list, with a tab
+ * for the charge and one for the notice, each page's extracted text,
+ * and the cited quote marked with the highlighter colour. The pane
+ * scrolls on its own, smoothly unless the reader asks for less motion.
+ */
+
+/*
+########################################################################
+#                            Document pane                             #
 ########################################################################
 */
-
-/* The document pane: it stays in view beside the field list, with a tab
-   for the charge and one for the notice, each page's extracted text, and
-   the cited quote marked with the highlighter colour. The pane scrolls on
-   its own, smoothly unless the reader asks for less motion. */
-
 .ec-document {
   position: sticky;
   top: var(--ec-space-4);

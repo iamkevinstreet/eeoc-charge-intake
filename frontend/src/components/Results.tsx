@@ -1,25 +1,43 @@
 // ########################################################################
 // #                 frontend/src/components/Results.tsx                  #
 // ########################################################################
-// #  Author:            Kevin Street                                     #
-// #  Created on:        2026-10-29                                       #
-// #  Last modified on:  2026-10-29                                       #
-// #  Purpose:           The evaluation screen: the latest run's numbers, #
-// #                     accuracy by field, and results by case kind.     #
-// ########################################################################
-/** The evaluation screen: the latest run's numbers, accuracy by field, and results by kind. */
+/**
+ * Author:            Kevin Street
+ * Created on:        2026-10-29
+ * Last modified on:  2026-10-29
+ *
+ * The evaluation screen: which run is shown, its headline numbers, the
+ * accuracy of each field, and the averages by kind of case.
+ */
 
-import { OFFLINE_PROVIDER, SMOKE_COMMAND } from '../config';
+// ########################################################################
+// #                               Imports                                #
+// ########################################################################
+// Local
+import { CONFIG } from '../config';
 import { money, rate, share, tagLabel } from '../format';
+import { required } from '../lib/required';
 import { average, finished, kinds, metric, ofKind } from '../scores';
 import type { RunResult } from '../types';
 import { FieldBars } from './FieldBars';
 
-interface Props {
-  run: RunResult | null;
-  error: string | null;
-}
+// ########################################################################
+// #                           Global constants                           #
+// ########################################################################
+// log.debug('Takes the score for fields left empty that had an answer from the config')
+const ABSTENTIONS = CONFIG.scores.false_abstentions;
+// log.debug('Takes the score for fields filled that had no answer from the config')
+const GUESSES = CONFIG.scores.guesses;
+// log.debug('Takes the provider that means the offline stand-in from the config')
+const OFFLINE_PROVIDER = CONFIG.demo.provider;
+// log.debug('Takes the command for the offline evaluation from the config')
+const SMOKE_COMMAND = CONFIG.ui.smoke_command;
+// log.debug('Takes the class of the quieter notes from the config')
+const META = CONFIG.ui.note_class;
 
+// ########################################################################
+// #                           Local constants                            #
+// ########################################################################
 /** One number in the row of numbers at the top. */
 interface Stat {
   label: string;
@@ -38,15 +56,8 @@ interface Column {
 const ACCURACY = 'field_accuracy';
 // log.debug('Names the label for the share of fields right')
 const ACCURACY_LABEL = 'Field accuracy';
-// log.debug('Names the score for fields left empty that had an answer')
-const ABSTENTIONS = 'false_abstentions';
-// log.debug('Names the score for fields filled that had no answer')
-const GUESSES = 'guesses';
 // log.debug('Sets the characters of a timestamp up to the minute')
 const MINUTE = 16;
-// log.debug('Sets the class of the quieter notes')
-const META = 'ec-meta';
-
 // log.debug('Lists the numbers at the top, each read from the run')
 const STATS: readonly Stat[] = [
   { label: ACCURACY_LABEL, value: (run) => share(metric(run.summary, ACCURACY)) },
@@ -68,7 +79,6 @@ const STATS: readonly Stat[] = [
     note: (run) => `prices as of ${run.prices_as_of}`,
   },
 ];
-
 // log.debug('Lists the averaged columns of the table by kind of case')
 const COLUMNS: readonly Column[] = [
   { label: ACCURACY_LABEL, key: ACCURACY, show: share },
@@ -77,8 +87,34 @@ const COLUMNS: readonly Column[] = [
   { label: 'Guesses', key: GUESSES, show: rate },
 ];
 
+// ########################################################################
+// #                          Evaluation screen                           #
+// ########################################################################
+interface Props {
+  run?: RunResult | null;
+  error?: string | null;
+}
+
+interface StatProps {
+  stat?: Stat | null;
+  run?: RunResult | null;
+}
+
+interface KindProps {
+  run?: RunResult | null;
+}
+
 // log.debug('Defines the line that says which run this is')
-function about(run: RunResult): string {
+/**
+ * Returns the line that says which run this is.
+ *
+ * @param run - The run. Required.
+ * @returns Its name, model and provider, how many cases and failures,
+ *   and when it started, to the minute in UTC.
+ */
+function about(run: RunResult | null = null): string {
+  // log.debug('Takes the run, which the caller must give')
+  run = required({ run });
   // log.debug('Writes the start time to the minute')
   const started = run.started_at.slice(0, MINUTE).replace('T', ' ');
   // log.debug('Returns who ran, how many cases, and when')
@@ -91,7 +127,19 @@ function about(run: RunResult): string {
 }
 
 // log.debug('Defines one number at the top')
-function StatTile({ stat, run }: { stat: Stat; run: RunResult }) {
+/**
+ * Renders one headline number, with its label and any note.
+ *
+ * @param props - The component's props.
+ * @param props.stat - The number to show and how to read it. Required.
+ * @param props.run - The run it is read from. Required.
+ * @returns The number, its label, and its note when it has one.
+ */
+function StatTile({ stat = null, run = null }: StatProps = {}): React.JSX.Element {
+  // log.debug('Takes the number to show, which the caller must give')
+  stat = required({ stat });
+  // log.debug('Takes the run, which the caller must give')
+  run = required({ run });
   // log.debug('Returns the number, its label, and its note when it has one')
   return (
     <div className="ec-stat">
@@ -103,7 +151,16 @@ function StatTile({ stat, run }: { stat: Stat; run: RunResult }) {
 }
 
 // log.debug('Defines the table of averages by kind of case')
-function KindTable({ run }: { run: RunResult }) {
+/**
+ * Renders the table of averages by kind of case.
+ *
+ * @param props - The component's props.
+ * @param props.run - The run whose cases are averaged. Required.
+ * @returns One row per kind of case, with its count and averages.
+ */
+function KindTable({ run = null }: KindProps = {}): React.JSX.Element {
+  // log.debug('Takes the run, which the caller must give')
+  run = required({ run });
   // log.debug('Returns one row per kind of case, with its count and averages')
   return (
     <table className="ec-ledger">
@@ -136,7 +193,16 @@ function KindTable({ run }: { run: RunResult }) {
 }
 
 // log.debug('Defines the evaluation screen')
-export function Results({ run, error }: Props) {
+/**
+ * Renders the evaluation screen: the latest run, or how to make one.
+ *
+ * @param props - The component's props.
+ * @param props.run - The latest run; null until it has loaded.
+ * @param props.error - Why there is no run to show; null when there is
+ *   no problem.
+ * @returns The heading, then the run's numbers, or how to get some.
+ */
+export function Results({ run = null, error = null }: Props = {}): React.JSX.Element {
   // log.debug('Returns the heading, then what there is: no results yet, or the run')
   return (
     <div className="ec-results">

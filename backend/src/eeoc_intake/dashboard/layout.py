@@ -1,63 +1,78 @@
 ########################################################################
 #             backend/src/eeoc_intake/dashboard/layout.py              #
 ########################################################################
-#  Author:            Kevin Street                                     #
-#  Created on:        2026-10-29                                       #
-#  Last modified on:  2026-10-29                                       #
-#  Purpose:           The page's parts: header, run picker, chart      #
-#                     cards and tables, and the ids callbacks use.     #
-########################################################################
-"""The parts of the dashboard page, and the element ids it uses.
+"""
+Author:            Kevin Street
+Created on:        2026-10-29
+Last modified on:  2026-10-29
 
-The page is built once, when the app starts: a header, the run picker,
-the runs' key, the tiles, four chart cards and two tables. The callback
-in app.py fills the key, the tiles, the charts and the wrong-fields
-table for the runs picked.
+Lays out the dashboard's page once, when the app starts: a header, the
+run picker, the runs' key, the tiles, four chart cards and two tables.
+The callback in app.py fills the key, the tiles, the charts and the
+wrong-fields table for the runs picked; the layout and the callback
+take the parts' ids from the config.
 """
 
+########################################################################
+#                               Imports                                #
+########################################################################
+# Standard library
 from __future__ import annotations
 
 from typing import Final
 
+# Third-party
 import pandas as pd
 from dash import dcc, html
 from dash.dash_table.DataTable import DataTable
+from kds.args import required
 from kds.logs import get_logger
 
-from eeoc_intake.dashboard.data import records
-from eeoc_intake.dashboard.theme import (
-    BY_FIELD_TITLE,
-    COST_PLACES,
-    COST_TITLE,
-    HEATMAP_TITLE,
-    LATENCY_TITLE,
-)
-from eeoc_intake.evals.stats import pct_label
+# Local
+from eeoc_intake.config import SETTINGS
+from eeoc_intake.dashboard.views import records
+from eeoc_intake.evals.shares import pct_label
 
-# Module constants
+########################################################################
+#                           Global constants                           #
+########################################################################
 log = get_logger(__name__)
-# log.debug("Names the location, whose first change asks the browser for its scheme")
-URL_ID: Final = "url"
-# log.debug("Names the store that holds the browser's colour scheme")
-SCHEME_ID: Final = "scheme"
-# log.debug("Names the run picker")
-RUNS_ID: Final = "runs"
-# log.debug("Names the runs' key")
-LEGEND_ID: Final = "legend"
-# log.debug("Names the tiles")
-TILES_ID: Final = "tiles"
-# log.debug("Names the accuracy chart by field")
-BY_FIELD_ID: Final = "by-field"
-# log.debug("Names the accuracy chart by field and kind of document")
-HEATMAP_ID: Final = "heatmap"
-# log.debug("Names the time chart")
-LATENCY_ID: Final = "latency"
-# log.debug("Names the cost chart")
-COST_ID: Final = "cost"
+# log.debug("Takes the location's id, whose first change reads the scheme, from the config")
+URL_ID: Final = SETTINGS.dashboard_ids_url
+# log.debug("Takes the id of the store that holds the colour scheme, from the config")
+SCHEME_ID: Final = SETTINGS.dashboard_ids_scheme
+# log.debug("Takes the run picker's id, from the config")
+RUNS_ID: Final = SETTINGS.dashboard_ids_runs
+# log.debug("Takes the id of the runs' key, from the config")
+LEGEND_ID: Final = SETTINGS.dashboard_ids_legend
+# log.debug("Takes the tiles' id, from the config")
+TILES_ID: Final = SETTINGS.dashboard_ids_tiles
+# log.debug("Takes the id of the accuracy chart by field, from the config")
+BY_FIELD_ID: Final = SETTINGS.dashboard_ids_by_field
+# log.debug("Takes the id of the accuracy chart by field and kind, from the config")
+HEATMAP_ID: Final = SETTINGS.dashboard_ids_heatmap
+# log.debug("Takes the time chart's id, from the config")
+LATENCY_ID: Final = SETTINGS.dashboard_ids_latency
+# log.debug("Takes the cost chart's id, from the config")
+COST_ID: Final = SETTINGS.dashboard_ids_cost
+# log.debug("Takes the wrong-fields table's id, from the config")
+WRONG_TABLE_ID: Final = SETTINGS.dashboard_ids_wrong_table
+# log.debug("Takes the title of the accuracy chart by field, from the config")
+BY_FIELD_TITLE: Final = SETTINGS.charts_by_field_title
+# log.debug("Takes the title of the accuracy chart by field and kind, from the config")
+HEATMAP_TITLE: Final = SETTINGS.charts_heatmap_title
+# log.debug("Takes the title of the time chart, from the config")
+LATENCY_TITLE: Final = SETTINGS.charts_latency_title
+# log.debug("Takes the title of the cost chart, from the config")
+COST_TITLE: Final = SETTINGS.charts_cost_title
+# log.debug("Takes the decimals a cost is written with, from the config")
+COST_PLACES: Final = SETTINGS.charts_cost_places
+
+########################################################################
+#                           Local constants                            #
+########################################################################
 # log.debug("Names the runs table")
 RUNS_TABLE_ID: Final = "runs-table"
-# log.debug("Names the wrong-fields table")
-WRONG_TABLE_ID: Final = "wrong-table"
 # log.debug("Sets the style of the paragraphs under a heading")
 LEDE: Final = "lede"
 # log.debug("Sets the word for the runs, above the picker and the runs table")
@@ -121,20 +136,32 @@ WRONG_COLUMNS: Final = (
 )
 
 
+########################################################################
+#                             Page layout                              #
+########################################################################
 # log.debug("Defines the whole page")
 def page_layout(
-    runs_df: pd.DataFrame, options: list[dict[str, str]], default: list[str]
+    runs_df: pd.DataFrame | None = None,
+    options: list[dict[str, str]] | None = None,
+    default: list[str] | None = None,
 ) -> html.Div:
-    """Return the page, its parts in reading order.
+    """Returns the page, its parts in reading order.
 
     Args:
         runs_df: The runs table, shown in full in the runs table.
-        options: The picker's choices, newest run first.
-        default: The runs picked when the page opens.
+            Required.
+        options: The picker's choices, newest run first. Required.
+        default: The runs picked when the page opens. Required.
 
     Returns:
         The page's outermost element.
     """
+    # log.debug("Takes the runs table, which the caller must give")
+    runs_df = required(runs_df=runs_df)
+    # log.debug("Takes the picker's choices, which the caller must give")
+    options = required(options=options)
+    # log.debug("Takes the runs picked at first, which the caller must give")
+    default = required(default=default)
     # log.debug("Returns the page")
     return html.Div(
         className="wrap",
@@ -161,7 +188,11 @@ def page_layout(
 
 # log.debug("Defines the page's header")
 def _header() -> html.Header:
-    """Return the eyebrow, the title and what the page shows."""
+    """Returns the eyebrow, the title and what the page shows.
+
+    Returns:
+        The page's header.
+    """
     # log.debug("Returns the header")
     return html.Header(
         className="head",
@@ -180,8 +211,22 @@ def _header() -> html.Header:
 
 
 # log.debug("Defines the run picker")
-def _picker(options: list[dict[str, str]], default: list[str]) -> html.Div:
-    """Return the run picker and its label."""
+def _picker(
+    options: list[dict[str, str]] | None = None, default: list[str] | None = None
+) -> html.Div:
+    """Returns the run picker and its label.
+
+    Args:
+        options: The picker's choices, newest run first. Required.
+        default: The runs picked when the page opens. Required.
+
+    Returns:
+        The picker with its label.
+    """
+    # log.debug("Takes the picker's choices, which the caller must give")
+    options = required(options=options)
+    # log.debug("Takes the runs picked at first, which the caller must give")
+    default = required(default=default)
     # log.debug("Returns the picker")
     return html.Div(
         className="controls",
@@ -194,7 +239,11 @@ def _picker(options: list[dict[str, str]], default: list[str]) -> html.Div:
 
 # log.debug("Defines the grid of chart cards")
 def _charts() -> html.Div:
-    """Return the four chart cards, the accuracy charts full width."""
+    """Returns the four chart cards, the accuracy charts full width.
+
+    Returns:
+        The grid of chart cards.
+    """
     # log.debug("Returns the cards in reading order")
     return html.Div(
         className="grid",
@@ -208,8 +257,23 @@ def _charts() -> html.Div:
 
 
 # log.debug("Defines one chart card")
-def _card(title: str, graph_id: str, *, wide: bool = False) -> html.Section:
-    """Return a card with its title over an empty chart, no toolbar."""
+def _card(
+    title: str | None = None, graph_id: str | None = None, *, wide: bool = False
+) -> html.Section:
+    """Returns a card with its title over an empty chart, no toolbar.
+
+    Args:
+        title: The chart's title. Required.
+        graph_id: The chart's id, which the callback fills. Required.
+        wide: Whether the card spans the whole grid.
+
+    Returns:
+        The card.
+    """
+    # log.debug("Takes the title, which the caller must give")
+    title = required(title=title)
+    # log.debug("Takes the chart's id, which the caller must give")
+    graph_id = required(graph_id=graph_id)
     # log.debug("Returns the card, spanning the grid when wide")
     return html.Section(
         className="card wide" if wide else "card",
@@ -218,8 +282,17 @@ def _card(title: str, graph_id: str, *, wide: bool = False) -> html.Section:
 
 
 # log.debug("Defines the runs table")
-def _runs_table(runs_df: pd.DataFrame) -> DataTable:
-    """Return every run's summary, its shares written as text."""
+def _runs_table(runs_df: pd.DataFrame | None = None) -> DataTable:
+    """Returns every run's summary, its shares written as text.
+
+    Args:
+        runs_df: The runs table from `frames`. Required.
+
+    Returns:
+        The table of runs, every row shown.
+    """
+    # log.debug("Takes the runs table, which the caller must give")
+    runs_df = required(runs_df=runs_df)
     # log.debug("Writes each share as text, to one decimal")
     shares = {column: runs_df[column].map(lambda v: pct_label(v, 1)) for column in SHARE_COLUMNS}
     # log.debug("Returns the table")
@@ -235,8 +308,25 @@ def _runs_table(runs_df: pd.DataFrame) -> DataTable:
 
 
 # log.debug("Defines one column of the runs table")
-def _column(column: str, name: str, number: DataTable.ColumnsFormat | None) -> DataTable.Columns:
-    """Return a column's id, heading and any number format."""
+def _column(
+    column: str | None = None,
+    name: str | None = None,
+    number: DataTable.ColumnsFormat | None = None,
+) -> DataTable.Columns:
+    """Returns a column's id, heading and any number format.
+
+    Args:
+        column: The column's id in the runs table. Required.
+        name: The column's heading. Required.
+        number: The column's number format; None for text.
+
+    Returns:
+        The column's settings.
+    """
+    # log.debug("Takes the column's id, which the caller must give")
+    column = required(column=column)
+    # log.debug("Takes the heading, which the caller must give")
+    name = required(name=name)
     # log.debug("Returns a plain column when it has no number format")
     if number is None:
         # log.debug("Returns the id and heading")
@@ -247,7 +337,11 @@ def _column(column: str, name: str, number: DataTable.ColumnsFormat | None) -> D
 
 # log.debug("Defines the wrong-fields table")
 def _wrong_table() -> DataTable:
-    """Return the wrong-fields table; the callback fills it."""
+    """Returns the wrong-fields table; the callback fills it.
+
+    Returns:
+        The empty table, fifteen rows to a page.
+    """
     # log.debug("Returns the table, fifteen rows to a page")
     return DataTable(
         id=WRONG_TABLE_ID,

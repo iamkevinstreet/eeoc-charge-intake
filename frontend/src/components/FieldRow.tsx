@@ -1,69 +1,119 @@
 // ########################################################################
 // #                 frontend/src/components/FieldRow.tsx                 #
 // ########################################################################
-// #  Author:            Kevin Street                                     #
-// #  Created on:        2026-10-29                                       #
-// #  Last modified on:  2026-10-29                                       #
-// #  Purpose:           One field of the record: its value or edit form, #
-// #                     the quoted evidence, confidence, decisions.      #
+/**
+ * Author:            Kevin Street
+ * Created on:        2026-10-29
+ * Last modified on:  2026-10-29
+ *
+ * One field of the record: its value or its edit form, the quoted
+ * evidence and the confidence behind it, and the buttons that accept,
+ * edit or reject it.
+ */
+
 // ########################################################################
-/** One field of the record: its value or edit form, the quoted evidence, its confidence, decisions. */
-
-import { LIST_FIELDS, SUMMARY_FIELD, YES_NO_FIELD } from '../config';
-import { ACTIONS, ACTION_LABELS, ACTION_VERBS, classes, fieldLabel, percent } from '../format';
+// #                               Imports                                #
+// ########################################################################
+// Local
+import { CONFIG } from '../config';
+import { classes, fieldLabel, percent } from '../format';
+import { required } from '../lib/required';
 import type { Action, Decision, Sourced, Value } from '../types';
-import { NO, YES, formatValue, isEmpty } from '../values';
+import { formatValue, isEmpty } from '../values';
+import { EditForm } from './EditForm';
 
+// ########################################################################
+// #                           Global constants                           #
+// ########################################################################
+// log.debug('Takes the field that holds a yes or a no from the config')
+const YES_NO_FIELD = CONFIG.record.yes_no_field;
+// log.debug('Takes the field the model paraphrases instead of quoting from the config')
+const SUMMARY_FIELD = CONFIG.record.summary_field;
+// log.debug('Takes the class of the quieter notes from the config')
+const META = CONFIG.ui.note_class;
+
+// ########################################################################
+// #                           Local constants                            #
+// ########################################################################
+// log.debug('Sets the class of a quoted passage')
+const QUOTE = 'ec-quote';
+// log.debug('Lists the decisions, in the order the buttons show them')
+const ACTIONS: readonly Action[] = ['accept', 'edit', 'reject'];
+// log.debug('Lists the button that makes each decision')
+const ACTION_VERBS: Readonly<Record<Action, string>> = {
+  accept: 'Accept',
+  edit: 'Edit',
+  reject: 'Reject',
+};
+// log.debug('Lists the label a field carries once decided')
+const ACTION_LABELS: Readonly<Record<Action, string>> = {
+  accept: 'Accepted',
+  edit: 'Edited',
+  reject: 'Rejected',
+};
+
+// ########################################################################
+// #                              Field row                               #
+// ########################################################################
 interface Props {
-  name: string;
-  sourced: Sourced;
+  name?: string | null;
+  sourced?: Sourced | null;
   /** The field as the model gave it, before verification. */
-  raw: Sourced;
-  decision: Decision | undefined;
+  raw?: Sourced | null;
+  decision?: Decision | null;
   /** Whether verification emptied the field because its quote was not on its page. */
-  removed: boolean;
-  selected: boolean;
+  removed?: boolean;
+  selected?: boolean;
   /** The text of the edit when the field is being edited, else null. */
-  draft: string | null;
-  onSelect: () => void;
-  onAction: (action: Action) => void;
-  onDraft: (text: string) => void;
-  onSave: () => void;
-  onCancel: () => void;
+  draft?: string | null;
+  onSelect?: (() => void) | null;
+  onAction?: ((action: Action) => void) | null;
+  onDraft?: ((text: string) => void) | null;
+  onSave?: (() => void) | null;
+  onCancel?: (() => void) | null;
 }
 
 interface ValueProps {
-  sourced: Sourced;
-  decision: Decision | undefined;
+  sourced?: Sourced | null;
+  decision?: Decision | null;
 }
 
-interface EditProps {
-  name: string;
-  label: string;
-  draft: string;
-  onDraft: (text: string) => void;
-  onSave: () => void;
-  onCancel: () => void;
+interface NameProps {
+  name?: string | null;
+  decision?: Decision | null;
+}
+
+interface ButtonProps {
+  name?: string | null;
+  decision?: Decision | null;
+  onAction?: ((action: Action) => void) | null;
+}
+
+interface ConfidenceProps {
+  value?: number | null;
 }
 
 interface EvidenceProps {
-  name: string;
-  sourced: Sourced;
-  raw: Sourced;
-  removed: boolean;
+  name?: string | null;
+  sourced?: Sourced | null;
+  raw?: Sourced | null;
+  removed?: boolean;
 }
 
-// log.debug('Sets the class of the quieter notes')
-const META = 'ec-meta';
-// log.debug('Sets the class of a quoted passage')
-const QUOTE = 'ec-quote';
-// log.debug('Sets the class of the edit controls')
-const INPUT = 'ec-edit__input';
-// log.debug('Lists the two answers a yes or no field offers')
-const YES_NO: readonly string[] = [YES, NO];
-
 // log.debug('Defines how the value of a field is shown')
-function FieldValue({ sourced, decision }: ValueProps) {
+/**
+ * Renders a field's value: the edited one, else the extracted one.
+ *
+ * @param props - The component's props.
+ * @param props.sourced - The field as extracted. Required.
+ * @param props.decision - The reviewer's decision on the field; null
+ *   before there is one.
+ * @returns The value, struck through when rejected, or why the field is
+ *   empty.
+ */
+function FieldValue({ sourced = null, decision = null }: ValueProps = {}): React.JSX.Element {
+  // log.debug('Takes the field, which the caller must give')
+  sourced = required({ sourced });
   // log.debug('Notes whether the reviewer gave the field a new value')
   const edited = decision?.action === 'edit';
   // log.debug('Notes whether there is no value to show')
@@ -84,58 +134,18 @@ function FieldValue({ sourced, decision }: ValueProps) {
   );
 }
 
-// log.debug('Defines the edit form of a field')
-function EditForm({ name, label, draft, onDraft, onSave, onCancel }: EditProps) {
-  // log.debug('Names the control for people using a screen reader')
-  const control = `New value for ${label}`;
-
-  // log.debug('Defines the submit handler')
-  const submit = (event: React.SubmitEvent<HTMLFormElement>): void => {
-    // log.debug('Stops the page reloading')
-    event.preventDefault();
-    // log.debug('Saves the edit')
-    onSave();
-  };
-
-  // log.debug('Returns a yes or no choice for that field, else a text box, and the buttons')
-  return (
-    <form className="ec-edit" onSubmit={submit}>
-      {name === YES_NO_FIELD ? (
-        <select
-          className={INPUT}
-          value={draft}
-          aria-label={control}
-          autoFocus
-          onChange={(event) => onDraft(event.target.value)}
-        >
-          {YES_NO.map((choice) => (
-            <option key={choice} value={choice}>
-              {choice}
-            </option>
-          ))}
-        </select>
-      ) : (
-        <input
-          className={INPUT}
-          value={draft}
-          aria-label={control}
-          autoFocus
-          placeholder={LIST_FIELDS.includes(name) ? 'Comma separated' : undefined}
-          onChange={(event) => onDraft(event.target.value)}
-        />
-      )}
-      <button className="ec-button ec-button--primary" type="submit">
-        Save
-      </button>
-      <button className="ec-button" type="button" onClick={onCancel}>
-        Cancel
-      </button>
-    </form>
-  );
-}
-
 // log.debug('Defines the note for a value that has no single quote behind it')
-function unquoted(name: string, value: Value): string | null {
+/**
+ * Returns the note for a value that has no single quote behind it.
+ *
+ * @param name - The field's name. Required.
+ * @param value - The field's value; null when it is empty.
+ * @returns Why there is no quote, for a summary or an unmarked box; null
+ *   for any other field.
+ */
+function unquoted(name: string | null = null, value: Value = null): string | null {
+  // log.debug('Takes the name, which the caller must give')
+  name = required({ name });
   // log.debug('Explains a summary, which paraphrases the particulars')
   if (name === SUMMARY_FIELD) {
     // log.debug('Returns the note for a summary')
@@ -151,7 +161,17 @@ function unquoted(name: string, value: Value): string | null {
 }
 
 // log.debug('Defines the confidence the model gave, as a small bar and a percent')
-function Confidence({ value }: { value: number }) {
+/**
+ * Renders the confidence the model reported, as a small bar and a
+ * percent.
+ *
+ * @param props - The component's props.
+ * @param props.value - The confidence, from 0 to 1. Required.
+ * @returns The bar and the number.
+ */
+function Confidence({ value = null }: ConfidenceProps = {}): React.JSX.Element {
+  // log.debug('Takes the confidence, which the caller must give')
+  value = required({ value });
   // log.debug('Turns the confidence into a whole percent')
   const share = percent(value);
   // log.debug('Returns the bar and the number')
@@ -166,7 +186,30 @@ function Confidence({ value }: { value: number }) {
 }
 
 // log.debug('Defines the evidence under a value: the quote and its page, a note, the confidence')
-function Evidence({ name, sourced, raw, removed }: EvidenceProps) {
+/**
+ * Renders the evidence under a value: the quote and its page, a note
+ * when there is no quote, what verification removed, the confidence.
+ *
+ * @param props - The component's props.
+ * @param props.name - The field's name. Required.
+ * @param props.sourced - The field after verification. Required.
+ * @param props.raw - The field as the model gave it. Required.
+ * @param props.removed - Whether verification emptied the field because
+ *   its quote was not on its page.
+ * @returns Whatever evidence the field has.
+ */
+function Evidence({
+  name = null,
+  sourced = null,
+  raw = null,
+  removed = false,
+}: EvidenceProps = {}): React.JSX.Element {
+  // log.debug('Takes the field name, which the caller must give')
+  name = required({ name });
+  // log.debug('Takes the field, which the caller must give')
+  sourced = required({ sourced });
+  // log.debug('Takes the field as the model gave it, which the caller must give')
+  raw = required({ raw });
   // log.debug('Notes whether the field has a value')
   const filled = !isEmpty(sourced.value);
   // log.debug('Finds the note for a value with no quote behind it')
@@ -193,23 +236,124 @@ function Evidence({ name, sourced, raw, removed }: EvidenceProps) {
   );
 }
 
+// log.debug('Defines the name of a field, with the decision made on it')
+/**
+ * Renders the name people see for a field, and a chip naming the
+ * decision once there is one.
+ *
+ * @param props - The component's props.
+ * @param props.name - The field's name. Required.
+ * @param props.decision - The reviewer's decision; null before there is
+ *   one.
+ * @returns The name and the chip.
+ */
+function FieldName({ name = null, decision = null }: NameProps = {}): React.JSX.Element {
+  // log.debug('Takes the field name, which the caller must give')
+  name = required({ name });
+  // log.debug('Returns the label, with the decision once there is one')
+  return (
+    <div className="ec-field__name">
+      {fieldLabel(name)}
+      {decision !== null && (
+        <span className={`ec-chip ec-chip--${decision.action}`}>
+          {ACTION_LABELS[decision.action]}
+        </span>
+      )}
+    </div>
+  );
+}
+
+// log.debug('Defines the buttons that decide a field')
+/**
+ * Renders the buttons that accept, edit or reject a field, the one
+ * already chosen pressed.
+ *
+ * @param props - The component's props.
+ * @param props.name - The field's name. Required.
+ * @param props.decision - The reviewer's decision; null before there is
+ *   one.
+ * @param props.onAction - Makes a decision on the field. Required.
+ * @returns One button per decision, as a labelled group.
+ */
+function DecisionButtons({
+  name = null,
+  decision = null,
+  onAction = null,
+}: ButtonProps = {}): React.JSX.Element {
+  // log.debug('Takes the field name, which the caller must give')
+  name = required({ name });
+  // log.debug('Takes the decision handler, which the caller must give')
+  onAction = required({ onAction });
+  // log.debug('Returns one button per decision, the chosen one pressed')
+  return (
+    <div className="ec-field__actions" role="group" aria-label={`Decide ${fieldLabel(name)}`}>
+      {ACTIONS.map((action) => (
+        <button
+          key={action}
+          type="button"
+          className="ec-button ec-button--small"
+          aria-pressed={decision?.action === action}
+          onClick={() => onAction(action)}
+        >
+          {ACTION_VERBS[action]}
+        </button>
+      ))}
+    </div>
+  );
+}
+
 // log.debug('Defines one row of the field list')
+/**
+ * Renders one row of the field list: the field's name and decision, its
+ * value or edit form, its evidence, and the decision buttons.
+ *
+ * @param props - The component's props.
+ * @param props.name - The field's name. Required.
+ * @param props.sourced - The field after verification. Required.
+ * @param props.raw - The field as the model gave it. Required.
+ * @param props.decision - The reviewer's decision; null before there is
+ *   one.
+ * @param props.removed - Whether verification emptied the field.
+ * @param props.selected - Whether the field is the one selected.
+ * @param props.draft - The text of the edit while the field is being
+ *   edited; null otherwise.
+ * @param props.onSelect - Selects the field. Required.
+ * @param props.onAction - Makes a decision on the field. Required.
+ * @param props.onDraft - Takes the edit's text as it changes. Required.
+ * @param props.onSave - Saves the edit. Required.
+ * @param props.onCancel - Closes the edit form. Required.
+ * @returns The row.
+ */
 export function FieldRow({
-  name,
-  sourced,
-  raw,
-  decision,
-  removed,
-  selected,
-  draft,
-  onSelect,
-  onAction,
-  onDraft,
-  onSave,
-  onCancel,
-}: Props) {
-  // log.debug('Takes the name people see')
-  const label = fieldLabel(name);
+  name = null,
+  sourced = null,
+  raw = null,
+  decision = null,
+  removed = false,
+  selected = false,
+  draft = null,
+  onSelect = null,
+  onAction = null,
+  onDraft = null,
+  onSave = null,
+  onCancel = null,
+}: Props = {}): React.JSX.Element {
+  // log.debug('Takes the field name, which the caller must give')
+  name = required({ name });
+  // log.debug('Takes the field, which the caller must give')
+  sourced = required({ sourced });
+  // log.debug('Takes the field as the model gave it, which the caller must give')
+  raw = required({ raw });
+  // log.debug('Takes the select handler, which the caller must give')
+  onSelect = required({ onSelect });
+  // log.debug('Takes the decision handler, which the caller must give')
+  onAction = required({ onAction });
+  // log.debug('Takes the draft handler, which the caller must give')
+  onDraft = required({ onDraft });
+  // log.debug('Takes the save handler, which the caller must give')
+  onSave = required({ onSave });
+  // log.debug('Takes the cancel handler, which the caller must give')
+  onCancel = required({ onCancel });
   // log.debug('Returns the row: name and decision, value or edit form, evidence, buttons')
   return (
     <li
@@ -221,20 +365,12 @@ export function FieldRow({
       onClick={onSelect}
     >
       <div className="ec-field__main">
-        <div className="ec-field__name">
-          {label}
-          {decision !== undefined && (
-            <span className={`ec-chip ec-chip--${decision.action}`}>
-              {ACTION_LABELS[decision.action]}
-            </span>
-          )}
-        </div>
+        <FieldName name={name} decision={decision} />
         {draft === null ? (
           <FieldValue sourced={sourced} decision={decision} />
         ) : (
           <EditForm
             name={name}
-            label={label}
             draft={draft}
             onDraft={onDraft}
             onSave={onSave}
@@ -243,19 +379,7 @@ export function FieldRow({
         )}
         <Evidence name={name} sourced={sourced} raw={raw} removed={removed} />
       </div>
-      <div className="ec-field__actions" role="group" aria-label={`Decide ${label}`}>
-        {ACTIONS.map((action) => (
-          <button
-            key={action}
-            type="button"
-            className="ec-button ec-button--small"
-            aria-pressed={decision?.action === action}
-            onClick={() => onAction(action)}
-          >
-            {ACTION_VERBS[action]}
-          </button>
-        ))}
-      </div>
+      <DecisionButtons name={name} decision={decision} onAction={onAction} />
     </li>
   );
 }

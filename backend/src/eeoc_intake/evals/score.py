@@ -1,14 +1,13 @@
 ########################################################################
 #                backend/src/eeoc_intake/evals/score.py                #
 ########################################################################
-#  Author:            Kevin Street                                     #
-#  Created on:        2026-10-29                                       #
-#  Last modified on:  2026-10-29                                       #
-#  Purpose:           Scores one extraction against the document's     #
-#                     known values: fields right, guesses,             #
-#                     abstentions.                                     #
-########################################################################
-"""The scores of one extraction.
+"""
+Author:            Kevin Street
+Created on:        2026-10-29
+Last modified on:  2026-10-29
+
+Scores one extraction against the document's known values: fields right,
+guesses, abstentions.
 
 - field_accuracy: the share of the ten scored fields whose final value
   equals the known one
@@ -23,36 +22,65 @@
   matches the documents that lacked a value
 """
 
+########################################################################
+#                               Imports                                #
+########################################################################
+# Standard library
 from __future__ import annotations
 
 from typing import Any, Final
 
+# Third-party
+from kds.args import required
 from kds.evals.case import EvalCase
 from kds.evals.metrics import exact_match, null_metrics
 from kds.logs import get_logger
 
+# Local
+from eeoc_intake.config import SETTINGS
 from eeoc_intake.core.extract import Extraction
-from eeoc_intake.core.schema import SCORED_FIELDS, Value
+from eeoc_intake.core.schema import SCORED_FIELDS, is_empty
 
-# Module constants
+########################################################################
+#                           Global constants                           #
+########################################################################
 log = get_logger(__name__)
+# log.debug("Takes the name of the count of fields wrongly left empty, from the config")
+FALSE_ABSTENTIONS: Final = SETTINGS.scores_false_abstentions
+# log.debug("Takes the name of the count of fields filled with nothing to find, from the config")
+GUESSES: Final = SETTINGS.scores_guesses
+# log.debug("Takes what comes before a field's name in its own score, from the config")
+FIELD_SCORE: Final = SETTINGS.scores_field_prefix
+
+########################################################################
+#                           Local constants                            #
+########################################################################
 # log.debug("Sets the decimals a share is rounded to in the results file")
 PLACES: Final = 4
-# log.debug("Names the count of fields wrongly left empty")
-FALSE_ABSTENTIONS: Final = "false_abstentions"
-# log.debug("Names the count of fields filled with no value to find")
-GUESSES: Final = "guesses"
-# log.debug("Lists the values that mean a field is empty")
-EMPTY: Final[tuple[Value, ...]] = (None, "", [])
 
 
+########################################################################
+#                               Scoring                                #
+########################################################################
 # log.debug("Defines the scores of one extraction")
-def score(case: EvalCase, ex: Extraction) -> dict[str, Any]:
-    """Return the case's scores, then its values for inspection.
+def score(case: EvalCase | None = None, ex: Extraction | None = None) -> dict[str, Any]:
+    """Returns the case's scores, then its values for inspection.
 
     The summary averages the numeric scores only; the values, the known
     answers and the emptied fields are kept for the results file.
+
+    Args:
+        case: The generated case, with its known answers. Required.
+        ex: The extraction to score. Required.
+
+    Returns:
+        The headline scores, a 1 or 0 for each scored field, then the
+        values, the known answers and the emptied fields.
     """
+    # log.debug("Takes the case, which the caller must give")
+    case = required(case=case)
+    # log.debug("Takes the extraction, which the caller must give")
+    ex = required(ex=ex)
     # log.debug("Reads the final values, after verification")
     values = ex.record.values()
     # log.debug("Reads the known values of the scored fields")
@@ -62,7 +90,7 @@ def score(case: EvalCase, ex: Extraction) -> dict[str, Any]:
     # log.debug("Counts guesses and wrong abstentions")
     nulls = null_metrics(values, gold, SCORED_FIELDS)
     # log.debug("Counts the fields the model filled before verification")
-    raw_filled = sum(1 for f in SCORED_FIELDS if ex.raw.sourced(f).value not in EMPTY)
+    raw_filled = sum(1 for f in SCORED_FIELDS if not is_empty(ex.raw.sourced(f).value))
     # log.debug("Keeps the scored fields verification emptied")
     removed = [f for f in ex.removed if f in SCORED_FIELDS]
     # log.debug("Builds the headline scores")
@@ -78,7 +106,7 @@ def score(case: EvalCase, ex: Extraction) -> dict[str, Any]:
         "model_latency_ms": ex.latency_ms,
     }
     # log.debug("Adds a right-or-wrong score for each field")
-    scores.update({f"f_{f}": int(per_field[f]) for f in SCORED_FIELDS})
+    scores.update({f"{FIELD_SCORE}{f}": int(per_field[f]) for f in SCORED_FIELDS})
     # log.debug("Keeps the values, answers and emptied fields for inspection")
     scores.update({"values": values, "gold": gold, "removed": removed})
     # log.debug("Returns the scores")
@@ -86,10 +114,17 @@ def score(case: EvalCase, ex: Extraction) -> dict[str, Any]:
 
 
 # log.debug("Defines when an extracted value equals the known one")
-def same(a: object, b: object) -> bool:
-    """Return exact equality after normalising case and spacing.
+def same(a: object = None, b: object = None) -> bool:
+    """Returns exact equality after normalising case and spacing.
 
     A one-item list and its item count as the same value.
+
+    Args:
+        a: The extracted value; None for an empty field.
+        b: The known value; None when the document has none.
+
+    Returns:
+        True when the two match, case and spacing aside.
     """
     # log.debug("Unwraps a one-item list compared with a single value")
     if isinstance(a, list) and len(a) == 1 and not isinstance(b, list):

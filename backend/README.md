@@ -21,15 +21,17 @@ package and a file left out of it fails in the tests. Paths below are inside tha
 
 | Path | What it does |
 | --- | --- |
-| `config.py` | Every setting, typed and validated, read from `config/settings.toml` and `.env` |
+| `config.py` | Every setting, typed and validated, read from `config/config.toml` and `config/.env`, and loaded once as `SETTINGS` |
 | `core/schema.py` | The record: eleven fields, each a value with its page, quote, confidence and reason |
 | `core/extract.py` | The prompt, one structured model call, and the quote check |
 | `core/offline.py` | The offline stand-in, which answers from each generated document's known values |
-| `core/generate.py` | The made-up charges and notices, with their answers, from a seed |
-| `api/` | FastAPI under `/api/v1`: the app factory and its edge checks, the routes, the reviews, the limit |
+| `core/charges.py` | The made-up charges and notices: each drawn from a seed and written as two PDFs |
+| `core/generate.py` | The generated set: each document's known answers, and `cases.jsonl` |
+| `api/` | FastAPI under `/api/v1`: the app factory and its edge checks, the routes, the upload checks and extraction, the reviews, the limit |
 | `evals/run.py` | The evaluation: extracts every generated document and writes the results |
 | `evals/score.py` | One extraction's scores: fields right, unsupported values, guesses, wrong blanks |
-| `evals/stats.py` | When a change between two runs is bigger than noise, and how a share is written |
+| `evals/stats.py` | When a change between two runs is bigger than noise |
+| `evals/shares.py` | How a number and a share are written, by the same rules as the case study |
 | `evals/export.py`, `evals/index.py` | The Tableau CSV files and the index the case study reads |
 | `dashboard/` | The Dash dashboard and the Plotly figures the case study draws |
 
@@ -51,8 +53,13 @@ Run them as `uv run --project backend --no-sync python -m ...`, or through the M
 
 ## Conventions
 
-- Every file carries the header box and a logger line above every statement; turn the lines on
-  with `kds-standards trace on backend` and off before committing.
+- Every file opens with its header box and doc block, is cut into sections under banners, and
+  carries a logger line above every statement; turn the lines on with
+  `kds-standards trace on backend` and off before committing.
+- Every parameter has a type and a default; a function that cannot work without a value takes it
+  with `required()` from `kds-args`, and every function has a doc block.
+- A value two modules share lives in `config/config.toml`; each module binds the ones it uses from
+  `SETTINGS` at its top.
 - Tests run in an empty temporary folder, offline, with fresh settings (`tests/conftest.py`);
   shared helpers are in `tests/support.py`.
 - Our own packages (`kds-*`) install from the utils repository at one commit, pinned in

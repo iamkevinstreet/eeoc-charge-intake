@@ -1,49 +1,65 @@
 ########################################################################
 #           backend/src/eeoc_intake/dashboard/run_charts.py            #
 ########################################################################
-#  Author:            Kevin Street                                     #
-#  Created on:        2026-10-29                                       #
-#  Last modified on:  2026-10-29                                       #
-#  Purpose:           Draws the two charts with a row per run: seconds #
-#                     per document and cost per document.              #
-########################################################################
-"""The charts with a row per run: seconds and cost per document."""
+"""
+Author:            Kevin Street
+Created on:        2026-10-29
+Last modified on:  2026-10-29
 
+Draws the two charts with a row per run: seconds per document, each
+document a dot over its run's box, and cost per document, a bar per
+run.
+"""
+
+########################################################################
+#                               Imports                                #
+########################################################################
+# Standard library
 from __future__ import annotations
 
 from collections.abc import Sequence
 from typing import Final
 
+# Third-party
 import pandas as pd
 import plotly.graph_objects as go
+from kds.args import missing, required
 from kds.logs import get_logger
 
-from eeoc_intake.dashboard.data import (
-    CASE_ID,
-    COST_PER_CASE,
-    LATENCY_MS,
-    RUN_ID,
-    long_labels,
-    present,
-)
-from eeoc_intake.dashboard.theme import (
-    CLEAR,
-    FONT_SIZE,
-    LEFT,
-    LIGHT,
-    MS_PER_SECOND,
-    THEMES,
-    TICK_SIZE,
-    Theme,
-    dollars,
-    hover,
-    shared_layout,
-    top_down,
-)
-from eeoc_intake.evals.stats import fixed
+# Local
+from eeoc_intake.config import SETTINGS
+from eeoc_intake.dashboard.theme import THEMES, Theme, dollars, hover, shared_layout, top_down
+from eeoc_intake.dashboard.views import long_labels, present
+from eeoc_intake.evals.shares import fixed
 
-# Module constants
+########################################################################
+#                           Global constants                           #
+########################################################################
 log = get_logger(__name__)
+# log.debug("Takes the run id column, from the config")
+RUN_ID: Final = SETTINGS.columns_run_id
+# log.debug("Takes the document id column, from the config")
+CASE_ID: Final = SETTINGS.columns_case_id
+# log.debug("Takes the column of each document's time, from the config")
+LATENCY_MS: Final = SETTINGS.columns_latency_ms
+# log.debug("Takes the runs table's cost per document column, from the config")
+COST_PER_CASE: Final = SETTINGS.columns_cost_per_case
+# log.debug("Takes the milliseconds in a second, from the config")
+MS_PER_SECOND: Final = SETTINGS.units_ms_per_second
+# log.debug("Takes the light scheme's name, from the config")
+LIGHT: Final = SETTINGS.charts_light_scheme
+# log.debug("Takes the size of chart text, from the config")
+FONT_SIZE: Final = SETTINGS.charts_font_size
+# log.debug("Takes the size of value-axis ticks and small notes, from the config")
+TICK_SIZE: Final = SETTINGS.charts_tick_size
+# log.debug("Takes the colour that lets the card show through, from the config")
+CLEAR: Final = SETTINGS.charts_clear
+# log.debug("Takes the edge notes line up on, from the config")
+LEFT: Final = SETTINGS.charts_align
+
+########################################################################
+#                           Local constants                            #
+########################################################################
 # log.debug("Sets the height of a chart with a row per run, above its rows")
 RUNS_BASE: Final = 64
 # log.debug("Sets where the middle half of a run's times starts")
@@ -62,28 +78,37 @@ JITTER: Final = 0.6
 WHISKER_WIDTH: Final = 0.6
 
 
+########################################################################
+#                         Time and cost charts                         #
+########################################################################
 # log.debug("Defines the time chart")
 def fig_latency(
-    cases: pd.DataFrame,
-    run_ids: str | Sequence[str],
+    cases: pd.DataFrame | None = None,
+    run_ids: str | Sequence[str] | None = None,
     theme: str = LIGHT,
     labels: dict[str, str] | None = None,
 ) -> go.Figure:
-    """Return each document's time as a dot over its run's box.
+    """Returns each document's time as a dot over its run's box.
 
     The box spans the middle half of the times, and each row names its
     run's typical (median) time. Documents past the end of the axis are
     counted beside their row instead.
 
     Args:
-        cases: The documents table from `frames`.
-        run_ids: Up to three runs, the run in focus first.
+        cases: The documents table from `frames`. Required.
+        run_ids: Up to three runs, the run in focus first. Required.
         theme: The colour scheme, light or dark.
         labels: Each run's name; long labels when None.
 
     Returns:
         The chart.
     """
+    # log.debug("Takes the documents table, which the caller must give")
+    cases = required(cases=cases)
+    # log.debug("Stops when the caller left out the run ids")
+    if run_ids is None:
+        # log.debug("Raises the missing-argument error")
+        raise missing(run_ids=run_ids)
     # log.debug("Takes the scheme's colours")
     colours = THEMES[theme]
     # log.debug("Keeps the runs the table holds, at most three")
@@ -126,24 +151,30 @@ def fig_latency(
 
 # log.debug("Defines the cost chart")
 def fig_cost(
-    runs_df: pd.DataFrame,
-    run_ids: str | Sequence[str],
+    runs_df: pd.DataFrame | None = None,
+    run_ids: str | Sequence[str] | None = None,
     theme: str = LIGHT,
     labels: dict[str, str] | None = None,
 ) -> go.Figure:
-    """Return the cost per document at list prices, a bar per run.
+    """Returns the cost per document at list prices, a bar per run.
 
     Each bar carries its cost at its end.
 
     Args:
-        runs_df: The runs table from `frames`.
-        run_ids: Up to three runs, the run in focus first.
+        runs_df: The runs table from `frames`. Required.
+        run_ids: Up to three runs, the run in focus first. Required.
         theme: The colour scheme, light or dark.
         labels: Each run's name; long labels when None.
 
     Returns:
         The chart.
     """
+    # log.debug("Takes the runs table, which the caller must give")
+    runs_df = required(runs_df=runs_df)
+    # log.debug("Stops when the caller left out the run ids")
+    if run_ids is None:
+        # log.debug("Raises the missing-argument error")
+        raise missing(run_ids=run_ids)
     # log.debug("Takes the scheme's colours")
     colours = THEMES[theme]
     # log.debug("Keeps the runs the table holds, at most three")
@@ -173,15 +204,23 @@ def fig_cost(
 
 
 # log.debug("Defines the fit of the time axis")
-def _time_axis(secs: list[pd.Series[float]]) -> list[float]:
-    """Return the time axis's range, fitted to where documents fall.
+def _time_axis(secs: list[pd.Series[float]] | None = None) -> list[float]:
+    """Returns the time axis's range, fitted to where documents fall.
 
     Times have a long right tail, so the axis stops at the far-out fence
     (the upper quartile plus three times the spread of the middle half)
     of the most spread-out run, and documents past it are noted beside
     their row rather than stretched across the chart. It never starts
     below zero.
+
+    Args:
+        secs: Each run's times, in seconds. Required.
+
+    Returns:
+        The axis's start and end, in seconds.
     """
+    # log.debug("Takes the times, which the caller must give")
+    secs = required(secs=secs)
     # log.debug("Keeps the runs with any documents")
     shown = [s for s in secs if len(s)]
     # log.debug("Finds the fastest document of all")
@@ -199,8 +238,17 @@ def _time_axis(secs: list[pd.Series[float]]) -> list[float]:
 
 
 # log.debug("Defines a run's far-out fence")
-def _fence(secs: pd.Series[float]) -> float:
-    """Return the upper quartile plus three middle-half spreads."""
+def _fence(secs: pd.Series[float] | None = None) -> float:
+    """Returns the upper quartile plus three middle-half spreads.
+
+    Args:
+        secs: One run's times, in seconds. Required.
+
+    Returns:
+        The far-out fence, in seconds.
+    """
+    # log.debug("Takes the times, which the caller must give")
+    secs = required(secs=secs)
     # log.debug("Reads the upper quartile")
     upper = secs.quantile(UPPER_QUARTILE)
     # log.debug("Returns the fence")
@@ -209,33 +257,48 @@ def _fence(secs: pd.Series[float]) -> float:
 
 # log.debug("Defines one run's row of the time chart")
 def _time_row(
-    fig: go.Figure,
-    rows: pd.DataFrame,
-    secs: pd.Series[float],
-    edge: float,
+    fig: go.Figure | None = None,
+    rows: pd.DataFrame | None = None,
+    secs: pd.Series[float] | None = None,
+    edge: float | None = None,
     *,
-    index: int,
-    label: str,
-    colours: Theme,
+    index: int | None = None,
+    label: str | None = None,
+    colours: Theme | None = None,
 ) -> str:
-    """Draw one run's dots and box, noting documents past the axis.
+    """Draws one run's dots and box, noting documents past the axis.
 
     The box and its quartiles come from every document; dots past the
     axis are drawn clear rather than cut in half at its edge, since the
     note beside the row counts them.
 
     Args:
-        fig: The chart to draw on.
-        rows: The run's rows of the documents table.
-        secs: The run's times in seconds.
-        edge: Where the time axis ends.
+        fig: The chart to draw on. Required.
+        rows: The run's rows of the documents table. Required.
+        secs: The run's times in seconds. Required.
+        edge: Where the time axis ends. Required.
         index: The run's place among those picked; 0 is in focus.
-        label: The run's name.
-        colours: The scheme to draw in.
+            Required.
+        label: The run's name. Required.
+        colours: The scheme to draw in. Required.
 
     Returns:
         The row's name: the run and its typical time.
     """
+    # log.debug("Takes the figure, which the caller must give")
+    fig = required(fig=fig)
+    # log.debug("Takes the rows, which the caller must give")
+    rows = required(rows=rows)
+    # log.debug("Takes the times, which the caller must give")
+    secs = required(secs=secs)
+    # log.debug("Takes the axis's end, which the caller must give")
+    edge = required(edge=edge)
+    # log.debug("Takes the run's place, which the caller must give")
+    index = required(index=index)
+    # log.debug("Takes the label, which the caller must give")
+    label = required(label=label)
+    # log.debug("Takes the colours, which the caller must give")
+    colours = required(colours=colours)
     # log.debug("Names the row with the run and its median time")
     row = f"{label}<br><b>{fixed(secs.median(), 1)} s</b> typical"
     # log.debug("Finds the documents slower than the axis shows")
@@ -253,11 +316,28 @@ def _time_row(
 
 
 # log.debug("Defines the note of documents slower than the axis shows")
-def _slower_note(past: pd.Series[float], row: str, colours: Theme) -> go.layout.Annotation:
-    """Return the note of how many are slower, and the slowest time.
+def _slower_note(
+    past: pd.Series[float] | None = None, row: str | None = None, colours: Theme | None = None
+) -> go.layout.Annotation:
+    """Returns the note of how many are slower, and the slowest time.
 
     It sits in the margin, so it never covers the dots or the axis.
+
+    Args:
+        past: The times past the end of the axis, in seconds.
+            Required.
+        row: The row's name, which the note sits beside. Required.
+        colours: The scheme to draw in. Required.
+
+    Returns:
+        The note.
     """
+    # log.debug("Takes the times past the axis, which the caller must give")
+    past = required(past=past)
+    # log.debug("Takes the row, which the caller must give")
+    row = required(row=row)
+    # log.debug("Takes the colours, which the caller must give")
+    colours = required(colours=colours)
     # log.debug("Returns the note, anchored at its left edge just past the plot")
     return go.layout.Annotation(
         x=1,
@@ -276,27 +356,43 @@ def _slower_note(past: pd.Series[float], row: str, colours: Theme) -> go.layout.
 
 # log.debug("Defines one run's dots and box")
 def _time_box(
-    rows: pd.DataFrame,
-    secs: pd.Series[float],
-    row: str,
-    inside: list[int] | None,
+    rows: pd.DataFrame | None = None,
+    secs: pd.Series[float] | None = None,
+    row: str | None = None,
+    inside: list[int] | None = None,
     *,
-    index: int,
-    label: str,
-    colours: Theme,
+    index: int | None = None,
+    label: str | None = None,
+    colours: Theme | None = None,
 ) -> go.Box:
-    """Return a run's times: every document as a dot, over the box.
+    """Returns a run's times: every document as a dot, over the box.
 
     Args:
-        rows: The run's rows of the documents table.
-        secs: The run's times in seconds.
-        row: The row's name.
+        rows: The run's rows of the documents table. Required.
+        secs: The run's times in seconds. Required.
+        row: The row's name. Required.
         inside: The dots to draw when some are past the axis; all when
             None.
         index: The run's place among those picked; 0 is in focus.
-        label: The run's name for the hover.
-        colours: The scheme to draw in.
+            Required.
+        label: The run's name for the hover. Required.
+        colours: The scheme to draw in. Required.
+
+    Returns:
+        The run's box, with a dot per document.
     """
+    # log.debug("Takes the rows, which the caller must give")
+    rows = required(rows=rows)
+    # log.debug("Takes the times, which the caller must give")
+    secs = required(secs=secs)
+    # log.debug("Takes the row's name, which the caller must give")
+    row = required(row=row)
+    # log.debug("Takes the run's place, which the caller must give")
+    index = required(index=index)
+    # log.debug("Takes the label, which the caller must give")
+    label = required(label=label)
+    # log.debug("Takes the colours, which the caller must give")
+    colours = required(colours=colours)
     # log.debug("Returns the box, its dots spread across the row")
     return go.Box(
         x=secs,
@@ -325,8 +421,33 @@ def _time_box(
 
 
 # log.debug("Defines one run's cost bar")
-def _cost_bar(cost: float, *, index: int, label: str, colours: Theme) -> go.Bar:
-    """Return a run's bar, with its cost written at its end."""
+def _cost_bar(
+    cost: float | None = None,
+    *,
+    index: int | None = None,
+    label: str | None = None,
+    colours: Theme | None = None,
+) -> go.Bar:
+    """Returns a run's bar, with its cost written at its end.
+
+    Args:
+        cost: The run's cost per document, in dollars. Required.
+        index: The run's place among those picked; 0 is in focus.
+            Required.
+        label: The run's name. Required.
+        colours: The scheme to draw in. Required.
+
+    Returns:
+        The bar, with its cost written at its end.
+    """
+    # log.debug("Takes the cost, which the caller must give")
+    cost = required(cost=cost)
+    # log.debug("Takes the run's place, which the caller must give")
+    index = required(index=index)
+    # log.debug("Takes the label, which the caller must give")
+    label = required(label=label)
+    # log.debug("Takes the colours, which the caller must give")
+    colours = required(colours=colours)
     # log.debug("Returns the bar")
     return go.Bar(
         x=[cost],

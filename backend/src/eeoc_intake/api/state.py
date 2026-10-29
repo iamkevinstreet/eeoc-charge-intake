@@ -1,14 +1,20 @@
 ########################################################################
 #                 backend/src/eeoc_intake/api/state.py                 #
 ########################################################################
-#  Author:            Kevin Street                                     #
-#  Created on:        2026-10-29                                       #
-#  Last modified on:  2026-10-29                                       #
-#  Purpose:           The services every route shares, built once when #
-#                     the app starts: samples, model, reviews, limits. #
-########################################################################
-"""The services the routes share, built once when the app starts."""
+"""
+Author:            Kevin Street
+Created on:        2026-10-29
+Last modified on:  2026-10-29
 
+Builds the services every route shares, once when the app starts: the
+generated samples, the model, the reviews in progress and the
+per-client limit on extractions.
+"""
+
+########################################################################
+#                               Imports                                #
+########################################################################
+# Standard library
 from __future__ import annotations
 
 import threading
@@ -16,30 +22,45 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Final, cast
 
+# Third-party
 from fastapi import Request
+from kds.args import required
 from kds.evals.case import EvalCase, load_cases
 from kds.llm import ModelAdapter
 from kds.logs import get_logger
 
+# Local
 from eeoc_intake.api.limits import RateLimiter
 from eeoc_intake.api.reviews import ReviewStore
-from eeoc_intake.config import AppSettings
-from eeoc_intake.core.generate import CASES_FILE
-from eeoc_intake.core.offline import FAKE, adapter_for
+from eeoc_intake.config import SETTINGS, AppSettings
+from eeoc_intake.core.offline import adapter_for
 
-# Module constants
+########################################################################
+#                           Global constants                           #
+########################################################################
 log = get_logger(__name__)
-# log.debug("Sets the prefix of every route, which carries the API's version")
-PREFIX: Final = "/api/v1"
+# log.debug("Takes the name of the evaluation set's file, from the config")
+CASES_FILE: Final = SETTINGS.samples_cases
+# log.debug("Takes the provider that means demo mode, from the config")
+FAKE: Final = SETTINGS.demo_provider
 
 
+########################################################################
+#                           Shared services                            #
+########################################################################
 # log.debug("Defines the generated samples, read again when the file changes")
 class Samples:
     """The generated samples; `make samples` needs no restart."""
 
     # log.debug("Defines the constructor")
-    def __init__(self, path: Path) -> None:
-        """Read the cases when first used and whenever they change."""
+    def __init__(self, path: Path | None = None) -> None:
+        """Reads the cases when first used and whenever they change.
+
+        Args:
+            path: The cases file in the samples folder. Required.
+        """
+        # log.debug("Takes the path, which the caller must give")
+        path = required(path=path)
         # log.debug("Keeps the cases file")
         self.path = path
         # log.debug("Starts with no file seen")
@@ -51,7 +72,11 @@ class Samples:
 
     # log.debug("Defines the current samples")
     def all(self) -> tuple[EvalCase, ...]:
-        """Return the cases, re-read if the file changed or appeared."""
+        """Returns the cases, re-read if the file changed or appeared.
+
+        Returns:
+            The cases in file order, or none before the file exists.
+        """
         # log.debug("Reads the file's change time, or None before it exists")
         stamp = self.path.stat().st_mtime if self.path.exists() else None
         # log.debug("Re-reads under the lock when the file changed")
@@ -66,8 +91,17 @@ class Samples:
             return self._cases
 
     # log.debug("Defines finding a sample by id")
-    def get(self, sample_id: str) -> EvalCase | None:
-        """Return the sample with this id, or None."""
+    def get(self, sample_id: str | None = None) -> EvalCase | None:
+        """Returns the sample with this id, or None.
+
+        Args:
+            sample_id: The sample's id, such as charge-000. Required.
+
+        Returns:
+            The sample's case, or None when no sample has the id.
+        """
+        # log.debug("Takes the sample id, which the caller must give")
+        sample_id = required(sample_id=sample_id)
         # log.debug("Returns the first sample with the id, or None")
         return next((s for s in self.all() if s.id == sample_id), None)
 
@@ -100,13 +134,21 @@ class Services:
     # log.debug("Defines demo mode")
     @property
     def demo(self) -> bool:
-        """True when the offline stand-in answers, not a model."""
+        """Returns whether the offline stand-in answers, not a model.
+
+        Returns:
+            True in demo mode.
+        """
         # log.debug("Returns whether the provider is the stand-in")
         return self.settings.llm_provider == FAKE
 
     # log.debug("Defines the model an extraction uses")
     def model(self) -> ModelAdapter:
-        """Return the adapter, or a stand-in that knows every sample."""
+        """Returns the adapter, or a stand-in that knows every sample.
+
+        Returns:
+            The model adapter one extraction calls.
+        """
         # log.debug("Returns the shared adapter when there is one")
         if self.adapter is not None:
             # log.debug("Returns it")
@@ -116,12 +158,24 @@ class Services:
 
 
 # log.debug("Defines building the services")
-def build_services(settings: AppSettings, adapter: ModelAdapter | None = None) -> Services:
-    """Build the adapter, the samples, the store and the limiter.
+def build_services(
+    settings: AppSettings | None = None, adapter: ModelAdapter | None = None
+) -> Services:
+    """Builds the adapter, the samples, the store and the limiter.
 
     Tests pass an adapter; the service builds one from settings, except
     in demo mode, where each extraction gets a stand-in.
+
+    Args:
+        settings: The settings the app started with. Required.
+        adapter: The model to call; None builds one from the settings,
+            or leaves it to each extraction in demo mode.
+
+    Returns:
+        The services the routes share.
     """
+    # log.debug("Takes the settings, which the caller must give")
+    settings = required(settings=settings)
     # log.debug("Builds the shared adapter for a real provider")
     if adapter is None and settings.llm_provider != FAKE:
         # log.debug("Builds it from settings")
@@ -137,7 +191,17 @@ def build_services(settings: AppSettings, adapter: ModelAdapter | None = None) -
 
 
 # log.debug("Defines how a route reaches the services")
-def services(request: Request) -> Services:
-    """Return the services the app built at startup."""
+def services(request: Request) -> Services:  # fixed: FastAPI fills request by its type
+    """Returns the services the app built at startup.
+
+    FastAPI calls this for each route that depends on it.
+
+    Args:
+        request: The request being answered, whose app holds the
+            services.
+
+    Returns:
+        The services the routes share.
+    """
     # log.debug("Returns them from the app's state")
     return cast(Services, request.app.state.services)

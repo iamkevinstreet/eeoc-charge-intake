@@ -2,20 +2,24 @@
 ########################################################################
 #                    frontend/src/styles/review.css                    #
 ########################################################################
-#  Author:            Kevin Street                                     #
-#  Created on:        2026-10-29                                       #
-#  Last modified on:  2026-10-29                                       #
-#  Purpose:           The review screen: header, progress, field list, #
-#                     decisions, edit form, export sheet.              #
+*/
+/*
+ * Author:            Kevin Street
+ * Created on:        2026-10-29
+ * Last modified on:  2026-10-29
+ *
+ * The review screen: the header with its progress and export, the field
+ * list beside the document, each field's value, evidence, confidence
+ * and decisions, the edit form, and the sheet that shows the exported
+ * record. A decided field carries its decision's colour on its left
+ * edge and in its label, and the label names the decision in words.
+ */
+
+/*
+########################################################################
+#                            Review screen                             #
 ########################################################################
 */
-
-/* The review screen: the header with its progress and export, the field
-   list beside the document, each field's value, evidence, confidence and
-   decisions, the edit form, and the sheet that shows the exported record.
-   A decided field carries its decision's colour on its left edge and in
-   its label, and the label names the decision in words. */
-
 .ec-review__head {
   display: flex;
   flex-wrap: wrap;

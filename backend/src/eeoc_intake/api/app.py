@@ -1,22 +1,25 @@
 ########################################################################
 #                  backend/src/eeoc_intake/api/app.py                  #
 ########################################################################
-#  Author:            Kevin Street                                     #
-#  Created on:        2026-10-29                                       #
-#  Last modified on:  2026-10-29                                       #
-#  Purpose:           Builds the HTTP app: startup, request ids,       #
-#                     security headers, hosts, size limits, the UI.    #
-########################################################################
-"""The FastAPI app factory.
+"""
+Author:            Kevin Street
+Created on:        2026-10-29
+Last modified on:  2026-10-29
 
-Every response carries the request id and security headers; requests
-to a host name not in settings are refused (which stops DNS-rebinding
-pages reaching a local server); bodies over the size limit are refused
-before they are read; every request is logged as one JSON line; and an
-unplanned error comes back as a plain 500 with nothing internal. When
-the review screen has been built, the service serves it at /.
+Builds the HTTP app: its startup, request ids, security headers,
+allowed hosts, body limits and the review screen. Every response
+carries the request id and the security headers; a request addressed to
+a host name not in the settings is refused, which stops DNS-rebinding
+pages reaching a local server; a body over its limit is refused before
+it is read; every request is logged as one JSON line; and an unplanned
+error comes back as a plain 500 with nothing internal. When the review
+screen has been built, the service serves it at /.
 """
 
+########################################################################
+#                               Imports                                #
+########################################################################
+# Standard library
 from __future__ import annotations
 
 import logging
@@ -26,26 +29,39 @@ from collections.abc import AsyncIterator, Awaitable, Callable
 from contextlib import asynccontextmanager
 from typing import Final
 
+# Third-party
 from fastapi import FastAPI, Request, Response, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
+from kds.args import required
 from kds.llm import ModelAdapter
 from kds.logs import get_logger, log_event, new_request_id, setup_logging
 from kds.settings import describe
 
+# Local
 from eeoc_intake import __version__
 from eeoc_intake.api import routes
-from eeoc_intake.api.state import PREFIX, build_services
-from eeoc_intake.config import AppSettings, get_app_settings
+from eeoc_intake.api.state import build_services
+from eeoc_intake.config import SETTINGS, AppSettings, get_app_settings
 
-# Module constants
+########################################################################
+#                           Global constants                           #
+########################################################################
 log = get_logger(__name__)
+# log.debug("Takes the prefix of every route, from the config")
+PREFIX: Final = SETTINGS.api_prefix
+# log.debug("Takes the request id header's name, from the config")
+REQUEST_ID: Final = SETTINGS.api_request_id_header
+# log.debug("Takes the milliseconds in a second, from the config")
+MS: Final = SETTINGS.units_ms_per_second
+
+########################################################################
+#                           Local constants                            #
+########################################################################
 # log.debug("Names the service")
 SERVICE: Final = "EEOC charge intake"
-# log.debug("Names the request id header")
-REQUEST_ID: Final = "X-Request-ID"
 # log.debug("Sets the shape of a request id a client may send")
 REQUEST_ID_RE: Final = re.compile(r"^[A-Za-z0-9_-]{1,64}$")
 # log.debug("Sets the headers every response carries; the UI has its own")
@@ -71,8 +87,6 @@ UPLOAD_SLACK_BYTES: Final = 64_000
 JSON_MAX_BYTES: Final = 64_000
 # log.debug("Sets the path of the one route that takes uploads")
 UPLOAD_PATH: Final = f"{PREFIX}/extract"
-# log.debug("Sets the milliseconds in a second")
-MS: Final = 1000
 # log.debug("Lists the methods that carry a body")
 BODY_METHODS: Final = frozenset({"POST", "PUT", "PATCH"})
 # log.debug("Names the length header")
@@ -83,18 +97,40 @@ DETAIL: Final = "detail"
 Next = Callable[[Request], Awaitable[Response]]
 
 
+########################################################################
+#                               HTTP app                               #
+########################################################################
 # log.debug("Defines the app factory")
 def create_app(
     settings: AppSettings | None = None, *, adapter: ModelAdapter | None = None
 ) -> FastAPI:
-    """Build the app; tests pass settings and an adapter."""
+    """Builds the app; tests pass settings and an adapter.
+
+    Args:
+        settings: The settings to run with; None reads the shared ones.
+        adapter: The model to call; None builds one from the settings.
+
+    Returns:
+        The app, ready to serve.
+    """
     # log.debug("Uses the shared settings unless given")
     config = settings or get_app_settings()
 
     # log.debug("Defines startup: logging, the settings in the log, the services")
     @asynccontextmanager
-    async def lifespan(app: FastAPI) -> AsyncIterator[None]:
-        """Set up logging, log every setting (secrets masked), build."""
+    async def lifespan(app: FastAPI | None = None) -> AsyncIterator[None]:
+        """Sets up logging, logs every setting and builds the services.
+
+        Secrets are masked in the logged settings.
+
+        Args:
+            app: The app that is starting. Required.
+
+        Yields:
+            Control to the app, which serves until it shuts down.
+        """
+        # log.debug("Takes the app, which the caller must give")
+        app = required(app=app)
         # log.debug("Starts logging to the configured folder")
         setup_logging(config)
         # log.debug("Logs the version and every setting, secrets masked")
@@ -140,7 +176,12 @@ def create_app(
 
 # log.debug("Defines the answer at / before the review screen is built")
 def _unbuilt() -> dict[str, str]:
-    """Say where the API is and how to build the review screen."""
+    """Says where the API is and how to build the review screen.
+
+    Returns:
+        The service's name, the API's prefix and how to build the
+        screen.
+    """
     # log.debug("Returns the pointers")
     return {
         "service": SERVICE,
@@ -150,12 +191,33 @@ def _unbuilt() -> dict[str, str]:
 
 
 # log.debug("Defines the edge middleware")
-def _edge(max_upload: int) -> Callable[[Request, Next], Awaitable[Response]]:
-    """Return middleware that ids, limits, logs and secures."""
+def _edge(max_upload: int | None = None) -> Callable[[Request, Next], Awaitable[Response]]:
+    """Returns middleware that ids, limits, logs and secures.
+
+    Args:
+        max_upload: The largest body the upload route may send, in
+            bytes. Required.
+
+    Returns:
+        The middleware, for app.middleware("http").
+    """
+    # log.debug("Takes the upload limit, which the caller must give")
+    max_upload = required(max_upload=max_upload)
 
     # log.debug("Defines the middleware itself")
-    async def edge(request: Request, call_next: Next) -> Response:
-        """Run the request under its id; refuse oversized bodies."""
+    async def edge(  # fixed: Starlette's middleware signature
+        request: Request, call_next: Next
+    ) -> Response:
+        """Runs a request under its id, refusing a body over its limit.
+
+        Args:
+            request: The request.
+            call_next: The rest of the app, which answers the request.
+
+        Returns:
+            The response, with the request id, the security headers
+            and the policy for an API answer or the review screen.
+        """
         # log.debug("Reads the client's request id, if it sent a valid one")
         given = request.headers.get(REQUEST_ID, "")
         # log.debug("Starts the clock")
@@ -191,13 +253,31 @@ def _edge(max_upload: int) -> Callable[[Request, Next], Awaitable[Response]]:
 
 
 # log.debug("Defines the body checks and the last line of error handling")
-async def _answer(request: Request, call_next: Next, max_body: int) -> Response:
-    """Refuse a body with no declared length or one over the limit.
+async def _answer(
+    request: Request | None = None, call_next: Next | None = None, max_body: int | None = None
+) -> Response:
+    """Refuses a body with no declared length or one over the limit.
 
     A chunked body declares no length, so it could only be measured by
     reading it; it is refused instead. An error nobody planned for
     becomes a plain 500 here, so it still carries the headers.
+
+    Args:
+        request: The request. Required.
+        call_next: The rest of the app, which answers the request.
+            Required.
+        max_body: The largest body this request may send, in bytes.
+            Required.
+
+    Returns:
+        The app's response, or a 411, 413 or 500 with a plain message.
     """
+    # log.debug("Takes the request, which the caller must give")
+    request = required(request=request)
+    # log.debug("Takes the rest of the app, which the caller must give")
+    call_next = required(call_next=call_next)
+    # log.debug("Takes the body limit, which the caller must give")
+    max_body = required(max_body=max_body)
     # log.debug("Reads the declared length")
     length = request.headers.get(CONTENT_LENGTH)
     # log.debug("Refuses a body that does not declare its length")

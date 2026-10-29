@@ -1,13 +1,13 @@
 ########################################################################
 #               backend/src/eeoc_intake/core/extract.py                #
 ########################################################################
-#  Author:            Kevin Street                                     #
-#  Created on:        2026-10-29                                       #
-#  Last modified on:  2026-10-29                                       #
-#  Purpose:           Reads a charge and its notice into a record with #
-#                     evidence, then empties what the pages don't say. #
-########################################################################
-"""Extraction: PDF pages in, a record with evidence out, then checks.
+"""
+Author:            Kevin Street
+Created on:        2026-10-29
+Last modified on:  2026-10-29
+
+Reads a charge and its notice into a record with evidence, then empties
+what the pages don't say.
 
 `extract()` returns everything a reviewer or an evaluation needs to
 judge the result: the verified record, the raw model output, the
@@ -15,6 +15,10 @@ fields verification emptied, the page texts the quotes point into,
 and what the call cost.
 """
 
+########################################################################
+#                               Imports                                #
+########################################################################
+# Standard library
 from __future__ import annotations
 
 import time
@@ -23,15 +27,31 @@ from datetime import date, timedelta
 from pathlib import Path
 from typing import Final
 
+# Third-party
+from kds.args import missing, required
 from kds.llm import ModelAdapter
 from kds.logs import get_logger, log_event
 from kds.synthetic.pdftext import pages_text, span_in_page
 from pypdf.errors import PyPdfError
 
-from eeoc_intake.core.schema import FIELDS, ChargeRecord, Sourced, Value
+# Local
+from eeoc_intake.config import SETTINGS
+from eeoc_intake.core.schema import FIELDS, ChargeRecord, Sourced, is_empty
 
-# Module constants
+########################################################################
+#                           Global constants                           #
+########################################################################
 log = get_logger(__name__)
+# log.debug("Takes the field whose quote is on the notice, not the charge, from the config")
+NOTICE_FIELD: Final = SETTINGS.record_notice_field
+# log.debug("Takes the field that paraphrases, so it has no quote to check, from the config")
+SUMMARY_FIELD: Final = SETTINGS.record_summary_field
+# log.debug("Takes the milliseconds in a second, from the config")
+MS: Final = SETTINGS.units_ms_per_second
+
+########################################################################
+#                           Local constants                            #
+########################################################################
 # log.debug("Sets the instructions the model reads before the documents")
 SYSTEM: Final = (
     "You extract fields from an EEOC charge of discrimination and its notice letter.\n"
@@ -63,18 +83,13 @@ SYSTEM: Final = (
     "- `summary` is at most three sentences, drawn only from the particulars; it has no span.\n"
     "- `confidence` is your own estimate from 0 to 1 that the value is correct."
 )
-# log.debug("Sets the field whose quote is on the notice, not the charge")
-NOTICE_FIELD: Final = "notice_date"
-# log.debug("Sets the field that paraphrases, so it has no quote to check")
-SUMMARY_FIELD: Final = "summary"
-# log.debug("Lists the values that mean a field was left empty")
-EMPTY: Final[tuple[Value, ...]] = (None, "", [])
 # log.debug("Sets the reason a field emptied by verification carries")
 UNSUPPORTED: Final = "unsupported: cited span not found on cited page"
-# log.debug("Sets the milliseconds in a second")
-MS: Final = 1000
 
 
+########################################################################
+#                              Extraction                              #
+########################################################################
 # log.debug("Defines the error for a document whose text cannot be read")
 class UnreadableDocumentError(ValueError):
     """A PDF the reader could not read, so no model call is made."""
@@ -115,8 +130,23 @@ class Extraction:
 
 
 # log.debug("Defines the prompt: every page of both documents, numbered")
-def build_prompt(charge_pages: list[str], notice_pages: list[str]) -> str:
-    """Return the charge's pages, the notice's, then the request."""
+def build_prompt(
+    charge_pages: list[str] | None = None, notice_pages: list[str] | None = None
+) -> str:
+    """Returns the charge's pages, the notice's, then the request.
+
+    Args:
+        charge_pages: The charge's page texts, in order. Required.
+        notice_pages: The notice's page texts, in order. Required.
+
+    Returns:
+        The prompt: each document's pages under their numbers, then
+        the request.
+    """
+    # log.debug("Takes the charge pages, which the caller must give")
+    charge_pages = required(charge_pages=charge_pages)
+    # log.debug("Takes the notice pages, which the caller must give")
+    notice_pages = required(notice_pages=notice_pages)
     # log.debug("Starts with the charge's heading")
     parts = ["=== CHARGE ==="]
     # log.debug("Adds each charge page under its number")
@@ -132,14 +162,38 @@ def build_prompt(charge_pages: list[str], notice_pages: list[str]) -> str:
 
 
 # log.debug("Defines one extraction")
-def extract(adapter: ModelAdapter, charge_pdf: Path | str, notice_pdf: Path | str) -> Extraction:
-    """Read both PDFs, ask the model for the record, verify its quotes.
+def extract(
+    adapter: ModelAdapter | None = None,
+    charge_pdf: Path | str | None = None,
+    notice_pdf: Path | str | None = None,
+) -> Extraction:
+    """Reads both PDFs, asks the model for the record, checks quotes.
+
+    Args:
+        adapter: The model adapter to call. Required.
+        charge_pdf: The charge form's PDF. Required.
+        notice_pdf: The notice letter's PDF. Required.
+
+    Returns:
+        The checked record, the model's own record, the fields the
+        check emptied, both documents' page texts, and the model, cost
+        and time of the call.
 
     Raises:
         UnreadableDocumentError: A PDF could not be read.
         kds.llm.errors.StructuredOutputError: The answer did not fit the
             record, even after one repair.
     """
+    # log.debug("Takes the adapter, which the caller must give")
+    adapter = required(adapter=adapter)
+    # log.debug("Stops when the caller left out the charge's PDF")
+    if charge_pdf is None:
+        # log.debug("Raises the missing-argument error")
+        raise missing(charge_pdf=charge_pdf)
+    # log.debug("Stops when the caller left out the notice's PDF")
+    if notice_pdf is None:
+        # log.debug("Raises the missing-argument error")
+        raise missing(notice_pdf=notice_pdf)
     # log.debug("Reads the charge's text, page by page")
     charge_pages = read_pages(charge_pdf)
     # log.debug("Reads the notice's text, page by page")
@@ -162,7 +216,7 @@ def extract(adapter: ModelAdapter, charge_pdf: Path | str, notice_pdf: Path | st
     log_event(
         log,
         "extract.done",
-        filled=sum(1 for f in FIELDS if verified.sourced(f).value not in EMPTY),
+        filled=sum(1 for f in FIELDS if not is_empty(verified.sourced(f).value)),
         removed=removed,
         cost_usd=cost_usd,
         latency_ms=latency_ms,
@@ -181,13 +235,23 @@ def extract(adapter: ModelAdapter, charge_pdf: Path | str, notice_pdf: Path | st
 
 
 # log.debug("Defines reading a PDF's pages, with a clear error for a bad file")
-def read_pages(path: Path | str) -> list[str]:
-    """Return each page's text.
+def read_pages(path: Path | str | None = None) -> list[str]:
+    """Returns each page's text.
+
+    Args:
+        path: The PDF to read. Required.
+
+    Returns:
+        Each page's text, in order.
 
     Raises:
         UnreadableDocumentError: The file is not a PDF the reader can
             open, or its text cannot be extracted.
     """
+    # log.debug("Stops when the caller left out the path")
+    if path is None:
+        # log.debug("Raises the missing-argument error")
+        raise missing(path=path)
     # log.debug("Reads the pages")
     try:
         # log.debug("Returns each page's text")
@@ -201,17 +265,31 @@ def read_pages(path: Path | str) -> list[str]:
 
 # log.debug("Defines the check that keeps unsupported values from a reviewer")
 def verify_spans(
-    record: ChargeRecord, charge_pages: list[str], notice_pages: list[str]
+    record: ChargeRecord | None = None,
+    charge_pages: list[str] | None = None,
+    notice_pages: list[str] | None = None,
 ) -> tuple[ChargeRecord, list[str]]:
-    """Empty any field whose quote is not on the page it cites.
+    """Empties any field whose quote is not on the page it cites.
 
     The reviewer never sees an unsupported value. A summary is a
     paraphrase, judged separately; an unticked box (False) has nothing
     to quote.
 
+    Args:
+        record: The record as the model gave it, left unchanged.
+            Required.
+        charge_pages: The charge's page texts. Required.
+        notice_pages: The notice's page texts. Required.
+
     Returns:
         The verified record and the names of the fields emptied.
     """
+    # log.debug("Takes the record, which the caller must give")
+    record = required(record=record)
+    # log.debug("Takes the charge pages, which the caller must give")
+    charge_pages = required(charge_pages=charge_pages)
+    # log.debug("Takes the notice pages, which the caller must give")
+    notice_pages = required(notice_pages=notice_pages)
     # log.debug("Copies the record, so the raw answer stays as it came")
     out = record.model_copy(deep=True)
     # log.debug("Starts the list of emptied fields")
@@ -239,15 +317,42 @@ def verify_spans(
 
 
 # log.debug("Defines which fields have a quote to check")
-def _checkable(name: str, sourced: Sourced) -> bool:
-    """Return True for a filled field that must quote its evidence."""
+def _checkable(name: str | None = None, sourced: Sourced | None = None) -> bool:
+    """Returns True for a filled field that must quote its evidence.
+
+    Args:
+        name: The field's name. Required.
+        sourced: The field. Required.
+
+    Returns:
+        False for an empty field, the summary and an unticked box, and
+        True for every other field.
+    """
+    # log.debug("Takes the name, which the caller must give")
+    name = required(name=name)
+    # log.debug("Takes the field, which the caller must give")
+    sourced = required(sourced=sourced)
     # log.debug("Returns False for empty fields, the summary and an unticked box")
-    return not (sourced.value in EMPTY or name == SUMMARY_FIELD or sourced.value is False)
+    return not (is_empty(sourced.value) or name == SUMMARY_FIELD or sourced.value is False)
 
 
 # log.debug("Defines whether a quote is on the page it cites")
-def _quoted(sourced: Sourced, pages: list[str]) -> bool:
-    """Return True when the span is on the cited page of `pages`."""
+def _quoted(sourced: Sourced | None = None, pages: list[str] | None = None) -> bool:
+    """Returns True when the span is on the cited page of `pages`.
+
+    Args:
+        sourced: The field, with its quote and page. Required.
+        pages: The page texts of the document the page refers to.
+            Required.
+
+    Returns:
+        True when the cited page exists and holds the quote, case and
+        spacing aside.
+    """
+    # log.debug("Takes the field, which the caller must give")
+    sourced = required(sourced=sourced)
+    # log.debug("Takes the pages, which the caller must give")
+    pages = required(pages=pages)
     # log.debug("Returns False without a quote or a page")
     if sourced.span is None or sourced.page is None:
         # log.debug("Returns False")
@@ -257,12 +362,20 @@ def _quoted(sourced: Sourced, pages: list[str]) -> bool:
 
 
 # log.debug("Defines the response deadline, a rule rather than a model output")
-def response_due(notice_date: date, days: int) -> date:
-    """Return the day a position statement is typically due.
+def response_due(notice_date: date | None = None, days: int | None = None) -> date:
+    """Returns the day a position statement is typically due.
 
     Args:
-        notice_date: The date of the EEOC's notice.
+        notice_date: The date of the EEOC's notice. Required.
         days: The days allowed, from `[extract] response_days`.
+            Required.
+
+    Returns:
+        The notice date plus the days allowed.
     """
+    # log.debug("Takes the notice date, which the caller must give")
+    notice_date = required(notice_date=notice_date)
+    # log.debug("Takes the days, which the caller must give")
+    days = required(days=days)
     # log.debug("Returns the notice date plus the days allowed")
     return notice_date + timedelta(days=days)

@@ -2,21 +2,25 @@
 ########################################################################
 #                    frontend/src/styles/tokens.css                    #
 ########################################################################
-#  Author:            Kevin Street                                     #
-#  Created on:        2026-10-29                                       #
-#  Last modified on:  2026-10-29                                       #
-#  Purpose:           Design tokens: colour for light and dark with    #
-#                     three decision colours, type, space, shape.      #
+*/
+/*
+ * Author:            Kevin Street
+ * Created on:        2026-10-29
+ * Last modified on:  2026-10-29
+ *
+ * Design tokens. Grey paper and near-black ink, shared with
+ * kevindstreet.com so the tool and the portfolio read as one identity;
+ * a highlighter yellow for quoted evidence; three decision colours, one
+ * each for accepted, edited and rejected. Headings, values and
+ * documents are set in Newsreader, the interface in IBM Plex Sans.
+ * Every colour is written once, for light and dark.
+ */
+
+/*
+########################################################################
+#                           Global constants                           #
 ########################################################################
 */
-
-/* Design tokens. Grey paper and near-black ink, shared with kevindstreet.com
-   so the tool and the portfolio read as one identity; a highlighter yellow
-   for quoted evidence; three decision colours, one each for accepted,
-   edited and rejected. Headings, values and documents are set in
-   Newsreader, the interface in IBM Plex Sans. Every colour is written once,
-   for light and dark. */
-
 :root {
   color-scheme: light dark;
 

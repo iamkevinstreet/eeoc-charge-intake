@@ -2,17 +2,21 @@
 ########################################################################
 #                    frontend/src/styles/start.css                     #
 ########################################################################
-#  Author:            Kevin Street                                     #
-#  Created on:        2026-10-29                                       #
-#  Last modified on:  2026-10-29                                       #
-#  Purpose:           The start screen: its measure and the upload     #
-#                     form.                                            #
+*/
+/*
+ * Author:            Kevin Street
+ * Created on:        2026-10-29
+ * Last modified on:  2026-10-29
+ *
+ * The start screen: its measure, and the upload form with one labelled
+ * picker per document.
+ */
+
+/*
+########################################################################
+#                             Start screen                             #
 ########################################################################
 */
-
-/* The start screen: its measure, and the upload form with one labelled
-   picker per document. */
-
 .ec-start {
   max-width: 60rem;
 }

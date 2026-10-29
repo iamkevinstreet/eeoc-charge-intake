@@ -1,97 +1,70 @@
 ########################################################################
 #              backend/src/eeoc_intake/dashboard/theme.py              #
 ########################################################################
-#  Author:            Kevin Street                                     #
-#  Created on:        2026-10-29                                       #
-#  Last modified on:  2026-10-29                                       #
-#  Purpose:           Fonts, colours, labels and the chart layout,     #
-#                     after the design of kevindstreet.com.            #
-########################################################################
-"""Fonts, colours, labels and the layout every chart shares.
+"""
+Author:            Kevin Street
+Created on:        2026-10-29
+Last modified on:  2026-10-29
 
-The look follows the design system of kevindstreet.com (Geist, a
-near-black or paper ground, one yellow highlight, green for right), in
-light and dark, so the app and the case study read as one product.
+Sets the look every chart shares: the fonts, the colours of the light
+and dark schemes, the layout and the hover. It follows the design of
+kevindstreet.com (Geist, a near-black or paper ground, one yellow
+highlight, green for right), so the dashboard and the case study read
+as one product.
 """
 
+########################################################################
+#                               Imports                                #
+########################################################################
+# Standard library
 from __future__ import annotations
 
 from collections.abc import Sequence
 from dataclasses import dataclass
 from typing import Any, Final
 
+# Third-party
 import plotly.graph_objects as go
+from kds.args import required
 from kds.logs import get_logger
 
-from eeoc_intake.evals.stats import fixed
+# Local
+from eeoc_intake.config import SETTINGS
+from eeoc_intake.evals.shares import fixed
 
-# Module constants
+########################################################################
+#                           Global constants                           #
+########################################################################
 log = get_logger(__name__)
-# log.debug("Names the light scheme, the one the case study and the export use")
-LIGHT: Final = "light"
-# log.debug("Names the dark scheme")
-DARK: Final = "dark"
+# log.debug("Takes the light scheme's name, the one the export uses, from the config")
+LIGHT: Final = SETTINGS.charts_light_scheme
+# log.debug("Takes the dark scheme's name, from the config")
+DARK: Final = SETTINGS.charts_dark_scheme
+# log.debug("Takes the size of chart text, from the config")
+FONT_SIZE: Final = SETTINGS.charts_font_size
+# log.debug("Takes the size of value-axis ticks and small notes, from the config")
+TICK_SIZE: Final = SETTINGS.charts_tick_size
+# log.debug("Takes the margin every chart keeps at its edges, from the config")
+EDGE: Final = SETTINGS.charts_edge
+# log.debug("Takes the colour that lets the card show through, from the config")
+CLEAR: Final = SETTINGS.charts_clear
+# log.debug("Takes the edge titles and notes line up on, from the config")
+LEFT: Final = SETTINGS.charts_align
+# log.debug("Takes the decimals a cost is written with, from the config")
+COST_PLACES: Final = SETTINGS.charts_cost_places
+
+########################################################################
+#                           Local constants                            #
+########################################################################
 # log.debug("Sets the font stack of kevindstreet.com")
 FONT: Final = (
     "Geist, 'Geist Variable', ui-sans-serif, system-ui, 'Helvetica Neue', Arial, sans-serif"
 )
-# log.debug("Sets the size of chart text")
-FONT_SIZE: Final = 12
-# log.debug("Sets the size of value-axis ticks and small notes")
-TICK_SIZE: Final = 11
-# log.debug("Sets the margin every chart keeps at its edges, in pixels")
-EDGE: Final = 8
-# log.debug("Sets a colour that lets the card show through")
-CLEAR: Final = "rgba(0,0,0,0)"
-# log.debug("Sets the anchor that puts a note's left edge at its x")
-LEFT: Final = "left"
-# log.debug("Sets the most runs a chart draws: one per step of the run ramp")
-MAX_RUNS: Final = 3
-# log.debug("Sets the decimals a cost is written with")
-COST_PLACES: Final = 4
-# log.debug("Sets the milliseconds in a second")
-MS_PER_SECOND: Final = 1000
-# log.debug("Titles the accuracy chart by field")
-BY_FIELD_TITLE: Final = "Fields right, by field"
-# log.debug("Titles the accuracy chart by field and kind of document")
-HEATMAP_TITLE: Final = "Fields right, by field and kind of document"
-# log.debug("Titles the time chart")
-LATENCY_TITLE: Final = "Seconds per document"
-# log.debug("Titles the cost chart")
-COST_TITLE: Final = "Cost per document, at list prices"
-# log.debug("Names each scored field as the charts and tables show it")
-FIELD_LABELS: Final = {
-    "charge_number": "Charge number",
-    "charging_party": "Charging party",
-    "respondent": "Respondent",
-    "eeoc_office": "EEOC office",
-    "bases": "Bases",
-    "issues": "Issues",
-    "earliest_date": "Earliest date",
-    "latest_date": "Latest date",
-    "continuing_action": "Continuing action",
-    "notice_date": "Notice date",
-}
-# log.debug("Names each kind of document as the charts and tables show it")
-KIND_LABELS: Final = {
-    "clean": "Clean",
-    "missing_number": "Missing charge number",
-    "rotated": "Rotated page",
-    "long": "Long particulars",
-    "two_respondents": "Two respondents",
-}
-# Column heads for the heatmap: short lines, so each fits under its
-# cell even when the panels are narrow.
-# log.debug("Sets the heatmap's column head for each kind of document")
-KIND_TICKS: Final = {
-    "Clean": "Standard",
-    "Missing charge number": "No charge<br>number",
-    "Rotated page": "Rotated<br>page",
-    "Long particulars": "Long<br>particulars",
-    "Two respondents": "Two<br>respondents",
-}
 
 
+########################################################################
+#                             Chart theme                              #
+########################################################################
 # log.debug("Defines the colours of one scheme")
 @dataclass(frozen=True)
 class Theme:
@@ -155,17 +128,26 @@ THEMES: Final = {
 
 
 # log.debug("Defines the layout every chart shares")
-def shared_layout(fig: go.Figure, height: int, colours: Theme) -> go.Figure:
-    """Return the figure in the shared fonts, margins, axes and hover.
+def shared_layout(
+    fig: go.Figure | None = None, height: int | None = None, colours: Theme | None = None
+) -> go.Figure:
+    """Returns the figure in the shared fonts, margins, axes and hover.
 
     Args:
         fig: The chart, with its traces and its own axis settings.
-        height: The chart's height in pixels.
-        colours: The scheme to draw in.
+            Required.
+        height: The chart's height in pixels. Required.
+        colours: The scheme to draw in. Required.
 
     Returns:
         The same figure, restyled.
     """
+    # log.debug("Takes the figure, which the caller must give")
+    fig = required(fig=fig)
+    # log.debug("Takes the height, which the caller must give")
+    height = required(height=height)
+    # log.debug("Takes the colours, which the caller must give")
+    colours = required(colours=colours)
     # log.debug("Sets the font, margins, clear backgrounds, the hidden legend and the hover")
     fig.update_layout(
         template="none",
@@ -218,24 +200,56 @@ def shared_layout(fig: go.Figure, height: int, colours: Theme) -> go.Figure:
 
 
 # log.debug("Defines the axis settings that list categories from the top down")
-def top_down(categories: Sequence[str]) -> dict[str, Any]:
-    """Return axis settings that list categories in order, top first.
+def top_down(categories: Sequence[str] | None = None) -> dict[str, Any]:
+    """Returns axis settings that list categories in order, top first.
 
     The order is set here, not left to the order traces name them.
+
+    Args:
+        categories: The categories in the order to show them, top
+            first. Required.
+
+    Returns:
+        The axis settings, with the order fixed and the first at the
+        top.
     """
+    # log.debug("Takes the categories, which the caller must give")
+    categories = required(categories=categories)
     # log.debug("Returns the fixed order, reversed so the first is at the top")
     return dict(categoryorder="array", categoryarray=list(categories), autorange="reversed")
 
 
 # log.debug("Defines a hover template that names the run")
-def hover(text: str, label: str) -> str:
-    """Return a hover template: the text, and the run's label."""
+def hover(text: str | None = None, label: str | None = None) -> str:
+    """Returns a hover template: the text, and the run's label.
+
+    Args:
+        text: What the hover box says, with Plotly's placeholders.
+            Required.
+        label: The run's label, shown as the trace's name. Required.
+
+    Returns:
+        The hover template.
+    """
+    # log.debug("Takes the text, which the caller must give")
+    text = required(text=text)
+    # log.debug("Takes the label, which the caller must give")
+    label = required(label=label)
     # log.debug("Returns the template with the label as its trace name")
     return f"{text}<extra>{label}</extra>"
 
 
 # log.debug("Defines how a cost is written")
-def dollars(value: float) -> str:
-    """Return a cost in dollars, to four decimals."""
+def dollars(value: float | None = None) -> str:
+    """Returns a cost in dollars, to four decimals.
+
+    Args:
+        value: The cost, in dollars. Required.
+
+    Returns:
+        The cost with a dollar sign, to four decimals.
+    """
+    # log.debug("Takes the cost, which the caller must give")
+    value = required(value=value)
     # log.debug("Returns the dollar sign and the rounded cost")
     return f"${fixed(value, COST_PLACES)}"

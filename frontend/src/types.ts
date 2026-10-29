@@ -1,18 +1,25 @@
 // ########################################################################
 // #                        frontend/src/types.ts                         #
 // ########################################################################
-// #  Author:            Kevin Street                                     #
-// #  Created on:        2026-10-29                                       #
-// #  Last modified on:  2026-10-29                                       #
-// #  Purpose:           The API's shapes in TypeScript, as the backend   #
-// #                     returns them.                                    #
-// ########################################################################
-/** The API's shapes, as the backend returns them. */
+/**
+ * Author:            Kevin Street
+ * Created on:        2026-10-29
+ * Last modified on:  2026-10-29
+ *
+ * The API's shapes in TypeScript, as the backend returns them: a field
+ * with its evidence, a review and its decisions, the samples, the
+ * service's health, the exported record and an evaluation run.
+ */
 
+// ########################################################################
+// #                              API shapes                              #
+// ########################################################################
 /** What a field may hold: text, a list, a yes or no, or nothing. */
 export type Value = string | string[] | boolean | null;
+
 /** What a reviewer may do with a field. */
 export type Action = 'accept' | 'edit' | 'reject';
+
 /** The two documents a charge comes with. */
 export type DocKind = 'charge' | 'notice';
 

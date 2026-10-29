@@ -1,20 +1,22 @@
 ########################################################################
 #                backend/src/eeoc_intake/api/reviews.py                #
 ########################################################################
-#  Author:            Kevin Street                                     #
-#  Created on:        2026-10-29                                       #
-#  Last modified on:  2026-10-29                                       #
-#  Purpose:           The reviews in progress: each extraction with    #
-#                     its decisions, kept in memory, and the export.   #
-########################################################################
-"""Reviews in progress, kept in memory, and the record they export.
+"""
+Author:            Kevin Street
+Created on:        2026-10-29
+Last modified on:  2026-10-29
 
-A review holds one extraction and a decision per field. It exports
-only when every field is decided. The store keeps the newest
-`[api] max_reviews` and drops the oldest: a prototype's memory, not a
+Keeps the reviews in progress, each an extraction with the decisions
+made on its fields, and builds the record a finished review exports.
+A review exports only when every field is decided. The store keeps the
+newest `[api] max_reviews` in memory and drops the oldest: it is not a
 database, which the README lists as unresolved.
 """
 
+########################################################################
+#                               Imports                                #
+########################################################################
+# Standard library
 from __future__ import annotations
 
 import threading
@@ -24,19 +26,29 @@ from dataclasses import dataclass, field
 from datetime import UTC, date, datetime
 from typing import Any, Final
 
+# Third-party
+from kds.args import required
 from kds.logs import get_logger
 
+# Local
+from eeoc_intake.config import SETTINGS
 from eeoc_intake.core.extract import Extraction, response_due
 from eeoc_intake.core.schema import FIELDS, Decision, Value
 
-# Module constants
+########################################################################
+#                           Global constants                           #
+########################################################################
 log = get_logger(__name__)
+# log.debug("Takes the field the response deadline is counted from, from the config")
+NOTICE_FIELD: Final = SETTINGS.record_notice_field
+
+########################################################################
+#                           Local constants                            #
+########################################################################
 # log.debug("Sets the length of a review id, in hex digits")
 ID_DIGITS: Final = 10
 # log.debug("Sets the time stamp's precision")
 TIMESPEC: Final = "seconds"
-# log.debug("Names the field the response deadline is counted from")
-NOTICE_FIELD: Final = "notice_date"
 # log.debug("Names the review id key both answers carry")
 REVIEW_ID: Final = "review_id"
 # log.debug("Names the record key both answers carry")
@@ -45,6 +57,9 @@ RECORD: Final = "record"
 DECISIONS: Final = "decisions"
 
 
+########################################################################
+#                         Reviews in progress                          #
+########################################################################
 # log.debug("Defines one review")
 @dataclass
 class Review:
@@ -81,8 +96,14 @@ class ReviewStore:
     """The reviews of one process, the oldest dropped past the limit."""
 
     # log.debug("Defines the constructor")
-    def __init__(self, limit: int) -> None:
-        """Keep at most `limit` reviews."""
+    def __init__(self, limit: int | None = None) -> None:
+        """Keeps at most `limit` reviews.
+
+        Args:
+            limit: The most reviews kept; the oldest go first. Required.
+        """
+        # log.debug("Takes the limit, which the caller must give")
+        limit = required(limit=limit)
         # log.debug("Keeps the limit")
         self.limit = limit
         # log.debug("Starts the reviews, oldest first")
@@ -91,8 +112,36 @@ class ReviewStore:
         self._lock = threading.Lock()
 
     # log.debug("Defines adding a review")
-    def add(self, extraction: Extraction, *, source: str, demo: bool, request_id: str) -> Review:
-        """Start a review of `extraction`; return it."""
+    def add(
+        self,
+        extraction: Extraction | None = None,
+        *,
+        source: str | None = None,
+        demo: bool | None = None,
+        request_id: str | None = None,
+    ) -> Review:
+        """Starts a review of an extraction and stores it.
+
+        Args:
+            extraction: The extraction to review. Required.
+            source: Where the documents came from: sample:<id> or
+                upload:<name>. Required.
+            demo: Whether the offline stand-in made the extraction.
+                Required.
+            request_id: The id of the request that made the extraction.
+                Required.
+
+        Returns:
+            The new review, with no decisions yet.
+        """
+        # log.debug("Takes the extraction, which the caller must give")
+        extraction = required(extraction=extraction)
+        # log.debug("Takes the source, which the caller must give")
+        source = required(source=source)
+        # log.debug("Takes whether this is demo output, which the caller must give")
+        demo = required(demo=demo)
+        # log.debug("Takes the request id, which the caller must give")
+        request_id = required(request_id=request_id)
         # log.debug("Builds the review with a random id")
         review = Review(
             review_id=uuid.uuid4().hex[:ID_DIGITS],
@@ -114,20 +163,40 @@ class ReviewStore:
         return review
 
     # log.debug("Defines finding a review")
-    def get(self, review_id: str) -> Review | None:
-        """Return the review, or None when there is no such review."""
+    def get(self, review_id: str | None = None) -> Review | None:
+        """Returns the review, or None when there is no such review.
+
+        Args:
+            review_id: The review's id. Required.
+
+        Returns:
+            The review, or None when the store holds none with the id.
+        """
+        # log.debug("Takes the review id, which the caller must give")
+        review_id = required(review_id=review_id)
         # log.debug("Returns it under the lock")
         with self._lock:
             # log.debug("Returns the review or None")
             return self._reviews.get(review_id)
 
     # log.debug("Defines recording a decision")
-    def decide(self, review: Review, decision: Decision) -> int:
-        """Record the decision; return how many fields are decided.
+    def decide(self, review: Review | None = None, decision: Decision | None = None) -> int:
+        """Records a decision on one field, replacing any earlier one.
+
+        Args:
+            review: The review the decision is for. Required.
+            decision: The reviewer's decision on one field. Required.
+
+        Returns:
+            How many of the review's fields now have a decision.
 
         Raises:
             ValueError: For a field the record does not have.
         """
+        # log.debug("Takes the review, which the caller must give")
+        review = required(review=review)
+        # log.debug("Takes the decision, which the caller must give")
+        decision = required(decision=decision)
         # log.debug("Refuses a field the record does not have")
         if decision.field not in FIELDS:
             # log.debug("Raises with the unknown field's name")
@@ -143,8 +212,18 @@ class ReviewStore:
 
 
 # log.debug("Defines what the review screen receives")
-def payload(review: Review) -> dict[str, Any]:
-    """Return the review as the review screen reads it."""
+def payload(review: Review | None = None) -> dict[str, Any]:
+    """Returns the review as the review screen reads it.
+
+    Args:
+        review: The review to show. Required.
+
+    Returns:
+        The review's id, source and model, the extraction with its
+        evidence and page text, and the decisions so far.
+    """
+    # log.debug("Takes the review, which the caller must give")
+    review = required(review=review)
     # log.debug("Reads the extraction")
     ex = review.extraction
     # log.debug("Returns the review, the extraction and the decisions so far")
@@ -169,20 +248,43 @@ def payload(review: Review) -> dict[str, Any]:
 
 
 # log.debug("Defines the fields still waiting for a decision")
-def undecided(review: Review) -> list[str]:
-    """Return the fields with no decision yet, in the record's order."""
+def undecided(review: Review | None = None) -> list[str]:
+    """Returns the fields with no decision yet, in the record's order.
+
+    Args:
+        review: The review to check. Required.
+
+    Returns:
+        The names of the fields still waiting for a decision.
+    """
+    # log.debug("Takes the review, which the caller must give")
+    review = required(review=review)
     # log.debug("Returns them")
     return [f for f in FIELDS if f not in review.decisions]
 
 
 # log.debug("Defines the exported record")
-def exported(review: Review, *, response_days: int) -> dict[str, Any]:
-    """Return the decided record and the response deadline.
+def exported(review: Review | None = None, *, response_days: int | None = None) -> dict[str, Any]:
+    """Returns the decided record and the response deadline.
 
     Accepted fields keep the extracted value, edited ones the reviewer's
     value, and rejected ones are empty. The caller checks that every
     field is decided first.
+
+    Args:
+        review: The review, with every field decided. Required.
+        response_days: The days after the notice date a position
+            statement is due. Required.
+
+    Returns:
+        The record after the decisions, when it was exported, the
+        response deadline (None without a valid notice date) and each
+        field's decision.
     """
+    # log.debug("Takes the review, which the caller must give")
+    review = required(review=review)
+    # log.debug("Takes the response days, which the caller must give")
+    response_days = required(response_days=response_days)
     # log.debug("Applies each field's decision")
     record = {f: _decided_value(review, f) for f in FIELDS}
     # log.debug("Returns the record, its deadline and the decisions")
@@ -196,8 +298,21 @@ def exported(review: Review, *, response_days: int) -> dict[str, Any]:
 
 
 # log.debug("Defines one field's value after its decision")
-def _decided_value(review: Review, name: str) -> Value:
-    """Return the value the decision leaves the field with."""
+def _decided_value(review: Review | None = None, name: str | None = None) -> Value:
+    """Returns the value the decision leaves the field with.
+
+    Args:
+        review: The review that holds the decision. Required.
+        name: The field's name. Required.
+
+    Returns:
+        The extracted value when accepted, the reviewer's value when
+        edited, and None when rejected.
+    """
+    # log.debug("Takes the review, which the caller must give")
+    review = required(review=review)
+    # log.debug("Takes the name, which the caller must give")
+    name = required(name=name)
     # log.debug("Reads the decision")
     decision = review.decisions[name]
     # log.debug("Empties a rejected field")
@@ -213,8 +328,19 @@ def _decided_value(review: Review, name: str) -> Value:
 
 
 # log.debug("Defines the deadline counted from the notice date")
-def _due(notice: Value, days: int) -> str | None:
-    """Return the response deadline, or None without a valid date."""
+def _due(notice: Value = None, days: int | None = None) -> str | None:
+    """Returns the response deadline, or None without a valid date.
+
+    Args:
+        notice: The notice date as the record holds it; None, or
+            anything but an ISO date, gives no deadline.
+        days: The days the respondent has to answer. Required.
+
+    Returns:
+        The deadline as an ISO date, or None.
+    """
+    # log.debug("Takes the days, which the caller must give")
+    days = required(days=days)
     # log.debug("Returns None when the notice date is not text")
     if not isinstance(notice, str):
         # log.debug("Returns None")

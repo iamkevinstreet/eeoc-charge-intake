@@ -2,18 +2,22 @@
 ########################################################################
 #                     frontend/src/styles/base.css                     #
 ########################################################################
-#  Author:            Kevin Street                                     #
-#  Created on:        2026-10-29                                       #
-#  Last modified on:  2026-10-29                                       #
-#  Purpose:           The frame every screen shares: page, top bar,    #
-#                     headings, buttons, links, tables, focus.         #
+*/
+/*
+ * Author:            Kevin Street
+ * Created on:        2026-10-29
+ * Last modified on:  2026-10-29
+ *
+ * The frame every screen shares: the page, the top bar, headings and
+ * text, buttons and links, the ledger table, focus, and the helpers for
+ * quiet notes, errors and screen-reader text.
+ */
+
+/*
+########################################################################
+#                              Page frame                              #
 ########################################################################
 */
-
-/* The frame every screen shares: the page, the top bar, headings and text,
-   buttons and links, the ledger table, focus, and the helpers for quiet
-   notes, errors and screen-reader text. */
-
 *,
 *::before,
 *::after {

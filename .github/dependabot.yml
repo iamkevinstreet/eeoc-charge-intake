@@ -1,12 +1,13 @@
 ########################################################################
 #                        .github/dependabot.yml                        #
 ########################################################################
-#  Author:            Kevin Street                                     #
-#  Created on:        2026-10-29                                       #
-#  Last modified on:  2026-10-29                                       #
-#  Purpose:           Weekly pull requests that update the pinned      #
-#                     Actions, the uv lockfile and the npm lockfile.   #
-########################################################################
+# Author:            Kevin Street
+# Created on:        2026-10-29
+# Last modified on:  2026-10-29
+#
+# Opens weekly pull requests that update the pinned Actions, the uv
+# lockfile and the npm lockfile.
+
 version: 2
 updates:
   - package-ecosystem: github-actions
@@ -26,3 +27,6 @@ updates:
       # raise this when a typescript-eslint release supports a newer TypeScript.
       - dependency-name: typescript
         versions: [">=6.1"]
+      # The Node types follow the Node release in frontend/.nvmrc; raise the two together.
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]

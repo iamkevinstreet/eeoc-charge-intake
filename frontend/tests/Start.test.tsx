@@ -1,20 +1,29 @@
 // ########################################################################
 // #                    frontend/tests/Start.test.tsx                     #
 // ########################################################################
-// #  Author:            Kevin Street                                     #
-// #  Created on:        2026-10-29                                       #
-// #  Last modified on:  2026-10-29                                       #
-// #  Purpose:           Tests the start screen lists the samples it is   #
-// #                     given.                                           #
-// ########################################################################
-/** Tests the start screen lists the samples it is given. */
+/**
+ * Author:            Kevin Street
+ * Created on:        2026-10-29
+ * Last modified on:  2026-10-29
+ *
+ * Tests that the start screen lists the samples it is given, each with
+ * its kinds of case and a button to review it.
+ */
 
+// ########################################################################
+// #                               Imports                                #
+// ########################################################################
+// Third-party
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 
+// Local
 import { Start } from '../src/components/Start';
 import { HEALTH, SAMPLES } from './fixtures';
 
+// ########################################################################
+// #                          Start screen tests                          #
+// ########################################################################
 // log.debug('Describes the start screen')
 describe('Start', () => {
   // log.debug('Checks each sample is listed with its kinds and a button to review it')

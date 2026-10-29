@@ -1,49 +1,85 @@
 ########################################################################
 #                      backend/tests/test_api.py                       #
 ########################################################################
-#  Author:            Kevin Street                                     #
-#  Created on:        2026-10-29                                       #
-#  Last modified on:  2026-10-29                                       #
-#  Purpose:           Tests the review service: evidence, one decision #
-#                     per field, the export gate, and the edge checks. #
-########################################################################
-"""Tests of the review service and its edge."""
+"""
+Author:            Kevin Street
+Created on:        2026-10-29
+Last modified on:  2026-10-29
 
+Tests the review service: evidence, one decision per field, the export
+gate, and the edge checks.
+"""
+
+########################################################################
+#                               Imports                                #
+########################################################################
+# Standard library
 from __future__ import annotations
 
 from collections.abc import Iterator
 from pathlib import Path
 from typing import Any
 
+# Third-party
 import pytest
 from fastapi.testclient import TestClient
+from kds.args import required
 from kds.logs import get_logger
 
+# Local
 from eeoc_intake.config import AppSettings
 from eeoc_intake.core.generate import generate
 from support import make_settings, scripted, started
 
-# Module constants
+########################################################################
+#                           Global constants                           #
+########################################################################
 log = get_logger(__name__)
+
+########################################################################
+#                           Local constants                            #
+########################################################################
 # log.debug("Sets the prefix every route is under")
 API = "/api/v1"
 # log.debug("Sets a file that starts like a PDF but is not one")
 PDF = b"%PDF-1.4\n%made up\n"
 
 
-# log.debug("Defines the fixture: a started client in demo mode, over the ten samples")
+########################################################################
+#                         Review service tests                         #
+########################################################################
+# log.debug("Defines a started client in demo mode, over the ten samples")
 @pytest.fixture
 def client(settings: AppSettings) -> Iterator[TestClient]:
-    """A started client in demo mode, over the ten samples."""
+    """Yields a started client in demo mode, over the ten samples.
+
+    Args:
+        settings: Offline settings over the ten samples.
+
+    Yields:
+        The client.
+    """
     # log.debug("Starts the app and yields its client")
     with started(settings) as c:
         # log.debug("Yields it")
         yield c
 
 
-# log.debug("Defines the helper: extract one sample and return the review")
-def _sample(client: TestClient, sample_id: str) -> dict[str, Any]:
-    """Extract one sample and return the review."""
+# log.debug("Defines how a test extracts one sample")
+def _sample(client: TestClient | None = None, sample_id: str | None = None) -> dict[str, Any]:
+    """Extracts one sample and returns the review.
+
+    Args:
+        client: The started client. Required.
+        sample_id: The sample's id, such as charge-000. Required.
+
+    Returns:
+        The review, as the service returned it.
+    """
+    # log.debug("Takes the client, which the caller must give")
+    client = required(client=client)
+    # log.debug("Takes the sample id, which the caller must give")
+    sample_id = required(sample_id=sample_id)
     # log.debug("Posts the extraction")
     response = client.post(f"{API}/extract/sample/{sample_id}")
     # log.debug("Checks it worked")
@@ -52,9 +88,21 @@ def _sample(client: TestClient, sample_id: str) -> dict[str, Any]:
     return dict(response.json())
 
 
-# log.debug("Defines the helper: record the same decision on every field of the review")
-def _decide_all(client: TestClient, review: dict[str, Any], action: str = "accept") -> None:
-    """Record the same decision on every field of the review."""
+# log.debug("Defines how a test records one decision on every field")
+def _decide_all(
+    client: TestClient | None = None, review: dict[str, Any] | None = None, action: str = "accept"
+) -> None:
+    """Records the same decision on every field of the review.
+
+    Args:
+        client: The started client. Required.
+        review: The review, as the service returned it. Required.
+        action: The decision to record on every field.
+    """
+    # log.debug("Takes the client, which the caller must give")
+    client = required(client=client)
+    # log.debug("Takes the review, which the caller must give")
+    review = required(review=review)
     # log.debug("Decides each field")
     for name in review["fields"]:
         # log.debug("Posts the decision")
@@ -64,9 +112,19 @@ def _decide_all(client: TestClient, review: dict[str, Any], action: str = "accep
         )
 
 
-# log.debug("Defines the helper: post two files as the charge and the notice")
-def _upload(client: TestClient, data: bytes = PDF) -> Any:
-    """Post two files as the charge and the notice."""
+# log.debug("Defines how a test posts two files as the charge and the notice")
+def _upload(client: TestClient | None = None, data: bytes = PDF) -> Any:
+    """Posts two files as the charge and the notice.
+
+    Args:
+        client: The started client. Required.
+        data: The bytes of both files.
+
+    Returns:
+        The service's response.
+    """
+    # log.debug("Takes the client, which the caller must give")
+    client = required(client=client)
     # log.debug("Posts both files")
     return client.post(
         f"{API}/extract",
@@ -79,7 +137,11 @@ def _upload(client: TestClient, data: bytes = PDF) -> Any:
 
 # log.debug("Defines the test: health reports demo mode and version")
 def test_health_reports_demo_mode_and_version(client: TestClient) -> None:
-    """The health check says the stand-in is answering."""
+    """Checks the health check says the stand-in is answering.
+
+    Args:
+        client: A started client in demo mode, over the ten samples.
+    """
     # log.debug("Reads the health report")
     body = client.get(f"{API}/health").json()
     # log.debug("Checks it is up, in demo mode, with a version")
@@ -88,7 +150,11 @@ def test_health_reports_demo_mode_and_version(client: TestClient) -> None:
 
 # log.debug("Defines the test: samples are listed with their kind")
 def test_samples_are_listed_with_their_kind(client: TestClient) -> None:
-    """Ten samples; the fifth is the one with no charge number."""
+    """Checks the ten samples are listed; the fifth has no number.
+
+    Args:
+        client: A started client in demo mode, over the ten samples.
+    """
     # log.debug("Reads the samples")
     listed = client.get(f"{API}/samples").json()
     # log.debug("Checks the count, the first id and the hard case's tag")
@@ -101,14 +167,22 @@ def test_samples_are_listed_with_their_kind(client: TestClient) -> None:
 
 # log.debug("Defines the test: upload is refused in demo mode")
 def test_upload_is_refused_in_demo_mode(client: TestClient) -> None:
-    """The stand-in answers only for the samples."""
+    """Checks the stand-in answers only for the samples.
+
+    Args:
+        client: A started client in demo mode, over the ten samples.
+    """
     # log.debug("Checks the upload is refused with 409")
     assert _upload(client).status_code == 409
 
 
 # log.debug("Defines the test: extraction returns evidence and page text")
 def test_extraction_returns_evidence_and_page_text(client: TestClient) -> None:
-    """Each value comes with its page and the text quoted from it."""
+    """Checks each value comes with its page and the quoted text.
+
+    Args:
+        client: A started client in demo mode, over the ten samples.
+    """
     # log.debug("Extracts the first sample")
     body = _sample(client, "charge-000")
     # log.debug("Reads the charging party")
@@ -125,7 +199,11 @@ def test_extraction_returns_evidence_and_page_text(client: TestClient) -> None:
 
 # log.debug("Defines the test: missing charge number is empty with a reason")
 def test_missing_charge_number_is_empty_with_a_reason(client: TestClient) -> None:
-    """The hard case with a blank number says why it is empty."""
+    """Checks the hard case with a blank number says why it is empty.
+
+    Args:
+        client: A started client in demo mode, over the ten samples.
+    """
     # log.debug("Extracts the sample with no number")
     number = _sample(client, "charge-004")["record"]["charge_number"]
     # log.debug("Checks it is empty, with a reason and no confidence")
@@ -134,7 +212,11 @@ def test_missing_charge_number_is_empty_with_a_reason(client: TestClient) -> Non
 
 # log.debug("Defines the test: export waits for every field")
 def test_export_waits_for_every_field(client: TestClient) -> None:
-    """409 until the last field is decided; then record and deadline."""
+    """Checks for 409 until the last field is decided, then the record.
+
+    Args:
+        client: A started client in demo mode, over the ten samples.
+    """
     # log.debug("Starts a review")
     review = _sample(client, "charge-001")
     # log.debug("Names its export route")
@@ -158,7 +240,11 @@ def test_export_waits_for_every_field(client: TestClient) -> None:
 
 # log.debug("Defines the test: edits and rejections shape the export")
 def test_edits_and_rejections_shape_the_export(client: TestClient) -> None:
-    """A rejected field exports empty; an edited one, the edit."""
+    """Checks a rejected field exports empty and an edited one the edit.
+
+    Args:
+        client: A started client in demo mode, over the ten samples.
+    """
     # log.debug("Starts a review and accepts every field")
     review = _sample(client, "charge-002")
     # log.debug("Accepts everything")
@@ -179,7 +265,11 @@ def test_edits_and_rejections_shape_the_export(client: TestClient) -> None:
 
 # log.debug("Defines the test: unknown review field and sample")
 def test_unknown_review_field_and_sample(client: TestClient) -> None:
-    """404 for an unknown review or sample, 400 for an unknown field."""
+    """Checks 404 for an unknown review or sample, 400 for a bad field.
+
+    Args:
+        client: A started client in demo mode, over the ten samples.
+    """
     # log.debug("Checks an unknown review")
     assert client.get(f"{API}/reviews/0123456789").status_code == 404
     # log.debug("Checks a malformed review id is refused before any lookup")
@@ -199,14 +289,22 @@ def test_unknown_review_field_and_sample(client: TestClient) -> None:
 
 # log.debug("Defines the test: latest results fall back to the smoke run")
 def test_latest_results_fall_back_to_the_smoke_run(client: TestClient) -> None:
-    """404 before any run; a live run is preferred to a smoke one."""
+    """Checks for 404 before any run, then a live run over a smoke one.
+
+    Args:
+        client: A started client in demo mode, over the ten samples.
+    """
     # log.debug("Checks there is nothing yet")
     assert client.get(f"{API}/evals/latest").status_code == 404
 
 
 # log.debug("Defines the test: every reply carries the request id and headers")
 def test_every_reply_carries_the_request_id_and_headers(client: TestClient) -> None:
-    """A valid request id is echoed; security headers are always set."""
+    """Checks the request id is echoed and security headers are set.
+
+    Args:
+        client: A started client in demo mode, over the ten samples.
+    """
     # log.debug("Sends a request with an id")
     response = client.get(f"{API}/health", headers={"X-Request-ID": "abc-123"})
     # log.debug("Checks the id is echoed")
@@ -219,7 +317,11 @@ def test_every_reply_carries_the_request_id_and_headers(client: TestClient) -> N
 
 # log.debug("Defines the test: other host names are refused")
 def test_other_host_names_are_refused(client: TestClient) -> None:
-    """A page on another name cannot reach the service by DNS tricks."""
+    """Checks a page on another name cannot reach the service by DNS.
+
+    Args:
+        client: A started client in demo mode, over the ten samples.
+    """
     # log.debug("Sends a request addressed to another host")
     response = client.get(f"{API}/health", headers={"Host": "attacker.example"})
     # log.debug("Checks it is refused, with the headers still set")
@@ -228,7 +330,11 @@ def test_other_host_names_are_refused(client: TestClient) -> None:
 
 # log.debug("Defines the test: bodies without or over a length are refused")
 def test_bodies_without_or_over_a_length_are_refused(client: TestClient) -> None:
-    """411 without Content-Length; 413 over the limit, unread."""
+    """Checks for 411 without Content-Length and 413 over the limit.
+
+    Args:
+        client: A started client in demo mode, over the ten samples.
+    """
     # log.debug("Names the decisions route of a made-up review")
     route = f"{API}/reviews/0123456789/decisions"
     # log.debug("Sends a chunked body, which declares no length")
@@ -243,7 +349,11 @@ def test_bodies_without_or_over_a_length_are_refused(client: TestClient) -> None
 
 # log.debug("Defines the test: root says how to build the screen")
 def test_root_says_how_to_build_the_screen(client: TestClient) -> None:
-    """Before the screen is built, / points to the API and the build."""
+    """Checks / says where the API is and how to build the screen.
+
+    Args:
+        client: A started client in demo mode, over the ten samples.
+    """
     # log.debug("Reads the root")
     body = client.get("/").json()
     # log.debug("Checks it names the API")
@@ -252,7 +362,11 @@ def test_root_says_how_to_build_the_screen(client: TestClient) -> None:
 
 # log.debug("Defines the test: samples made after startup appear without a restart")
 def test_samples_made_after_startup_appear(tmp_path: Path) -> None:
-    """The screen says to run make samples and reload; reload works."""
+    """Checks samples made after startup appear when the screen reloads.
+
+    Args:
+        tmp_path: A temporary folder pytest makes for this test.
+    """
     # log.debug("Builds demo settings over an empty samples folder")
     empty = make_settings(tmp_path, tmp_path / "later")
     # log.debug("Starts the app")
@@ -269,7 +383,12 @@ def test_samples_made_after_startup_appear(tmp_path: Path) -> None:
 
 # log.debug("Defines the test: live uploads must be pdfs within the limit")
 def test_live_uploads_must_be_pdfs_within_the_limit(tmp_path: Any, samples: Any) -> None:
-    """With a real provider: 415 for a non-PDF, 413 over the limit."""
+    """Checks live uploads get 415 for a non-PDF and 413 over the limit.
+
+    Args:
+        tmp_path: A temporary folder pytest makes for this test.
+        samples: The folder of the session's ten generated samples.
+    """
     # log.debug("Builds settings for a real provider with a small upload limit")
     live = _live(tmp_path, samples, api_max_upload_bytes=20_000)
     # log.debug("Starts the app with a scripted model")
@@ -284,7 +403,12 @@ def test_live_uploads_must_be_pdfs_within_the_limit(tmp_path: Any, samples: Any)
 
 # log.debug("Defines the test: live extractions are limited per minute")
 def test_live_extractions_are_limited_per_minute(tmp_path: Any, samples: Any) -> None:
-    """The seventh extraction in a minute is refused with 429."""
+    """Checks the seventh extraction in a minute is refused with 429.
+
+    Args:
+        tmp_path: A temporary folder pytest makes for this test.
+        samples: The folder of the session's ten generated samples.
+    """
     # log.debug("Builds settings for a real provider")
     live = _live(tmp_path, samples)
     # log.debug("Starts the app with a model that gives an empty record")
@@ -297,7 +421,12 @@ def test_live_extractions_are_limited_per_minute(tmp_path: Any, samples: Any) ->
 
 # log.debug("Defines the test: a model answer that never fits is a 502")
 def test_a_model_answer_that_never_fits_is_a_502(tmp_path: Any, samples: Any) -> None:
-    """An answer that fails validation, even after repair, is a 502."""
+    """Checks an answer that never validates, even repaired, is a 502.
+
+    Args:
+        tmp_path: A temporary folder pytest makes for this test.
+        samples: The folder of the session's ten generated samples.
+    """
     # log.debug("Builds settings for a real provider")
     live = _live(tmp_path, samples)
     # log.debug("Starts the app with a model that answers prose")
@@ -306,9 +435,22 @@ def test_a_model_answer_that_never_fits_is_a_502(tmp_path: Any, samples: Any) ->
         assert c.post(f"{API}/extract/sample/charge-000").status_code == 502
 
 
-# log.debug("Defines the helper: return settings for a real provider; the tests pass the model")
-def _live(tmp_path: Any, samples: Any, **overrides: Any) -> AppSettings:
-    """Return settings for a real provider; the tests pass the model."""
+# log.debug("Defines the settings for a real provider; the tests pass the model")
+def _live(tmp_path: Any = None, samples: Any = None, **overrides: Any) -> AppSettings:
+    """Returns settings for a real provider; the tests pass the model.
+
+    Args:
+        tmp_path: The test's temporary folder. Required.
+        samples: The folder of generated samples. Required.
+        **overrides: Settings to change, by field name.
+
+    Returns:
+        The settings, with a real provider.
+    """
+    # log.debug("Takes the test's folder, which the caller must give")
+    tmp_path = required(tmp_path=tmp_path)
+    # log.debug("Takes the samples folder, which the caller must give")
+    samples = required(samples=samples)
     # log.debug("Returns them")
     return AppSettings(
         llm_provider="anthropic",

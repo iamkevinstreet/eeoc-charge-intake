@@ -1,16 +1,26 @@
 // ########################################################################
 // #                      frontend/tests/fixtures.ts                      #
 // ########################################################################
-// #  Author:            Kevin Street                                     #
-// #  Created on:        2026-10-29                                       #
-// #  Last modified on:  2026-10-29                                       #
-// #  Purpose:           Made-up samples, a review and an evaluation run  #
-// #                     the tests render and stub fetch with.            #
-// ########################################################################
-/** Made-up samples, a review and an evaluation run the tests render and stub fetch with. */
+/**
+ * Author:            Kevin Street
+ * Created on:        2026-10-29
+ * Last modified on:  2026-10-29
+ *
+ * Made-up samples, a review and an evaluation run that the tests render
+ * and stub fetch with. The record is built from the quotes on its page,
+ * so every quote is there to be found.
+ */
 
+// ########################################################################
+// #                               Imports                                #
+// ########################################################################
+// Local
+import { required } from '../src/lib/required';
 import type { Health, Review, RunResult, Sample, Sourced, Value } from '../src/types';
 
+// ########################################################################
+// #                           Local constants                            #
+// ########################################################################
 // log.debug('Sets the quote behind each field, as the charge page has it')
 const QUOTES = {
   number: 'EEOC Charge No. 451-2026-01234',
@@ -48,13 +58,6 @@ const SECOND = 'charge-001';
 const CLEAN = 'clean';
 // log.debug('Sets the tag of a case with no charge number')
 const MISSING = 'missing_number';
-
-// log.debug('Defines one extracted field, quoted from the first page of its document')
-function field(value: Value, span: string | null): Sourced {
-  // log.debug('Returns the field with its confidence')
-  return { value, page: span === null ? null : 1, span, confidence: CONFIDENCE, reason: null };
-}
-
 // log.debug('Sets the extracted record, one field per line of the charge')
 export const RECORD: Record<string, Sourced> = {
   charge_number: field('451-2026-01234', QUOTES.number),
@@ -69,10 +72,8 @@ export const RECORD: Record<string, Sourced> = {
   notice_date: field('2026-10-01', QUOTES.notice),
   summary: field('The charging party says she was dismissed after reporting harassment.', null),
 };
-
 // log.debug('Lists the fields in the order the record shows them')
 export const FIELDS = Object.keys(RECORD);
-
 // log.debug('Sets a review of a generated sample with no decisions yet')
 export const REVIEW: Review = {
   review_id: 'r-0123456789',
@@ -92,10 +93,8 @@ export const REVIEW: Review = {
   decided: 0,
   total: FIELDS.length,
 };
-
 // log.debug('Sets the health report of the offline stand-in')
 export const HEALTH: Health = { ok: true, provider: 'fake', model: MODEL, demo: true };
-
 // log.debug('Sets two generated samples, the second a hard case')
 export const SAMPLES: Sample[] = [
   { id: FIRST, tags: [CLEAN], charge_pdf: `${FIRST}.pdf`, notice_pdf: 'notice-000.pdf' },
@@ -106,18 +105,6 @@ export const SAMPLES: Sample[] = [
     notice_pdf: 'notice-001.pdf',
   },
 ];
-
-// log.debug('Defines the scores of one case: every field right except those named')
-function scores(wrong: readonly string[], totals: Record<string, number>): Record<string, number> {
-  // log.debug('Scores each field one, or zero when it is among the wrong ones')
-  const fields = FIELDS.map((name): [string, number] => [
-    `f_${name}`,
-    wrong.includes(name) ? 0 : 1,
-  ]);
-  // log.debug('Returns the field scores with the totals of the case')
-  return { ...Object.fromEntries(fields), ...totals };
-}
-
 // log.debug('Sets an evaluation run of two cases, one with the charge number wrong')
 export const RUN: RunResult = {
   name: 'live-test-model',
@@ -160,3 +147,47 @@ export const RUN: RunResult = {
     },
   ],
 };
+
+// ########################################################################
+// #                            Test fixtures                             #
+// ########################################################################
+// log.debug('Defines one extracted field, quoted from the first page of its document')
+/**
+ * Returns one extracted field, quoted from the first page of its
+ * document.
+ *
+ * @param value - The field's value; null for an empty field.
+ * @param span - The text it quotes; null for a field with no quote.
+ * @returns The field, on page 1 when it has a quote, with the model's
+ *   confidence.
+ */
+function field(value: Value = null, span: string | null = null): Sourced {
+  // log.debug('Returns the field with its confidence')
+  return { value, page: span === null ? null : 1, span, confidence: CONFIDENCE, reason: null };
+}
+
+// log.debug('Defines the scores of one case: every field right except those named')
+/**
+ * Returns the scores of one case: every field right except those named,
+ * with the case's totals.
+ *
+ * @param wrong - The fields the case got wrong. Required.
+ * @param totals - The case's headline scores, by name. Required.
+ * @returns A one or a zero for each field's own score, with the totals.
+ */
+function scores(
+  wrong: readonly string[] | null = null,
+  totals: Record<string, number> | null = null,
+): Record<string, number> {
+  // log.debug('Takes the fields it got wrong, which the caller must give')
+  wrong = required({ wrong });
+  // log.debug('Takes the totals, which the caller must give')
+  totals = required({ totals });
+  // log.debug('Scores each field one, or zero when it is among the wrong ones')
+  const fields = FIELDS.map((name): [string, number] => [
+    `f_${name}`,
+    wrong.includes(name) ? 0 : 1,
+  ]);
+  // log.debug('Returns the field scores with the totals of the case')
+  return { ...Object.fromEntries(fields), ...totals };
+}

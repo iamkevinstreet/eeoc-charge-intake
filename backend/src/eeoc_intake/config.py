@@ -1,31 +1,48 @@
 ########################################################################
 #                  backend/src/eeoc_intake/config.py                   #
 ########################################################################
-#  Author:            Kevin Street                                     #
-#  Created on:        2026-10-29                                       #
-#  Last modified on:  2026-10-29                                       #
-#  Purpose:           Every setting the service, the evaluation and    #
-#                     the dashboard read, typed and validated.         #
-########################################################################
-"""Settings for the charge intake service.
+"""
+Author:            Kevin Street
+Created on:        2026-10-29
+Last modified on:  2026-10-29
 
-Each field is a `[section] key` in config/settings.toml, joined by an
-underscore: `[api] port` is `api_port`, which the environment variable
-API_PORT overrides. The model key in .env is the only secret.
+Loads every setting the service, the evaluation, the dashboard and the
+review screen read, typed and validated, and every value two modules
+share. Values come from config/config.toml and secrets from config/.env;
+an environment variable overrides either.
+
+Each field is a `[section] key` of config/config.toml joined by an
+underscore: `[api] port` is `api_port`, which API_PORT overrides. A
+nested table is one field: `[labels.fields]` is `labels_fields`. The
+model keys in config/.env are the only secrets. SETTINGS holds the
+settings loaded once at import, for the values modules bind in their
+Global constants; functions that take settings still take them, so
+tests can pass their own.
 """
 
+########################################################################
+#                               Imports                                #
+########################################################################
+# Standard library
 from __future__ import annotations
 
 from functools import lru_cache
 from pathlib import Path
 from typing import Final, Self
 
+# Third-party
 from kds.logs import get_logger
 from kds.settings import Settings
 from pydantic import Field, model_validator
 
-# Module constants
+########################################################################
+#                           Global constants                           #
+########################################################################
 log = get_logger(__name__)
+
+########################################################################
+#                           Local constants                            #
+########################################################################
 # log.debug("Names this machine's own address")
 LOCALHOST: Final = "127.0.0.1"
 # log.debug("Lists the addresses that only this machine can reach")
@@ -40,11 +57,66 @@ MAX_RESPONSE_DAYS = 365
 SAMPLES = 30
 # log.debug("Sets the days a position statement is usually due after the notice")
 RESPONSE_DAYS = 30
+# log.debug("Sets how many whole extractions a live run saves by default")
+DUMP = 8
+# log.debug("Names the kind of a document that is not a hard case")
+CLEAN = "clean"
+# log.debug("Names the field read from the notice letter")
+NOTICE_FIELD = "notice_date"
+# log.debug("Names the field the model paraphrases instead of quoting")
+SUMMARY_FIELD = "summary"
+# log.debug("Names the field that holds a yes or a no")
+YES_NO_FIELD = "continuing_action"
+# log.debug("Lists the fields that hold lists")
+LIST_FIELDS = ("bases", "issues")
+# log.debug("Names each field, in the order the record shows them")
+FIELD_NAMES = {
+    "charge_number": "Charge number",
+    "charging_party": "Charging party",
+    "respondent": "Respondent",
+    "eeoc_office": "EEOC office",
+    "bases": "Bases",
+    "issues": "Issues",
+    "earliest_date": "Earliest date",
+    "latest_date": "Latest date",
+    "continuing_action": "Continuing action",
+    "notice_date": "Notice date",
+    "summary": "Summary",
+}
+# log.debug("Names each kind of generated document")
+KIND_NAMES = {
+    "clean": "Clean",
+    "missing_number": "Missing charge number",
+    "rotated": "Rotated page",
+    "long": "Long particulars",
+    "two_respondents": "Two respondents",
+}
+# log.debug("Sets the heatmap's column head for each kind of document")
+KIND_HEADS = {
+    "Clean": "Standard",
+    "Missing charge number": "No charge<br>number",
+    "Rotated page": "Rotated<br>page",
+    "Long particulars": "Long<br>particulars",
+    "Two respondents": "Two<br>respondents",
+}
+# log.debug("Sets the keys that move through the fields and decide them")
+KEYS = {"next": "j", "previous": "k", "accept": "a", "edit": "e", "reject": "r"}
 
 
+########################################################################
+#                             App settings                             #
+########################################################################
 # log.debug("Defines the settings")
 class AppSettings(Settings):
-    """The shared settings, plus the paths, limits and rules here."""
+    """The shared settings, plus this project's paths, limits and rules.
+
+    It also holds the values two modules share and the settings the
+    review screen reads when it is built, so config/config.toml is the
+    one place each is written.
+    """
+
+    # log.debug("Holds the key only a run's results file has")
+    eval_results_key: str = "results"
 
     # log.debug("Holds where the generated test documents go")
     data_samples: Path = Path("data/generated")
@@ -56,6 +128,16 @@ class AppSettings(Settings):
     data_extractions: Path = Path("data/extractions")
     # log.debug("Holds where the CSV files for Tableau go")
     data_export: Path = Path("data/export")
+    # log.debug("Holds the name of the figures file in the results folder")
+    data_figures: str = "figures.json"
+
+    # log.debug("Holds the encoding every file is read and written in")
+    files_encoding: str = "utf-8"
+
+    # log.debug("Holds the milliseconds in a second")
+    units_ms_per_second: int = 1000
+    # log.debug("Holds the percent a share of one is")
+    units_percent: int = 100
 
     # log.debug("Holds how many test documents to generate")
     samples_count: int = Field(default=SAMPLES, ge=1)
@@ -63,11 +145,40 @@ class AppSettings(Settings):
     samples_seed: int = 2026
     # log.debug("Holds how often a generated document is a hard case")
     samples_hard_every: int = Field(default=5, ge=1)
+    # log.debug("Holds the name of the evaluation set's file")
+    samples_cases: str = "cases.jsonl"
+    # log.debug("Holds the kind of a document that is not a hard case")
+    samples_clean: str = CLEAN
+    # log.debug("Holds the input of a case that holds its charge PDF")
+    samples_charge_input: str = "charge_pdf"
+    # log.debug("Holds the input of a case that holds its notice PDF")
+    samples_notice_input: str = "notice_pdf"
+
+    # log.debug("Holds the field read from the notice letter")
+    record_notice_field: str = NOTICE_FIELD
+    # log.debug("Holds the field the model paraphrases instead of quoting")
+    record_summary_field: str = SUMMARY_FIELD
+    # log.debug("Holds the field that holds a yes or a no")
+    record_yes_no_field: str = YES_NO_FIELD
+    # log.debug("Holds the fields that hold lists")
+    record_list_fields: tuple[str, ...] = LIST_FIELDS
 
     # log.debug("Holds the days after the notice date a response is due")
     extract_response_days: int = Field(default=RESPONSE_DAYS, ge=1, le=MAX_RESPONSE_DAYS)
     # log.debug("Holds how many full extractions a live run saves")
-    extract_dump: int = Field(default=8, ge=0)
+    extract_dump: int = Field(default=DUMP, ge=0)
+
+    # log.debug("Holds the name of the score for fields wrongly left empty")
+    scores_false_abstentions: str = "false_abstentions"
+    # log.debug("Holds the name of the score for fields filled with nothing to find")
+    scores_guesses: str = "guesses"
+    # log.debug("Holds what comes before a field's name in that field's own score")
+    scores_field_prefix: str = "f_"
+
+    # log.debug("Holds the name of the rank test, used for time")
+    stats_rank_test: str = "rank"
+    # log.debug("Holds the name of Welch's t-test, used for every average")
+    stats_welch_test: str = "welch"
 
     # log.debug("Holds the address the service listens on")
     api_host: str = LOCALHOST
@@ -83,19 +194,133 @@ class AppSettings(Settings):
     api_allowed_origins: tuple[str, ...] = ("http://localhost:5173",)
     # log.debug("Holds the host names requests may be addressed to")
     api_allowed_hosts: tuple[str, ...] = ("localhost", LOCALHOST)
+    # log.debug("Holds the prefix of every route, which carries the API's version")
+    api_prefix: str = "/api/v1"
+    # log.debug("Holds the header that carries a request's id")
+    api_request_id_header: str = "X-Request-ID"
+
+    # log.debug("Holds the provider that means demo mode")
+    demo_provider: str = "fake"
 
     # log.debug("Holds the address the dashboard listens on")
     dashboard_host: str = LOCALHOST
     # log.debug("Holds the dashboard port")
     dashboard_port: int = Field(default=8050, ge=1, le=MAX_PORT)
 
+    # log.debug("Holds the id of the location, whose first change reads the scheme")
+    dashboard_ids_url: str = "url"
+    # log.debug("Holds the id of the store that holds the browser's colour scheme")
+    dashboard_ids_scheme: str = "scheme"
+    # log.debug("Holds the id of the run picker")
+    dashboard_ids_runs: str = "runs"
+    # log.debug("Holds the id of the runs' key")
+    dashboard_ids_legend: str = "legend"
+    # log.debug("Holds the id of the headline numbers")
+    dashboard_ids_tiles: str = "tiles"
+    # log.debug("Holds the id of the accuracy chart by field")
+    dashboard_ids_by_field: str = "by-field"
+    # log.debug("Holds the id of the accuracy chart by field and kind of document")
+    dashboard_ids_heatmap: str = "heatmap"
+    # log.debug("Holds the id of the time chart")
+    dashboard_ids_latency: str = "latency"
+    # log.debug("Holds the id of the cost chart")
+    dashboard_ids_cost: str = "cost"
+    # log.debug("Holds the id of the table of wrong fields")
+    dashboard_ids_wrong_table: str = "wrong-table"
+
+    # log.debug("Holds the run id column")
+    columns_run_id: str = "run_id"
+    # log.debug("Holds the column of each run's long label")
+    columns_run: str = "run"
+    # log.debug("Holds the model column")
+    columns_model: str = "model"
+    # log.debug("Holds the start time column")
+    columns_started_at: str = "started_at"
+    # log.debug("Holds the column that says whether a run is live or smoke")
+    columns_kind: str = "kind"
+    # log.debug("Holds the document id column")
+    columns_case_id: str = "case_id"
+    # log.debug("Holds the kind of document column")
+    columns_case_kind: str = "case_kind"
+    # log.debug("Holds the column of each document's time, in milliseconds")
+    columns_latency_ms: str = "latency_ms"
+    # log.debug("Holds the runs table's cost per document column")
+    columns_cost_per_case: str = "cost_per_case_usd"
+    # log.debug("Holds the field column")
+    columns_field: str = "field"
+    # log.debug("Holds the column that is 1 when a field is right and 0 when not")
+    columns_correct: str = "correct"
+    # log.debug("Holds the column of the value the model returned")
+    columns_value: str = "value"
+    # log.debug("Holds the column of the known answer")
+    columns_expected: str = "expected"
+    # log.debug("Holds the column that says the quote check removed the value")
+    columns_removed: str = "removed_by_verification"
+
+    # log.debug("Holds the name of the light scheme, which the exported figures use")
+    charts_light_scheme: str = "light"
+    # log.debug("Holds the name of the dark scheme")
+    charts_dark_scheme: str = "dark"
+    # log.debug("Holds the most runs a chart compares")
+    charts_max_runs: int = Field(default=3, ge=1)
+    # log.debug("Holds the size of chart text")
+    charts_font_size: int = 12
+    # log.debug("Holds the size of value-axis ticks and small notes")
+    charts_tick_size: int = 11
+    # log.debug("Holds the margin every chart keeps at its edges")
+    charts_edge: int = 8
+    # log.debug("Holds the colour that lets the card show through")
+    charts_clear: str = "rgba(0,0,0,0)"
+    # log.debug("Holds the edge titles and notes line up on")
+    charts_align: str = "left"
+    # log.debug("Holds the decimals a cost is written with")
+    charts_cost_places: int = 4
+    # log.debug("Holds the tick format of a share axis")
+    charts_percent_ticks: str = ".0%"
+    # log.debug("Holds the title of the accuracy chart by field")
+    charts_by_field_title: str = "Fields right, by field"
+    # log.debug("Holds the title of the accuracy chart by field and kind of document")
+    charts_heatmap_title: str = "Fields right, by field and kind of document"
+    # log.debug("Holds the title of the time chart")
+    charts_latency_title: str = "Seconds per document"
+    # log.debug("Holds the title of the cost chart")
+    charts_cost_title: str = "Cost per document, at list prices"
+    # log.debug("Holds the heatmap's column head for each kind of document")
+    charts_kind_heads: dict[str, str] = Field(default=KIND_HEADS)
+
+    # log.debug("Holds the word a true value is shown as")
+    labels_yes: str = "Yes"
+    # log.debug("Holds the word a false value is shown as")
+    labels_no: str = "No"
+    # log.debug("Holds what joins the items of a list people read")
+    labels_join: str = ", "
+    # log.debug("Holds the name of each field, in the order the record shows them")
+    labels_fields: dict[str, str] = Field(default=FIELD_NAMES)
+    # log.debug("Holds the name of each kind of generated document")
+    labels_kinds: dict[str, str] = Field(default=KIND_NAMES)
+
     # log.debug("Holds where the built review screen is")
     ui_dist: Path = Path("frontend/dist")
+    # log.debug("Holds the address of the code the review screen links to")
+    ui_code_url: str = "https://github.com/iamkevinstreet/eeoc-charge-intake"
+    # log.debug("Holds the command the review screen shows when there are no samples")
+    ui_generate_command: str = "make samples"
+    # log.debug("Holds the command the review screen shows when there are no results")
+    ui_smoke_command: str = "make eval"
+    # log.debug("Holds what the review screen calls an upload while it is extracted")
+    ui_upload_key: str = "upload"
+    # log.debug("Holds the style of the review screen's quieter notes")
+    ui_note_class: str = "ec-meta"
+    # log.debug("Holds the keys that move through the fields and decide them")
+    ui_keys: dict[str, str] = Field(default=KEYS)
 
     # log.debug("Defines the checks that need more than one setting")
     @model_validator(mode="after")
     def _check(self) -> Self:
-        """Refuse to listen beyond this machine: there is no sign-in.
+        """Refuses to listen beyond this machine: there is no sign-in.
+
+        Returns:
+            The settings, unchanged.
 
         Raises:
             ValueError: When the service or dashboard would listen on
@@ -123,9 +348,20 @@ class AppSettings(Settings):
         return self
 
 
-# log.debug("Defines the one shared settings object")
+# log.debug("Defines the loader of the shared settings object")
 @lru_cache(maxsize=1)
 def get_app_settings() -> AppSettings:
-    """Return the settings, read once per process."""
-    # log.debug("Builds the settings from the file, .env and the environment")
+    """Returns the settings, read once per process.
+
+    Tests that change the environment call
+    `get_app_settings.cache_clear()`.
+
+    Returns:
+        The settings, validated and frozen.
+    """
+    # log.debug("Builds the settings from the file, config/.env and the environment")
     return AppSettings()
+
+
+# log.debug("Loads the settings once, for the values every module binds")
+SETTINGS: Final = get_app_settings()

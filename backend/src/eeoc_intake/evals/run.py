@@ -1,13 +1,13 @@
 ########################################################################
 #                 backend/src/eeoc_intake/evals/run.py                 #
 ########################################################################
-#  Author:            Kevin Street                                     #
-#  Created on:        2026-10-29                                       #
-#  Last modified on:  2026-10-29                                       #
-#  Purpose:           Runs the extraction evaluation over the          #
-#                     generated documents and writes the results.      #
-########################################################################
-"""Run the extraction evaluation.
+"""
+Author:            Kevin Street
+Created on:        2026-10-29
+Last modified on:  2026-10-29
+
+Runs the extraction evaluation over the generated documents and writes
+the results.
 
     LLM_PROVIDER=fake python -m eeoc_intake.evals.run --name offline
     python -m eeoc_intake.evals.run --name live-<model>
@@ -20,6 +20,10 @@ the first `[extract] dump` extractions are saved whole in
 `[data] extractions`.
 """
 
+########################################################################
+#                               Imports                                #
+########################################################################
+# Standard library
 from __future__ import annotations
 
 import argparse
@@ -29,34 +33,79 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Final
 
+# Third-party
+from kds.args import required
 from kds.evals.case import EvalCase, load_cases
 from kds.evals.runner import RunResult, run_eval
 from kds.logs import get_logger, log_event, setup_logging
 
-from eeoc_intake.config import AppSettings, get_app_settings
+# Local
+from eeoc_intake.config import SETTINGS, AppSettings, get_app_settings
 from eeoc_intake.core.extract import Extraction, extract
-from eeoc_intake.core.generate import CASES_FILE
-from eeoc_intake.core.offline import FAKE, adapter_for
+from eeoc_intake.core.offline import adapter_for
 from eeoc_intake.evals.score import score
 
-# Module constants
+########################################################################
+#                           Global constants                           #
+########################################################################
 log = get_logger(__name__)
-# log.debug("Sets the text encoding of every file written")
-ENCODING: Final = "utf-8"
+# log.debug("Takes the text encoding of every file written, from the config")
+ENCODING: Final = SETTINGS.files_encoding
+# log.debug("Takes the name of the evaluation set's file, from the config")
+CASES_FILE: Final = SETTINGS.samples_cases
+# log.debug("Takes the provider that means the offline stand-in, from the config")
+FAKE: Final = SETTINGS.demo_provider
+# log.debug("Takes the input that holds a case's charge PDF, from the config")
+CHARGE_PDF: Final = SETTINGS.samples_charge_input
+# log.debug("Takes the input that holds a case's notice PDF, from the config")
+NOTICE_PDF: Final = SETTINGS.samples_notice_input
+
+########################################################################
+#                           Local constants                            #
+########################################################################
 # log.debug("Sets the time stamp that names a folder of saved extractions")
 STAMP: Final = "%Y%m%dT%H%M%SZ"
 
 
+########################################################################
+#                            Evaluation run                            #
+########################################################################
 # log.debug("Defines where a run's results go")
-def results_folder(settings: AppSettings) -> Path:
-    """Return `[data] smoke` for the stand-in, `[data] results` else."""
+def results_folder(settings: AppSettings | None = None) -> Path:
+    """Returns `[data] smoke` for the stand-in, `[data] results` else.
+
+    Args:
+        settings: The settings, whose provider decides. Required.
+
+    Returns:
+        The folder the run's results are written to.
+    """
+    # log.debug("Takes the settings, which the caller must give")
+    settings = required(settings=settings)
     # log.debug("Returns the smoke folder offline and the results folder live")
     return settings.data_smoke if settings.llm_provider == FAKE else settings.data_results
 
 
 # log.debug("Defines how one extraction is saved whole, for the case study")
-def save_extraction(folder: Path, case: EvalCase, ex: Extraction) -> Path:
-    """Write the case's record, raw answer and page texts as JSON."""
+def save_extraction(
+    folder: Path | None = None, case: EvalCase | None = None, ex: Extraction | None = None
+) -> Path:
+    """Writes the case's record, raw answer and page texts as JSON.
+
+    Args:
+        folder: The run's folder of saved extractions. Required.
+        case: The case that was extracted. Required.
+        ex: The case's extraction. Required.
+
+    Returns:
+        The path of the JSON file written.
+    """
+    # log.debug("Takes the folder, which the caller must give")
+    folder = required(folder=folder)
+    # log.debug("Takes the case, which the caller must give")
+    case = required(case=case)
+    # log.debug("Takes the extraction, which the caller must give")
+    ex = required(ex=ex)
     # log.debug("Makes the folder")
     folder.mkdir(parents=True, exist_ok=True)
     # log.debug("Names the file after the case")
@@ -86,16 +135,32 @@ class Extractor:
 
     # log.debug("Defines the constructor")
     def __init__(
-        self, settings: AppSettings, cases: list[EvalCase], *, dump: int, name: str
+        self,
+        settings: AppSettings | None = None,
+        cases: list[EvalCase] | None = None,
+        *,
+        dump: int | None = None,
+        name: str | None = None,
     ) -> None:
-        """Build the adapter and name the folder for saved extractions.
+        """Builds the adapter and names the saved extractions' folder.
 
         Args:
             settings: The settings the adapter and folders come from.
+                Required.
             cases: The cases, which the offline stand-in answers from.
-            dump: How many extractions to save whole.
+                Required.
+            dump: How many extractions to save whole. Required.
             name: The run's name, which names the saved folder.
+                Required.
         """
+        # log.debug("Takes the settings, which the caller must give")
+        settings = required(settings=settings)
+        # log.debug("Takes the cases, which the caller must give")
+        cases = required(cases=cases)
+        # log.debug("Takes how many to save whole, which the caller must give")
+        dump = required(dump=dump)
+        # log.debug("Takes the name, which the caller must give")
+        name = required(name=name)
         # log.debug("Builds the adapter: the stand-in offline, the model live")
         self.adapter = adapter_for(settings, cases)
         # log.debug("Keeps how many extractions to save")
@@ -106,10 +171,19 @@ class Extractor:
         self.saved = 0
 
     # log.debug("Defines one case's extraction")
-    def __call__(self, case: EvalCase) -> Extraction:
-        """Extract the case, saving it whole while under the count."""
+    def __call__(self, case: EvalCase | None = None) -> Extraction:
+        """Extracts the case, saving it whole while under the count.
+
+        Args:
+            case: The case to extract. Required.
+
+        Returns:
+            The extraction, for scoring.
+        """
+        # log.debug("Takes the case, which the caller must give")
+        case = required(case=case)
         # log.debug("Extracts the case's two documents")
-        ex = extract(self.adapter, case.input["charge_pdf"], case.input["notice_pdf"])
+        ex = extract(self.adapter, case.input[CHARGE_PDF], case.input[NOTICE_PDF])
         # log.debug("Saves it whole while fewer than dump are saved")
         if self.saved < self.dump:
             # log.debug("Writes the extraction")
@@ -122,19 +196,28 @@ class Extractor:
 
 # log.debug("Defines a whole evaluation run")
 def evaluate(
-    settings: AppSettings, *, name: str, limit: int | None = None, dump: int = 0
+    settings: AppSettings | None = None,
+    *,
+    name: str | None = None,
+    limit: int | None = None,
+    dump: int = 0,
 ) -> RunResult:
-    """Run every generated case and write the results.
+    """Runs every generated case and writes the results.
 
     Args:
         settings: Where the cases are, which provider, where to write.
-        name: The results file's prefix.
+            Required.
+        name: The results file's prefix. Required.
         limit: Run only the first `limit` cases.
         dump: How many extractions to save whole.
 
     Returns:
         The run, also written as JSON and Markdown to its folder.
     """
+    # log.debug("Takes the settings, which the caller must give")
+    settings = required(settings=settings)
+    # log.debug("Takes the name, which the caller must give")
+    name = required(name=name)
     # log.debug("Loads the generated cases, as many as asked")
     cases = load_cases(settings.data_samples / CASES_FILE)[:limit]
     # log.debug("Builds the system under test")
@@ -153,7 +236,10 @@ def evaluate(
 
 # log.debug("Defines the command line")
 def main(argv: Sequence[str] | None = None) -> int:
-    """Run the evaluation and print its table.
+    """Runs the evaluation and prints its table.
+
+    Args:
+        argv: The command's arguments; the process's own when None.
 
     Returns:
         1 when the offline stand-in fails a case, which means a bug;
@@ -187,8 +273,18 @@ def main(argv: Sequence[str] | None = None) -> int:
 
 
 # log.debug("Defines how many extractions a run saves whole by default")
-def _default_dump(settings: AppSettings) -> int:
-    """Return `[extract] dump` for a live run and 0 offline."""
+def _default_dump(settings: AppSettings | None = None) -> int:
+    """Returns `[extract] dump` for a live run and 0 offline.
+
+    Args:
+        settings: The settings, whose provider and dump decide.
+            Required.
+
+    Returns:
+        How many extractions to save whole.
+    """
+    # log.debug("Takes the settings, which the caller must give")
+    settings = required(settings=settings)
     # log.debug("Returns none for the stand-in, whose output says nothing new")
     return 0 if settings.llm_provider == FAKE else settings.extract_dump
 

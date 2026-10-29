@@ -1,13 +1,13 @@
 ########################################################################
 #               backend/src/eeoc_intake/evals/export.py                #
 ########################################################################
-#  Author:            Kevin Street                                     #
-#  Created on:        2026-10-29                                       #
-#  Last modified on:  2026-10-29                                       #
-#  Purpose:           Exports the evaluation results as tidy CSV files #
-#                     for Tableau or any other BI tool.                #
-########################################################################
-"""Export evaluation results as tidy CSV files for Tableau.
+"""
+Author:            Kevin Street
+Created on:        2026-10-29
+Last modified on:  2026-10-29
+
+Exports the evaluation results as tidy CSV files for Tableau or any
+other BI tool.
 
     python -m eeoc_intake.evals.export      # writes [data] export/*.csv
 
@@ -16,32 +16,62 @@ field. They come from the same tables the dashboard draws, so the
 numbers agree; data/README.md describes the sheets to build from them.
 """
 
+########################################################################
+#                               Imports                                #
+########################################################################
+# Standard library
 from __future__ import annotations
 
 from pathlib import Path
 from typing import Final
 
+# Third-party
+from kds.args import required
 from kds.logs import get_logger
 
-from eeoc_intake.config import get_app_settings
+# Local
+from eeoc_intake.config import SETTINGS, get_app_settings
 from eeoc_intake.dashboard.data import frames, load_runs
 
-# Module constants
+########################################################################
+#                           Global constants                           #
+########################################################################
 log = get_logger(__name__)
+# log.debug("Takes the encoding the files are read in, from the config")
+ENCODING: Final = SETTINGS.files_encoding
+
+########################################################################
+#                           Local constants                            #
+########################################################################
 # log.debug("Names the three files, in the order the tables come")
 NAMES: Final = ("runs", "documents", "fields")
 
 
+########################################################################
+#                            Tableau export                            #
+########################################################################
 # log.debug("Defines the export")
-def export(live: Path, smoke: Path | None, out: Path) -> list[Path]:
-    """Write runs.csv, documents.csv and fields.csv into `out`.
+def export(
+    live: Path | None = None, smoke: Path | None = None, out: Path | None = None
+) -> list[Path]:
+    """Writes runs.csv, documents.csv and fields.csv into `out`.
 
     Live runs are exported when there are any; otherwise every run,
     the offline smoke runs included.
 
+    Args:
+        live: The folder of live results. Required.
+        smoke: The folder of offline smoke results; None leaves smoke
+            runs out.
+        out: The folder to write the CSV files into. Required.
+
     Returns:
         The files written.
     """
+    # log.debug("Takes the live results folder, which the caller must give")
+    live = required(live=live)
+    # log.debug("Takes the output folder, which the caller must give")
+    out = required(out=out)
     # log.debug("Reads the live runs, or every run when there is none")
     runs = load_runs(live) or load_runs(live, smoke)
     # log.debug("Makes the folder")
@@ -62,7 +92,7 @@ def export(live: Path, smoke: Path | None, out: Path) -> list[Path]:
 
 # log.debug("Defines the command line")
 def main() -> None:
-    """Export the configured results and say how many rows each has."""
+    """Exports the results and says how many rows each file has."""
     # log.debug("Reads the settings")
     settings = get_app_settings()
     # log.debug("Writes the three files")
@@ -70,7 +100,7 @@ def main() -> None:
     # log.debug("Says what each file holds")
     for path in paths:
         # log.debug("Counts the rows below the header")
-        rows = len(path.read_text(encoding="utf-8").splitlines()) - 1
+        rows = len(path.read_text(encoding=ENCODING).splitlines()) - 1
         # log.debug("Prints the file and its rows")
         print(f"wrote {path} ({rows} rows)")
 

@@ -1,0 +1,202 @@
+########################################################################
+#                          config/config.toml                          #
+########################################################################
+# Author:            Kevin Street
+# Created on:        2026-10-29
+# Last modified on:  2026-10-29
+#
+# Every setting the service, the evaluation, the dashboard and the
+# review screen read, at its default, and every value two files share.
+# No secrets: those go in config/.env.
+#
+# Each key's name is its section and key joined: [api] port is api_port,
+# and the environment variable API_PORT overrides it. A nested table is
+# one setting: [labels.fields] is labels_fields. A test keeps this file
+# equal to the defaults in the backend's config module and the shared
+# kds settings. The review screen takes the few keys it needs when it is
+# built; frontend/vite.config.ts lists them.
+
+[llm]
+provider = "fake"                         # anthropic | openai | azure | fake (demo mode, no key)
+model = "claude-sonnet-5-5"               # the model that reads the documents
+judge_model = "claude-sonnet-5-5"         # unused here: fields are scored by exact match
+embedding_model = "text-embedding-3-small"  # unused here
+max_tokens = 2048                         # the most tokens one extraction may write
+temperature = 0.0                         # 0 keeps runs repeatable
+max_retries = 3                           # retries for model failures that can succeed later
+timeout_s = 60.0                          # how long one model call may take
+
+[azure_openai]
+api_version = "2024-10-21"
+
+[eval]
+budget_usd = 5.0                          # one process stops calling the model past this spend
+results_key = "results"                   # the key only a run file has: its documents' results
+
+[log]
+dir = "logs"                              # one YYYY-MM-DD.jsonl file per day
+level = "INFO"                            # DEBUG | INFO | WARNING | ERROR
+redact = true                             # remove emails, phone numbers and IDs from logs
+trace = false                             # print logger lines as HH:MM:SS traces
+
+[data]
+samples = "data/generated"                # generated charge and notice PDFs, and cases.jsonl
+results = "data/evals/results"            # live evaluation results, committed
+smoke = "data/evals/smoke"                # offline smoke results, not committed
+extractions = "data/extractions"          # full extractions a live run saves for the demo
+export = "data/export"                    # CSV files for Tableau
+figures = "figures.json"                  # the case study's figures, in the results folder
+
+# How files are read and written, and the units every part converts between.
+[files]
+encoding = "utf-8"                        # every file is read and written as UTF-8
+
+[units]
+ms_per_second = 1000                      # milliseconds in a second, for times shown or logged
+percent = 100                             # a share of one, written in percent
+
+[samples]
+count = 30                                # how many test documents to generate
+seed = 2026                               # the same seed always makes the same documents
+hard_every = 5                            # every fifth document is a hard case
+cases = "cases.jsonl"                     # the evaluation set, one line per document
+clean = "clean"                           # the kind of a document that is not a hard case
+charge_input = "charge_pdf"               # the input of a case that holds its charge PDF
+notice_input = "notice_pdf"               # the input of a case that holds its notice PDF
+
+# The fields of the record that the code names one by one.
+[record]
+notice_field = "notice_date"              # read from the notice; the deadline counts from it
+summary_field = "summary"                 # the field the model paraphrases: no quote, never scored
+yes_no_field = "continuing_action"        # the field that holds a yes or a no
+list_fields = ["bases", "issues"]         # the fields that hold lists
+
+[extract]
+response_days = 30                        # a response is due this many days after the notice
+dump = 8                                  # a live run saves the full extraction of this many
+
+# The scores of a document that the review screen and the evaluation both name.
+[scores]
+false_abstentions = "false_abstentions"   # fields left empty that the documents supported
+guesses = "guesses"                       # fields filled where the documents had no value
+field_prefix = "f_"                       # before a field's name: its own score, 1 right, 0 wrong
+
+# The two tests that decide whether a change between runs is bigger than noise.
+[stats]
+rank_test = "rank"                        # the rank test (Mann-Whitney U), used for time
+welch_test = "welch"                      # Welch's t-test, used for every average
+
+[api]
+host = "127.0.0.1"                        # this machine only: the service has no sign-in
+port = 8000
+extracts_per_minute = 6                   # per client; each extraction calls the model
+max_upload_bytes = 10000000               # the largest PDF an upload may be
+max_reviews = 200                         # the most reviews kept in memory
+allowed_origins = ["http://localhost:5173"]  # browser origins allowed to call the API
+allowed_hosts = ["localhost", "127.0.0.1"]   # host names requests may be addressed to
+prefix = "/api/v1"                        # every route's prefix, with the API's version
+request_id_header = "X-Request-ID"        # the header that carries a request's id, both ways
+
+[demo]
+provider = "fake"                         # the provider that means demo mode: the offline stand-in
+
+[dashboard]
+host = "127.0.0.1"                        # this machine only
+port = 8050
+
+# The ids of the dashboard's parts, which its layout and its callbacks share.
+[dashboard_ids]
+url = "url"                               # the location, whose first change reads the scheme
+scheme = "scheme"                         # the store that holds the browser's colour scheme
+runs = "runs"                             # the run picker
+legend = "legend"                         # the runs' key
+tiles = "tiles"                           # the headline numbers
+by_field = "by-field"                     # the accuracy chart by field
+heatmap = "heatmap"                       # the accuracy chart by field and kind of document
+latency = "latency"                       # the time chart
+cost = "cost"                             # the cost chart
+wrong_table = "wrong-table"               # the table of fields that were wrong
+
+# The column names of the evaluation tables the dashboard draws and the
+# Tableau CSV files hold.
+[columns]
+run_id = "run_id"                         # the run's id
+run = "run"                               # the run's long label
+model = "model"                           # the model
+started_at = "started_at"                 # when the run started
+kind = "kind"                             # whether a run is live or smoke
+case_id = "case_id"                       # the document's id
+case_kind = "case_kind"                   # the kind of document
+latency_ms = "latency_ms"                 # a document's time, in milliseconds
+cost_per_case = "cost_per_case_usd"       # a run's cost per document
+field = "field"                           # the field
+correct = "correct"                       # 1 when a field is right, 0 when not
+value = "value"                           # the value the model returned, as JSON
+expected = "expected"                     # the known answer, as JSON
+removed = "removed_by_verification"       # whether the quote check removed the value
+
+# The dashboard's charts, which the case study's figures share.
+[charts]
+light_scheme = "light"                    # the light scheme, which the exported figures use
+dark_scheme = "dark"                      # the dark scheme
+max_runs = 3                              # the most runs a chart compares: one per ramp step
+font_size = 12                            # the size of chart text, in pixels
+tick_size = 11                            # the size of value-axis ticks and small notes, in pixels
+edge = 8                                  # the margin every chart keeps at its edges, in pixels
+clear = "rgba(0,0,0,0)"                   # the colour that lets the card show through
+align = "left"                            # titles and notes line up on their left edge
+cost_places = 4                           # the decimals a cost is written with
+percent_ticks = ".0%"                     # a share axis's ticks: whole percents
+by_field_title = "Fields right, by field"
+heatmap_title = "Fields right, by field and kind of document"
+latency_title = "Seconds per document"
+cost_title = "Cost per document, at list prices"
+
+[charts.kind_heads]                       # the heatmap's column heads, short for narrow panels
+"Clean" = "Standard"
+"Missing charge number" = "No charge<br>number"
+"Rotated page" = "Rotated<br>page"
+"Long particulars" = "Long<br>particulars"
+"Two respondents" = "Two<br>respondents"
+
+# The words people read, shared by the dashboard and the review screen.
+[labels]
+yes = "Yes"                               # a true value
+no = "No"                                 # a false value
+join = ", "                               # what joins the items of a list
+
+[labels.fields]                           # each field, in the order the record shows them
+charge_number = "Charge number"
+charging_party = "Charging party"
+respondent = "Respondent"
+eeoc_office = "EEOC office"
+bases = "Bases"
+issues = "Issues"
+earliest_date = "Earliest date"
+latest_date = "Latest date"
+continuing_action = "Continuing action"
+notice_date = "Notice date"
+summary = "Summary"
+
+[labels.kinds]                            # each kind of generated document
+clean = "Clean"
+missing_number = "Missing charge number"
+rotated = "Rotated page"
+long = "Long particulars"
+two_respondents = "Two respondents"
+
+# The review screen.
+[ui]
+dist = "frontend/dist"                    # the built review screen the service serves at /
+code_url = "https://github.com/iamkevinstreet/eeoc-charge-intake"  # the code the top bar links to
+generate_command = "make samples"         # the command shown when there are no samples
+smoke_command = "make eval"               # the command shown when there are no results
+upload_key = "upload"                     # what an upload is called while it is extracted
+note_class = "ec-meta"                    # the style of the quieter notes
+
+[ui.keys]                                 # the keys that move through the fields and decide them
+next = "j"
+previous = "k"
+accept = "a"
+edit = "e"
+reject = "r"

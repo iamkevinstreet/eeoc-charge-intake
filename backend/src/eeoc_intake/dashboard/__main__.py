@@ -1,13 +1,12 @@
 ########################################################################
 #            backend/src/eeoc_intake/dashboard/__main__.py             #
 ########################################################################
-#  Author:            Kevin Street                                     #
-#  Created on:        2026-10-29                                       #
-#  Last modified on:  2026-10-29                                       #
-#  Purpose:           Serves the dashboard, or writes the figures the  #
-#                     case study draws.                                #
-########################################################################
-"""Serve the dashboard, or write the figures the case study draws.
+"""
+Author:            Kevin Street
+Created on:        2026-10-29
+Last modified on:  2026-10-29
+
+Serves the dashboard, or writes the figures the case study draws.
 
     python -m eeoc_intake.dashboard
     python -m eeoc_intake.dashboard --export-figures [PATH]
@@ -18,6 +17,10 @@ writes the Plotly JSON of the latest live runs to PATH, by default
 figures.json in [data] results, and exits.
 """
 
+########################################################################
+#                               Imports                                #
+########################################################################
+# Standard library
 from __future__ import annotations
 
 import argparse
@@ -25,22 +28,36 @@ from collections.abc import Sequence
 from pathlib import Path
 from typing import Final
 
+# Third-party
 from kds.logs import get_logger, log_event, setup_logging
 from kds.settings import describe
 
-from eeoc_intake.config import get_app_settings
+# Local
+from eeoc_intake.config import SETTINGS, get_app_settings
 from eeoc_intake.dashboard.app import build_app
 from eeoc_intake.dashboard.export import export_figures
 
-# Module constants
+########################################################################
+#                           Global constants                           #
+########################################################################
 log = get_logger(__name__)
-# log.debug("Names the figures file the case study reads")
-FIGURES: Final = "figures.json"
+# log.debug("Takes the name of the figures file the case study reads, from the config")
+FIGURES: Final = SETTINGS.data_figures
 
 
+########################################################################
+#                             Command line                             #
+########################################################################
 # log.debug("Defines the command line")
 def main(argv: Sequence[str] | None = None) -> int:
-    """Serve the app until stopped, or write the figures; return status.
+    """Serves the app until stopped, or writes the figures and returns.
+
+    Args:
+        argv: The command's arguments; the process's own when None.
+
+    Returns:
+        The exit status: 0 once the figures are written or the server
+        stops.
 
     Raises:
         SystemExit: When there are no live runs to draw the figures of.

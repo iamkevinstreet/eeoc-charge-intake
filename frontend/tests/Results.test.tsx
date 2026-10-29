@@ -1,26 +1,37 @@
 // ########################################################################
 // #                   frontend/tests/Results.test.tsx                    #
 // ########################################################################
-// #  Author:            Kevin Street                                     #
-// #  Created on:        2026-10-29                                       #
-// #  Last modified on:  2026-10-29                                       #
-// #  Purpose:           Tests the evaluation screen renders a run's      #
-// #                     numbers.                                         #
-// ########################################################################
-/** Tests the evaluation screen renders a run's numbers. */
+/**
+ * Author:            Kevin Street
+ * Created on:        2026-10-29
+ * Last modified on:  2026-10-29
+ *
+ * Tests that the evaluation screen shows a run's numbers: the headline
+ * numbers, and a row of the averages by kind of case.
+ */
 
+// ########################################################################
+// #                               Imports                                #
+// ########################################################################
+// Third-party
 import { render, screen, within } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 
+// Local
 import { Results } from '../src/components/Results';
 import { RUN } from './fixtures';
 
+// ########################################################################
+// #                           Local constants                            #
+// ########################################################################
 // log.debug('Lists the numbers the run should show: accuracy, removed, abstentions, time, cost')
 const NUMBERS = ['95%', '0.4%', '0.50', '4510 / 5572 ms', '$0.0134'];
-
 // log.debug('Sets how a count of zero per case is written')
 const NONE = '0.00';
 
+// ########################################################################
+// #                       Evaluation screen tests                        #
+// ########################################################################
 // log.debug('Describes the evaluation screen')
 describe('Results', () => {
   // log.debug('Checks the headline numbers and the table by kind of case')

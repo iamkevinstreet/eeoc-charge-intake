@@ -1,34 +1,66 @@
 // ########################################################################
 // #                frontend/src/components/UploadForm.tsx                #
 // ########################################################################
-// #  Author:            Kevin Street                                     #
-// #  Created on:        2026-10-29                                       #
-// #  Last modified on:  2026-10-29                                       #
-// #  Purpose:           The upload form: a charge form and its notice    #
-// #                     letter, both PDFs.                               #
-// ########################################################################
-/** The upload form: a charge form and its notice letter, both PDFs. */
+/**
+ * Author:            Kevin Street
+ * Created on:        2026-10-29
+ * Last modified on:  2026-10-29
+ *
+ * The upload form: a charge form and its notice letter, both PDFs, and
+ * the button that extracts their fields once both are picked.
+ */
 
+// ########################################################################
+// #                               Imports                                #
+// ########################################################################
+// Third-party
 import { useState } from 'react';
 
-interface Props {
-  /** What is being extracted: a sample id, the upload, or nothing. */
-  busy: string | null;
-  onUpload: (charge: File, notice: File) => void;
-}
+// Local
+import { CONFIG } from '../config';
+import { required } from '../lib/required';
 
-interface PickerProps {
-  label: string;
-  onPick: (file: File | null) => void;
-}
+// ########################################################################
+// #                           Global constants                           #
+// ########################################################################
+// log.debug('Takes what an upload is called while it is extracted from the config')
+const UPLOAD = CONFIG.ui.upload_key;
 
-// log.debug('Names the busy state of an upload, beside the sample ids')
-export const UPLOAD = 'upload';
+// ########################################################################
+// #                           Local constants                            #
+// ########################################################################
 // log.debug('Sets the only kind of file the form takes')
 const PDF = 'application/pdf';
 
+// ########################################################################
+// #                             Upload form                              #
+// ########################################################################
+interface Props {
+  /** What is being extracted: a sample id, the upload, or nothing. */
+  busy?: string | null;
+  onUpload?: ((charge: File, notice: File) => void) | null;
+}
+
+interface PickerProps {
+  label?: string | null;
+  onPick?: ((file: File | null) => void) | null;
+}
+
 // log.debug('Defines one file picker that takes a PDF')
-function PdfPicker({ label, onPick }: PickerProps) {
+/**
+ * Renders one labelled file picker that takes a PDF.
+ *
+ * @param props - The component's props.
+ * @param props.label - What the picker asks for. Required.
+ * @param props.onPick - Takes the file picked, or null when none is.
+ *   Required.
+ * @returns The labelled picker.
+ */
+function PdfPicker({ label = null, onPick = null }: PickerProps = {}): React.JSX.Element {
+  // log.debug('Takes the label, which the caller must give')
+  label = required({ label });
+  // log.debug('Takes the pick handler, which the caller must give')
+  onPick = required({ onPick });
   // log.debug('Returns the labelled picker, handing up the first file chosen')
   return (
     <label className="ec-upload__label">
@@ -43,7 +75,20 @@ function PdfPicker({ label, onPick }: PickerProps) {
 }
 
 // log.debug('Defines the upload form')
-export function UploadForm({ busy, onUpload }: Props) {
+/**
+ * Renders the upload form: a picker for each document and the button
+ * that extracts their fields.
+ *
+ * @param props - The component's props.
+ * @param props.busy - What is being extracted: a sample id, the upload,
+ *   or null for nothing; the button waits while anything is.
+ * @param props.onUpload - Starts the extraction of the two files.
+ *   Required.
+ * @returns The form.
+ */
+export function UploadForm({ busy = null, onUpload = null }: Props = {}): React.JSX.Element {
+  // log.debug('Takes the upload handler, which the caller must give')
+  onUpload = required({ onUpload });
   // log.debug('Keeps the charge form picked')
   const [charge, setCharge] = useState<File | null>(null);
   // log.debug('Keeps the notice letter picked')
@@ -52,7 +97,14 @@ export function UploadForm({ busy, onUpload }: Props) {
   const ready = charge !== null && notice !== null && busy === null;
 
   // log.debug('Defines the submit handler')
-  const submit = (event: React.SubmitEvent<HTMLFormElement>): void => {
+  /**
+   * Hands both files up for extraction, instead of reloading the page.
+   *
+   * @param event - The form's submit event. Required.
+   */
+  const submit = (event: React.SubmitEvent<HTMLFormElement> | null = null): void => {
+    // log.debug('Takes the event, which the caller must give')
+    event = required({ event });
     // log.debug('Stops the page reloading')
     event.preventDefault();
     // log.debug('Hands both files up once both are picked')

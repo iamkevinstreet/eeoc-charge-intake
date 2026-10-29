@@ -1,27 +1,37 @@
 ########################################################################
 #              backend/src/eeoc_intake/dashboard/page.py               #
 ########################################################################
-#  Author:            Kevin Street                                     #
-#  Created on:        2026-10-29                                       #
-#  Last modified on:  2026-10-29                                       #
-#  Purpose:           The HTML page Dash serves the app in: fonts,     #
-#                     colours and styles, in light and dark.           #
-########################################################################
-"""The HTML page Dash serves the app in.
+"""
+Author:            Kevin Street
+Created on:        2026-10-29
+Last modified on:  2026-10-29
 
-Dash fills the placeholders in braces with its metas, title, styles,
-config and scripts. The styles carry the kevindstreet.com tokens in
-light and dark; the charts take the same colours from theme.py.
+Sets the HTML page Dash serves the app in: the fonts, and the colours
+and styles in light and dark. Dash fills the placeholders in braces
+with its metas, title, styles, config and scripts. The styles carry the
+kevindstreet.com tokens; the charts take the same colours from
+theme.py.
 """
 
+########################################################################
+#                               Imports                                #
+########################################################################
+# Standard library
 from __future__ import annotations
 
 from typing import Final
 
+# Third-party
 from kds.logs import get_logger
 
-# Module constants
+########################################################################
+#                           Global constants                           #
+########################################################################
 log = get_logger(__name__)
+
+########################################################################
+#                           Local constants                            #
+########################################################################
 # log.debug("Sets the address of the Geist fonts, both families in one request")
 FONTS_URL: Final = (
     "https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600"

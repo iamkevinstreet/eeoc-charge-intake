@@ -1,16 +1,15 @@
 ########################################################################
 #                backend/src/eeoc_intake/evals/stats.py                #
 ########################################################################
-#  Author:            Kevin Street                                     #
-#  Created on:        2026-10-29                                       #
-#  Last modified on:  2026-10-29                                       #
-#  Purpose:           Small statistics for comparing two runs, and how #
-#                     a share is written. Standard library only.       #
-########################################################################
-"""Tests for a change between two runs, and how a share is written.
+"""
+Author:            Kevin Street
+Created on:        2026-10-29
+Last modified on:  2026-10-29
 
-The dashboard and the case study use the same rules, so a change gets
-an arrow in both or in neither:
+Decides whether a number changed between two runs by more than
+run-to-run noise, with small statistics from the standard library. The
+dashboard and the case study use the same rules, so a change gets an
+arrow in both or in neither:
 
 - Time per document is compared with a rank test (Mann-Whitney U,
   normal approximation with a tie correction), because the typical
@@ -24,37 +23,39 @@ an arrow in both or in neither:
   of even one false call among the six is at most 5%.
 """
 
+########################################################################
+#                               Imports                                #
+########################################################################
+# Standard library
 from __future__ import annotations
 
 import math
 from collections.abc import Sequence
-from decimal import ROUND_HALF_UP, Decimal
 from typing import Final
 
+# Third-party
+from kds.args import required
 from kds.logs import get_logger
 
-# Module constants
+# Local
+from eeoc_intake.config import SETTINGS
+
+########################################################################
+#                           Global constants                           #
+########################################################################
 log = get_logger(__name__)
+# log.debug("Takes the name of the rank test, used for time, from the config")
+RANK: Final = SETTINGS.stats_rank_test
+# log.debug("Takes the name of the t-test, used for every average, from the config")
+WELCH: Final = SETTINGS.stats_welch_test
+
+########################################################################
+#                           Local constants                            #
+########################################################################
 # log.debug("Sets the chance of a false call the tests allow")
 ALPHA: Final = 0.05
-# log.debug("Names the rank test, used for time")
-RANK: Final = "rank"
-# log.debug("Names the t-test, used for every average")
-WELCH: Final = "welch"
-# log.debug("Sets the percent a share of one is")
-PERCENT: Final = 100
-# log.debug("Sets the smallest percent shown as a number; below it reads under 0.1")
-SMALLEST_SHOWN: Final = 0.05
-# log.debug("Sets the percent below which one decimal is shown")
-TENTHS_BELOW: Final = 9.95
-# log.debug("Sets the percent above which one decimal is shown, rounded down")
-TENTHS_ABOVE: Final = 99
-# log.debug("Sets the base of the decimals a share is written in")
-DECIMAL: Final = 10
-# log.debug("Sets one half, used by rounding and the tests' corrections")
+# log.debug("Sets one half, used by the tests' corrections")
 HALF: Final = 0.5
-# log.debug("Sets the nudge that keeps a float like 99.9 from flooring to 99.8")
-NUDGE: Final = 1e-9
 # log.debug("Sets the smallest number the continued fraction divides by")
 TINY: Final = 1e-300
 # log.debug("Sets the most terms the continued fraction sums")
@@ -65,102 +66,59 @@ CONVERGED: Final = 3e-14
 MIN_SAMPLE: Final = 2
 
 
-# log.debug("Defines rounding the way JavaScript's toFixed does it")
-def fixed(x: float, places: int) -> str:
-    """Return x to `places` decimals, halves rounded up, like toFixed.
-
-    The exact stored value is rounded, so the case study and the
-    dashboard show the same digits; Python's own format rounds halves
-    to even.
-    """
-    # log.debug("Rounds a negative number as its opposite, with a minus sign")
-    if x < 0:
-        # log.debug("Returns the minus sign and the rounded opposite")
-        return "-" + fixed(-x, places)
-    # log.debug("Returns the exact value rounded half up to the places asked")
-    return str(Decimal(x).quantize(Decimal(1).scaleb(-places), rounding=ROUND_HALF_UP))
-
-
-# log.debug("Defines how a share is written")
-def pct_label(v: float, places: int | None = None) -> str:
-    """Return a share as a person reads it.
-
-    100% only when everything was right and 0% only when nothing was,
-    so a value just under 100% is never rounded up to it: whole
-    percents, one decimal below 10% and above 99%. With `places`, every
-    share gets that many decimals, as in a table column, under the same
-    two rules.
-    """
-    # log.debug("Writes a table column's share with its fixed decimals")
-    if places is not None:
-        # log.debug("Returns the column form")
-        return _column(v, places)
-    # log.debug("Writes all right as a hundred percent and none right as zero")
-    if v >= 1 or v <= 0:
-        # log.debug("Returns a hundred or zero percent")
-        return "100%" if v >= 1 else "0%"
-    # log.debug("Returns the share written as a percent")
-    return _percent(v * PERCENT)
-
-
-# log.debug("Defines a percent strictly between 0 and 100, as written")
-def _percent(p: float) -> str:
-    """Return p with the decimals its size calls for."""
-    # log.debug("Writes a tiny share as under a tenth of a percent, never as zero")
-    if p < SMALLEST_SHOWN:
-        # log.debug("Returns under a tenth of a percent")
-        return "<0.1%"
-    # log.debug("Writes a share under ten percent with one decimal")
-    if p < TENTHS_BELOW:
-        # log.debug("Returns one decimal")
-        return f"{fixed(p, 1)}%"
-    # log.debug("Writes a share over 99 percent with one decimal, rounded down")
-    if p > TENTHS_ABOVE:
-        # log.debug("Returns one decimal, never rounded up to a hundred")
-        return f"{math.floor(p * DECIMAL + NUDGE) / DECIMAL:.1f}%"
-    # log.debug("Returns a whole percent")
-    return f"{fixed(p, 0)}%"
-
-
-# log.debug("Defines a share with a fixed number of decimals")
-def _column(v: float, places: int) -> str:
-    """Return a share with `places` decimals, never rounded to 0 or 100.
-
-    Used for table columns, where every share has the same decimals.
-    """
-    # log.debug("Finds the smallest step those decimals can show")
-    step = float(DECIMAL) ** -places
-    # log.debug("Writes all or none right exactly")
-    if v >= 1 or v <= 0:
-        # log.debug("Returns 100 or 0 with the decimals")
-        return f"{PERCENT if v >= 1 else 0:.{places}f}%"
-    # log.debug("Writes a share smaller than half a step as under one step")
-    if v * PERCENT < step * HALF:
-        # log.debug("Returns under one step")
-        return f"<{step:.{places}f}%"
-    # log.debug("Rounds the percent half up")
-    shown = fixed(v * PERCENT, places)
-    # log.debug("Returns it, held one step under 100 when it would round up")
-    return (f"{PERCENT - step:.{places}f}" if float(shown) >= PERCENT else shown) + "%"
-
-
+########################################################################
+#                             Change tests                             #
+########################################################################
 # log.debug("Defines the standard normal distribution function")
-def _phi(z: float) -> float:
-    """Return the chance a standard normal value is at most z."""
+def _phi(z: float | None = None) -> float:
+    """Returns the chance a standard normal value is at most z.
+
+    Args:
+        z: The standard normal value. Required.
+
+    Returns:
+        The chance, from 0 to 1.
+    """
+    # log.debug("Takes the value, which the caller must give")
+    z = required(z=z)
     # log.debug("Returns it through the error function")
     return HALF * (1 + math.erf(z / math.sqrt(2)))
 
 
 # log.debug("Defines a guard against dividing by almost zero")
-def _safe(x: float) -> float:
-    """Return x, or TINY when x is closer to zero than TINY."""
+def _safe(x: float | None = None) -> float:
+    """Returns x, or TINY when x is closer to zero than TINY.
+
+    Args:
+        x: The number about to be divided by. Required.
+
+    Returns:
+        x, or TINY in its place.
+    """
+    # log.debug("Takes the number, which the caller must give")
+    x = required(x=x)
     # log.debug("Returns x when it is far enough from zero")
     return x if abs(x) > TINY else TINY
 
 
 # log.debug("Defines the continued fraction for the incomplete beta function")
-def _betacf(a: float, b: float, x: float) -> float:
-    """Return the continued fraction, by the modified Lentz method."""
+def _betacf(a: float | None = None, b: float | None = None, x: float | None = None) -> float:
+    """Returns the continued fraction, by the modified Lentz method.
+
+    Args:
+        a: The first shape parameter. Required.
+        b: The second shape parameter. Required.
+        x: Where the function is read, between 0 and 1. Required.
+
+    Returns:
+        The continued fraction's value.
+    """
+    # log.debug("Takes the first shape parameter, which the caller must give")
+    a = required(a=a)
+    # log.debug("Takes the second shape parameter, which the caller must give")
+    b = required(b=b)
+    # log.debug("Takes the point, which the caller must give")
+    x = required(x=x)
     # log.debug("Precomputes the sums the terms use")
     qab, qap, qam = a + b, a + 1, a - 1
     # log.debug("Starts the two running ratios")
@@ -198,8 +156,23 @@ def _betacf(a: float, b: float, x: float) -> float:
 
 
 # log.debug("Defines the regularized incomplete beta function")
-def _betai(a: float, b: float, x: float) -> float:
-    """Return I_x(a, b)."""
+def _betai(a: float | None = None, b: float | None = None, x: float | None = None) -> float:
+    """Returns I_x(a, b).
+
+    Args:
+        a: The first shape parameter. Required.
+        b: The second shape parameter. Required.
+        x: Where the function is read. Required.
+
+    Returns:
+        The function's value, from 0 to 1.
+    """
+    # log.debug("Takes the first shape parameter, which the caller must give")
+    a = required(a=a)
+    # log.debug("Takes the second shape parameter, which the caller must give")
+    b = required(b=b)
+    # log.debug("Takes the point, which the caller must give")
+    x = required(x=x)
     # log.debug("Returns zero at or below the start")
     if x <= 0:
         # log.debug("Returns zero")
@@ -225,8 +198,20 @@ def _betai(a: float, b: float, x: float) -> float:
 
 
 # log.debug("Defines Welch's t-test")
-def welch_p(a: Sequence[float], b: Sequence[float]) -> float:
-    """Return the two-sided p-value of Welch's t-test on the means."""
+def welch_p(a: Sequence[float] | None = None, b: Sequence[float] | None = None) -> float:
+    """Returns the two-sided p-value of Welch's t-test on the means.
+
+    Args:
+        a: The earlier run's values, one per document. Required.
+        b: The later run's values, one per document. Required.
+
+    Returns:
+        The p-value; 1 when a sample is too small for a variance.
+    """
+    # log.debug("Takes the earlier sample, which the caller must give")
+    a = required(a=a)
+    # log.debug("Takes the later sample, which the caller must give")
+    b = required(b=b)
     # log.debug("Counts each sample")
     n1, n2 = len(a), len(b)
     # log.debug("Calls a sample too small for a variance no evidence of change")
@@ -256,11 +241,22 @@ def welch_p(a: Sequence[float], b: Sequence[float]) -> float:
 
 
 # log.debug("Defines the Mann-Whitney U test")
-def mann_whitney_p(a: Sequence[float], b: Sequence[float]) -> float:
-    """Return the two-sided p-value of the Mann-Whitney U test.
+def mann_whitney_p(a: Sequence[float] | None = None, b: Sequence[float] | None = None) -> float:
+    """Returns the two-sided p-value of the Mann-Whitney U test.
 
     Normal approximation, with tie and continuity corrections.
+
+    Args:
+        a: The earlier run's values, one per document. Required.
+        b: The later run's values, one per document. Required.
+
+    Returns:
+        The p-value; 1 for an empty sample or values all the same.
     """
+    # log.debug("Takes the earlier sample, which the caller must give")
+    a = required(a=a)
+    # log.debug("Takes the later sample, which the caller must give")
+    b = required(b=b)
     # log.debug("Counts each sample")
     n1, n2 = len(a), len(b)
     # log.debug("Calls an empty sample no evidence of change")
@@ -286,11 +282,24 @@ def mann_whitney_p(a: Sequence[float], b: Sequence[float]) -> float:
 
 
 # log.debug("Defines the rank sum and tie correction for two samples")
-def _ranks(a: Sequence[float], b: Sequence[float]) -> tuple[float, float]:
-    """Return the first sample's rank sum and the tie correction.
+def _ranks(
+    a: Sequence[float] | None = None, b: Sequence[float] | None = None
+) -> tuple[float, float]:
+    """Returns the first sample's rank sum and the tie correction.
 
     The correction is the sum of t^3 - t over runs of t equal values.
+
+    Args:
+        a: The first sample. Required.
+        b: The second sample. Required.
+
+    Returns:
+        The first sample's rank sum and the tie correction.
     """
+    # log.debug("Takes the first sample, which the caller must give")
+    a = required(a=a)
+    # log.debug("Takes the second sample, which the caller must give")
+    b = required(b=b)
     # log.debug("Pools both samples, marking which each value came from")
     pooled = sorted([(v, 0) for v in a] + [(v, 1) for v in b])
     # log.debug("Counts the pool")
@@ -318,34 +327,71 @@ def _ranks(a: Sequence[float], b: Sequence[float]) -> tuple[float, float]:
 
 
 # log.debug("Defines the test each measure uses")
-def p_value(a: Sequence[float], b: Sequence[float], test: str = WELCH) -> float:
-    """Return the two-sided p-value for a change between two runs.
+def p_value(
+    a: Sequence[float] | None = None, b: Sequence[float] | None = None, test: str = WELCH
+) -> float:
+    """Returns the two-sided p-value for a change between two runs.
 
     The rank test for time, Welch's t-test for everything else.
+
+    Args:
+        a: The earlier run's values, one per document. Required.
+        b: The later run's values, one per document. Required.
+        test: The test's name: the rank test or Welch's t-test.
+
+    Returns:
+        The two-sided p-value.
     """
+    # log.debug("Takes the earlier sample, which the caller must give")
+    a = required(a=a)
+    # log.debug("Takes the later sample, which the caller must give")
+    b = required(b=b)
     # log.debug("Returns the rank test's p-value for time, Welch's otherwise")
     return mann_whitney_p(a, b) if test == RANK else welch_p(a, b)
 
 
 # log.debug("Defines one number's test on its own")
-def clear_change(a: Sequence[float], b: Sequence[float], test: str = WELCH) -> bool:
-    """Return whether two runs differ by more than run-to-run noise.
+def clear_change(
+    a: Sequence[float] | None = None, b: Sequence[float] | None = None, test: str = WELCH
+) -> bool:
+    """Returns whether two runs differ by more than run-to-run noise.
 
     At 95% confidence, for one number on its own.
+
+    Args:
+        a: The earlier run's values, one per document. Required.
+        b: The later run's values, one per document. Required.
+        test: The test's name: the rank test or Welch's t-test.
+
+    Returns:
+        True when the p-value is under 0.05.
     """
+    # log.debug("Takes the earlier sample, which the caller must give")
+    a = required(a=a)
+    # log.debug("Takes the later sample, which the caller must give")
+    b = required(b=b)
     # log.debug("Returns whether the p-value is under the threshold")
     return p_value(a, b, test) < ALPHA
 
 
 # log.debug("Defines Holm's step-down correction")
-def holm(pvalues: Sequence[float], alpha: float = ALPHA) -> list[bool]:
-    """Return which of several tests hold up, in the order given.
+def holm(pvalues: Sequence[float] | None = None, alpha: float = ALPHA) -> list[bool]:
+    """Returns which of several tests hold up, in the order given.
 
     The smallest p-value must beat alpha / m, the next alpha / (m - 1),
     and so on; the first one that misses stops the rest. Taken together,
     the chance of even one false call when nothing changed is at most
     alpha.
+
+    Args:
+        pvalues: The tests' p-values. Required.
+        alpha: The chance of a false call allowed across all of them.
+
+    Returns:
+        For each test, in the order given, whether it holds up.
     """
+    # log.debug("Takes the p-values, which the caller must give")
+    pvalues = required(pvalues=pvalues)
     # log.debug("Counts the tests")
     m = len(pvalues)
     # log.debug("Starts with no test called a change")

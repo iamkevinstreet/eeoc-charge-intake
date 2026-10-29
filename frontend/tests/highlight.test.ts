@@ -1,21 +1,33 @@
 // ########################################################################
 // #                   frontend/tests/highlight.test.ts                   #
 // ########################################################################
-// #  Author:            Kevin Street                                     #
-// #  Created on:        2026-10-29                                       #
-// #  Last modified on:  2026-10-29                                       #
-// #  Purpose:           Tests the highlight helper: a quote found and    #
-// #                     marked, and a quote that is not there.           #
-// ########################################################################
-/** Tests the highlight helper: a quote found and marked, and a quote that is not there. */
+/**
+ * Author:            Kevin Street
+ * Created on:        2026-10-29
+ * Last modified on:  2026-10-29
+ *
+ * Tests the quote marking: a quote found whatever its case and spacing
+ * and split out of its page, and a quote that is not there.
+ */
 
+// ########################################################################
+// #                               Imports                                #
+// ########################################################################
+// Third-party
 import { describe, expect, it } from 'vitest';
 
+// Local
 import { mark } from '../src/highlight';
 
+// ########################################################################
+// #                           Local constants                            #
+// ########################################################################
 // log.debug('Sets a page with a line break and extra spaces inside the quote')
 const PAGE = 'Filed: EEOC Charge No.\n  451-2026 (Phoenix)\nNext line';
 
+// ########################################################################
+// #                         Quote marking tests                          #
+// ########################################################################
 // log.debug('Describes the highlight helper')
 describe('mark', () => {
   // log.debug('Checks a quote is found whatever its case and spacing, and split out')

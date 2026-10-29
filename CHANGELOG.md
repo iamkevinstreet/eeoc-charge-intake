@@ -1,5 +1,39 @@
 # Changelog
 
+## v0.5.0, Oct 29, 2026
+
+The code moves to the updated code standard. Nothing a reader of the results sees changes: the
+generated documents, the offline evaluation and the published results are the same as in v0.4.0,
+and so are the API's routes, payloads and responses.
+
+- **Layout:** the backend package moves to the src layout, `backend/src/eeoc_intake/`, so the
+  tests import the installed package.
+- **Settings:** `config/settings.toml` becomes `config/config.toml`, and the secrets move from
+  `.env` to `config/.env` (`config/.env.example` names each one). A value two parts of the code
+  share lives in `config/config.toml` too, with a comment: the API's prefix and request id header,
+  the field and score names, the labels, the dashboard's ids, the tables' column names. Each module
+  binds the ones it uses from `SETTINGS`, loaded once, and the review screen reads the keys it needs
+  from the same file when it is built, so the two sides cannot drift.
+- **File layout:** every file opens with a box holding its path and a doc block (author, dates and
+  what the file is for), then its imports, global constants, local constants and logic, each under
+  a banner. The Makefile, the workflows, the TOML and YAML files, the stylesheets and `index.html`
+  carry the same header.
+- **Functions:** every parameter has a type and a default, and a function that cannot work without
+  a value takes it with `required()`; every function has a doc block and a return type, and none
+  runs past 60 lines below its doc block. ruff adds its annotation rules; ESLint adds the jsdoc
+  rules, explicit return types, the 60-line limit and our own `kds/param-defaults` rule.
+- **Modules:** files that outgrew 500 lines are split by job: `api/extraction.py`,
+  `core/charges.py`, `evals/shares.py`, `dashboard/views.py`, `dashboard/heatmap.py` and
+  `tests/test_charts.py`. The review screen's state moves into hooks (`src/session.ts`,
+  `src/reviewing.ts`), and its long components into smaller ones (`TopBar`, `ReviewHead`,
+  `FieldList`, `EditForm`).
+- **Review screen:** the note that uploads need a model names `config/config.toml` and
+  `config/.env`; the dev server proxies `/api/v1` to the host and port in the config.
+- **API docs:** each route's OpenAPI description is its handler's whole doc block.
+- **Utils:** every shared package, now with `kds-args`, pins utils v0.4.2 (commit
+  `62a38c5a3ecf667e3e227b18412abd77759c38d5`).
+- 59 backend tests and 11 review-screen tests, all offline.
+
 ## v0.4.0, Oct 29, 2026
 
 A rebuild to one code standard: the backend and the review screen in their own folders, every

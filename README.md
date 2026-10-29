@@ -35,8 +35,9 @@ make install samples
 make run    # the review screen on http://localhost:5173, the API on http://127.0.0.1:8000
 ```
 
-For a real model, copy `.env.example` to `.env`, set `ANTHROPIC_API_KEY` there and `LLM_PROVIDER`
-to `anthropic`; the service then extracts the samples and uploaded PDFs with the model.
+For a real model, copy `config/.env.example` to `config/.env` and set `ANTHROPIC_API_KEY` there,
+then set `[llm] provider` to `anthropic` in `config/config.toml`; the service then extracts the
+samples and uploaded PDFs with the model.
 
 ## Architecture at a glance
 
@@ -134,14 +135,16 @@ are most likely to change:
 
 | Setting | Default | Lives in |
 | --- | --- | --- |
-| `[llm] provider`, `[llm] model` | `fake`, `claude-sonnet-5-5` | `config/settings.toml` |
-| `[samples] count`, `[samples] seed` | `30`, `2026` | `config/settings.toml` |
-| `[api] max_upload_bytes`, `[api] extracts_per_minute` | `10000000`, `6` | `config/settings.toml` |
-| `[eval] budget_usd` | `5.0` | `config/settings.toml` |
-| `ANTHROPIC_API_KEY` | unset | `.env` only |
+| `[llm] provider`, `[llm] model` | `fake`, `claude-sonnet-5-5` | `config/config.toml` |
+| `[samples] count`, `[samples] seed` | `30`, `2026` | `config/config.toml` |
+| `[api] max_upload_bytes`, `[api] extracts_per_minute` | `10000000`, `6` | `config/config.toml` |
+| `[eval] budget_usd` | `5.0` | `config/config.toml` |
+| `ANTHROPIC_API_KEY` | unset | `config/.env` only |
 
 Any setting can be overridden by an environment variable named for its section and key:
-`SAMPLES_COUNT=200`.
+`SAMPLES_COUNT=200`. `config.toml` also holds the values two parts of the code share, such as the
+API's prefix and the field names, so the service, the dashboard and the review screen read them from
+one place.
 
 ## Operating it
 
@@ -167,10 +170,11 @@ make eval    # the offline smoke run over the generated documents; no key, no ne
 ```
 
 Tests never call a model or the network: the offline stand-in and scripted answers take its place.
-They write only to temporary folders, run from an empty folder so no `.env` leaks in, generate their
-documents from fixed seeds, and never sleep: retries take an injected wait. CI runs the checks, the
-tests and the smoke run on every push to `main` and every pull request, with the dependency audits,
-CodeQL and a secrets scan of the whole history. The live evaluation is started by hand.
+They write only to temporary folders, run from an empty folder so no `config/.env` leaks in,
+generate their documents from fixed seeds, and never sleep: retries take an injected wait. CI runs
+the checks, the tests and the smoke run on every push to `main` and every pull request, with the
+dependency audits, CodeQL and a secrets scan of the whole history. The live evaluation is started by
+hand.
 
 ## Security
 
@@ -188,9 +192,9 @@ eeoc-charge-intake/
 │   ├── src/eeoc_intake/  core/, api/, evals/, dashboard/
 │   └── tests/
 ├── frontend/       the review screen (React, TypeScript)
-│   ├── src/            components/, styles/
+│   ├── src/            components/, lib/, styles/
 │   └── tests/
-├── config/         settings.toml: every setting at its default
+├── config/         config.toml: every setting at its default; .env.example: the secrets' names
 ├── data/           results, saved extractions and Tableau files; generated/ is not committed
 ├── docs/           diagrams.toml, the two SVGs it draws, and the review screen recording
 └── .github/        CI, CodeQL, the live evaluation, Dependabot, CODEOWNERS

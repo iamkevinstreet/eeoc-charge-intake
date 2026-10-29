@@ -1,18 +1,27 @@
 // ########################################################################
 // #                      frontend/tests/api.test.ts                      #
 // ########################################################################
-// #  Author:            Kevin Street                                     #
-// #  Created on:        2026-10-29                                       #
-// #  Last modified on:  2026-10-29                                       #
-// #  Purpose:           Tests the API client: the URL of each route, and #
-// #                     the message from a failed response.              #
-// ########################################################################
-/** Tests the API client: the URL of each route, and the message from a failed response. */
+/**
+ * Author:            Kevin Street
+ * Created on:        2026-10-29
+ * Last modified on:  2026-10-29
+ *
+ * Tests the API client: the URL of each route, and the message from a
+ * failed response.
+ */
 
+// ########################################################################
+// #                               Imports                                #
+// ########################################################################
+// Third-party
 import { describe, expect, it, vi } from 'vitest';
 
+// Local
 import { ApiError, api, describeError } from '../src/api';
 
+// ########################################################################
+// #                           Local constants                            #
+// ########################################################################
 // log.debug('Sets the review the calls name')
 const ID = 'r-0123456789';
 // log.debug('Sets the method of the routes that only read')
@@ -22,6 +31,9 @@ const POST = 'POST';
 // log.debug('Names the function the tests stub')
 const FETCH = 'fetch';
 
+// ########################################################################
+// #                           API client tests                           #
+// ########################################################################
 // log.debug('Describes the client')
 describe('api', () => {
   // log.debug('Checks every route goes to the right address under /api/v1 with its method')

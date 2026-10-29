@@ -1,12 +1,13 @@
 ########################################################################
 #                   .github/workflows/eval-live.yml                    #
 ########################################################################
-#  Author:            Kevin Street                                     #
-#  Created on:        2026-10-15                                       #
-#  Last modified on:  2026-10-29                                       #
-#  Purpose:           Started by hand: the extraction evaluation with  #
-#                     a real model, its figures, CSV files and index.  #
-########################################################################
+# Author:            Kevin Street
+# Created on:        2026-10-15
+# Last modified on:  2026-10-29
+#
+# Runs by hand: the extraction evaluation with a real model, then its
+# figures, CSV files and index.
+
 name: eval-live
 
 # Generates the documents, runs the evaluation with the model, and builds the figures, the

@@ -1,21 +1,23 @@
 ########################################################################
 #               backend/src/eeoc_intake/core/offline.py                #
 ########################################################################
-#  Author:            Kevin Street                                     #
-#  Created on:        2026-10-29                                       #
-#  Last modified on:  2026-10-29                                       #
-#  Purpose:           An offline stand-in for the model that answers   #
-#                     from each generated document's known values.     #
-########################################################################
-"""An offline stand-in for the model, for the smoke run and demo mode.
+"""
+Author:            Kevin Street
+Created on:        2026-10-29
+Last modified on:  2026-10-29
 
-It answers from the known values `generate.py` wrote beside each
-synthetic document, quoting the line of page text that carries each
-value. One unsupported quote is planted in every two-respondent case,
-so the run proves that verification empties what it cannot find. None
-of this says how a real model performs; the live evaluation does.
+Stands in for the model offline, answering from the known values
+`generate.py` wrote beside each synthetic document and quoting the line
+of page text that carries each value. One unsupported quote is planted
+in every two-respondent case, so a run proves the quote check empties
+what it cannot find. None of this says how a real model performs; the
+live evaluation does.
 """
 
+########################################################################
+#                               Imports                                #
+########################################################################
+# Standard library
 from __future__ import annotations
 
 import json
@@ -23,19 +25,34 @@ import re
 from collections.abc import Callable
 from typing import Any, Final
 
+# Third-party
+from kds.args import required
 from kds.evals.case import EvalCase
 from kds.llm import Message, ModelAdapter
 from kds.llm.fake import FakeProvider
 from kds.logs import get_logger
 from kds.synthetic.pdftext import pages_text
 
-from eeoc_intake.config import AppSettings
-from eeoc_intake.core.schema import SCORED_FIELDS, Value
+# Local
+from eeoc_intake.config import SETTINGS, AppSettings
+from eeoc_intake.core.schema import SCORED_FIELDS, is_empty
 
-# Module constants
+########################################################################
+#                           Global constants                           #
+########################################################################
 log = get_logger(__name__)
-# log.debug("Sets the field whose quote is on the notice")
-NOTICE_FIELD: Final = "notice_date"
+# log.debug("Takes the field whose quote is on the notice, from the config")
+NOTICE_FIELD: Final = SETTINGS.record_notice_field
+# log.debug("Takes the input that holds a case's charge PDF, from the config")
+CHARGE_PDF: Final = SETTINGS.samples_charge_input
+# log.debug("Takes the input that holds a case's notice PDF, from the config")
+NOTICE_PDF: Final = SETTINGS.samples_notice_input
+# log.debug("Takes the provider setting that selects the stand-in, from the config")
+FAKE: Final = SETTINGS.demo_provider
+
+########################################################################
+#                           Local constants                            #
+########################################################################
 # log.debug("Lists the date fields, written m/d/Y on the forms")
 DATE_FIELDS: Final = frozenset({"earliest_date", "latest_date", NOTICE_FIELD})
 # log.debug("Sets the tag of the hard case that names two respondents")
@@ -52,18 +69,12 @@ CONTINUING_WORDS: Final = "CONTINUING ACTION"
 SURE: Final = 0.9
 # log.debug("Sets the confidence given to the stand-in's summary")
 UNSURE: Final = 0.5
-# log.debug("Lists the values that mean a field is empty")
-EMPTY: Final[tuple[Value, ...]] = (None, "", [])
 # log.debug("Sets the field that carries the charging party's name")
 PARTY: Final = "charging_party"
 # log.debug("Sets the separator of a written list")
 LIST_SEP: Final = ", "
 # log.debug("Names the field that lists the issues")
 ISSUES_FIELD: Final = "issues"
-# log.debug("Names the input that holds the charge's path")
-CHARGE_PDF: Final = "charge_pdf"
-# log.debug("Names the input that holds the notice's path")
-NOTICE_PDF: Final = "notice_pdf"
 # log.debug("Names a field's value key")
 VALUE: Final = "value"
 # log.debug("Names a field's quote key")
@@ -74,20 +85,31 @@ PAGE: Final = "page"
 CONFIDENCE: Final = "confidence"
 # log.debug("Sets the answer for a prompt about no known case")
 NO_ANSWER: Final = "{}"
-# log.debug("Names the provider setting that selects the stand-in")
-FAKE: Final = "fake"
 # log.debug("Names the stand-in's model in results and reviews")
 STAND_IN: Final = "fake-model"
 
 
+########################################################################
+#                           Offline stand-in                           #
+########################################################################
 # log.debug("Defines the adapter: the stand-in in demo mode, else the real model")
-def adapter_for(settings: AppSettings, cases: list[EvalCase]) -> ModelAdapter:
-    """Return the stand-in for the fake provider, else the real one.
+def adapter_for(
+    settings: AppSettings | None = None, cases: list[EvalCase] | None = None
+) -> ModelAdapter:
+    """Returns the stand-in for the fake provider, else the real one.
 
     Args:
-        settings: The provider, model and budget to use.
-        cases: The documents the stand-in can answer for.
+        settings: The provider, model and budget to use. Required.
+        cases: The documents the stand-in can answer for. Required.
+
+    Returns:
+        An adapter over the stand-in when the provider is the fake
+        one, else over the configured provider.
     """
+    # log.debug("Takes the settings, which the caller must give")
+    settings = required(settings=settings)
+    # log.debug("Takes the cases, which the caller must give")
+    cases = required(cases=cases)
     # log.debug("Uses the stand-in when the provider is fake")
     if settings.llm_provider == FAKE:
         # log.debug("Returns an adapter that answers from the known values")
@@ -99,12 +121,33 @@ def adapter_for(settings: AppSettings, cases: list[EvalCase]) -> ModelAdapter:
 
 
 # log.debug("Defines the stand-in's answers for a set of cases")
-def gold_responder(cases: list[EvalCase]) -> Callable[[list[Message]], str]:
-    """Return a responder that answers each case from its values."""
+def gold_responder(cases: list[EvalCase] | None = None) -> Callable[[list[Message]], str]:
+    """Returns a responder that answers each case from its values.
+
+    Args:
+        cases: The documents the stand-in can answer for. Required.
+
+    Returns:
+        A function that takes the conversation and returns, as JSON,
+        the record of the case the prompt names.
+    """
+    # log.debug("Takes the cases, which the caller must give")
+    cases = required(cases=cases)
 
     # log.debug("Defines the answer to one prompt")
-    def respond(messages: list[Message]) -> str:
-        """Return the record of the case the prompt is about."""
+    def respond(messages: list[Message] | None = None) -> str:
+        """Returns the record of the case the prompt is about.
+
+        Args:
+            messages: The conversation; the last message holds the
+                prompt. Required.
+
+        Returns:
+            The case's record as JSON, or an empty object for a prompt
+            about no known case.
+        """
+        # log.debug("Takes the messages, which the caller must give")
+        messages = required(messages=messages)
         # log.debug("Reads the prompt")
         text = messages[-1].content
         # log.debug("Finds the case whose charging party the prompt names")
@@ -121,8 +164,18 @@ def gold_responder(cases: list[EvalCase]) -> Callable[[list[Message]], str]:
 
 
 # log.debug("Defines the record the stand-in gives for one case")
-def gold_record(case: EvalCase) -> dict[str, Any]:
-    """Return every field from the case's values, quoting the pages."""
+def gold_record(case: EvalCase | None = None) -> dict[str, Any]:
+    """Returns every field from the case's values, quoting the pages.
+
+    Args:
+        case: The generated case. Required.
+
+    Returns:
+        Each scored field with its value, page, quote and confidence,
+        and a one-sentence summary with no quote.
+    """
+    # log.debug("Takes the case, which the caller must give")
+    case = required(case=case)
     # log.debug("Reads the charge's pages")
     charge = pages_text(case.input[CHARGE_PDF])
     # log.debug("Reads the notice's pages")
@@ -152,8 +205,25 @@ def gold_record(case: EvalCase) -> dict[str, Any]:
 
 
 # log.debug("Defines one field as the stand-in fills it")
-def _sourced(name: str, value: Any, pages: list[str]) -> dict[str, Any]:
-    """Return the value with the line that carries it, if any."""
+def _sourced(
+    name: str | None = None, value: Any = None, pages: list[str] | None = None
+) -> dict[str, Any]:
+    """Returns the value with the line that carries it, if any.
+
+    Args:
+        name: The field's name. Required.
+        value: The known value, or None when the document has none.
+        pages: The page texts of the document the field is read from.
+            Required.
+
+    Returns:
+        The field as a model would write it: its value, page, quote and
+        confidence, and the reason when it is empty.
+    """
+    # log.debug("Takes the name, which the caller must give")
+    name = required(name=name)
+    # log.debug("Takes the pages, which the caller must give")
+    pages = required(pages=pages)
     # log.debug("Finds the line of page text that carries the value")
     span = find_span(name, value, pages)
     # log.debug("Finds the first page that holds that line")
@@ -169,10 +239,26 @@ def _sourced(name: str, value: Any, pages: list[str]) -> dict[str, Any]:
 
 
 # log.debug("Defines how the stand-in finds the text behind a value")
-def find_span(name: str, value: Any, pages: list[str]) -> str | None:
-    """Return the line of page text that carries `value`, or None."""
+def find_span(
+    name: str | None = None, value: Any = None, pages: list[str] | None = None
+) -> str | None:
+    """Returns the line of page text that carries `value`, or None.
+
+    Args:
+        name: The field's name. Required.
+        value: The known value; an empty one has no quote.
+        pages: The page texts to search. Required.
+
+    Returns:
+        The whole line that holds the value, the text across line
+        breaks where the value wraps, or None.
+    """
+    # log.debug("Takes the name, which the caller must give")
+    name = required(name=name)
+    # log.debug("Takes the pages, which the caller must give")
+    pages = required(pages=pages)
     # log.debug("Returns no quote for an empty value")
-    if value in EMPTY:
+    if is_empty(value):
         # log.debug("Returns None")
         return None
     # log.debug("Works out the words to look for")
@@ -205,8 +291,21 @@ def find_span(name: str, value: Any, pages: list[str]) -> str | None:
 
 
 # log.debug("Defines the words a value appears as on the page")
-def _probe(name: str, value: Any) -> str:
-    """Return the value as the documents print it."""
+def _probe(name: str | None = None, value: Any = None) -> str:
+    """Returns the value as the documents print it.
+
+    Args:
+        name: The field's name. Required.
+        value: The known value, which is not empty. Required.
+
+    Returns:
+        The words to look for: a list's first item, an issue's own
+        words, a date month first, or the ticked box's label.
+    """
+    # log.debug("Takes the name, which the caller must give")
+    name = required(name=name)
+    # log.debug("Takes the value, which the caller must give")
+    value = required(value=value)
     # log.debug("Takes a list's first item, or the value as text")
     probe = value[0] if isinstance(value, list) else str(value)
     # log.debug("Uses the particulars' own words for an issue")

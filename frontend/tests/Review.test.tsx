@@ -1,23 +1,34 @@
 // ########################################################################
 // #                    frontend/tests/Review.test.tsx                    #
 // ########################################################################
-// #  Author:            Kevin Street                                     #
-// #  Created on:        2026-10-29                                       #
-// #  Last modified on:  2026-10-29                                       #
-// #  Purpose:           Tests the review screen: evidence shown, each    #
-// #                     decision recorded, export held until done.       #
-// ########################################################################
-/** Tests the review screen: evidence shown, each decision recorded, export held until done. */
+/**
+ * Author:            Kevin Street
+ * Created on:        2026-10-29
+ * Last modified on:  2026-10-29
+ *
+ * Tests the review screen: the evidence it shows, each decision it
+ * records, and the export it holds until every field has a decision.
+ */
 
+// ########################################################################
+// #                               Imports                                #
+// ########################################################################
+// Third-party
 import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useState } from 'react';
 import { describe, expect, it, vi } from 'vitest';
+import type { Mock } from 'vitest';
 
+// Local
 import { Review } from '../src/components/Review';
+import { required } from '../src/lib/required';
 import type { Action, Decision, Review as ReviewData } from '../src/types';
 import { FIELDS, REVIEW } from './fixtures';
 
+// ########################################################################
+// #                           Local constants                            #
+// ########################################################################
 // log.debug('Sets the address decisions are sent to')
 const DECISIONS = `/api/v1/reviews/${REVIEW.review_id}/decisions`;
 // log.debug('Sets the quote behind the charge number')
@@ -31,8 +42,28 @@ const ACCEPTED: Action = 'accept';
 // log.debug('Sets the corrected respondent the edit types')
 const CORRECTED = 'Harbor Freightways Inc.';
 
+// ########################################################################
+// #                         Review screen tests                          #
+// ########################################################################
+interface ScreenProps {
+  initial?: ReviewData | null;
+}
+
+/** The fetch stub the decision tests make, answering with the progress. */
+type FetchStub = Mock<(input: RequestInfo | URL, init?: RequestInit) => Promise<Response>>;
+
 // log.debug('Defines the screen with its state held above it, as the app holds it')
-function Screen({ initial }: { initial: ReviewData }) {
+/**
+ * Renders the review screen with its review held in state above it, as
+ * the app holds it.
+ *
+ * @param props - The component's props.
+ * @param props.initial - The review the screen starts from. Required.
+ * @returns The review screen.
+ */
+function Screen({ initial = null }: ScreenProps = {}): React.JSX.Element {
+  // log.debug('Takes the review to start from, which the caller must give')
+  initial = required({ initial });
   // log.debug('Keeps the review the screen changes')
   const [review, setReview] = useState(initial);
   // log.debug('Returns the screen')
@@ -40,7 +71,15 @@ function Screen({ initial }: { initial: ReviewData }) {
 }
 
 // log.debug('Defines a fetch stub that answers each decision with the count so far')
-function stubDecisions(already: number) {
+/**
+ * Stubs fetch to answer each decision with the number decided so far.
+ *
+ * @param already - The fields decided before the test starts. Required.
+ * @returns The stub, which records each call.
+ */
+function stubDecisions(already: number | null = null): FetchStub {
+  // log.debug('Takes the fields already decided, which the caller must give')
+  already = required({ already });
   // log.debug('Counts the decisions made')
   let decided = already;
   // log.debug('Returns the stub')
@@ -53,7 +92,16 @@ function stubDecisions(already: number) {
 }
 
 // log.debug('Defines what a stubbed fetch was sent: each address and decision')
-function sent(fetcher: ReturnType<typeof stubDecisions>): [unknown, unknown][] {
+/**
+ * Returns what a stubbed fetch was sent.
+ *
+ * @param fetcher - The stub. Required.
+ * @returns Each call's address, with its body read back from JSON, or
+ *   null for a call with no body.
+ */
+function sent(fetcher: FetchStub | null = null): [unknown, unknown][] {
+  // log.debug('Takes the stub, which the caller must give')
+  fetcher = required({ fetcher });
   // log.debug('Returns each address with its body read back from JSON')
   return fetcher.mock.calls.map(([url, init]) => [
     url,
@@ -62,15 +110,26 @@ function sent(fetcher: ReturnType<typeof stubDecisions>): [unknown, unknown][] {
 }
 
 // log.debug('Defines a button found by its name, among the buttons of one field if one is named')
-function button(name: string, field?: string): HTMLElement {
+/**
+ * Finds a button by its name, among one field's decision buttons when a
+ * field is named.
+ *
+ * @param name - The button's name. Required.
+ * @param field - The name people see for the field whose buttons to
+ *   look in; null looks in the whole page.
+ * @returns The button.
+ */
+function button(name: string | null = null, field: string | null = null): HTMLElement {
+  // log.debug('Takes the name, which the caller must give')
+  name = required({ name });
   // log.debug('Looks in the decision buttons of the field, or in the whole page')
   const scope =
-    field === undefined ? document.body : screen.getByRole('group', { name: `Decide ${field}` });
+    field === null ? document.body : screen.getByRole('group', { name: `Decide ${field}` });
   // log.debug('Returns the button')
   return within(scope).getByRole('button', { name });
 }
 
-// log.debug('Describes the review screen')
+// log.debug('Describes what the review screen shows and holds back')
 describe('Review', () => {
   // log.debug('Checks the selected field quotes its evidence and the document marks it')
   it('shows the quoted evidence of a field', () => {
@@ -82,6 +141,29 @@ describe('Review', () => {
     expect(screen.getByText(QUOTE, { selector: 'mark' })).toBeVisible();
   });
 
+  // log.debug('Checks the export stays off until the last field is decided')
+  it('keeps export disabled until every field has a decision', async () => {
+    // log.debug('Accepts every field but the first')
+    const decisions = Object.fromEntries(
+      FIELDS.slice(1).map((name): [string, Decision] => [name, { field: name, action: ACCEPTED }]),
+    );
+    // log.debug('Stubs the decision route, counting from the fields already decided')
+    stubDecisions(FIELDS.length - 1);
+    // log.debug('Renders the screen with one field left')
+    render(<Screen initial={{ ...REVIEW, decisions, decided: FIELDS.length - 1 }} />);
+    // log.debug('Finds the export button')
+    const exporter = button('Export record');
+    // log.debug('Checks it is off with one field left')
+    expect(exporter).toBeDisabled();
+    // log.debug('Accepts the last field')
+    await userEvent.click(button(ACCEPT, CHARGE_NUMBER));
+    // log.debug('Checks the export turns on')
+    await waitFor(() => expect(exporter).toBeEnabled());
+  });
+});
+
+// log.debug('Describes the decisions the review screen sends and shows')
+describe('Review decisions', () => {
   // log.debug('Checks accepting a field sends and shows the decision')
   it('records an accept', async () => {
     // log.debug('Stubs the decision route')
@@ -132,25 +214,5 @@ describe('Review', () => {
     expect(await screen.findByText('Rejected')).toBeVisible();
     // log.debug('Checks the decision sent')
     expect(sent(fetcher)).toEqual([[DECISIONS, { field: 'summary', action: 'reject' }]]);
-  });
-
-  // log.debug('Checks the export stays off until the last field is decided')
-  it('keeps export disabled until every field has a decision', async () => {
-    // log.debug('Accepts every field but the first')
-    const decisions = Object.fromEntries(
-      FIELDS.slice(1).map((name): [string, Decision] => [name, { field: name, action: ACCEPTED }]),
-    );
-    // log.debug('Stubs the decision route, counting from the fields already decided')
-    stubDecisions(FIELDS.length - 1);
-    // log.debug('Renders the screen with one field left')
-    render(<Screen initial={{ ...REVIEW, decisions, decided: FIELDS.length - 1 }} />);
-    // log.debug('Finds the export button')
-    const exporter = button('Export record');
-    // log.debug('Checks it is off with one field left')
-    expect(exporter).toBeDisabled();
-    // log.debug('Accepts the last field')
-    await userEvent.click(button(ACCEPT, CHARGE_NUMBER));
-    // log.debug('Checks the export turns on')
-    await waitFor(() => expect(exporter).toBeEnabled());
   });
 });

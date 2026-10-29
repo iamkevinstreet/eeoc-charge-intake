@@ -1,21 +1,32 @@
 // ########################################################################
 // #               frontend/src/components/ExportSheet.tsx                #
 // ########################################################################
-// #  Author:            Kevin Street                                     #
-// #  Created on:        2026-10-29                                       #
-// #  Last modified on:  2026-10-29                                       #
-// #  Purpose:           The exported record: every decided field as      #
-// #                     JSON, to download or copy.                       #
-// ########################################################################
-/** The exported record: every decided field as JSON, to download or copy. */
+/**
+ * Author:            Kevin Street
+ * Created on:        2026-10-29
+ * Last modified on:  2026-10-29
+ *
+ * The exported record: every decided field as JSON, with the day the
+ * position statement is due, to download or copy.
+ */
 
+// ########################################################################
+// #                               Imports                                #
+// ########################################################################
+// Local
+import { CONFIG } from '../config';
+import { required } from '../lib/required';
 import type { Export } from '../types';
 
-interface Props {
-  exported: Export;
-  onClose: () => void;
-}
+// ########################################################################
+// #                           Global constants                           #
+// ########################################################################
+// log.debug('Takes the days after the notice a response is due from the config')
+const RESPONSE_DAYS = CONFIG.extract.response_days;
 
+// ########################################################################
+// #                           Local constants                            #
+// ########################################################################
 // log.debug('Sets the spaces each level of the JSON is indented by')
 const INDENT = 2;
 // log.debug('Sets the start of a link that downloads JSON')
@@ -23,12 +34,36 @@ const JSON_LINK = 'data:application/json;charset=utf-8,';
 // log.debug('Sets the class of a plain button')
 const BUTTON = 'ec-button';
 
+// ########################################################################
+// #                             Export sheet                             #
+// ########################################################################
+interface Props {
+  exported?: Export | null;
+  onClose?: (() => void) | null;
+}
+
 // log.debug('Defines the sheet that shows the exported record')
-export function ExportSheet({ exported, onClose }: Props) {
+/**
+ * Renders the exported record, with buttons to download or copy it.
+ *
+ * @param props - The component's props.
+ * @param props.exported - The exported record. Required.
+ * @param props.onClose - Closes the sheet. Required.
+ * @returns The sheet: the due date, the JSON, and the download and copy
+ *   buttons.
+ */
+export function ExportSheet({ exported = null, onClose = null }: Props = {}): React.JSX.Element {
+  // log.debug('Takes the exported record, which the caller must give')
+  exported = required({ exported });
+  // log.debug('Takes the close handler, which the caller must give')
+  onClose = required({ onClose });
   // log.debug('Writes the record as indented JSON')
   const json = JSON.stringify(exported, null, INDENT);
+  // log.debug('Says how the due date is counted: the notice date plus the days allowed')
+  const counted = `notice date plus ${RESPONSE_DAYS} days`;
 
   // log.debug('Defines the copy button handler')
+  /** Copies the JSON, when the browser offers a clipboard on this page. */
   const copy = (): void => {
     // log.debug('Copies the JSON when the browser offers a clipboard on this page')
     if ('clipboard' in navigator) {
@@ -49,7 +84,7 @@ export function ExportSheet({ exported, onClose }: Props) {
       <p className="ec-meta">
         Every field carries a decision.
         {exported.response_due !== null &&
-          ` Position statement due ${exported.response_due} (notice date plus 30 days).`}
+          ` Position statement due ${exported.response_due} (${counted}).`}
       </p>
       <pre className="ec-sheet__json">{json}</pre>
       <div className="ec-sheet__actions">
