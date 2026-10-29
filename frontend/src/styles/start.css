@@ -1,0 +1,29 @@
+/*
+########################################################################
+#                    frontend/src/styles/start.css                     #
+########################################################################
+#  Author:            Kevin Street                                     #
+#  Created on:        2026-10-29                                       #
+#  Last modified on:  2026-10-29                                       #
+#  Purpose:           The start screen: its measure and the upload     #
+#                     form.                                            #
+########################################################################
+*/
+
+/* The start screen: its measure, and the upload form with one labelled
+   picker per document. */
+
+.ec-start {
+  max-width: 60rem;
+}
+
+.ec-upload {
+  display: grid;
+  gap: var(--ec-space-3);
+  max-width: 28rem;
+}
+
+.ec-upload__label {
+  display: grid;
+  gap: var(--ec-space-1);
+}

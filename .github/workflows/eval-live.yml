@@ -1,9 +1,19 @@
+########################################################################
+#                   .github/workflows/eval-live.yml                    #
+########################################################################
+#  Author:            Kevin Street                                     #
+#  Created on:        2026-10-15                                       #
+#  Last modified on:  2026-10-29                                       #
+#  Purpose:           Started by hand: the extraction evaluation with  #
+#                     a real model, its figures, CSV files and index.  #
+########################################################################
 name: eval-live
 
-# Runs the extraction evaluation against a real model. Started by hand from the Actions tab.
-# The API key comes from a repository secret and never appears in logs (kds.logs redacts, and the
-# adapter stops at the budget). Results are committed to the eval-results branch and uploaded as
-# an artifact; merging the branch into main publishes them.
+# Generates the documents, runs the evaluation with the model, and builds the figures, the
+# Tableau CSV files and the index the case study reads. The key comes from a repository secret
+# and never appears in logs (kds.logs redacts, and the adapter stops at the budget). Results are
+# committed to the eval-results branch and uploaded as an artifact; merging that branch into main
+# publishes them.
 
 on:
   workflow_dispatch:
@@ -14,15 +24,15 @@ on:
         options: [anthropic, openai]
         default: anthropic
       model:
-        description: Model id (see utils/llm/kds/llm/pricing.json for priced models)
+        description: Model id (priced in kds.llm's pricing table)
         type: string
         default: claude-sonnet-5-5
-      cases:
+      documents:
         description: Number of documents to generate and evaluate
         type: number
         default: 40
       budget_usd:
-        description: Stop the run once this much has been spent
+        description: Stop calling the model once this much has been spent
         type: string
         default: "5"
 
@@ -36,24 +46,28 @@ concurrency:
 jobs:
   evaluate:
     runs-on: ubuntu-latest
+    timeout-minutes: 90
     env:
       LLM_PROVIDER: ${{ inputs.provider }}
       LLM_MODEL: ${{ inputs.model }}
+      SAMPLES_COUNT: ${{ inputs.documents }}
+      EVAL_BUDGET_USD: ${{ inputs.budget_usd }}
       ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-      EVAL_BUDGET_USD: ${{ inputs.budget_usd }}
       LOG_REDACT: "true"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0  # v7.1.0
         with:
           python-version: "3.12"
 
-      - name: Install
-        run: |
-          python -m pip install --upgrade pip
-          pip install -e .
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2  # v10.3.3
+        with:
+          version: "0.13.6"
+
+      - name: Install the locked backend with the dashboard (hashes checked)
+        run: uv sync --project backend --locked --all-extras
 
       - name: Check the key is present
         run: |
@@ -62,46 +76,48 @@ jobs:
           if [ "$LLM_PROVIDER" = "openai" ] && [ -z "$OPENAI_API_KEY" ]; then
             echo "OPENAI_API_KEY is not set as a repository secret"; exit 1; fi
 
-      - name: Generate documents
-        run: python -m eeoc_intake.generate --n ${{ inputs.cases }} --out eeoc_intake/data/generated
+      - name: Generate the documents
+        run: make samples
 
-      - name: Evaluate
+      - name: Evaluate with the model, saving the first extractions whole
         run: |
-          python -m eeoc_intake.evals.run \
-            --cases eeoc_intake/data/generated/cases.jsonl \
-            --name "live-${{ inputs.model }}" \
-            --out eeoc_intake/evals/results/live \
-            --dump 8
+          uv run --project backend --no-sync \
+            python -m eeoc_intake.evals.run --name "live-${LLM_MODEL}"
 
-      - name: Figures and index for the case study
-        run: |
-          pip install ".[dashboard]"
-          python -m eeoc_intake.dashboard --export-figures eeoc_intake/evals/results/live/figures.json
-          python -m eeoc_intake.evals.export --out eeoc_intake/evals/results/live/export
-          python -m eeoc_intake.evals.index eeoc_intake/evals/results/live
+      - name: Figures, CSV files and index for the case study
+        run: make publish
 
       - name: Job summary
-        run: cat "eeoc_intake/evals/results/live/live-${{ inputs.model }}-latest.md" >> "$GITHUB_STEP_SUMMARY"
+        run: cat "data/evals/results/live-${LLM_MODEL}-latest.md" >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Upload results
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9  # v7.0.2
         with:
-          name: live-results
-          path: eeoc_intake/evals/results/live/
+          name: eval-results
+          path: |
+            data/evals/results/
+            data/extractions/
+            data/export/
 
       - name: Commit results to the eval-results branch
         run: |
           git config user.name "Kevin Street"
           git config user.email "747156+iamkevinstreet@users.noreply.github.com"
-          mkdir -p /tmp/results && cp -r eeoc_intake/evals/results/live /tmp/results/
-          rm -rf eeoc_intake/evals/results/live
+          for folder in evals/results extractions export; do
+            mkdir -p "${RUNNER_TEMP}/data/${folder}"
+            cp -r "data/${folder}/." "${RUNNER_TEMP}/data/${folder}/"
+          done
+          git stash --include-untracked --quiet
           git fetch origin eval-results:eval-results 2>/dev/null || true
           if git show-ref --verify --quiet refs/heads/eval-results; then
             git checkout eval-results
           else
             git checkout -b eval-results
           fi
-          mkdir -p eeoc_intake/evals/results && cp -r /tmp/results/live eeoc_intake/evals/results/
-          git add eeoc_intake/evals/results/live
-          git commit -m "Live evaluation: ${{ inputs.model }} on ${{ inputs.cases }} generated documents" || echo "nothing to commit"
+          for folder in evals/results extractions export; do
+            mkdir -p "data/${folder}"
+            cp -r "${RUNNER_TEMP}/data/${folder}/." "data/${folder}/"
+          done
+          git add data/evals/results data/extractions data/export
+          git commit -m "Evaluation: ${LLM_MODEL} on ${SAMPLES_COUNT} documents" \
+            || echo "nothing to commit"
           git push origin eval-results

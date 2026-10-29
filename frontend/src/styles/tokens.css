@@ -1,0 +1,72 @@
+/*
+########################################################################
+#                    frontend/src/styles/tokens.css                    #
+########################################################################
+#  Author:            Kevin Street                                     #
+#  Created on:        2026-10-29                                       #
+#  Last modified on:  2026-10-29                                       #
+#  Purpose:           Design tokens: colour for light and dark with    #
+#                     three decision colours, type, space, shape.      #
+########################################################################
+*/
+
+/* Design tokens. Grey paper and near-black ink, shared with kevindstreet.com
+   so the tool and the portfolio read as one identity; a highlighter yellow
+   for quoted evidence; three decision colours, one each for accepted,
+   edited and rejected. Headings, values and documents are set in
+   Newsreader, the interface in IBM Plex Sans. Every colour is written once,
+   for light and dark. */
+
+:root {
+  color-scheme: light dark;
+
+  /* Colour */
+  --ec-paper: light-dark(#f4f6f8, #10161c);
+  --ec-wash: light-dark(#e9edf1, #182028);
+  --ec-ink: light-dark(#141b22, #e6ebef);
+  --ec-slate: light-dark(#4f5b67, #9fabb7);
+  --ec-rule: light-dark(#c6cfd8, #2b3640);
+  --ec-rule-strong: light-dark(#141b22, #e6ebef);
+  --ec-link: light-dark(#0b5394, #8cc0f0);
+  --ec-mark: light-dark(#ffe97a, #6b5f14);
+  --ec-mark-ink: light-dark(#141b22, #f7f1c8);
+  --ec-accept: light-dark(#1f6f4a, #6fcf9a);
+  --ec-edit: light-dark(#8a5a00, #e2b35a);
+  --ec-reject: light-dark(#a2382a, #ef8f7f);
+  --ec-shadow: light-dark(rgb(0 0 0 / 12%), rgb(0 0 0 / 40%));
+
+  /* Type */
+  --ec-serif: 'Newsreader Variable', 'Iowan Old Style', 'Palatino Linotype', georgia, serif;
+  --ec-sans: 'IBM Plex Sans', 'Helvetica Neue', arial, sans-serif;
+  --ec-mono: ui-monospace, 'SF Mono', menlo, consolas, monospace;
+  --ec-text-2xs: 0.75rem;
+  --ec-text-xs: 0.8rem;
+  --ec-text-sm: 0.85rem;
+  --ec-text-control: 0.9rem;
+  --ec-text-base: 0.95rem;
+  --ec-text-page: 1rem;
+  --ec-text-lg: 1.05rem;
+  --ec-text-xl: 1.2rem;
+  --ec-text-2xl: 1.3rem;
+  --ec-text-3xl: 1.5rem;
+  --ec-text-4xl: 1.8rem;
+
+  /* Space */
+  --ec-space-1: 0.25rem;
+  --ec-space-2: 0.5rem;
+  --ec-space-3: 0.75rem;
+  --ec-space-4: 1rem;
+  --ec-space-5: 1.25rem;
+  --ec-space-6: 1.5rem;
+  --ec-space-12: 3rem;
+
+  /* Shape: controls round a little, chips fully */
+  --ec-radius: 4px;
+  --ec-radius-chip: 999px;
+  --ec-rule-width: 1px;
+  --ec-rule-heavy: 2px;
+  --ec-flag-width: 3px;
+
+  /* Measure */
+  --ec-width: 88rem;
+}

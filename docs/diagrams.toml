@@ -1,0 +1,199 @@
+########################################################################
+#                          docs/diagrams.toml                          #
+########################################################################
+#  Author:            Kevin Street                                     #
+#  Created on:        2026-10-29                                       #
+#  Last modified on:  2026-10-29                                       #
+#  Purpose:           The README diagrams as data. Redraw them with    #
+#                     make diagrams; never edit the SVGs by hand.      #
+########################################################################
+# Boxes are [left, top, width, height] in pixels; arrow points are [x, y].
+
+[[diagram]]
+file = "architecture.svg"
+width = 1000
+height = 800
+title = "EEOC charge intake at a glance"
+subtitle = "Only what the pages say reaches a reviewer, and only the reviewer's decisions are exported."
+caption = "Grey arrows: what moves between parts. Blue: the one path that leaves your machine. Dashed boxes: where each part runs."
+
+[[diagram.zone]]
+box = [28, 150, 420, 132]
+title = "Browser"
+rule = "the reviewer"
+
+[[diagram.component]]
+box = [48, 190, 380, 76]
+name = "Review screen"
+details = ["React and TypeScript: samples, review, results", "the document beside the record, quotes marked"]
+
+[[diagram.component]]
+box = [612, 170, 360, 80]
+name = "Model provider"
+details = ["outside your machine: Anthropic by default", "sees the page text of both documents"]
+
+[[diagram.zone]]
+box = [28, 320, 944, 168]
+title = "Service"
+rule = "your machine only: there is no sign-in"
+
+[[diagram.component]]
+box = [48, 360, 208, 108]
+name = "API"
+details = ["FastAPI, /api/v1", "limits, hosts, headers", "uploads: size, PDF only"]
+
+[[diagram.component]]
+box = [280, 360, 208, 108]
+name = "Extraction"
+details = ["page text from the PDFs", "one call, schema checked", "stand-in in demo mode"]
+
+[[diagram.component]]
+box = [512, 360, 208, 108]
+name = "Quote check"
+details = ["each quote on its page?", "if not, field emptied", "and the reason given"]
+
+[[diagram.component]]
+box = [744, 360, 208, 108]
+name = "Reviews"
+details = ["accept, edit or reject", "export needs every field", "deadline is a rule"]
+
+[[diagram.arrow]]
+points = [[256, 414], [280, 414]]
+
+[[diagram.arrow]]
+points = [[488, 414], [512, 414]]
+
+[[diagram.arrow]]
+points = [[720, 414], [744, 414]]
+
+[[diagram.arrow]]
+points = [[238, 266], [238, 316]]
+label = "PDFs, decisions, the record"
+at = [246, 296]
+
+[[diagram.arrow]]
+points = [[384, 358], [384, 302], [792, 302], [792, 252]]
+label = "page text out, fields back"
+at = [560, 294]
+accent = true
+
+[[diagram.zone]]
+box = [28, 520, 460, 130]
+title = "Evaluation"
+rule = "offline in CI, live by hand"
+
+[[diagram.component]]
+box = [48, 560, 208, 74]
+name = "Test documents"
+details = ["made up, known answers", "every fifth a hard case"]
+
+[[diagram.component]]
+box = [268, 560, 200, 74]
+name = "Scores"
+details = ["fields right, guesses", "time, cost, change tests"]
+
+[[diagram.arrow]]
+points = [[384, 518], [384, 490]]
+label = "extracts every document"
+at = [392, 508]
+
+[[diagram.zone]]
+box = [512, 520, 460, 130]
+title = "Results"
+rule = "committed, read by the case study"
+
+[[diagram.component]]
+box = [532, 560, 208, 74]
+name = "Dashboard"
+details = ["Dash: compare runs", "figures for the site"]
+
+[[diagram.component]]
+box = [752, 560, 200, 74]
+name = "Tableau export"
+details = ["three tidy CSV files", "one row per field"]
+
+[[diagram.arrow]]
+points = [[468, 597], [528, 597]]
+label = "results"
+at = [474, 588]
+
+[[diagram.band]]
+box = [28, 680, 944, 92]
+title = "Foundation"
+lines = [
+  "config/settings.toml holds every setting, .env holds secrets only · kds settings, logs, llm, evals, synthetic",
+  "JSON logs with request ids, never document text · CI: tests, offline smoke run, CodeQL, gitleaks, audits",
+]
+
+[[diagram]]
+file = "flow.svg"
+width = 1000
+height = 560
+title = "How a charge is reviewed"
+subtitle = "A value is shown only with its quote on its page; nothing exports until every field is decided."
+caption = "Steps in reading order. Blue: the request that leaves your machine."
+
+[[diagram.component]]
+box = [28, 160, 272, 80]
+name = "1. Upload or pick"
+details = ["a charge and its notice, as PDFs", "or one of the generated samples"]
+
+[[diagram.component]]
+box = [364, 160, 272, 80]
+name = "2. Check the files"
+details = ["at most 10 MB each, PDFs only", "a limit on extractions a minute"]
+
+[[diagram.component]]
+box = [700, 160, 272, 80]
+name = "3. Read the pages"
+details = ["page text from each PDF", "an unreadable file stops here"]
+
+[[diagram.component]]
+box = [28, 300, 272, 80]
+name = "4. Extract the fields"
+details = ["one model call, eleven fields", "each with a quote and its page"]
+
+[[diagram.component]]
+box = [364, 300, 272, 80]
+name = "5. Check every quote"
+details = ["the quote must be on its page", "if not, emptied with the reason"]
+
+[[diagram.component]]
+box = [700, 300, 272, 80]
+name = "6. A person decides"
+details = ["accept, edit or reject each field", "export once all are decided"]
+
+[[diagram.arrow]]
+points = [[300, 200], [364, 200]]
+
+[[diagram.arrow]]
+points = [[636, 200], [700, 200]]
+
+[[diagram.arrow]]
+points = [[836, 240], [836, 270], [164, 270], [164, 300]]
+
+[[diagram.arrow]]
+points = [[300, 340], [364, 340]]
+
+[[diagram.arrow]]
+points = [[636, 340], [700, 340]]
+
+[[diagram.component]]
+box = [28, 440, 272, 80]
+name = "Model provider"
+details = ["outside your machine"]
+note = "external"
+
+[[diagram.arrow]]
+points = [[164, 380], [164, 438]]
+label = "page text out, fields back"
+at = [174, 414]
+accent = true
+
+[[diagram.band]]
+box = [336, 440, 636, 80]
+title = "Every extraction leaves"
+lines = [
+  "a review: the record, the raw answer, the emptied fields, the page text",
+  "a JSON log line: request id, fields filled and emptied, cost and time",
+]

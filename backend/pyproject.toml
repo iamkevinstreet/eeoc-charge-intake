@@ -1,0 +1,101 @@
+########################################################################
+#                        backend/pyproject.toml                        #
+########################################################################
+#  Author:            Kevin Street                                     #
+#  Created on:        2026-10-29                                       #
+#  Last modified on:  2026-10-29                                       #
+#  Purpose:           Packages the charge intake service and sets      #
+#                     ruff, mypy and pytest to the code standard.      #
+########################################################################
+[project]
+name = "eeoc-charge-intake"
+version = "0.4.0"
+description = "EEOC charge intake: extraction with source spans and human review."
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "Apache-2.0" }
+authors = [{ name = "Kevin Street", email = "info@kevindstreet.com" }]
+dependencies = [
+  "kds-settings>=0.3.0,<0.4",
+  "kds-logs>=0.3.0,<0.4",
+  "kds-llm>=0.3.0,<0.4",
+  "kds-evals>=0.3.0,<0.4",
+  "kds-synthetic>=0.3.0,<0.4",
+  "fastapi>=0.115",
+  "uvicorn>=0.32",
+  "python-multipart>=0.0.18",
+  "pypdf>=6.1",
+]
+
+[project.optional-dependencies]
+# The evaluation dashboard and the figures and CSV files the case study and Tableau read.
+dashboard = ["dash>=3", "plotly>=6", "pandas>=2.2"]
+
+[dependency-groups]
+dev = [
+  "httpx>=0.28",
+  "mypy>=1.13",
+  "pandas-stubs>=2.2",
+  "pip-audit>=2.7",
+  "pytest>=8.3",
+  "ruff==0.17.3",
+  "kds-standards>=0.3.0,<0.4",
+  "kds-diagrams>=0.3.0,<0.4",
+]
+
+# Our own packages come from the utils repository at one reviewed commit; none
+# of them is on PyPI, so a same-named public package can never be installed.
+[tool.uv.sources]
+kds-settings = { git = "https://github.com/iamkevinstreet/utils", subdirectory = "settings", rev = "1b67de07d6de8006f4d6f0ee7ea5668277e411f7" }
+kds-logs = { git = "https://github.com/iamkevinstreet/utils", subdirectory = "logs", rev = "1b67de07d6de8006f4d6f0ee7ea5668277e411f7" }
+kds-llm = { git = "https://github.com/iamkevinstreet/utils", subdirectory = "llm", rev = "1b67de07d6de8006f4d6f0ee7ea5668277e411f7" }
+kds-evals = { git = "https://github.com/iamkevinstreet/utils", subdirectory = "evals", rev = "1b67de07d6de8006f4d6f0ee7ea5668277e411f7" }
+kds-synthetic = { git = "https://github.com/iamkevinstreet/utils", subdirectory = "synthetic", rev = "1b67de07d6de8006f4d6f0ee7ea5668277e411f7" }
+kds-standards = { git = "https://github.com/iamkevinstreet/utils", subdirectory = "standards", rev = "1b67de07d6de8006f4d6f0ee7ea5668277e411f7" }
+kds-diagrams = { git = "https://github.com/iamkevinstreet/utils", subdirectory = "diagrams", rev = "1b67de07d6de8006f4d6f0ee7ea5668277e411f7" }
+
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["eeoc_intake*"]
+
+[tool.ruff]
+line-length = 99
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "I", "N", "UP", "B", "BLE", "S", "C90", "PL", "RUF", "G", "D"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.mccabe]
+max-complexity = 10
+
+[tool.ruff.lint.pylint]
+max-args = 8
+max-positional-args = 5
+
+[tool.ruff.lint.isort]
+known-first-party = ["eeoc_intake"]
+known-local-folder = ["support"]
+
+[tool.ruff.lint.per-file-ignores]
+# Tests assert and repeat expected values inline.
+"tests/**" = ["S101", "PLR2004", "D"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# Dash registers a pytest plugin for browser tests we do not use; its old-style hooks warn.
+addopts = "-q -p no:dash"
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+packages = ["eeoc_intake"]
+
+[[tool.mypy.overrides]]
+module = ["plotly", "plotly.*", "dash", "dash.*"]
+ignore_missing_imports = true

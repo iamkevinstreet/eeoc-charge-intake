@@ -1,0 +1,66 @@
+/*
+########################################################################
+#                   frontend/src/styles/results.css                    #
+########################################################################
+#  Author:            Kevin Street                                     #
+#  Created on:        2026-10-29                                       #
+#  Last modified on:  2026-10-29                                       #
+#  Purpose:           The evaluation screen: the numbers, the accuracy #
+#                     chart, and the table by case kind.               #
+########################################################################
+*/
+
+/* The evaluation screen: the row of headline numbers, the accuracy by
+   field chart, and the table by kind of case, which uses the shared
+   ledger style. */
+
+.ec-results {
+  max-width: 64rem;
+}
+
+.ec-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: var(--ec-space-4) var(--ec-space-6);
+  margin: var(--ec-space-4) 0 var(--ec-space-2);
+  padding-top: var(--ec-space-4);
+  border-top: var(--ec-rule-heavy) solid var(--ec-rule-strong);
+}
+
+.ec-stat__value {
+  font-family: var(--ec-serif);
+  font-size: 1.7rem;
+  line-height: 1.1;
+}
+
+.ec-stat__label {
+  font-size: var(--ec-text-sm);
+}
+
+.ec-stat__note {
+  color: var(--ec-slate);
+  font-size: 0.78rem;
+}
+
+.ec-bars {
+  width: 100%;
+  max-width: 44rem;
+  height: auto;
+  font-size: 13px;
+}
+
+.ec-bars__label {
+  fill: var(--ec-ink);
+}
+
+.ec-bars__value {
+  fill: var(--ec-slate);
+}
+
+.ec-bars__track {
+  fill: var(--ec-wash);
+}
+
+.ec-bars__fill {
+  fill: var(--ec-slate);
+}

@@ -1,0 +1,229 @@
+/*
+########################################################################
+#                     frontend/src/styles/base.css                     #
+########################################################################
+#  Author:            Kevin Street                                     #
+#  Created on:        2026-10-29                                       #
+#  Last modified on:  2026-10-29                                       #
+#  Purpose:           The frame every screen shares: page, top bar,    #
+#                     headings, buttons, links, tables, focus.         #
+########################################################################
+*/
+
+/* The frame every screen shares: the page, the top bar, headings and text,
+   buttons and links, the ledger table, focus, and the helpers for quiet
+   notes, errors and screen-reader text. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--ec-paper);
+  color: var(--ec-ink);
+  font-family: var(--ec-sans);
+  font-size: 100%;
+  text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  min-height: 100dvh;
+  margin: 0;
+  font-size: var(--ec-text-base);
+  line-height: 1.5;
+}
+
+h1,
+h2 {
+  margin: 0 0 var(--ec-space-2);
+  font-family: var(--ec-serif);
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+h1 {
+  font-size: var(--ec-text-4xl);
+}
+
+h2 {
+  margin-top: 1.75rem;
+  font-size: var(--ec-text-2xl);
+}
+
+p {
+  max-width: 62ch;
+  margin: 0 0 var(--ec-space-3);
+}
+
+a {
+  color: var(--ec-link);
+}
+
+code {
+  padding: 0.05em 0.3em;
+  border-radius: 3px;
+  background: var(--ec-wash);
+  font-family: var(--ec-mono);
+  font-size: 0.9em;
+}
+
+:focus-visible {
+  outline: var(--ec-rule-heavy) solid var(--ec-link);
+  outline-offset: 2px;
+}
+
+.ec-meta {
+  color: var(--ec-slate);
+}
+
+.ec-serif {
+  font-family: var(--ec-serif);
+  font-size: var(--ec-text-lg);
+}
+
+.ec-error {
+  padding-left: var(--ec-space-3);
+  border-left: var(--ec-flag-width) solid var(--ec-reject);
+  color: var(--ec-reject);
+}
+
+.ec-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* The top bar */
+
+.ec-bar {
+  display: flex;
+  gap: var(--ec-space-5);
+  align-items: center;
+  padding: 0.6rem var(--ec-space-5);
+  border-bottom: var(--ec-rule-width) solid var(--ec-rule);
+}
+
+.ec-bar__name {
+  font-family: var(--ec-serif);
+  font-size: 1.15rem;
+}
+
+.ec-bar__links {
+  display: flex;
+  gap: var(--ec-space-1);
+  margin-left: auto;
+}
+
+.ec-bar__link {
+  padding: 0.3rem var(--ec-space-2);
+  border: 0;
+  border-bottom: var(--ec-rule-heavy) solid transparent;
+  background: none;
+  color: var(--ec-ink);
+  font: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  appearance: none;
+}
+
+.ec-bar__link[aria-current='page'] {
+  border-bottom-color: var(--ec-rule-strong);
+}
+
+.ec-badge {
+  padding: 0.1rem 0.6rem;
+  border: var(--ec-rule-width) solid var(--ec-rule);
+  border-radius: var(--ec-radius-chip);
+  color: var(--ec-slate);
+  font-size: var(--ec-text-xs);
+}
+
+.ec-main {
+  max-width: var(--ec-width);
+  margin: 0 auto;
+  padding: var(--ec-space-6) var(--ec-space-5) var(--ec-space-12);
+}
+
+/* Buttons and links */
+
+.ec-button {
+  display: inline-block;
+  padding: 0.3rem var(--ec-space-3);
+  border: var(--ec-rule-width) solid var(--ec-rule-strong);
+  border-radius: var(--ec-radius);
+  background: var(--ec-paper);
+  color: var(--ec-ink);
+  font: inherit;
+  font-size: var(--ec-text-control);
+  text-decoration: none;
+  cursor: pointer;
+  appearance: none;
+}
+
+.ec-button--small {
+  padding: var(--ec-space-1) 0.55rem;
+  font-size: var(--ec-text-sm);
+}
+
+.ec-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.ec-button:hover:not(:disabled, [aria-pressed='true']) {
+  background: var(--ec-wash);
+}
+
+.ec-button--primary,
+.ec-button[aria-pressed='true'] {
+  background: var(--ec-ink);
+  color: var(--ec-paper);
+}
+
+.ec-button--primary:hover:not(:disabled) {
+  background: var(--ec-slate);
+}
+
+.ec-link {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ec-link);
+  font: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+  appearance: none;
+}
+
+/* The ledger table */
+
+.ec-ledger {
+  width: 100%;
+  border-collapse: collapse;
+  border-top: var(--ec-rule-heavy) solid var(--ec-rule-strong);
+}
+
+.ec-ledger th,
+.ec-ledger td {
+  padding: 0.55rem var(--ec-space-2);
+  border-bottom: var(--ec-rule-width) solid var(--ec-rule);
+  vertical-align: top;
+}
+
+.ec-ledger th {
+  color: var(--ec-slate);
+  font-size: var(--ec-text-sm);
+  font-weight: 500;
+  text-align: left;
+}
+
+.ec-ledger__action {
+  text-align: right;
+}

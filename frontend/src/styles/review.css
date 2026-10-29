@@ -1,0 +1,262 @@
+/*
+########################################################################
+#                    frontend/src/styles/review.css                    #
+########################################################################
+#  Author:            Kevin Street                                     #
+#  Created on:        2026-10-29                                       #
+#  Last modified on:  2026-10-29                                       #
+#  Purpose:           The review screen: header, progress, field list, #
+#                     decisions, edit form, export sheet.              #
+########################################################################
+*/
+
+/* The review screen: the header with its progress and export, the field
+   list beside the document, each field's value, evidence, confidence and
+   decisions, the edit form, and the sheet that shows the exported record.
+   A decided field carries its decision's colour on its left edge and in
+   its label, and the label names the decision in words. */
+
+.ec-review__head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ec-space-6);
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: var(--ec-space-4);
+}
+
+.ec-review__title {
+  margin: var(--ec-space-1) 0;
+  font-size: var(--ec-text-3xl);
+}
+
+.ec-review__summary {
+  margin: 0;
+}
+
+.ec-progress {
+  display: flex;
+  gap: var(--ec-space-3);
+  align-items: center;
+  white-space: nowrap;
+}
+
+.ec-progress__bar {
+  width: 9rem;
+  height: 6px;
+  overflow: hidden;
+  border-radius: 3px;
+  background: var(--ec-wash);
+}
+
+.ec-progress__fill {
+  display: block;
+  height: 100%;
+  background: var(--ec-accept);
+  transition: width 200ms ease;
+}
+
+.ec-review__body {
+  display: grid;
+  grid-template-columns: minmax(0, 11fr) minmax(0, 9fr);
+  gap: var(--ec-space-6);
+  align-items: start;
+}
+
+@media (width <= 56rem) {
+  .ec-review__body {
+    grid-template-columns: 1fr;
+  }
+}
+
+.ec-review__keys {
+  margin-top: var(--ec-space-4);
+  font-size: var(--ec-text-sm);
+}
+
+/* The field list */
+
+.ec-fields {
+  margin: 0;
+  padding: 0;
+  border-top: var(--ec-rule-heavy) solid var(--ec-rule-strong);
+  list-style: none;
+}
+
+.ec-field {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--ec-space-3);
+  padding: 0.7rem var(--ec-space-2) 0.7rem var(--ec-space-3);
+  border-bottom: var(--ec-rule-width) solid var(--ec-rule);
+  border-left: var(--ec-flag-width) solid transparent;
+  cursor: pointer;
+}
+
+.ec-field--selected {
+  border-left-color: var(--ec-rule-strong);
+  background: var(--ec-wash);
+}
+
+.ec-field--accept {
+  border-left-color: var(--ec-accept);
+}
+
+.ec-field--edit {
+  border-left-color: var(--ec-edit);
+}
+
+.ec-field--reject {
+  border-left-color: var(--ec-reject);
+}
+
+.ec-field__name {
+  display: flex;
+  gap: var(--ec-space-2);
+  align-items: center;
+  color: var(--ec-slate);
+  font-size: var(--ec-text-sm);
+}
+
+.ec-chip {
+  padding: 0 var(--ec-space-2);
+  border: var(--ec-rule-width) solid currentcolor;
+  border-radius: var(--ec-radius-chip);
+  font-size: var(--ec-text-2xs);
+}
+
+.ec-chip--accept {
+  color: var(--ec-accept);
+}
+
+.ec-chip--edit {
+  color: var(--ec-edit);
+}
+
+.ec-chip--reject {
+  color: var(--ec-reject);
+}
+
+.ec-field__value {
+  margin: 0.1rem 0 0.2rem;
+  font-family: var(--ec-serif);
+  font-size: var(--ec-text-xl);
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+
+.ec-field__value--empty {
+  color: var(--ec-slate);
+  font-size: var(--ec-text-lg);
+  font-style: italic;
+}
+
+.ec-field__value--struck {
+  color: var(--ec-slate);
+  text-decoration: line-through;
+}
+
+.ec-field__evidence {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ec-space-1) var(--ec-space-3);
+  align-items: center;
+  font-size: var(--ec-text-sm);
+}
+
+.ec-quote {
+  padding: 0 0.2rem;
+  background: var(--ec-mark);
+  color: var(--ec-mark-ink);
+  quotes: '"' '"';
+}
+
+.ec-quote--struck {
+  background: none;
+  color: inherit;
+  text-decoration: line-through;
+}
+
+.ec-confidence {
+  display: inline-flex;
+  gap: 0.35rem;
+  align-items: center;
+  color: var(--ec-slate);
+}
+
+.ec-confidence__bar {
+  display: inline-block;
+  width: 3rem;
+  height: 4px;
+  overflow: hidden;
+  border: var(--ec-rule-width) solid var(--ec-rule);
+  border-radius: 2px;
+  background: var(--ec-wash);
+}
+
+.ec-confidence__fill {
+  display: block;
+  height: 100%;
+  background: var(--ec-slate);
+}
+
+.ec-field__actions {
+  display: flex;
+  gap: 0.3rem;
+  align-self: start;
+}
+
+/* The edit form */
+
+.ec-edit {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0.2rem 0 0.3rem;
+}
+
+.ec-edit__input {
+  flex: 1;
+  min-width: 16rem;
+  padding: var(--ec-space-1) var(--ec-space-2);
+  border: var(--ec-rule-width) solid var(--ec-rule-strong);
+  border-radius: var(--ec-radius);
+  background: var(--ec-paper);
+  color: var(--ec-ink);
+  font: inherit;
+  font-family: var(--ec-serif);
+  font-size: var(--ec-text-lg);
+}
+
+/* The exported record */
+
+.ec-sheet {
+  position: fixed;
+  inset: auto 0 0;
+  max-height: 80dvh;
+  padding: var(--ec-space-4) var(--ec-space-5) var(--ec-space-6);
+  overflow: auto;
+  border-top: var(--ec-rule-heavy) solid var(--ec-rule-strong);
+  background: var(--ec-paper);
+  box-shadow: 0 -8px 30px var(--ec-shadow);
+}
+
+.ec-sheet__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ec-sheet__actions {
+  display: flex;
+  gap: var(--ec-space-2);
+}
+
+.ec-sheet__json {
+  max-height: 40dvh;
+  padding: var(--ec-space-3);
+  overflow: auto;
+  background: var(--ec-wash);
+  font-family: var(--ec-mono);
+  font-size: var(--ec-text-xs);
+}
