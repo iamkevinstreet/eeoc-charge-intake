@@ -28,7 +28,7 @@ documents; `backend/tests/test_generate.py` checks it.
 ## How a run is scored
 
 Every measure is a count a reader can repeat from the results JSON
-([`backend/eeoc_intake/evals/score.py`](../backend/eeoc_intake/evals/score.py)):
+([`backend/src/eeoc_intake/evals/score.py`](../backend/src/eeoc_intake/evals/score.py)):
 
 - **Fields right:** the final value equals the known one, case and spacing aside; a one-item list
   equals its item. The summary is never scored: it is a paraphrase.
@@ -39,9 +39,10 @@ Every measure is a count a reader can repeat from the results JSON
 - **Time and cost:** per document, at the list prices of the date in `prices_as_of`.
 
 The dashboard and the case study mark a change between two runs only when it is bigger than
-run-to-run noise ([`backend/eeoc_intake/evals/stats.py`](../backend/eeoc_intake/evals/stats.py)): a
-rank test for time, Welch's t-test for the averages per document, and Holm's correction across the
-six headline numbers.
+run-to-run noise
+([`backend/src/eeoc_intake/evals/stats.py`](../backend/src/eeoc_intake/evals/stats.py)): a rank
+test for time, Welch's t-test for the averages per document, and Holm's correction across the six
+headline numbers.
 
 ## Tableau
 

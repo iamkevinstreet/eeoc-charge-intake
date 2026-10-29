@@ -185,7 +185,7 @@ lists every control.
 ```
 eeoc-charge-intake/
 ├── backend/        the service, extraction, evaluation and dashboard (Python)
-│   ├── eeoc_intake/    core/, api/, evals/, dashboard/
+│   ├── src/eeoc_intake/  core/, api/, evals/, dashboard/
 │   └── tests/
 ├── frontend/       the review screen (React, TypeScript)
 │   ├── src/            components/, styles/

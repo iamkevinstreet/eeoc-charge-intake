@@ -16,9 +16,12 @@ make eval             # the offline smoke run over the generated documents
 
 ## The package
 
+The package uses the src layout: it lives in `src/eeoc_intake/`, so the tests import the installed
+package and a file left out of it fails in the tests. Paths below are inside that folder.
+
 | Path | What it does |
 | --- | --- |
-| `eeoc_intake/config.py` | Every setting, typed and validated, read from `config/settings.toml` and `.env` |
+| `config.py` | Every setting, typed and validated, read from `config/settings.toml` and `.env` |
 | `core/schema.py` | The record: eleven fields, each a value with its page, quote, confidence and reason |
 | `core/extract.py` | The prompt, one structured model call, and the quote check |
 | `core/offline.py` | The offline stand-in, which answers from each generated document's known values |

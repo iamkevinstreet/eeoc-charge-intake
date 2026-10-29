@@ -7,8 +7,9 @@ read, at its default. It holds no secrets: those go in `.env` (copy
 ## How a value is chosen
 
 Highest first: an environment variable, then `.env`, then this file, then the default in
-[`backend/eeoc_intake/config.py`](../backend/eeoc_intake/config.py). Each key's environment name is
-its section and key joined by an underscore, in capitals: `[samples] count` is `SAMPLES_COUNT`.
+[`backend/src/eeoc_intake/config.py`](../backend/src/eeoc_intake/config.py). Each key's
+environment name is its section and key joined by an underscore, in capitals: `[samples] count` is
+`SAMPLES_COUNT`.
 `SETTINGS_FILE` points the service at a different file. Every setting is logged at startup, secrets
 masked, in the `service.start` event.
 

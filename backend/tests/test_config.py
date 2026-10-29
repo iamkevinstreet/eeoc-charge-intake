@@ -20,7 +20,6 @@ from kds.settings.toml import flatten, is_secret
 from pydantic import ValidationError
 
 from eeoc_intake.config import AppSettings
-
 from support import REPO
 
 # Module constants

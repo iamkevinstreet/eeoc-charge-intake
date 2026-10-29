@@ -21,7 +21,6 @@ from kds.logs import get_logger
 
 from eeoc_intake.config import AppSettings
 from eeoc_intake.core.generate import generate
-
 from support import make_settings, scripted, started
 
 # Module constants

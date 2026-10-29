@@ -20,7 +20,6 @@ from kds.settings import get_settings
 
 from eeoc_intake.config import AppSettings, get_app_settings
 from eeoc_intake.core.generate import generate
-
 from support import make_settings
 
 # Module constants
