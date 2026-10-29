@@ -29,7 +29,8 @@ and so are the API's routes, payloads and responses.
   `FieldList`, `EditForm`).
 - **Review screen:** the note that uploads need a model names `config/config.toml` and
   `config/.env`; the dev server proxies `/api/v1` to the host and port in the config.
-- **API docs:** each route's OpenAPI description is its handler's whole doc block.
+- **API docs:** each route's OpenAPI description is still its summary alone: the Args and
+  Returns sections of its handler's doc block are for readers of the code.
 - **Utils:** every shared package, now with `kds-args`, pins utils v0.4.2 (commit
   `62a38c5a3ecf667e3e227b18412abd77759c38d5`).
 - 59 backend tests and 11 review-screen tests, all offline.
