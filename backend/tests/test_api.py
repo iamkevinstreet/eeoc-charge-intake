@@ -461,3 +461,20 @@ def _live(tmp_path: Any = None, samples: Any = None, **overrides: Any) -> AppSet
         ui_dist=tmp_path / "no-ui",
         **overrides,
     )
+
+
+# log.debug("Defines the test: the API schema describes each route by its summary")
+def test_the_api_schema_leaves_out_doc_block_sections(client: TestClient) -> None:
+    """The schema keeps each route's summary, not its Args or Returns.
+
+    Args:
+        client: A client of the app with test settings.
+    """
+    # log.debug("Reads the schema the app publishes")
+    paths = client.get(f"{API}/openapi.json").json()["paths"]
+    # log.debug("Collects every route's description")
+    described = [op.get("description", "") for ops in paths.values() for op in ops.values()]
+    # log.debug("Checks there are routes to describe")
+    assert described
+    # log.debug("Checks each is described by its summary alone")
+    assert all(d and "Args:" not in d and "Returns:" not in d for d in described)
