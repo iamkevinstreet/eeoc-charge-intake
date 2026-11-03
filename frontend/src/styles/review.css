@@ -1,12 +1,14 @@
 /*
 ########################################################################
+#                                                                      #
 #                    frontend/src/styles/review.css                    #
+#                                                                      #
 ########################################################################
 */
 /*
  * Author:            Kevin Street
  * Created on:        2026-10-29
- * Last modified on:  2026-10-29
+ * Last modified on:  2026-11-03
  *
  * The review screen: the header with its progress and export, the field
  * list beside the document, each field's value, evidence, confidence
@@ -17,7 +19,9 @@
 
 /*
 ########################################################################
+#                                                                      #
 #                            Review screen                             #
+#                                                                      #
 ########################################################################
 */
 .ec-review__head {

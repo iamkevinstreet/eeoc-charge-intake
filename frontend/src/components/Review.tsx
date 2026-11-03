@@ -1,10 +1,12 @@
 // ########################################################################
+// #                                                                      #
 // #                  frontend/src/components/Review.tsx                  #
+// #                                                                      #
 // ########################################################################
 /**
  * Author:            Kevin Street
  * Created on:        2026-10-29
- * Last modified on:  2026-10-29
+ * Last modified on:  2026-11-03
  *
  * The review screen: the record beside the document, one decision per
  * field, and the export once every field has one. The state it keeps
@@ -12,7 +14,9 @@
  */
 
 // ########################################################################
+// #                                                                      #
 // #                               Imports                                #
+// #                                                                      #
 // ########################################################################
 // Local
 import { api as liveApi } from '../api';
@@ -27,13 +31,17 @@ import { FieldList } from './FieldList';
 import { ReviewHead } from './ReviewHead';
 
 // ########################################################################
+// #                                                                      #
 // #                           Global constants                           #
+// #                                                                      #
 // ########################################################################
 // log.debug('Takes the keys that move through the fields and decide them from the config')
 const KEYS = CONFIG.ui.keys;
 
 // ########################################################################
+// #                                                                      #
 // #                            Review screen                             #
+// #                                                                      #
 // ########################################################################
 interface Props {
   review?: ReviewData | null;

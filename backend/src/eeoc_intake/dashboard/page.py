@@ -1,10 +1,12 @@
 ########################################################################
+#                                                                      #
 #              backend/src/eeoc_intake/dashboard/page.py               #
+#                                                                      #
 ########################################################################
 """
 Author:            Kevin Street
 Created on:        2026-10-29
-Last modified on:  2026-10-29
+Last modified on:  2026-11-03
 
 Sets the HTML page Dash serves the app in: the fonts, and the colours
 and styles in light and dark. Dash fills the placeholders in braces
@@ -14,7 +16,9 @@ theme.py.
 """
 
 ########################################################################
+#                                                                      #
 #                               Imports                                #
+#                                                                      #
 ########################################################################
 # Standard library
 from __future__ import annotations
@@ -25,12 +29,16 @@ from typing import Final
 from kds.logs import get_logger
 
 ########################################################################
+#                                                                      #
 #                           Global constants                           #
+#                                                                      #
 ########################################################################
 log = get_logger(__name__)
 
 ########################################################################
+#                                                                      #
 #                           Local constants                            #
+#                                                                      #
 ########################################################################
 # log.debug("Sets the address of the Geist fonts, both families in one request")
 FONTS_URL: Final = (

@@ -1,10 +1,12 @@
 ########################################################################
+#                                                                      #
 #              backend/src/eeoc_intake/dashboard/tiles.py              #
+#                                                                      #
 ########################################################################
 """
 Author:            Kevin Street
 Created on:        2026-10-29
-Last modified on:  2026-10-29
+Last modified on:  2026-11-03
 
 Builds the headline tiles: each measure for the run in focus, and
 whether it moved beyond noise. A change that rounds to nothing at the
@@ -17,7 +19,9 @@ evals/stats.py.
 """
 
 ########################################################################
+#                                                                      #
 #                               Imports                                #
+#                                                                      #
 ########################################################################
 # Standard library
 from __future__ import annotations
@@ -38,7 +42,9 @@ from eeoc_intake.evals.shares import fixed, pct_label
 from eeoc_intake.evals.stats import holm, p_value
 
 ########################################################################
+#                                                                      #
 #                           Global constants                           #
+#                                                                      #
 ########################################################################
 log = get_logger(__name__)
 # log.debug("Takes the run id column, from the config")
@@ -55,7 +61,9 @@ RANK: Final = SETTINGS.stats_rank_test
 WELCH: Final = SETTINGS.stats_welch_test
 
 ########################################################################
+#                                                                      #
 #                           Local constants                            #
+#                                                                      #
 ########################################################################
 # log.debug("Names a rise")
 UP: Final = "up"
@@ -85,7 +93,9 @@ TILE_TESTS: Final = {
 
 
 ########################################################################
+#                                                                      #
 #                            Headline tiles                            #
+#                                                                      #
 ########################################################################
 # log.debug("Defines one headline measure")
 @dataclass(frozen=True)

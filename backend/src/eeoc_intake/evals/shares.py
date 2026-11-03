@@ -1,10 +1,12 @@
 ########################################################################
+#                                                                      #
 #               backend/src/eeoc_intake/evals/shares.py                #
+#                                                                      #
 ########################################################################
 """
 Author:            Kevin Street
 Created on:        2026-10-29
-Last modified on:  2026-10-29
+Last modified on:  2026-11-03
 
 Writes numbers and shares the way people read them, by the same rules
 as the case study: a number is rounded half up from the exact stored
@@ -13,7 +15,9 @@ down to 0%, so 100% means every field was right. Standard library only.
 """
 
 ########################################################################
+#                                                                      #
 #                               Imports                                #
+#                                                                      #
 ########################################################################
 # Standard library
 from __future__ import annotations
@@ -30,14 +34,18 @@ from kds.logs import get_logger
 from eeoc_intake.config import SETTINGS
 
 ########################################################################
+#                                                                      #
 #                           Global constants                           #
+#                                                                      #
 ########################################################################
 log = get_logger(__name__)
 # log.debug("Takes the percent a share of one is, from the config")
 PERCENT: Final = SETTINGS.units_percent
 
 ########################################################################
+#                                                                      #
 #                           Local constants                            #
+#                                                                      #
 ########################################################################
 # log.debug("Sets the smallest percent shown as a number; below it reads under 0.1")
 SMALLEST_SHOWN: Final = 0.05
@@ -52,7 +60,9 @@ NUDGE: Final = 1e-9
 
 
 ########################################################################
+#                                                                      #
 #                           Written numbers                            #
+#                                                                      #
 ########################################################################
 # log.debug("Defines rounding the way JavaScript's toFixed does it")
 def fixed(x: float | None = None, places: int | None = None) -> str:

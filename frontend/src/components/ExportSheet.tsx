@@ -1,17 +1,21 @@
 // ########################################################################
+// #                                                                      #
 // #               frontend/src/components/ExportSheet.tsx                #
+// #                                                                      #
 // ########################################################################
 /**
  * Author:            Kevin Street
  * Created on:        2026-10-29
- * Last modified on:  2026-10-29
+ * Last modified on:  2026-11-03
  *
  * The exported record: every decided field as JSON, with the day the
  * position statement is due, to download or copy.
  */
 
 // ########################################################################
+// #                                                                      #
 // #                               Imports                                #
+// #                                                                      #
 // ########################################################################
 // Local
 import { CONFIG } from '../config';
@@ -19,13 +23,17 @@ import { required } from '../lib/required';
 import type { Export } from '../types';
 
 // ########################################################################
+// #                                                                      #
 // #                           Global constants                           #
+// #                                                                      #
 // ########################################################################
 // log.debug('Takes the days after the notice a response is due from the config')
 const RESPONSE_DAYS = CONFIG.extract.response_days;
 
 // ########################################################################
+// #                                                                      #
 // #                           Local constants                            #
+// #                                                                      #
 // ########################################################################
 // log.debug('Sets the spaces each level of the JSON is indented by')
 const INDENT = 2;
@@ -35,7 +43,9 @@ const JSON_LINK = 'data:application/json;charset=utf-8,';
 const BUTTON = 'ec-button';
 
 // ########################################################################
+// #                                                                      #
 // #                             Export sheet                             #
+// #                                                                      #
 // ########################################################################
 interface Props {
   exported?: Export | null;

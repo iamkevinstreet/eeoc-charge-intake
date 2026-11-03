@@ -1,10 +1,12 @@
 ########################################################################
+#                                                                      #
 #              backend/src/eeoc_intake/dashboard/theme.py              #
+#                                                                      #
 ########################################################################
 """
 Author:            Kevin Street
 Created on:        2026-10-29
-Last modified on:  2026-10-29
+Last modified on:  2026-11-03
 
 Sets the look every chart shares: the fonts, the colours of the light
 and dark schemes, the layout and the hover. It follows the design of
@@ -14,7 +16,9 @@ as one product.
 """
 
 ########################################################################
+#                                                                      #
 #                               Imports                                #
+#                                                                      #
 ########################################################################
 # Standard library
 from __future__ import annotations
@@ -33,7 +37,9 @@ from eeoc_intake.config import SETTINGS
 from eeoc_intake.evals.shares import fixed
 
 ########################################################################
+#                                                                      #
 #                           Global constants                           #
+#                                                                      #
 ########################################################################
 log = get_logger(__name__)
 # log.debug("Takes the light scheme's name, the one the export uses, from the config")
@@ -54,7 +60,9 @@ LEFT: Final = SETTINGS.charts_align
 COST_PLACES: Final = SETTINGS.charts_cost_places
 
 ########################################################################
+#                                                                      #
 #                           Local constants                            #
+#                                                                      #
 ########################################################################
 # log.debug("Sets the font stack of kevindstreet.com")
 FONT: Final = (
@@ -63,7 +71,9 @@ FONT: Final = (
 
 
 ########################################################################
+#                                                                      #
 #                             Chart theme                              #
+#                                                                      #
 ########################################################################
 # log.debug("Defines the colours of one scheme")
 @dataclass(frozen=True)

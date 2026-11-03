@@ -1,10 +1,12 @@
 // ########################################################################
+// #                                                                      #
 // #                      frontend/src/highlight.ts                       #
+// #                                                                      #
 // ########################################################################
 /**
  * Author:            Kevin Street
  * Created on:        2026-10-29
- * Last modified on:  2026-10-29
+ * Last modified on:  2026-11-03
  *
  * Finds a quote in a page the way the service checks it, whatever its
  * case and the runs of space inside it, and splits the page around it
@@ -12,13 +14,17 @@
  */
 
 // ########################################################################
+// #                                                                      #
 // #                               Imports                                #
+// #                                                                      #
 // ########################################################################
 // Local
 import { required } from './lib/required';
 
 // ########################################################################
+// #                                                                      #
 // #                           Local constants                            #
+// #                                                                      #
 // ########################################################################
 // log.debug('Matches the runs of space between the words of a quote')
 const SPACES = /\s+/;
@@ -32,7 +38,9 @@ const GAP = '\\s+';
 const IGNORE_CASE = 'i';
 
 // ########################################################################
+// #                                                                      #
 // #                            Quote marking                             #
+// #                                                                      #
 // ########################################################################
 /** A page split around a quote: the text before it, the quote as the page has it, the rest. */
 export interface Marked {

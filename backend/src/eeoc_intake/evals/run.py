@@ -1,10 +1,12 @@
 ########################################################################
+#                                                                      #
 #                 backend/src/eeoc_intake/evals/run.py                 #
+#                                                                      #
 ########################################################################
 """
 Author:            Kevin Street
 Created on:        2026-10-29
-Last modified on:  2026-10-29
+Last modified on:  2026-11-03
 
 Runs the extraction evaluation over the generated documents and writes
 the results.
@@ -21,7 +23,9 @@ the first `[extract] dump` extractions are saved whole in
 """
 
 ########################################################################
+#                                                                      #
 #                               Imports                                #
+#                                                                      #
 ########################################################################
 # Standard library
 from __future__ import annotations
@@ -46,7 +50,9 @@ from eeoc_intake.core.offline import adapter_for
 from eeoc_intake.evals.score import score
 
 ########################################################################
+#                                                                      #
 #                           Global constants                           #
+#                                                                      #
 ########################################################################
 log = get_logger(__name__)
 # log.debug("Takes the text encoding of every file written, from the config")
@@ -61,14 +67,18 @@ CHARGE_PDF: Final = SETTINGS.samples_charge_input
 NOTICE_PDF: Final = SETTINGS.samples_notice_input
 
 ########################################################################
+#                                                                      #
 #                           Local constants                            #
+#                                                                      #
 ########################################################################
 # log.debug("Sets the time stamp that names a folder of saved extractions")
 STAMP: Final = "%Y%m%dT%H%M%SZ"
 
 
 ########################################################################
+#                                                                      #
 #                            Evaluation run                            #
+#                                                                      #
 ########################################################################
 # log.debug("Defines where a run's results go")
 def results_folder(settings: AppSettings | None = None) -> Path:

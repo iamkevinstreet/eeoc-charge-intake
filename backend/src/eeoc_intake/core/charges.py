@@ -1,10 +1,12 @@
 ########################################################################
+#                                                                      #
 #               backend/src/eeoc_intake/core/charges.py                #
+#                                                                      #
 ########################################################################
 """
 Author:            Kevin Street
 Created on:        2026-10-29
-Last modified on:  2026-10-29
+Last modified on:  2026-11-03
 
 Draws one made-up charge from the seeded generators and writes its two
 documents: the EEOC Form 5 and the notice letter. Every fifth charge is
@@ -15,7 +17,9 @@ documents, draw for draw.
 """
 
 ########################################################################
+#                                                                      #
 #                               Imports                                #
+#                                                                      #
 ########################################################################
 # Standard library
 from __future__ import annotations
@@ -36,14 +40,18 @@ from kds.synthetic.pdf import PdfDoc
 from eeoc_intake.config import SETTINGS
 
 ########################################################################
+#                                                                      #
 #                           Global constants                           #
+#                                                                      #
 ########################################################################
 log = get_logger(__name__)
 # log.debug("Takes the kind of a document that is not a hard case, from the config")
 CLEAN: Final = SETTINGS.samples_clean
 
 ########################################################################
+#                                                                      #
 #                           Local constants                            #
+#                                                                      #
 ########################################################################
 # log.debug("Lists the EEOC offices a charge may be filed with")
 OFFICES: Final = (
@@ -126,7 +134,9 @@ FORM_DATE: Final = "%m/%d/%Y"
 
 
 ########################################################################
+#                                                                      #
 #                           Made-up charges                            #
+#                                                                      #
 ########################################################################
 # log.debug("Defines the values one charge and its notice print")
 @dataclass(frozen=True)

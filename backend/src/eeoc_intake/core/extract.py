@@ -1,10 +1,12 @@
 ########################################################################
+#                                                                      #
 #               backend/src/eeoc_intake/core/extract.py                #
+#                                                                      #
 ########################################################################
 """
 Author:            Kevin Street
 Created on:        2026-10-29
-Last modified on:  2026-10-29
+Last modified on:  2026-11-03
 
 Reads a charge and its notice into a record with evidence, then empties
 what the pages don't say.
@@ -16,7 +18,9 @@ and what the call cost.
 """
 
 ########################################################################
+#                                                                      #
 #                               Imports                                #
+#                                                                      #
 ########################################################################
 # Standard library
 from __future__ import annotations
@@ -39,7 +43,9 @@ from eeoc_intake.config import SETTINGS
 from eeoc_intake.core.schema import FIELDS, ChargeRecord, Sourced, is_empty
 
 ########################################################################
+#                                                                      #
 #                           Global constants                           #
+#                                                                      #
 ########################################################################
 log = get_logger(__name__)
 # log.debug("Takes the field whose quote is on the notice, not the charge, from the config")
@@ -50,7 +56,9 @@ SUMMARY_FIELD: Final = SETTINGS.record_summary_field
 MS: Final = SETTINGS.units_ms_per_second
 
 ########################################################################
+#                                                                      #
 #                           Local constants                            #
+#                                                                      #
 ########################################################################
 # log.debug("Sets the instructions the model reads before the documents")
 SYSTEM: Final = (
@@ -88,7 +96,9 @@ UNSUPPORTED: Final = "unsupported: cited span not found on cited page"
 
 
 ########################################################################
+#                                                                      #
 #                              Extraction                              #
+#                                                                      #
 ########################################################################
 # log.debug("Defines the error for a document whose text cannot be read")
 class UnreadableDocumentError(ValueError):

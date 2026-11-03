@@ -1,10 +1,12 @@
 // ########################################################################
+// #                                                                      #
 // #                         frontend/src/api.ts                          #
+// #                                                                      #
 // ########################################################################
 /**
  * Author:            Kevin Street
  * Created on:        2026-10-29
- * Last modified on:  2026-10-29
+ * Last modified on:  2026-11-03
  *
  * The API client: one function per route under the API prefix, and
  * errors that say what went wrong, with the request id the service
@@ -12,7 +14,9 @@
  */
 
 // ########################################################################
+// #                                                                      #
 // #                               Imports                                #
+// #                                                                      #
 // ########################################################################
 // Local
 import { CONFIG } from './config';
@@ -20,7 +24,9 @@ import { required } from './lib/required';
 import type { Decision, Export, Health, Progress, Review, RunResult, Sample } from './types';
 
 // ########################################################################
+// #                                                                      #
 // #                           Global constants                           #
+// #                                                                      #
 // ########################################################################
 // log.debug('Takes the address every route starts with from the config')
 const BASE = CONFIG.api.base;
@@ -30,7 +36,9 @@ const REQUEST_ID = CONFIG.api.request_id_header;
 const PORT = CONFIG.api.port;
 
 // ########################################################################
+// #                                                                      #
 // #                           Local constants                            #
+// #                                                                      #
 // ########################################################################
 // log.debug('Sets the method of the routes that change something')
 const POST = 'POST';
@@ -40,7 +48,9 @@ const REVIEWS = '/reviews';
 const JSON_HEADERS = { 'Content-Type': 'application/json' };
 
 // ########################################################################
+// #                                                                      #
 // #                              API client                              #
+// #                                                                      #
 // ########################################################################
 // log.debug('Defines the error every failed call raises')
 /** A call the service refused or could not answer, with what it said. */

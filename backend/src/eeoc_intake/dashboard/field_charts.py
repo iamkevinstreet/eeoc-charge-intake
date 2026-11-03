@@ -1,10 +1,12 @@
 ########################################################################
+#                                                                      #
 #          backend/src/eeoc_intake/dashboard/field_charts.py           #
+#                                                                      #
 ########################################################################
 """
 Author:            Kevin Street
 Created on:        2026-10-29
-Last modified on:  2026-10-29
+Last modified on:  2026-11-03
 
 Draws the accuracy chart by field: a dot per run on each field, the
 fields the runs disagree on highlighted and their dots joined. The
@@ -14,7 +16,9 @@ the page, so no chart carries one of its own.
 """
 
 ########################################################################
+#                                                                      #
 #                               Imports                                #
+#                                                                      #
 ########################################################################
 # Standard library
 from __future__ import annotations
@@ -36,7 +40,9 @@ from eeoc_intake.dashboard.views import long_labels, present
 from eeoc_intake.evals.shares import pct_label
 
 ########################################################################
+#                                                                      #
 #                           Global constants                           #
+#                                                                      #
 ########################################################################
 log = get_logger(__name__)
 # log.debug("Takes the run id column, from the config")
@@ -55,7 +61,9 @@ FONT_SIZE: Final = SETTINGS.charts_font_size
 PERCENT_TICKS: Final = SETTINGS.charts_percent_ticks
 
 ########################################################################
+#                                                                      #
 #                           Local constants                            #
+#                                                                      #
 ########################################################################
 # log.debug("Sets the smallest spread between runs that counts as a change")
 NOISE: Final = 0.001
@@ -70,7 +78,9 @@ DOTS_ROW: Final = 30
 
 
 ########################################################################
+#                                                                      #
 #                          Accuracy by field                           #
+#                                                                      #
 ########################################################################
 # log.debug("Defines the accuracy chart by field")
 def fig_accuracy_by_field(

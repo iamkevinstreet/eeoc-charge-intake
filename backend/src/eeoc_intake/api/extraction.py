@@ -1,10 +1,12 @@
 ########################################################################
+#                                                                      #
 #              backend/src/eeoc_intake/api/extraction.py               #
+#                                                                      #
 ########################################################################
 """
 Author:            Kevin Street
 Created on:        2026-10-29
-Last modified on:  2026-10-29
+Last modified on:  2026-11-03
 
 Runs the extraction behind the two extraction routes: the per-client
 limit, reading two uploads into a folder that is deleted afterwards,
@@ -14,7 +16,9 @@ ever shown, never used as a path.
 """
 
 ########################################################################
+#                                                                      #
 #                               Imports                                #
+#                                                                      #
 ########################################################################
 # Standard library
 from __future__ import annotations
@@ -34,12 +38,16 @@ from eeoc_intake.api.state import Services
 from eeoc_intake.core.extract import Extraction, UnreadableDocumentError, extract
 
 ########################################################################
+#                                                                      #
 #                           Global constants                           #
+#                                                                      #
 ########################################################################
 log = get_logger(__name__)
 
 ########################################################################
+#                                                                      #
 #                           Local constants                            #
+#                                                                      #
 ########################################################################
 # log.debug("Sets the first bytes of every PDF")
 PDF_MAGIC: Final = b"%PDF-"
@@ -54,7 +62,9 @@ NOTICE_FILE: Final = "notice.pdf"
 
 
 ########################################################################
+#                                                                      #
 #                          Running extraction                          #
+#                                                                      #
 ########################################################################
 # log.debug("Defines the per-client limit")
 def check_limit(svc: Services | None = None, request: Request | None = None) -> None:

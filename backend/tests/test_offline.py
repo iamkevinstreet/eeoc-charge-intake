@@ -1,17 +1,21 @@
 ########################################################################
+#                                                                      #
 #                    backend/tests/test_offline.py                     #
+#                                                                      #
 ########################################################################
 """
 Author:            Kevin Street
 Created on:        2026-10-29
-Last modified on:  2026-10-29
+Last modified on:  2026-11-03
 
 Tests the offline stand-in: it quotes the pages, and its planted quote
 is emptied by the check.
 """
 
 ########################################################################
+#                                                                      #
 #                               Imports                                #
+#                                                                      #
 ########################################################################
 # Standard library
 from __future__ import annotations
@@ -30,13 +34,17 @@ from eeoc_intake.core.generate import generate
 from eeoc_intake.core.offline import PLANTED_FIELD, adapter_for, find_span, gold_record
 
 ########################################################################
+#                                                                      #
 #                           Global constants                           #
+#                                                                      #
 ########################################################################
 log = get_logger(__name__)
 
 
 ########################################################################
+#                                                                      #
 #                            Stand-in tests                            #
+#                                                                      #
 ########################################################################
 # log.debug("Defines the test: a date is found as the form prints it")
 def test_a_date_is_found_as_the_form_prints_it() -> None:

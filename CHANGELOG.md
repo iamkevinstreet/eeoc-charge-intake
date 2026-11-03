@@ -31,8 +31,12 @@ and so are the API's routes, payloads and responses.
   `config/.env`; the dev server proxies `/api/v1` to the host and port in the config.
 - **API docs:** each route's OpenAPI description is still its summary alone: the Args and
   Returns sections of its handler's doc block are for readers of the code.
-- **Utils:** every shared package, now with `kds-args`, pins utils v0.4.2 (commit
-  `62a38c5a3ecf667e3e227b18412abd77759c38d5`).
+- **The box:** every file's header box and every section banner is five lines: a border, a blank
+  walled line, the title, another blank walled line and a border. The dotfiles that take `#`
+  comments carry a header like the Makefile.
+- **Utils:** every shared package, now with `kds-args`, pins utils v0.5.0 (commit
+  `fcac0477e1caadccf1e2d7580ce648258c5a79fa`), whose checker asks for that box, checks that no
+  function runs past 60 lines, and reads a long TypeScript import to its end.
 - 59 backend tests and 11 review-screen tests, all offline.
 
 ## v0.4.0, Oct 29, 2026

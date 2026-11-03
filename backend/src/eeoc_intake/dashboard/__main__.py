@@ -1,10 +1,12 @@
 ########################################################################
+#                                                                      #
 #            backend/src/eeoc_intake/dashboard/__main__.py             #
+#                                                                      #
 ########################################################################
 """
 Author:            Kevin Street
 Created on:        2026-10-29
-Last modified on:  2026-10-29
+Last modified on:  2026-11-03
 
 Serves the dashboard, or writes the figures the case study draws.
 
@@ -18,7 +20,9 @@ figures.json in [data] results, and exits.
 """
 
 ########################################################################
+#                                                                      #
 #                               Imports                                #
+#                                                                      #
 ########################################################################
 # Standard library
 from __future__ import annotations
@@ -38,7 +42,9 @@ from eeoc_intake.dashboard.app import build_app
 from eeoc_intake.dashboard.export import export_figures
 
 ########################################################################
+#                                                                      #
 #                           Global constants                           #
+#                                                                      #
 ########################################################################
 log = get_logger(__name__)
 # log.debug("Takes the name of the figures file the case study reads, from the config")
@@ -46,7 +52,9 @@ FIGURES: Final = SETTINGS.data_figures
 
 
 ########################################################################
+#                                                                      #
 #                             Command line                             #
+#                                                                      #
 ########################################################################
 # log.debug("Defines the command line")
 def main(argv: Sequence[str] | None = None) -> int:

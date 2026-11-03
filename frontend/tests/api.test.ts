@@ -1,17 +1,21 @@
 // ########################################################################
+// #                                                                      #
 // #                      frontend/tests/api.test.ts                      #
+// #                                                                      #
 // ########################################################################
 /**
  * Author:            Kevin Street
  * Created on:        2026-10-29
- * Last modified on:  2026-10-29
+ * Last modified on:  2026-11-03
  *
  * Tests the API client: the URL of each route, and the message from a
  * failed response.
  */
 
 // ########################################################################
+// #                                                                      #
 // #                               Imports                                #
+// #                                                                      #
 // ########################################################################
 // Third-party
 import { describe, expect, it, vi } from 'vitest';
@@ -20,7 +24,9 @@ import { describe, expect, it, vi } from 'vitest';
 import { ApiError, api, describeError } from '../src/api';
 
 // ########################################################################
+// #                                                                      #
 // #                           Local constants                            #
+// #                                                                      #
 // ########################################################################
 // log.debug('Sets the review the calls name')
 const ID = 'r-0123456789';
@@ -32,7 +38,9 @@ const POST = 'POST';
 const FETCH = 'fetch';
 
 // ########################################################################
+// #                                                                      #
 // #                           API client tests                           #
+// #                                                                      #
 // ########################################################################
 // log.debug('Describes the client')
 describe('api', () => {

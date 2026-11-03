@@ -1,10 +1,12 @@
 ########################################################################
+#                                                                      #
 #                   backend/tests/test_dashboard.py                    #
+#                                                                      #
 ########################################################################
 """
 Author:            Kevin Street
 Created on:        2026-10-29
-Last modified on:  2026-10-29
+Last modified on:  2026-11-03
 
 Tests the dashboard's tables, the Tableau and figures exports, the
 command line and the app. The charts and tiles have their own tests.
@@ -14,7 +16,9 @@ folders explicitly, so none depends on the current folder or settings.
 """
 
 ########################################################################
+#                                                                      #
 #                               Imports                                #
+#                                                                      #
 ########################################################################
 # Standard library
 from __future__ import annotations
@@ -39,19 +43,25 @@ from eeoc_intake.evals.export import export
 from support import RUN, one_run, two_runs
 
 ########################################################################
+#                                                                      #
 #                           Global constants                           #
+#                                                                      #
 ########################################################################
 log = get_logger(__name__)
 
 ########################################################################
+#                                                                      #
 #                           Local constants                            #
+#                                                                      #
 ########################################################################
 # log.debug("Matches Dash 4's warning that its tables will move to a separate package")
 TABLE_DEPRECATED = r"ignore:\s*The dash_table.DataTable will be removed:DeprecationWarning"
 
 
 ########################################################################
+#                                                                      #
 #                           Dashboard tests                            #
+#                                                                      #
 ########################################################################
 # log.debug("Defines the test of the tables and the single-run charts")
 def test_frames_and_figures(tmp_path: Path) -> None:

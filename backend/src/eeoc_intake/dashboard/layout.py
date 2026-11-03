@@ -1,10 +1,12 @@
 ########################################################################
+#                                                                      #
 #             backend/src/eeoc_intake/dashboard/layout.py              #
+#                                                                      #
 ########################################################################
 """
 Author:            Kevin Street
 Created on:        2026-10-29
-Last modified on:  2026-10-29
+Last modified on:  2026-11-03
 
 Lays out the dashboard's page once, when the app starts: a header, the
 run picker, the runs' key, the tiles, four chart cards and two tables.
@@ -14,7 +16,9 @@ take the parts' ids from the config.
 """
 
 ########################################################################
+#                                                                      #
 #                               Imports                                #
+#                                                                      #
 ########################################################################
 # Standard library
 from __future__ import annotations
@@ -34,7 +38,9 @@ from eeoc_intake.dashboard.views import records
 from eeoc_intake.evals.shares import pct_label
 
 ########################################################################
+#                                                                      #
 #                           Global constants                           #
+#                                                                      #
 ########################################################################
 log = get_logger(__name__)
 # log.debug("Takes the location's id, whose first change reads the scheme, from the config")
@@ -69,7 +75,9 @@ COST_TITLE: Final = SETTINGS.charts_cost_title
 COST_PLACES: Final = SETTINGS.charts_cost_places
 
 ########################################################################
+#                                                                      #
 #                           Local constants                            #
+#                                                                      #
 ########################################################################
 # log.debug("Names the runs table")
 RUNS_TABLE_ID: Final = "runs-table"
@@ -137,7 +145,9 @@ WRONG_COLUMNS: Final = (
 
 
 ########################################################################
+#                                                                      #
 #                             Page layout                              #
+#                                                                      #
 ########################################################################
 # log.debug("Defines the whole page")
 def page_layout(

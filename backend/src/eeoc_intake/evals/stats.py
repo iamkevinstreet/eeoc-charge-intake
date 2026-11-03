@@ -1,10 +1,12 @@
 ########################################################################
+#                                                                      #
 #                backend/src/eeoc_intake/evals/stats.py                #
+#                                                                      #
 ########################################################################
 """
 Author:            Kevin Street
 Created on:        2026-10-29
-Last modified on:  2026-10-29
+Last modified on:  2026-11-03
 
 Decides whether a number changed between two runs by more than
 run-to-run noise, with small statistics from the standard library. The
@@ -24,7 +26,9 @@ arrow in both or in neither:
 """
 
 ########################################################################
+#                                                                      #
 #                               Imports                                #
+#                                                                      #
 ########################################################################
 # Standard library
 from __future__ import annotations
@@ -41,7 +45,9 @@ from kds.logs import get_logger
 from eeoc_intake.config import SETTINGS
 
 ########################################################################
+#                                                                      #
 #                           Global constants                           #
+#                                                                      #
 ########################################################################
 log = get_logger(__name__)
 # log.debug("Takes the name of the rank test, used for time, from the config")
@@ -50,7 +56,9 @@ RANK: Final = SETTINGS.stats_rank_test
 WELCH: Final = SETTINGS.stats_welch_test
 
 ########################################################################
+#                                                                      #
 #                           Local constants                            #
+#                                                                      #
 ########################################################################
 # log.debug("Sets the chance of a false call the tests allow")
 ALPHA: Final = 0.05
@@ -67,7 +75,9 @@ MIN_SAMPLE: Final = 2
 
 
 ########################################################################
+#                                                                      #
 #                             Change tests                             #
+#                                                                      #
 ########################################################################
 # log.debug("Defines the standard normal distribution function")
 def _phi(z: float | None = None) -> float:

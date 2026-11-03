@@ -1,10 +1,12 @@
 // ########################################################################
+// #                                                                      #
 // #                      frontend/tests/fixtures.ts                      #
+// #                                                                      #
 // ########################################################################
 /**
  * Author:            Kevin Street
  * Created on:        2026-10-29
- * Last modified on:  2026-10-29
+ * Last modified on:  2026-11-03
  *
  * Made-up samples, a review and an evaluation run that the tests render
  * and stub fetch with. The record is built from the quotes on its page,
@@ -12,14 +14,18 @@
  */
 
 // ########################################################################
+// #                                                                      #
 // #                               Imports                                #
+// #                                                                      #
 // ########################################################################
 // Local
 import { required } from '../src/lib/required';
 import type { Health, Review, RunResult, Sample, Sourced, Value } from '../src/types';
 
 // ########################################################################
+// #                                                                      #
 // #                           Local constants                            #
+// #                                                                      #
 // ########################################################################
 // log.debug('Sets the quote behind each field, as the charge page has it')
 const QUOTES = {
@@ -149,7 +155,9 @@ export const RUN: RunResult = {
 };
 
 // ########################################################################
+// #                                                                      #
 // #                            Test fixtures                             #
+// #                                                                      #
 // ########################################################################
 // log.debug('Defines one extracted field, quoted from the first page of its document')
 /**

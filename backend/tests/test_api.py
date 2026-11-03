@@ -1,17 +1,21 @@
 ########################################################################
+#                                                                      #
 #                      backend/tests/test_api.py                       #
+#                                                                      #
 ########################################################################
 """
 Author:            Kevin Street
 Created on:        2026-10-29
-Last modified on:  2026-10-29
+Last modified on:  2026-11-03
 
 Tests the review service: evidence, one decision per field, the export
 gate, and the edge checks.
 """
 
 ########################################################################
+#                                                                      #
 #                               Imports                                #
+#                                                                      #
 ########################################################################
 # Standard library
 from __future__ import annotations
@@ -32,12 +36,16 @@ from eeoc_intake.core.generate import generate
 from support import make_settings, scripted, started
 
 ########################################################################
+#                                                                      #
 #                           Global constants                           #
+#                                                                      #
 ########################################################################
 log = get_logger(__name__)
 
 ########################################################################
+#                                                                      #
 #                           Local constants                            #
+#                                                                      #
 ########################################################################
 # log.debug("Sets the prefix every route is under")
 API = "/api/v1"
@@ -46,7 +54,9 @@ PDF = b"%PDF-1.4\n%made up\n"
 
 
 ########################################################################
+#                                                                      #
 #                         Review service tests                         #
+#                                                                      #
 ########################################################################
 # log.debug("Defines a started client in demo mode, over the ten samples")
 @pytest.fixture

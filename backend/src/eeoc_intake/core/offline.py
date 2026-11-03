@@ -1,10 +1,12 @@
 ########################################################################
+#                                                                      #
 #               backend/src/eeoc_intake/core/offline.py                #
+#                                                                      #
 ########################################################################
 """
 Author:            Kevin Street
 Created on:        2026-10-29
-Last modified on:  2026-10-29
+Last modified on:  2026-11-03
 
 Stands in for the model offline, answering from the known values
 `generate.py` wrote beside each synthetic document and quoting the line
@@ -15,7 +17,9 @@ live evaluation does.
 """
 
 ########################################################################
+#                                                                      #
 #                               Imports                                #
+#                                                                      #
 ########################################################################
 # Standard library
 from __future__ import annotations
@@ -38,7 +42,9 @@ from eeoc_intake.config import SETTINGS, AppSettings
 from eeoc_intake.core.schema import SCORED_FIELDS, is_empty
 
 ########################################################################
+#                                                                      #
 #                           Global constants                           #
+#                                                                      #
 ########################################################################
 log = get_logger(__name__)
 # log.debug("Takes the field whose quote is on the notice, from the config")
@@ -51,7 +57,9 @@ NOTICE_PDF: Final = SETTINGS.samples_notice_input
 FAKE: Final = SETTINGS.demo_provider
 
 ########################################################################
+#                                                                      #
 #                           Local constants                            #
+#                                                                      #
 ########################################################################
 # log.debug("Lists the date fields, written m/d/Y on the forms")
 DATE_FIELDS: Final = frozenset({"earliest_date", "latest_date", NOTICE_FIELD})
@@ -90,7 +98,9 @@ STAND_IN: Final = "fake-model"
 
 
 ########################################################################
+#                                                                      #
 #                           Offline stand-in                           #
+#                                                                      #
 ########################################################################
 # log.debug("Defines the adapter: the stand-in in demo mode, else the real model")
 def adapter_for(

@@ -1,10 +1,12 @@
 // ########################################################################
+// #                                                                      #
 // #                  frontend/src/components/TopBar.tsx                  #
+// #                                                                      #
 // ########################################################################
 /**
  * Author:            Kevin Street
  * Created on:        2026-10-29
- * Last modified on:  2026-10-29
+ * Last modified on:  2026-11-03
  *
  * The top bar every screen shares: the app's name, a button for each
  * section with the one on show marked, the link to the code, and a
@@ -12,26 +14,34 @@
  */
 
 // ########################################################################
+// #                                                                      #
 // #                               Imports                                #
+// #                                                                      #
 // ########################################################################
 // Local
 import { CONFIG } from '../config';
 import { required } from '../lib/required';
 
 // ########################################################################
+// #                                                                      #
 // #                           Global constants                           #
+// #                                                                      #
 // ########################################################################
 // log.debug('Takes the address of the source code the bar links to from the config')
 const CODE_URL = CONFIG.ui.code_url;
 
 // ########################################################################
+// #                                                                      #
 // #                           Local constants                            #
+// #                                                                      #
 // ########################################################################
 // log.debug('Sets the class of each link in the bar')
 const LINK = 'ec-bar__link';
 
 // ########################################################################
+// #                                                                      #
 // #                               Top bar                                #
+// #                                                                      #
 // ########################################################################
 /** A section of the bar: the screen it opens, and its label. */
 interface Section<S extends string> {

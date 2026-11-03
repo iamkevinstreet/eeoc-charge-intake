@@ -1,10 +1,12 @@
 ########################################################################
+#                                                                      #
 #             backend/src/eeoc_intake/dashboard/export.py              #
+#                                                                      #
 ########################################################################
 """
 Author:            Kevin Street
 Created on:        2026-10-29
-Last modified on:  2026-10-29
+Last modified on:  2026-11-03
 
 Writes the Plotly JSON of the four charts for the case study: the
 latest live runs, up to three, as many as the charts draw. Each trace
@@ -16,7 +18,9 @@ layout, for pages that draw them from there.
 """
 
 ########################################################################
+#                                                                      #
 #                               Imports                                #
+#                                                                      #
 ########################################################################
 # Standard library
 from __future__ import annotations
@@ -37,7 +41,9 @@ from eeoc_intake.dashboard.heatmap import fig_heatmap
 from eeoc_intake.dashboard.run_charts import fig_cost, fig_latency
 
 ########################################################################
+#                                                                      #
 #                           Global constants                           #
+#                                                                      #
 ########################################################################
 log = get_logger(__name__)
 # log.debug("Takes the run id column, from the config")
@@ -64,14 +70,18 @@ COST_TITLE: Final = SETTINGS.charts_cost_title
 ENCODING: Final = SETTINGS.files_encoding
 
 ########################################################################
+#                                                                      #
 #                           Local constants                            #
+#                                                                      #
 ########################################################################
 # log.debug("Sets the size of each chart's title")
 TITLE_SIZE: Final = 14
 
 
 ########################################################################
+#                                                                      #
 #                          Case study figures                          #
+#                                                                      #
 ########################################################################
 # log.debug("Defines the export of the figures")
 def export_figures(live: Path | None = None, out: Path | None = None) -> dict[str, Any]:

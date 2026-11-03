@@ -1,10 +1,12 @@
 // ########################################################################
+// #                                                                      #
 // #                 frontend/src/components/EditForm.tsx                 #
+// #                                                                      #
 // ########################################################################
 /**
  * Author:            Kevin Street
  * Created on:        2026-10-29
- * Last modified on:  2026-10-29
+ * Last modified on:  2026-11-03
  *
  * The edit form of a field: a yes or no choice for the field that holds
  * one, else a text box, comma separated for a list, with buttons that
@@ -12,7 +14,9 @@
  */
 
 // ########################################################################
+// #                                                                      #
 // #                               Imports                                #
+// #                                                                      #
 // ########################################################################
 // Local
 import { CONFIG } from '../config';
@@ -20,7 +24,9 @@ import { fieldLabel } from '../format';
 import { required } from '../lib/required';
 
 // ########################################################################
+// #                                                                      #
 // #                           Global constants                           #
+// #                                                                      #
 // ########################################################################
 // log.debug('Takes the word shown for a true value from the config')
 const YES = CONFIG.labels.yes;
@@ -32,7 +38,9 @@ const YES_NO_FIELD = CONFIG.record.yes_no_field;
 const LIST_FIELDS = CONFIG.record.list_fields;
 
 // ########################################################################
+// #                                                                      #
 // #                           Local constants                            #
+// #                                                                      #
 // ########################################################################
 // log.debug('Sets the class of the edit controls')
 const INPUT = 'ec-edit__input';
@@ -40,7 +48,9 @@ const INPUT = 'ec-edit__input';
 const YES_NO: readonly string[] = [YES, NO];
 
 // ########################################################################
+// #                                                                      #
 // #                              Edit form                               #
+// #                                                                      #
 // ########################################################################
 interface Props {
   name?: string | null;

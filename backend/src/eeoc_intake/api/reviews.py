@@ -1,10 +1,12 @@
 ########################################################################
+#                                                                      #
 #                backend/src/eeoc_intake/api/reviews.py                #
+#                                                                      #
 ########################################################################
 """
 Author:            Kevin Street
 Created on:        2026-10-29
-Last modified on:  2026-10-29
+Last modified on:  2026-11-03
 
 Keeps the reviews in progress, each an extraction with the decisions
 made on its fields, and builds the record a finished review exports.
@@ -14,7 +16,9 @@ database, which the README lists as unresolved.
 """
 
 ########################################################################
+#                                                                      #
 #                               Imports                                #
+#                                                                      #
 ########################################################################
 # Standard library
 from __future__ import annotations
@@ -36,14 +40,18 @@ from eeoc_intake.core.extract import Extraction, response_due
 from eeoc_intake.core.schema import FIELDS, Decision, Value
 
 ########################################################################
+#                                                                      #
 #                           Global constants                           #
+#                                                                      #
 ########################################################################
 log = get_logger(__name__)
 # log.debug("Takes the field the response deadline is counted from, from the config")
 NOTICE_FIELD: Final = SETTINGS.record_notice_field
 
 ########################################################################
+#                                                                      #
 #                           Local constants                            #
+#                                                                      #
 ########################################################################
 # log.debug("Sets the length of a review id, in hex digits")
 ID_DIGITS: Final = 10
@@ -58,7 +66,9 @@ DECISIONS: Final = "decisions"
 
 
 ########################################################################
+#                                                                      #
 #                         Reviews in progress                          #
+#                                                                      #
 ########################################################################
 # log.debug("Defines one review")
 @dataclass

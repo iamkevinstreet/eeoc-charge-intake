@@ -1,10 +1,12 @@
 ########################################################################
+#                                                                      #
 #                  backend/src/eeoc_intake/api/app.py                  #
+#                                                                      #
 ########################################################################
 """
 Author:            Kevin Street
 Created on:        2026-10-29
-Last modified on:  2026-10-29
+Last modified on:  2026-11-03
 
 Builds the HTTP app: its startup, request ids, security headers,
 allowed hosts, body limits and the review screen. Every response
@@ -17,7 +19,9 @@ screen has been built, the service serves it at /.
 """
 
 ########################################################################
+#                                                                      #
 #                               Imports                                #
+#                                                                      #
 ########################################################################
 # Standard library
 from __future__ import annotations
@@ -47,7 +51,9 @@ from eeoc_intake.api.state import build_services
 from eeoc_intake.config import SETTINGS, AppSettings, get_app_settings
 
 ########################################################################
+#                                                                      #
 #                           Global constants                           #
+#                                                                      #
 ########################################################################
 log = get_logger(__name__)
 # log.debug("Takes the prefix of every route, from the config")
@@ -58,7 +64,9 @@ REQUEST_ID: Final = SETTINGS.api_request_id_header
 MS: Final = SETTINGS.units_ms_per_second
 
 ########################################################################
+#                                                                      #
 #                           Local constants                            #
+#                                                                      #
 ########################################################################
 # log.debug("Names the service")
 SERVICE: Final = "EEOC charge intake"
@@ -102,7 +110,9 @@ Next = Callable[[Request], Awaitable[Response]]
 
 
 ########################################################################
+#                                                                      #
 #                               HTTP app                               #
+#                                                                      #
 ########################################################################
 # log.debug("Defines the app, whose API schema describes each route by its summary")
 class App(FastAPI):

@@ -1,10 +1,12 @@
 // ########################################################################
+// #                                                                      #
 // #                 frontend/src/components/FieldRow.tsx                 #
+// #                                                                      #
 // ########################################################################
 /**
  * Author:            Kevin Street
  * Created on:        2026-10-29
- * Last modified on:  2026-10-29
+ * Last modified on:  2026-11-03
  *
  * One field of the record: its value or its edit form, the quoted
  * evidence and the confidence behind it, and the buttons that accept,
@@ -12,7 +14,9 @@
  */
 
 // ########################################################################
+// #                                                                      #
 // #                               Imports                                #
+// #                                                                      #
 // ########################################################################
 // Local
 import { CONFIG } from '../config';
@@ -23,7 +27,9 @@ import { formatValue, isEmpty } from '../values';
 import { EditForm } from './EditForm';
 
 // ########################################################################
+// #                                                                      #
 // #                           Global constants                           #
+// #                                                                      #
 // ########################################################################
 // log.debug('Takes the field that holds a yes or a no from the config')
 const YES_NO_FIELD = CONFIG.record.yes_no_field;
@@ -33,7 +39,9 @@ const SUMMARY_FIELD = CONFIG.record.summary_field;
 const META = CONFIG.ui.note_class;
 
 // ########################################################################
+// #                                                                      #
 // #                           Local constants                            #
+// #                                                                      #
 // ########################################################################
 // log.debug('Sets the class of a quoted passage')
 const QUOTE = 'ec-quote';
@@ -53,7 +61,9 @@ const ACTION_LABELS: Readonly<Record<Action, string>> = {
 };
 
 // ########################################################################
+// #                                                                      #
 // #                              Field row                               #
+// #                                                                      #
 // ########################################################################
 interface Props {
   name?: string | null;

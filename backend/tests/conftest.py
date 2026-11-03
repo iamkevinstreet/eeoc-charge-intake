@@ -1,17 +1,21 @@
 ########################################################################
+#                                                                      #
 #                      backend/tests/conftest.py                       #
+#                                                                      #
 ########################################################################
 """
 Author:            Kevin Street
 Created on:        2026-10-29
-Last modified on:  2026-10-29
+Last modified on:  2026-11-03
 
 Sets up every test: offline, in an empty folder, with fresh settings,
 and the ten generated samples the session shares.
 """
 
 ########################################################################
+#                                                                      #
 #                               Imports                                #
+#                                                                      #
 ########################################################################
 # Standard library
 from __future__ import annotations
@@ -30,13 +34,17 @@ from eeoc_intake.core.generate import generate
 from support import make_settings
 
 ########################################################################
+#                                                                      #
 #                           Global constants                           #
+#                                                                      #
 ########################################################################
 log = get_logger(__name__)
 
 
 ########################################################################
+#                                                                      #
 #                            Test fixtures                             #
+#                                                                      #
 ########################################################################
 # log.debug("Defines the isolation every test gets")
 @pytest.fixture(autouse=True)

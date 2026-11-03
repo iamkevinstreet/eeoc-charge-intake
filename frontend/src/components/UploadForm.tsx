@@ -1,17 +1,21 @@
 // ########################################################################
+// #                                                                      #
 // #                frontend/src/components/UploadForm.tsx                #
+// #                                                                      #
 // ########################################################################
 /**
  * Author:            Kevin Street
  * Created on:        2026-10-29
- * Last modified on:  2026-10-29
+ * Last modified on:  2026-11-03
  *
  * The upload form: a charge form and its notice letter, both PDFs, and
  * the button that extracts their fields once both are picked.
  */
 
 // ########################################################################
+// #                                                                      #
 // #                               Imports                                #
+// #                                                                      #
 // ########################################################################
 // Third-party
 import { useState } from 'react';
@@ -21,19 +25,25 @@ import { CONFIG } from '../config';
 import { required } from '../lib/required';
 
 // ########################################################################
+// #                                                                      #
 // #                           Global constants                           #
+// #                                                                      #
 // ########################################################################
 // log.debug('Takes what an upload is called while it is extracted from the config')
 const UPLOAD = CONFIG.ui.upload_key;
 
 // ########################################################################
+// #                                                                      #
 // #                           Local constants                            #
+// #                                                                      #
 // ########################################################################
 // log.debug('Sets the only kind of file the form takes')
 const PDF = 'application/pdf';
 
 // ########################################################################
+// #                                                                      #
 // #                             Upload form                              #
+// #                                                                      #
 // ########################################################################
 interface Props {
   /** What is being extracted: a sample id, the upload, or nothing. */

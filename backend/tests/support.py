@@ -1,10 +1,12 @@
 ########################################################################
+#                                                                      #
 #                       backend/tests/support.py                       #
+#                                                                      #
 ########################################################################
 """
 Author:            Kevin Street
 Created on:        2026-10-29
-Last modified on:  2026-10-29
+Last modified on:  2026-11-03
 
 Holds the helpers the tests share: the repository root, settings that
 write only to a test's own folder, a started client, a model that
@@ -13,7 +15,9 @@ draw.
 """
 
 ########################################################################
+#                                                                      #
 #                               Imports                                #
+#                                                                      #
 ########################################################################
 # Standard library
 from __future__ import annotations
@@ -37,12 +41,16 @@ from eeoc_intake.api.app import create_app
 from eeoc_intake.config import AppSettings
 
 ########################################################################
+#                                                                      #
 #                           Global constants                           #
+#                                                                      #
 ########################################################################
 log = get_logger(__name__)
 
 ########################################################################
+#                                                                      #
 #                           Local constants                            #
+#                                                                      #
 ########################################################################
 # log.debug("Finds the repository root, two folders above this file")
 REPO = Path(__file__).resolve().parents[2]
@@ -104,7 +112,9 @@ RUN: dict[str, Any] = {
 
 
 ########################################################################
+#                                                                      #
 #                             Test helpers                             #
+#                                                                      #
 ########################################################################
 # log.debug("Defines settings that read the samples and write to a temp folder")
 def make_settings(

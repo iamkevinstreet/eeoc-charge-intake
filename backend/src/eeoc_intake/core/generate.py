@@ -1,10 +1,12 @@
 ########################################################################
+#                                                                      #
 #               backend/src/eeoc_intake/core/generate.py               #
+#                                                                      #
 ########################################################################
 """
 Author:            Kevin Street
 Created on:        2026-10-29
-Last modified on:  2026-10-29
+Last modified on:  2026-11-03
 
 Generates the evaluation set: made-up charge forms and notice letters,
 and cases.jsonl, which lists each pair with its known answers.
@@ -16,7 +18,9 @@ round; the same seed always makes the same documents.
 """
 
 ########################################################################
+#                                                                      #
 #                               Imports                                #
+#                                                                      #
 ########################################################################
 # Standard library
 from __future__ import annotations
@@ -37,7 +41,9 @@ from eeoc_intake.config import SETTINGS, AppSettings, get_app_settings
 from eeoc_intake.core.charges import Charge, draw, write_charge, write_notice
 
 ########################################################################
+#                                                                      #
 #                           Global constants                           #
+#                                                                      #
 ########################################################################
 log = get_logger(__name__)
 # log.debug("Takes the file the evaluation set is written to, from the config")
@@ -51,7 +57,9 @@ NOTICE_PDF: Final = SETTINGS.samples_notice_input
 
 
 ########################################################################
+#                                                                      #
 #                            Evaluation set                            #
+#                                                                      #
 ########################################################################
 # log.debug("Defines the known answers for one charge")
 def expected(charge: Charge | None = None) -> dict[str, Any]:

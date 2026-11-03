@@ -1,10 +1,12 @@
 ########################################################################
+#                                                                      #
 #              backend/src/eeoc_intake/dashboard/data.py               #
+#                                                                      #
 ########################################################################
 """
 Author:            Kevin Street
 Created on:        2026-10-29
-Last modified on:  2026-10-29
+Last modified on:  2026-11-03
 
 Reads the live and smoke run files into the three tables the dashboard
 and the Tableau export share, and names each run. Every run file (a
@@ -16,7 +18,9 @@ columns are named in the config's [columns] table.
 """
 
 ########################################################################
+#                                                                      #
 #                               Imports                                #
+#                                                                      #
 ########################################################################
 # Standard library
 from __future__ import annotations
@@ -37,7 +41,9 @@ from eeoc_intake.config import SETTINGS
 from eeoc_intake.core.schema import SCORED_FIELDS
 
 ########################################################################
+#                                                                      #
 #                           Global constants                           #
+#                                                                      #
 ########################################################################
 log = get_logger(__name__)
 # log.debug("Takes the key that only a run file has, from the config")
@@ -82,7 +88,9 @@ KIND_LABELS: Final = SETTINGS.labels_kinds
 FIELD_SCORE: Final = SETTINGS.scores_field_prefix
 
 ########################################################################
+#                                                                      #
 #                           Local constants                            #
+#                                                                      #
 ########################################################################
 # log.debug("Names the kind of run that called a real model")
 LIVE: Final = "live"
@@ -120,7 +128,9 @@ TO_THE_MINUTE: Final = 16
 
 
 ########################################################################
+#                                                                      #
 #                              Run tables                              #
+#                                                                      #
 ########################################################################
 # log.debug("Defines how the run files are read")
 def load_runs(live: Path | None = None, smoke: Path | None = None) -> list[dict[str, Any]]:

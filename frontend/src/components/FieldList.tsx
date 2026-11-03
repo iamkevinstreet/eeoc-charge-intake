@@ -1,10 +1,12 @@
 // ########################################################################
+// #                                                                      #
 // #                frontend/src/components/FieldList.tsx                 #
+// #                                                                      #
 // ########################################################################
 /**
  * Author:            Kevin Street
  * Created on:        2026-10-29
- * Last modified on:  2026-10-29
+ * Last modified on:  2026-11-03
  *
  * The list of extracted fields on the review screen, in the order the
  * record shows them: one row per field, with its evidence and the
@@ -12,7 +14,9 @@
  */
 
 // ########################################################################
+// #                                                                      #
 // #                               Imports                                #
+// #                                                                      #
 // ########################################################################
 // Local
 import { required } from '../lib/required';
@@ -22,7 +26,9 @@ import { fieldOf } from '../values';
 import { FieldRow } from './FieldRow';
 
 // ########################################################################
+// #                                                                      #
 // #                              Field list                              #
+// #                                                                      #
 // ########################################################################
 interface Props {
   selection?: Selection | null;

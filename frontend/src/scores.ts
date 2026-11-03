@@ -1,10 +1,12 @@
 // ########################################################################
+// #                                                                      #
 // #                        frontend/src/scores.ts                        #
+// #                                                                      #
 // ########################################################################
 /**
  * Author:            Kevin Street
  * Created on:        2026-10-29
- * Last modified on:  2026-10-29
+ * Last modified on:  2026-11-03
  *
  * Reads an evaluation run for the evaluation screen: its summary
  * numbers, the cases that finished, the kinds of case, and each score
@@ -12,7 +14,9 @@
  */
 
 // ########################################################################
+// #                                                                      #
 // #                               Imports                                #
+// #                                                                      #
 // ########################################################################
 // Local
 import { CONFIG } from './config';
@@ -20,7 +24,9 @@ import { required } from './lib/required';
 import type { CaseResult } from './types';
 
 // ########################################################################
+// #                                                                      #
 // #                           Global constants                           #
+// #                                                                      #
 // ########################################################################
 // log.debug('Takes each field, in the order the record shows them, from the config')
 const FIELD_LABELS = CONFIG.labels.fields;
@@ -30,7 +36,9 @@ const SUMMARY_FIELD = CONFIG.record.summary_field;
 const FIELD_SCORE = CONFIG.scores.field_prefix;
 
 // ########################################################################
+// #                                                                      #
 // #                           Local constants                            #
+// #                                                                      #
 // ########################################################################
 // log.debug('Lists the fields scored against the known answers; a summary is a paraphrase')
 export const SCORED: readonly string[] = Object.keys(FIELD_LABELS).filter(
@@ -38,7 +46,9 @@ export const SCORED: readonly string[] = Object.keys(FIELD_LABELS).filter(
 );
 
 // ########################################################################
+// #                                                                      #
 // #                              Run scores                              #
+// #                                                                      #
 // ########################################################################
 // log.debug('Defines one number from the summary of a run')
 /**

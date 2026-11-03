@@ -1,9 +1,11 @@
 ########################################################################
+#                                                                      #
 #                               Makefile                               #
+#                                                                      #
 ########################################################################
 # Author:            Kevin Street
 # Created on:        2026-10-14
-# Last modified on:  2026-10-29
+# Last modified on:  2026-11-03
 #
 # Runs each routine task with one command: install, run, samples,
 # check, test, eval, publish and audit. CI runs the same targets. Run

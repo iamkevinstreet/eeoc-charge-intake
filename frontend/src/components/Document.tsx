@@ -1,10 +1,12 @@
 // ########################################################################
+// #                                                                      #
 // #                 frontend/src/components/Document.tsx                 #
+// #                                                                      #
 // ########################################################################
 /**
  * Author:            Kevin Street
  * Created on:        2026-10-29
- * Last modified on:  2026-10-29
+ * Last modified on:  2026-11-03
  *
  * The document pane: the charge or the notice, page by page, with the
  * quote the selected field cites marked and scrolled into the middle of
@@ -12,7 +14,9 @@
  */
 
 // ########################################################################
+// #                                                                      #
 // #                               Imports                                #
+// #                                                                      #
 // ########################################################################
 // Third-party
 import { useEffect, useRef } from 'react';
@@ -26,13 +30,17 @@ import { required } from '../lib/required';
 import type { DocKind } from '../types';
 
 // ########################################################################
+// #                                                                      #
 // #                           Global constants                           #
+// #                                                                      #
 // ########################################################################
 // log.debug('Takes the class of the quieter notes from the config')
 const META = CONFIG.ui.note_class;
 
 // ########################################################################
+// #                                                                      #
 // #                           Local constants                            #
+// #                                                                      #
 // ########################################################################
 // log.debug('Lists the two documents, in the order the tabs show them')
 const DOCS: readonly { id: DocKind; label: string }[] = [
@@ -43,7 +51,9 @@ const DOCS: readonly { id: DocKind; label: string }[] = [
 const HALF = 2;
 
 // ########################################################################
+// #                                                                      #
 // #                            Document pane                             #
+// #                                                                      #
 // ########################################################################
 interface Props {
   doc?: DocKind | null;

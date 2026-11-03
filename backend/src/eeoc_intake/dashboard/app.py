@@ -1,10 +1,12 @@
 ########################################################################
+#                                                                      #
 #               backend/src/eeoc_intake/dashboard/app.py               #
+#                                                                      #
 ########################################################################
 """
 Author:            Kevin Street
 Created on:        2026-10-29
-Last modified on:  2026-10-29
+Last modified on:  2026-11-03
 
 Builds the Dash app from the run folders and redraws it for the runs
 picked: the runs' key, the tiles, the four charts and the wrong-fields
@@ -13,7 +15,9 @@ colours, so the browser tells the server its scheme.
 """
 
 ########################################################################
+#                                                                      #
 #                               Imports                                #
+#                                                                      #
 ########################################################################
 # Standard library
 from __future__ import annotations
@@ -42,7 +46,9 @@ from eeoc_intake.dashboard.tiles import TileRow, tile_rows
 from eeoc_intake.dashboard.views import wrong_rows
 
 ########################################################################
+#                                                                      #
 #                           Global constants                           #
+#                                                                      #
 ########################################################################
 log = get_logger(__name__)
 # log.debug("Takes the run id column, from the config")
@@ -73,7 +79,9 @@ LIGHT: Final = SETTINGS.charts_light_scheme
 MAX_RUNS: Final = SETTINGS.charts_max_runs
 
 ########################################################################
+#                                                                      #
 #                           Local constants                            #
+#                                                                      #
 ########################################################################
 # log.debug("Sets the browser tab's title")
 TITLE: Final = "EEOC charge intake: evaluation"
@@ -99,7 +107,9 @@ Redraw = Callable[[list[str] | None, str | None], tuple[Any, ...]]
 
 
 ########################################################################
+#                                                                      #
 #                            Dashboard app                             #
+#                                                                      #
 ########################################################################
 # log.debug("Defines the app factory")
 def build_app(live: Path | None = None, smoke: Path | None = None) -> Dash:

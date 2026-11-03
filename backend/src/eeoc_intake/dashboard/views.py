@@ -1,10 +1,12 @@
 ########################################################################
+#                                                                      #
 #              backend/src/eeoc_intake/dashboard/views.py              #
+#                                                                      #
 ########################################################################
 """
 Author:            Kevin Street
 Created on:        2026-10-29
-Last modified on:  2026-10-29
+Last modified on:  2026-11-03
 
 Picks out of the run tables what the dashboard's views show: the runs
 a chart can draw, each run's long label, the fields the runs got wrong
@@ -13,7 +15,9 @@ tables take them.
 """
 
 ########################################################################
+#                                                                      #
 #                               Imports                                #
+#                                                                      #
 ########################################################################
 # Standard library
 from __future__ import annotations
@@ -31,7 +35,9 @@ from kds.logs import get_logger
 from eeoc_intake.config import SETTINGS
 
 ########################################################################
+#                                                                      #
 #                           Global constants                           #
+#                                                                      #
 ########################################################################
 log = get_logger(__name__)
 # log.debug("Takes the run id column, from the config")
@@ -54,14 +60,18 @@ NO: Final = SETTINGS.labels_no
 MAX_RUNS: Final = SETTINGS.charts_max_runs
 
 ########################################################################
+#                                                                      #
 #                           Local constants                            #
+#                                                                      #
 ########################################################################
 # log.debug("Describes a table row as Dash's tables take it: values by column name")
 Record = dict[str | float | int, Any]
 
 
 ########################################################################
+#                                                                      #
 #                           Dashboard views                            #
+#                                                                      #
 ########################################################################
 # log.debug("Defines which of the runs asked for a table holds")
 def present(

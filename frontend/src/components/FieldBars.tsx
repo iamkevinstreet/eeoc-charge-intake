@@ -1,17 +1,21 @@
 // ########################################################################
+// #                                                                      #
 // #                frontend/src/components/FieldBars.tsx                 #
+// #                                                                      #
 // ########################################################################
 /**
  * Author:            Kevin Street
  * Created on:        2026-10-29
- * Last modified on:  2026-10-29
+ * Last modified on:  2026-11-03
  *
  * The accuracy by field chart: one bar per scored field, the share of a
  * run's cases in which the field was right.
  */
 
 // ########################################################################
+// #                                                                      #
 // #                               Imports                                #
+// #                                                                      #
 // ########################################################################
 // Local
 import { fieldLabel, share } from '../format';
@@ -20,7 +24,9 @@ import { SCORED, fieldAccuracy } from '../scores';
 import type { CaseResult } from '../types';
 
 // ########################################################################
+// #                                                                      #
 // #                           Local constants                            #
+// #                                                                      #
 // ########################################################################
 // log.debug('Sets the width of the chart in its own units')
 const WIDTH = 600;
@@ -44,7 +50,9 @@ const VALUE_X = 520;
 const VALUE_Y = 15;
 
 // ########################################################################
+// #                                                                      #
 // #                            Accuracy chart                            #
+// #                                                                      #
 // ########################################################################
 interface Props {
   results?: CaseResult[] | null;

@@ -1,17 +1,21 @@
 // ########################################################################
+// #                                                                      #
 // #                 frontend/src/components/Results.tsx                  #
+// #                                                                      #
 // ########################################################################
 /**
  * Author:            Kevin Street
  * Created on:        2026-10-29
- * Last modified on:  2026-10-29
+ * Last modified on:  2026-11-03
  *
  * The evaluation screen: which run is shown, its headline numbers, the
  * accuracy of each field, and the averages by kind of case.
  */
 
 // ########################################################################
+// #                                                                      #
 // #                               Imports                                #
+// #                                                                      #
 // ########################################################################
 // Local
 import { CONFIG } from '../config';
@@ -22,7 +26,9 @@ import type { RunResult } from '../types';
 import { FieldBars } from './FieldBars';
 
 // ########################################################################
+// #                                                                      #
 // #                           Global constants                           #
+// #                                                                      #
 // ########################################################################
 // log.debug('Takes the score for fields left empty that had an answer from the config')
 const ABSTENTIONS = CONFIG.scores.false_abstentions;
@@ -36,7 +42,9 @@ const SMOKE_COMMAND = CONFIG.ui.smoke_command;
 const META = CONFIG.ui.note_class;
 
 // ########################################################################
+// #                                                                      #
 // #                           Local constants                            #
+// #                                                                      #
 // ########################################################################
 /** One number in the row of numbers at the top. */
 interface Stat {
@@ -88,7 +96,9 @@ const COLUMNS: readonly Column[] = [
 ];
 
 // ########################################################################
+// #                                                                      #
 // #                          Evaluation screen                           #
+// #                                                                      #
 // ########################################################################
 interface Props {
   run?: RunResult | null;

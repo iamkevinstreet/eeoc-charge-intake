@@ -1,10 +1,12 @@
 ########################################################################
+#                                                                      #
 #                backend/src/eeoc_intake/evals/score.py                #
+#                                                                      #
 ########################################################################
 """
 Author:            Kevin Street
 Created on:        2026-10-29
-Last modified on:  2026-10-29
+Last modified on:  2026-11-03
 
 Scores one extraction against the document's known values: fields right,
 guesses, abstentions.
@@ -23,7 +25,9 @@ guesses, abstentions.
 """
 
 ########################################################################
+#                                                                      #
 #                               Imports                                #
+#                                                                      #
 ########################################################################
 # Standard library
 from __future__ import annotations
@@ -42,7 +46,9 @@ from eeoc_intake.core.extract import Extraction
 from eeoc_intake.core.schema import SCORED_FIELDS, is_empty
 
 ########################################################################
+#                                                                      #
 #                           Global constants                           #
+#                                                                      #
 ########################################################################
 log = get_logger(__name__)
 # log.debug("Takes the name of the count of fields wrongly left empty, from the config")
@@ -53,14 +59,18 @@ GUESSES: Final = SETTINGS.scores_guesses
 FIELD_SCORE: Final = SETTINGS.scores_field_prefix
 
 ########################################################################
+#                                                                      #
 #                           Local constants                            #
+#                                                                      #
 ########################################################################
 # log.debug("Sets the decimals a share is rounded to in the results file")
 PLACES: Final = 4
 
 
 ########################################################################
+#                                                                      #
 #                               Scoring                                #
+#                                                                      #
 ########################################################################
 # log.debug("Defines the scores of one extraction")
 def score(case: EvalCase | None = None, ex: Extraction | None = None) -> dict[str, Any]:

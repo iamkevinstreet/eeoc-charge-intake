@@ -1,10 +1,12 @@
 // ########################################################################
+// #                                                                      #
 // #                         frontend/src/App.tsx                         #
+// #                                                                      #
 // ########################################################################
 /**
  * Author:            Kevin Street
  * Created on:        2026-10-29
- * Last modified on:  2026-10-29
+ * Last modified on:  2026-11-03
  *
  * The app shell: the top bar, and the start, review and evaluation
  * screens, one at a time. It keeps the screen on show; the state the
@@ -12,7 +14,9 @@
  */
 
 // ########################################################################
+// #                                                                      #
 // #                               Imports                                #
+// #                                                                      #
 // ########################################################################
 // Third-party
 import { useState } from 'react';
@@ -26,7 +30,9 @@ import { required } from './lib/required';
 import { useEvaluation, useReviewing, useStart } from './session';
 
 // ########################################################################
+// #                                                                      #
 // #                           Local constants                            #
+// #                                                                      #
 // ########################################################################
 /** The three screens the app shows. */
 type Screen = 'start' | 'review' | 'results';
@@ -44,7 +50,9 @@ const SECTIONS: readonly { screen: Screen; label: string }[] = [
 ];
 
 // ########################################################################
+// #                                                                      #
 // #                              App shell                               #
+// #                                                                      #
 // ########################################################################
 /** The screen on show, and how another is shown. */
 interface Navigation {

@@ -1,10 +1,12 @@
 // ########################################################################
+// #                                                                      #
 // #                      frontend/eslint.config.js                       #
+// #                                                                      #
 // ########################################################################
 /**
  * Author:            Kevin Street
  * Created on:        2026-10-29
- * Last modified on:  2026-10-29
+ * Last modified on:  2026-11-03
  *
  * Lint rules: ESLint recommended, typescript-eslint strict with types,
  * React hooks, a doc block on every named function, explicit return
@@ -12,7 +14,9 @@
  */
 
 // ########################################################################
+// #                                                                      #
 // #                               Imports                                #
+// #                                                                      #
 // ########################################################################
 // Third-party
 import js from '@eslint/js';
@@ -27,7 +31,9 @@ import tseslint from 'typescript-eslint';
 import kds from './kds-eslint.js';
 
 // ########################################################################
+// #                                                                      #
 // #                           Local constants                            #
+// #                                                                      #
 // ########################################################################
 // log.debug('Sets the level every added rule reports at')
 const LEVEL = 'error';
@@ -40,7 +46,9 @@ const DOC_CONTEXTS = [
 ];
 
 // ########################################################################
+// #                                                                      #
 // #                              Lint rules                              #
+// #                                                                      #
 // ########################################################################
 // log.debug('Exports the lint rules: recommended, strict TypeScript, React hooks, doc blocks')
 export default defineConfig(

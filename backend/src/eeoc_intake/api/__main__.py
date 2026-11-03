@@ -1,16 +1,20 @@
 ########################################################################
+#                                                                      #
 #               backend/src/eeoc_intake/api/__main__.py                #
+#                                                                      #
 ########################################################################
 """
 Author:            Kevin Street
 Created on:        2026-10-29
-Last modified on:  2026-10-29
+Last modified on:  2026-11-03
 
 Runs the review service with uvicorn on the configured host and port.
 """
 
 ########################################################################
+#                                                                      #
 #                               Imports                                #
+#                                                                      #
 ########################################################################
 # Standard library
 from __future__ import annotations
@@ -24,13 +28,17 @@ from eeoc_intake.api.app import create_app
 from eeoc_intake.config import get_app_settings
 
 ########################################################################
+#                                                                      #
 #                           Global constants                           #
+#                                                                      #
 ########################################################################
 log = get_logger(__name__)
 
 
 ########################################################################
+#                                                                      #
 #                             Command line                             #
+#                                                                      #
 ########################################################################
 # log.debug("Defines the command")
 def main() -> None:

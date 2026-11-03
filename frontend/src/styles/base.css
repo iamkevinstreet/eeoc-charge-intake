@@ -1,12 +1,14 @@
 /*
 ########################################################################
+#                                                                      #
 #                     frontend/src/styles/base.css                     #
+#                                                                      #
 ########################################################################
 */
 /*
  * Author:            Kevin Street
  * Created on:        2026-10-29
- * Last modified on:  2026-10-29
+ * Last modified on:  2026-11-03
  *
  * The frame every screen shares: the page, the top bar, headings and
  * text, buttons and links, the ledger table, focus, and the helpers for
@@ -15,7 +17,9 @@
 
 /*
 ########################################################################
+#                                                                      #
 #                              Page frame                              #
+#                                                                      #
 ########################################################################
 */
 *,

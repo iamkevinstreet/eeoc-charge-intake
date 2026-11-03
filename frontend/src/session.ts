@@ -1,10 +1,12 @@
 // ########################################################################
+// #                                                                      #
 // #                       frontend/src/session.ts                        #
+// #                                                                      #
 // ########################################################################
 /**
  * Author:            Kevin Street
  * Created on:        2026-10-29
- * Last modified on:  2026-10-29
+ * Last modified on:  2026-11-03
  *
  * The app's state, as React hooks: what the service reports when the
  * app opens, the extraction under way, the review being worked on, and
@@ -12,7 +14,9 @@
  */
 
 // ########################################################################
+// #                                                                      #
 // #                               Imports                                #
+// #                                                                      #
 // ########################################################################
 // Third-party
 import { useEffect, useState } from 'react';
@@ -24,13 +28,17 @@ import { required } from './lib/required';
 import type { Health, Review, RunResult, Sample } from './types';
 
 // ########################################################################
+// #                                                                      #
 // #                           Global constants                           #
+// #                                                                      #
 // ########################################################################
 // log.debug('Takes what an upload is called while it is extracted from the config')
 const UPLOAD = CONFIG.ui.upload_key;
 
 // ########################################################################
+// #                                                                      #
 // #                            Session state                             #
+// #                                                                      #
 // ########################################################################
 /** What the service reports when the app opens: its health and the samples. */
 interface Service {

@@ -1,10 +1,12 @@
 // ########################################################################
+// #                                                                      #
 // #                      frontend/src/reviewing.ts                       #
+// #                                                                      #
 // ########################################################################
 /**
  * Author:            Kevin Street
  * Created on:        2026-10-29
- * Last modified on:  2026-10-29
+ * Last modified on:  2026-11-03
  *
  * The review screen's state and what changes it: the field selected and
  * the document on show, the decisions sent as a reviewer accepts, edits
@@ -13,7 +15,9 @@
  */
 
 // ########################################################################
+// #                                                                      #
 // #                               Imports                                #
+// #                                                                      #
 // ########################################################################
 // Third-party
 import { useEffect, useEffectEvent, useState } from 'react';
@@ -27,7 +31,9 @@ import type { Action, Decision, DocKind, Export, Progress, Review, Sourced } fro
 import { fieldOf, formatValue, parseValue } from './values';
 
 // ########################################################################
+// #                                                                      #
 // #                           Global constants                           #
+// #                                                                      #
 // ########################################################################
 // log.debug('Takes the one field read from the notice letter from the config')
 const NOTICE_FIELD = CONFIG.record.notice_field;
@@ -35,7 +41,9 @@ const NOTICE_FIELD = CONFIG.record.notice_field;
 const KEYS = CONFIG.ui.keys;
 
 // ########################################################################
+// #                                                                      #
 // #                           Local constants                            #
+// #                                                                      #
 // ########################################################################
 // log.debug('Names the decision that opens the edit form instead of deciding at once')
 const EDIT: Action = 'edit';
@@ -58,7 +66,9 @@ const DECIDES: Readonly<Record<string, Action>> = {
 const TYPING = 'input, textarea, select';
 
 // ########################################################################
+// #                                                                      #
 // #                             Review state                             #
+// #                                                                      #
 // ########################################################################
 /** The two calls the screen makes while a person reviews; a demo can supply its own. */
 export interface ReviewApi {

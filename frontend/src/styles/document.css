@@ -1,12 +1,14 @@
 /*
 ########################################################################
+#                                                                      #
 #                   frontend/src/styles/document.css                   #
+#                                                                      #
 ########################################################################
 */
 /*
  * Author:            Kevin Street
  * Created on:        2026-10-29
- * Last modified on:  2026-10-29
+ * Last modified on:  2026-11-03
  *
  * The document pane: it stays in view beside the field list, with a tab
  * for the charge and one for the notice, each page's extracted text,
@@ -16,7 +18,9 @@
 
 /*
 ########################################################################
+#                                                                      #
 #                            Document pane                             #
+#                                                                      #
 ########################################################################
 */
 .ec-document {

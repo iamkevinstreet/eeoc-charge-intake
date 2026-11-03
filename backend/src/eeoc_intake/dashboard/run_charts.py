@@ -1,10 +1,12 @@
 ########################################################################
+#                                                                      #
 #           backend/src/eeoc_intake/dashboard/run_charts.py            #
+#                                                                      #
 ########################################################################
 """
 Author:            Kevin Street
 Created on:        2026-10-29
-Last modified on:  2026-10-29
+Last modified on:  2026-11-03
 
 Draws the two charts with a row per run: seconds per document, each
 document a dot over its run's box, and cost per document, a bar per
@@ -12,7 +14,9 @@ run.
 """
 
 ########################################################################
+#                                                                      #
 #                               Imports                                #
+#                                                                      #
 ########################################################################
 # Standard library
 from __future__ import annotations
@@ -33,7 +37,9 @@ from eeoc_intake.dashboard.views import long_labels, present
 from eeoc_intake.evals.shares import fixed
 
 ########################################################################
+#                                                                      #
 #                           Global constants                           #
+#                                                                      #
 ########################################################################
 log = get_logger(__name__)
 # log.debug("Takes the run id column, from the config")
@@ -58,7 +64,9 @@ CLEAR: Final = SETTINGS.charts_clear
 LEFT: Final = SETTINGS.charts_align
 
 ########################################################################
+#                                                                      #
 #                           Local constants                            #
+#                                                                      #
 ########################################################################
 # log.debug("Sets the height of a chart with a row per run, above its rows")
 RUNS_BASE: Final = 64
@@ -79,7 +87,9 @@ WHISKER_WIDTH: Final = 0.6
 
 
 ########################################################################
+#                                                                      #
 #                         Time and cost charts                         #
+#                                                                      #
 ########################################################################
 # log.debug("Defines the time chart")
 def fig_latency(

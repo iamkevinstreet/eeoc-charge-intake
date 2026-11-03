@@ -1,10 +1,12 @@
 // ########################################################################
+// #                                                                      #
 // #                        frontend/src/config.ts                        #
+// #                                                                      #
 // ########################################################################
 /**
  * Author:            Kevin Street
  * Created on:        2026-10-29
- * Last modified on:  2026-10-29
+ * Last modified on:  2026-11-03
  *
  * The review screen's config module, the only one that reads the
  * build's settings: the keys the browser needs from config/config.toml,
@@ -16,13 +18,17 @@
  */
 
 // ########################################################################
+// #                                                                      #
 // #                               Imports                                #
+// #                                                                      #
 // ########################################################################
 // Local
 import { required } from './lib/required';
 
 // ########################################################################
+// #                                                                      #
 // #                           Local constants                            #
+// #                                                                      #
 // ########################################################################
 // log.debug('Takes the settings the build read from config/config.toml')
 const BUILT = __CONFIG__;
@@ -32,7 +38,9 @@ const API_BASE: string = import.meta.env.VITE_API_BASE ?? BUILT.api.prefix;
 export const CONFIG = freeze({ ...BUILT, api: { ...BUILT.api, base: API_BASE } });
 
 // ########################################################################
+// #                                                                      #
 // #                          Frontend settings                           #
+// #                                                                      #
 // ########################################################################
 /** A value no module can change, with every table and list inside it. */
 type Frozen<T> = { readonly [K in keyof T]: Frozen<T[K]> };

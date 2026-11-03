@@ -1,10 +1,12 @@
 ########################################################################
+#                                                                      #
 #                  backend/src/eeoc_intake/config.py                   #
+#                                                                      #
 ########################################################################
 """
 Author:            Kevin Street
 Created on:        2026-10-29
-Last modified on:  2026-10-29
+Last modified on:  2026-11-03
 
 Loads every setting the service, the evaluation, the dashboard and the
 review screen read, typed and validated, and every value two modules
@@ -21,7 +23,9 @@ tests can pass their own.
 """
 
 ########################################################################
+#                                                                      #
 #                               Imports                                #
+#                                                                      #
 ########################################################################
 # Standard library
 from __future__ import annotations
@@ -36,12 +40,16 @@ from kds.settings import Settings
 from pydantic import Field, model_validator
 
 ########################################################################
+#                                                                      #
 #                           Global constants                           #
+#                                                                      #
 ########################################################################
 log = get_logger(__name__)
 
 ########################################################################
+#                                                                      #
 #                           Local constants                            #
+#                                                                      #
 ########################################################################
 # log.debug("Names this machine's own address")
 LOCALHOST: Final = "127.0.0.1"
@@ -104,7 +112,9 @@ KEYS = {"next": "j", "previous": "k", "accept": "a", "edit": "e", "reject": "r"}
 
 
 ########################################################################
+#                                                                      #
 #                             App settings                             #
+#                                                                      #
 ########################################################################
 # log.debug("Defines the settings")
 class AppSettings(Settings):

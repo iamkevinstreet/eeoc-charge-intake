@@ -1,17 +1,21 @@
 ########################################################################
+#                                                                      #
 #                    backend/tests/test_generate.py                    #
+#                                                                      #
 ########################################################################
 """
 Author:            Kevin Street
 Created on:        2026-10-29
-Last modified on:  2026-10-29
+Last modified on:  2026-11-03
 
 Tests that generated documents repeat for a seed and print the values
 their answers claim.
 """
 
 ########################################################################
+#                                                                      #
 #                               Imports                                #
+#                                                                      #
 ########################################################################
 # Standard library
 from __future__ import annotations
@@ -30,13 +34,17 @@ from eeoc_intake.core.charges import HARD_KINDS, kind_of
 from eeoc_intake.core.generate import generate
 
 ########################################################################
+#                                                                      #
 #                           Global constants                           #
+#                                                                      #
 ########################################################################
 log = get_logger(__name__)
 
 
 ########################################################################
+#                                                                      #
 #                           Generator tests                            #
+#                                                                      #
 ########################################################################
 # log.debug("Defines how the cases a generated folder holds are read")
 def _cases(folder: Path | None = None) -> list[dict[str, object]]:

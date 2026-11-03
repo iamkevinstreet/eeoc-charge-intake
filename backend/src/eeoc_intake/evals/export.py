@@ -1,10 +1,12 @@
 ########################################################################
+#                                                                      #
 #               backend/src/eeoc_intake/evals/export.py                #
+#                                                                      #
 ########################################################################
 """
 Author:            Kevin Street
 Created on:        2026-10-29
-Last modified on:  2026-10-29
+Last modified on:  2026-11-03
 
 Exports the evaluation results as tidy CSV files for Tableau or any
 other BI tool.
@@ -17,7 +19,9 @@ numbers agree; data/README.md describes the sheets to build from them.
 """
 
 ########################################################################
+#                                                                      #
 #                               Imports                                #
+#                                                                      #
 ########################################################################
 # Standard library
 from __future__ import annotations
@@ -34,21 +38,27 @@ from eeoc_intake.config import SETTINGS, get_app_settings
 from eeoc_intake.dashboard.data import frames, load_runs
 
 ########################################################################
+#                                                                      #
 #                           Global constants                           #
+#                                                                      #
 ########################################################################
 log = get_logger(__name__)
 # log.debug("Takes the encoding the files are read in, from the config")
 ENCODING: Final = SETTINGS.files_encoding
 
 ########################################################################
+#                                                                      #
 #                           Local constants                            #
+#                                                                      #
 ########################################################################
 # log.debug("Names the three files, in the order the tables come")
 NAMES: Final = ("runs", "documents", "fields")
 
 
 ########################################################################
+#                                                                      #
 #                            Tableau export                            #
+#                                                                      #
 ########################################################################
 # log.debug("Defines the export")
 def export(

@@ -1,10 +1,12 @@
 ########################################################################
+#                                                                      #
 #             backend/src/eeoc_intake/dashboard/heatmap.py             #
+#                                                                      #
 ########################################################################
 """
 Author:            Kevin Street
 Created on:        2026-10-29
-Last modified on:  2026-10-29
+Last modified on:  2026-11-03
 
 Draws the accuracy chart by field and kind of document: a panel per
 run, every panel on the same scale. Only the cells that are not all
@@ -13,7 +15,9 @@ in the order the record lists them, as in the chart by field.
 """
 
 ########################################################################
+#                                                                      #
 #                               Imports                                #
+#                                                                      #
 ########################################################################
 # Standard library
 from __future__ import annotations
@@ -36,7 +40,9 @@ from eeoc_intake.dashboard.views import long_labels, present
 from eeoc_intake.evals.shares import pct_label
 
 ########################################################################
+#                                                                      #
 #                           Global constants                           #
+#                                                                      #
 ########################################################################
 log = get_logger(__name__)
 # log.debug("Takes the run id column, from the config")
@@ -67,7 +73,9 @@ LEFT: Final = SETTINGS.charts_align
 PERCENT_TICKS: Final = SETTINGS.charts_percent_ticks
 
 ########################################################################
+#                                                                      #
 #                           Local constants                            #
+#                                                                      #
 ########################################################################
 # log.debug("Sets the ticks of the heatmap's colour bar")
 HALVES: Final = (0, 0.5, 1)
@@ -78,7 +86,9 @@ EMPTY_HEIGHT: Final = 300
 
 
 ########################################################################
+#                                                                      #
 #                      Accuracy by field and kind                      #
+#                                                                      #
 ########################################################################
 # log.debug("Defines the accuracy chart by field and kind of document")
 def fig_heatmap(

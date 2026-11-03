@@ -1,17 +1,21 @@
 ########################################################################
+#                                                                      #
 #                     backend/tests/test_stats.py                      #
+#                                                                      #
 ########################################################################
 """
 Author:            Kevin Street
 Created on:        2026-10-29
-Last modified on:  2026-10-29
+Last modified on:  2026-11-03
 
 Tests the statistics behind the tiles' arrows, and how a share is
 written.
 """
 
 ########################################################################
+#                                                                      #
 #                               Imports                                #
+#                                                                      #
 ########################################################################
 # Standard library
 from __future__ import annotations
@@ -24,19 +28,25 @@ from eeoc_intake.evals.shares import fixed, pct_label
 from eeoc_intake.evals.stats import clear_change, holm, mann_whitney_p, welch_p
 
 ########################################################################
+#                                                                      #
 #                           Global constants                           #
+#                                                                      #
 ########################################################################
 log = get_logger(__name__)
 
 ########################################################################
+#                                                                      #
 #                           Local constants                            #
+#                                                                      #
 ########################################################################
 # log.debug("Sets twelve times in seconds with a long right tail")
 SLOW = [4.1, 4.3, 4.2, 4.6, 4.4, 4.5, 4.2, 4.3, 4.4, 4.5, 4.6, 4.2]
 
 
 ########################################################################
+#                                                                      #
 #                           Statistics tests                           #
+#                                                                      #
 ########################################################################
 # log.debug("Defines the test: a share never rounds to all or nothing")
 def test_a_share_never_rounds_to_all_or_nothing() -> None:

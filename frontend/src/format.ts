@@ -1,24 +1,30 @@
 // ########################################################################
+// #                                                                      #
 // #                        frontend/src/format.ts                        #
+// #                                                                      #
 // ########################################################################
 /**
  * Author:            Kevin Street
  * Created on:        2026-10-29
- * Last modified on:  2026-10-29
+ * Last modified on:  2026-11-03
  *
  * How values are written for people: the names of fields and kinds of
  * case, shares, money, time, counts per case, and an element's classes.
  */
 
 // ########################################################################
+// #                                                                      #
 // #                               Imports                                #
+// #                                                                      #
 // ########################################################################
 // Local
 import { CONFIG } from './config';
 import { required } from './lib/required';
 
 // ########################################################################
+// #                                                                      #
 // #                           Global constants                           #
+// #                                                                      #
 // ########################################################################
 // log.debug('Takes the percent in a whole from the config')
 const PERCENT = CONFIG.units.percent;
@@ -30,7 +36,9 @@ const FIELD_LABELS = CONFIG.labels.fields;
 const TAG_LABELS = CONFIG.labels.kinds;
 
 // ########################################################################
+// #                                                                      #
 // #                           Local constants                            #
+// #                                                                      #
 // ########################################################################
 // log.debug('Sets the share, in percent, under which a share keeps one decimal')
 const FINE_SHARE = 10;
@@ -42,7 +50,9 @@ const RATE_PLACES = 2;
 const SPACE = ' ';
 
 // ########################################################################
+// #                                                                      #
 // #                            Written values                            #
+// #                                                                      #
 // ########################################################################
 // log.debug('Defines the name people see for a field')
 /**

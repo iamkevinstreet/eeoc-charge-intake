@@ -1,17 +1,21 @@
 // ########################################################################
+// #                                                                      #
 // #                   frontend/tests/Results.test.tsx                    #
+// #                                                                      #
 // ########################################################################
 /**
  * Author:            Kevin Street
  * Created on:        2026-10-29
- * Last modified on:  2026-10-29
+ * Last modified on:  2026-11-03
  *
  * Tests that the evaluation screen shows a run's numbers: the headline
  * numbers, and a row of the averages by kind of case.
  */
 
 // ########################################################################
+// #                                                                      #
 // #                               Imports                                #
+// #                                                                      #
 // ########################################################################
 // Third-party
 import { render, screen, within } from '@testing-library/react';
@@ -22,7 +26,9 @@ import { Results } from '../src/components/Results';
 import { RUN } from './fixtures';
 
 // ########################################################################
+// #                                                                      #
 // #                           Local constants                            #
+// #                                                                      #
 // ########################################################################
 // log.debug('Lists the numbers the run should show: accuracy, removed, abstentions, time, cost')
 const NUMBERS = ['95%', '0.4%', '0.50', '4510 / 5572 ms', '$0.0134'];
@@ -30,7 +36,9 @@ const NUMBERS = ['95%', '0.4%', '0.50', '4510 / 5572 ms', '$0.0134'];
 const NONE = '0.00';
 
 // ########################################################################
+// #                                                                      #
 // #                       Evaluation screen tests                        #
+// #                                                                      #
 // ########################################################################
 // log.debug('Describes the evaluation screen')
 describe('Results', () => {

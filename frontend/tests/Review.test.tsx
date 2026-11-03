@@ -1,17 +1,21 @@
 // ########################################################################
+// #                                                                      #
 // #                    frontend/tests/Review.test.tsx                    #
+// #                                                                      #
 // ########################################################################
 /**
  * Author:            Kevin Street
  * Created on:        2026-10-29
- * Last modified on:  2026-10-29
+ * Last modified on:  2026-11-03
  *
  * Tests the review screen: the evidence it shows, each decision it
  * records, and the export it holds until every field has a decision.
  */
 
 // ########################################################################
+// #                                                                      #
 // #                               Imports                                #
+// #                                                                      #
 // ########################################################################
 // Third-party
 import { render, screen, waitFor, within } from '@testing-library/react';
@@ -27,7 +31,9 @@ import type { Action, Decision, Review as ReviewData } from '../src/types';
 import { FIELDS, REVIEW } from './fixtures';
 
 // ########################################################################
+// #                                                                      #
 // #                           Local constants                            #
+// #                                                                      #
 // ########################################################################
 // log.debug('Sets the address decisions are sent to')
 const DECISIONS = `/api/v1/reviews/${REVIEW.review_id}/decisions`;
@@ -43,7 +49,9 @@ const ACCEPTED: Action = 'accept';
 const CORRECTED = 'Harbor Freightways Inc.';
 
 // ########################################################################
+// #                                                                      #
 // #                         Review screen tests                          #
+// #                                                                      #
 // ########################################################################
 interface ScreenProps {
   initial?: ReviewData | null;

@@ -1,17 +1,21 @@
 ########################################################################
+#                                                                      #
 #                     backend/tests/test_evals.py                      #
+#                                                                      #
 ########################################################################
 """
 Author:            Kevin Street
 Created on:        2026-10-29
-Last modified on:  2026-10-29
+Last modified on:  2026-11-03
 
 Tests the offline evaluation end to end: scores, results files, saved
 extractions and the index.
 """
 
 ########################################################################
+#                                                                      #
 #                               Imports                                #
+#                                                                      #
 ########################################################################
 # Standard library
 from __future__ import annotations
@@ -32,13 +36,17 @@ from eeoc_intake.evals.run import evaluate, main
 from eeoc_intake.evals.score import same, score
 
 ########################################################################
+#                                                                      #
 #                           Global constants                           #
+#                                                                      #
 ########################################################################
 log = get_logger(__name__)
 
 
 ########################################################################
+#                                                                      #
 #                           Evaluation tests                           #
+#                                                                      #
 ########################################################################
 # log.debug("Defines the test: the offline run scores every field right")
 def test_the_offline_run_scores_every_field_right(settings: AppSettings) -> None:

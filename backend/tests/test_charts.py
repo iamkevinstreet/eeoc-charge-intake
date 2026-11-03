@@ -1,10 +1,12 @@
 ########################################################################
+#                                                                      #
 #                     backend/tests/test_charts.py                     #
+#                                                                      #
 ########################################################################
 """
 Author:            Kevin Street
 Created on:        2026-10-29
-Last modified on:  2026-10-29
+Last modified on:  2026-11-03
 
 Tests the dashboard's charts and tiles: what a comparison of two runs
 marks, how the time axis fits the documents, and which changes the
@@ -15,7 +17,9 @@ folders explicitly, so none depends on the current folder or settings.
 """
 
 ########################################################################
+#                                                                      #
 #                               Imports                                #
+#                                                                      #
 ########################################################################
 # Standard library
 from __future__ import annotations
@@ -35,13 +39,17 @@ from eeoc_intake.evals.stats import RANK, clear_change
 from support import two_runs, write_run
 
 ########################################################################
+#                                                                      #
 #                           Global constants                           #
+#                                                                      #
 ########################################################################
 log = get_logger(__name__)
 
 
 ########################################################################
+#                                                                      #
 #                         Chart and tile tests                         #
+#                                                                      #
 ########################################################################
 # log.debug("Defines the test of a two-run comparison")
 def test_comparison_marks_what_changed(tmp_path: Path) -> None:

@@ -1,10 +1,12 @@
 // ########################################################################
+// #                                                                      #
 // #                         frontend/src/log.ts                          #
+// #                                                                      #
 // ########################################################################
 /**
  * Author:            Kevin Street
  * Created on:        2026-10-29
- * Last modified on:  2026-10-29
+ * Last modified on:  2026-11-03
  *
  * The trace logger: each line it prints is the time since the page
  * loaded as HH:MM:SS, a dash, and what the traced line does. Importing
@@ -13,20 +15,26 @@
  */
 
 // ########################################################################
+// #                                                                      #
 // #                               Imports                                #
+// #                                                                      #
 // ########################################################################
 // Local
 import { CONFIG } from './config';
 import { required } from './lib/required';
 
 // ########################################################################
+// #                                                                      #
 // #                           Global constants                           #
+// #                                                                      #
 // ########################################################################
 // log.debug('Takes the milliseconds in a second from the config')
 const MS = CONFIG.units.ms_per_second;
 
 // ########################################################################
+// #                                                                      #
 // #                           Local constants                            #
+// #                                                                      #
 // ########################################################################
 // log.debug('Notes when the page started, so each line shows elapsed time')
 const STARTED = performance.now();
@@ -38,7 +46,9 @@ const HOUR_S = 3600;
 const DIGITS = 2;
 
 // ########################################################################
+// #                                                                      #
 // #                             Trace logger                             #
+// #                                                                      #
 // ########################################################################
 // log.debug('Defines how elapsed time is written as HH:MM:SS')
 /**

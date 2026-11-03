@@ -1,10 +1,12 @@
 // ########################################################################
+// #                                                                      #
 // #                       frontend/vite.config.ts                        #
+// #                                                                      #
 // ########################################################################
 /**
  * Author:            Kevin Street
  * Created on:        2026-10-29
- * Last modified on:  2026-10-29
+ * Last modified on:  2026-11-03
  *
  * Build, dev-server and test settings: React, the dev server's proxy to
  * the API, and jsdom for tests. It reads config/config.toml, the file
@@ -15,7 +17,9 @@
  */
 
 // ########################################################################
+// #                                                                      #
 // #                               Imports                                #
+// #                                                                      #
 // ########################################################################
 // Standard library
 import { readFileSync } from 'node:fs';
@@ -29,7 +33,9 @@ import { defineConfig } from 'vitest/config';
 import { required } from './src/lib/required.ts';
 
 // ########################################################################
+// #                                                                      #
 // #                           Local constants                            #
+// #                                                                      #
 // ########################################################################
 // log.debug('Sets where the settings file is, from this folder')
 const CONFIG_FILE = new URL('../config/config.toml', import.meta.url);
@@ -48,7 +54,9 @@ const BROWSER_KEYS: Readonly<Record<string, readonly string[]>> = {
 };
 
 // ########################################################################
+// #                                                                      #
 // #                            Build settings                            #
+// #                                                                      #
 // ########################################################################
 /** The settings file's tables, as parsed: each a table of values by key. */
 type Tables = Readonly<Record<string, Readonly<Record<string, unknown>> | undefined>>;

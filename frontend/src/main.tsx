@@ -1,17 +1,21 @@
 // ########################################################################
+// #                                                                      #
 // #                        frontend/src/main.tsx                         #
+// #                                                                      #
 // ########################################################################
 /**
  * Author:            Kevin Street
  * Created on:        2026-10-29
- * Last modified on:  2026-10-29
+ * Last modified on:  2026-11-03
  *
  * The entry point: fonts, styles and the trace logger, then the app in
  * strict mode.
  */
 
 // ########################################################################
+// #                                                                      #
 // #                               Imports                                #
+// #                                                                      #
 // ########################################################################
 // Third-party
 import '@fontsource-variable/newsreader/standard.css';
@@ -33,7 +37,9 @@ import './styles/results.css';
 import { App } from './App';
 
 // ########################################################################
+// #                                                                      #
 // #                              App start                               #
+// #                                                                      #
 // ########################################################################
 // log.debug('Finds the element the app renders into')
 const root = document.getElementById('root');

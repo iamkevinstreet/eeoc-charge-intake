@@ -1,10 +1,12 @@
 ########################################################################
+#                                                                      #
 #                backend/src/eeoc_intake/core/schema.py                #
+#                                                                      #
 ########################################################################
 """
 Author:            Kevin Street
 Created on:        2026-10-29
-Last modified on:  2026-10-29
+Last modified on:  2026-11-03
 
 Defines the intake record: eleven fields, each with the evidence it
 came from or the reason it is empty, the values that count as empty,
@@ -13,7 +15,9 @@ from the record itself, in the order it shows them.
 """
 
 ########################################################################
+#                                                                      #
 #                               Imports                                #
+#                                                                      #
 ########################################################################
 # Standard library
 from __future__ import annotations
@@ -29,14 +33,18 @@ from pydantic import BaseModel, ConfigDict, Field
 from eeoc_intake.config import SETTINGS
 
 ########################################################################
+#                                                                      #
 #                           Global constants                           #
+#                                                                      #
 ########################################################################
 log = get_logger(__name__)
 # log.debug("Takes the field the model paraphrases, which is never scored, from the config")
 SUMMARY_FIELD: Final = SETTINGS.record_summary_field
 
 ########################################################################
+#                                                                      #
 #                           Local constants                            #
+#                                                                      #
 ########################################################################
 # log.debug("Lists the values a field may hold")
 Value = str | list[str] | bool | None
@@ -47,7 +55,9 @@ EMPTY: Final[tuple[Value, ...]] = (None, "", [])
 
 
 ########################################################################
+#                                                                      #
 #                            Intake record                             #
+#                                                                      #
 ########################################################################
 # log.debug("Defines one field with its evidence")
 class Sourced(BaseModel):

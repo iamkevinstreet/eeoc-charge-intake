@@ -1,10 +1,12 @@
 // ########################################################################
+// #                                                                      #
 // #                frontend/src/components/ReviewHead.tsx                #
+// #                                                                      #
 // ########################################################################
 /**
  * Author:            Kevin Street
  * Created on:        2026-10-29
- * Last modified on:  2026-10-29
+ * Last modified on:  2026-11-03
  *
  * The head of the review screen: the way back, the document's name, who
  * answered and at what cost, how many fields have a decision, and the
@@ -12,7 +14,9 @@
  */
 
 // ########################################################################
+// #                                                                      #
 // #                               Imports                                #
+// #                                                                      #
 // ########################################################################
 // Local
 import { money, percent, seconds } from '../format';
@@ -20,13 +24,17 @@ import { required } from '../lib/required';
 import type { Review } from '../types';
 
 // ########################################################################
+// #                                                                      #
 // #                           Local constants                            #
+// #                                                                      #
 // ########################################################################
 // log.debug('Matches the prefix that says where a document came from')
 const SOURCE = /^(?:sample|upload):/;
 
 // ########################################################################
+// #                                                                      #
 // #                             Review head                              #
+// #                                                                      #
 // ########################################################################
 interface Props {
   review?: Review | null;

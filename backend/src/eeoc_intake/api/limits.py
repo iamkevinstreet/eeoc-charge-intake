@@ -1,10 +1,12 @@
 ########################################################################
+#                                                                      #
 #                backend/src/eeoc_intake/api/limits.py                 #
+#                                                                      #
 ########################################################################
 """
 Author:            Kevin Street
 Created on:        2026-10-29
-Last modified on:  2026-10-29
+Last modified on:  2026-11-03
 
 Limits how many extractions each client may start in a rolling minute.
 The recent request times are kept in memory, per client, so the limit
@@ -14,7 +16,9 @@ as unresolved.
 """
 
 ########################################################################
+#                                                                      #
 #                               Imports                                #
+#                                                                      #
 ########################################################################
 # Standard library
 from __future__ import annotations
@@ -29,19 +33,25 @@ from kds.args import required
 from kds.logs import get_logger
 
 ########################################################################
+#                                                                      #
 #                           Global constants                           #
+#                                                                      #
 ########################################################################
 log = get_logger(__name__)
 
 ########################################################################
+#                                                                      #
 #                           Local constants                            #
+#                                                                      #
 ########################################################################
 # log.debug("Sets the window the limit counts over, in seconds")
 WINDOW_S = 60.0
 
 
 ########################################################################
+#                                                                      #
 #                           Per-client limit                           #
+#                                                                      #
 ########################################################################
 # log.debug("Defines the limiter")
 class RateLimiter:

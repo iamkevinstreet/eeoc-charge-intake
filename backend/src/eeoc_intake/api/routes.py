@@ -1,10 +1,12 @@
 ########################################################################
+#                                                                      #
 #                backend/src/eeoc_intake/api/routes.py                 #
+#                                                                      #
 ########################################################################
 """
 Author:            Kevin Street
 Created on:        2026-10-29
-Last modified on:  2026-10-29
+Last modified on:  2026-11-03
 
 Serves the review routes, all under the API's prefix (/api/v1):
 
@@ -21,7 +23,9 @@ generated samples only, and every response says so.
 """
 
 ########################################################################
+#                                                                      #
 #                               Imports                                #
+#                                                                      #
 ########################################################################
 # Standard library
 from __future__ import annotations
@@ -52,7 +56,9 @@ from eeoc_intake.core.extract import Extraction
 from eeoc_intake.core.schema import FIELDS, Decision
 
 ########################################################################
+#                                                                      #
 #                           Global constants                           #
+#                                                                      #
 ########################################################################
 log = get_logger(__name__)
 # log.debug("Takes the prefix of every route, from the config")
@@ -67,7 +73,9 @@ NOTICE_PDF: Final = SETTINGS.samples_notice_input
 RESULTS: Final = SETTINGS.eval_results_key
 
 ########################################################################
+#                                                                      #
 #                           Local constants                            #
+#                                                                      #
 ########################################################################
 # log.debug("Sets the pattern of a sample id")
 SAMPLE_ID: Final = r"^charge-\d{3,6}$"
@@ -78,7 +86,9 @@ NO_REVIEW: Final = "no such review"
 
 
 ########################################################################
+#                                                                      #
 #                            Review routes                             #
+#                                                                      #
 ########################################################################
 # log.debug("Builds the router every route hangs from")
 router = APIRouter(prefix=PREFIX)

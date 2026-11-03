@@ -1,10 +1,12 @@
 // ########################################################################
+// #                                                                      #
 // #                  frontend/src/components/Start.tsx                   #
+// #                                                                      #
 // ########################################################################
 /**
  * Author:            Kevin Street
  * Created on:        2026-10-29
- * Last modified on:  2026-10-29
+ * Last modified on:  2026-11-03
  *
  * The start screen: what the service does, the generated samples, each
  * with a button to review it, and the upload form, which turns on once
@@ -12,7 +14,9 @@
  */
 
 // ########################################################################
+// #                                                                      #
 // #                               Imports                                #
+// #                                                                      #
 // ########################################################################
 // Local
 import { CONFIG } from '../config';
@@ -22,7 +26,9 @@ import type { Health, Sample } from '../types';
 import { UploadForm } from './UploadForm';
 
 // ########################################################################
+// #                                                                      #
 // #                           Global constants                           #
+// #                                                                      #
 // ########################################################################
 // log.debug('Takes the class of the quieter notes from the config')
 const META = CONFIG.ui.note_class;
@@ -32,13 +38,17 @@ const JOIN = CONFIG.labels.join;
 const GENERATE_COMMAND = CONFIG.ui.generate_command;
 
 // ########################################################################
+// #                                                                      #
 // #                           Local constants                            #
+// #                                                                      #
 // ########################################################################
 // log.debug('Sets the class of text only a screen reader reads')
 const HIDDEN = 'ec-visually-hidden';
 
 // ########################################################################
+// #                                                                      #
 // #                             Start screen                             #
+// #                                                                      #
 // ########################################################################
 interface Props {
   health?: Health | null;

@@ -1,12 +1,14 @@
 /*
 ########################################################################
+#                                                                      #
 #                   frontend/src/styles/results.css                    #
+#                                                                      #
 ########################################################################
 */
 /*
  * Author:            Kevin Street
  * Created on:        2026-10-29
- * Last modified on:  2026-10-29
+ * Last modified on:  2026-11-03
  *
  * The evaluation screen: the row of headline numbers, the accuracy by
  * field chart, and the table by kind of case, which uses the shared
@@ -15,7 +17,9 @@
 
 /*
 ########################################################################
+#                                                                      #
 #                          Evaluation screen                           #
+#                                                                      #
 ########################################################################
 */
 .ec-results {

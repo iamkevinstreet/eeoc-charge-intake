@@ -1,17 +1,21 @@
 ########################################################################
+#                                                                      #
 #                     backend/tests/test_verify.py                     #
+#                                                                      #
 ########################################################################
 """
 Author:            Kevin Street
 Created on:        2026-10-29
-Last modified on:  2026-10-29
+Last modified on:  2026-11-03
 
 Tests that a value the document does not support never reaches the
 reviewer.
 """
 
 ########################################################################
+#                                                                      #
 #                               Imports                                #
+#                                                                      #
 ########################################################################
 # Standard library
 from __future__ import annotations
@@ -33,12 +37,16 @@ from eeoc_intake.core.extract import (
 from eeoc_intake.core.schema import ChargeRecord, Sourced
 
 ########################################################################
+#                                                                      #
 #                           Global constants                           #
+#                                                                      #
 ########################################################################
 log = get_logger(__name__)
 
 ########################################################################
+#                                                                      #
 #                           Local constants                            #
+#                                                                      #
 ########################################################################
 # log.debug("Sets a one-page charge")
 CHARGE = ["CHARGE OF DISCRIMINATION\nCharge No. 410-2026-10001\nCharging Party: Ada Lovelace\n"]
@@ -49,7 +57,9 @@ NUMBER = "410-2026-10001"
 
 
 ########################################################################
+#                                                                      #
 #                          Quote check tests                           #
+#                                                                      #
 ########################################################################
 # log.debug("Defines the test: a supported quote is kept")
 def test_a_supported_quote_is_kept() -> None:

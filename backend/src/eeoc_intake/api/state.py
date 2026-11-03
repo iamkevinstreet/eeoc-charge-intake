@@ -1,10 +1,12 @@
 ########################################################################
+#                                                                      #
 #                 backend/src/eeoc_intake/api/state.py                 #
+#                                                                      #
 ########################################################################
 """
 Author:            Kevin Street
 Created on:        2026-10-29
-Last modified on:  2026-10-29
+Last modified on:  2026-11-03
 
 Builds the services every route shares, once when the app starts: the
 generated samples, the model, the reviews in progress and the
@@ -12,7 +14,9 @@ per-client limit on extractions.
 """
 
 ########################################################################
+#                                                                      #
 #                               Imports                                #
+#                                                                      #
 ########################################################################
 # Standard library
 from __future__ import annotations
@@ -36,7 +40,9 @@ from eeoc_intake.config import SETTINGS, AppSettings
 from eeoc_intake.core.offline import adapter_for
 
 ########################################################################
+#                                                                      #
 #                           Global constants                           #
+#                                                                      #
 ########################################################################
 log = get_logger(__name__)
 # log.debug("Takes the name of the evaluation set's file, from the config")
@@ -46,7 +52,9 @@ FAKE: Final = SETTINGS.demo_provider
 
 
 ########################################################################
+#                                                                      #
 #                           Shared services                            #
+#                                                                      #
 ########################################################################
 # log.debug("Defines the generated samples, read again when the file changes")
 class Samples:

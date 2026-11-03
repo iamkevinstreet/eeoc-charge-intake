@@ -1,17 +1,21 @@
 // ########################################################################
+// #                                                                      #
 // #                        frontend/src/values.ts                        #
+// #                                                                      #
 // ########################################################################
 /**
  * Author:            Kevin Street
  * Created on:        2026-10-29
- * Last modified on:  2026-10-29
+ * Last modified on:  2026-11-03
  *
  * What a field holds: the empty field, how a value is shown, and how a
  * value a reviewer types is read back into the field's shape.
  */
 
 // ########################################################################
+// #                                                                      #
 // #                               Imports                                #
+// #                                                                      #
 // ########################################################################
 // Local
 import { CONFIG } from './config';
@@ -19,7 +23,9 @@ import { required } from './lib/required';
 import type { Sourced, Value } from './types';
 
 // ########################################################################
+// #                                                                      #
 // #                           Global constants                           #
+// #                                                                      #
 // ########################################################################
 // log.debug('Takes the word shown for a true value from the config')
 const YES = CONFIG.labels.yes;
@@ -33,7 +39,9 @@ const YES_NO_FIELD = CONFIG.record.yes_no_field;
 const LIST_FIELDS = CONFIG.record.list_fields;
 
 // ########################################################################
+// #                                                                      #
 // #                           Local constants                            #
+// #                                                                      #
 // ########################################################################
 // log.debug('Sets what separates the items a reviewer types')
 const SPLIT = ',';
@@ -43,7 +51,9 @@ const SAYS_YES = /^(?:y|yes|true|1)$/i;
 export const EMPTY: Sourced = { value: null, page: null, span: null, confidence: 0, reason: null };
 
 // ########################################################################
+// #                                                                      #
 // #                             Field values                             #
+// #                                                                      #
 // ########################################################################
 // log.debug('Defines how one field is found in a record')
 /**

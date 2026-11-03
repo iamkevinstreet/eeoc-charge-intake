@@ -1,10 +1,12 @@
 ########################################################################
+#                                                                      #
 #                backend/src/eeoc_intake/evals/index.py                #
+#                                                                      #
 ########################################################################
 """
 Author:            Kevin Street
 Created on:        2026-10-29
-Last modified on:  2026-10-29
+Last modified on:  2026-11-03
 
 Writes index.json, which lists the committed results so a static site
 never lists a folder.
@@ -17,7 +19,9 @@ folder of saved extractions in `[data] extractions`.
 """
 
 ########################################################################
+#                                                                      #
 #                               Imports                                #
+#                                                                      #
 ########################################################################
 # Standard library
 from __future__ import annotations
@@ -34,7 +38,9 @@ from kds.logs import get_logger
 from eeoc_intake.config import SETTINGS, get_app_settings
 
 ########################################################################
+#                                                                      #
 #                           Global constants                           #
+#                                                                      #
 ########################################################################
 log = get_logger(__name__)
 # log.debug("Takes the name of the figures file the dashboard exports, from the config")
@@ -43,7 +49,9 @@ FIGURES: Final = SETTINGS.data_figures
 ENCODING: Final = SETTINGS.files_encoding
 
 ########################################################################
+#                                                                      #
 #                           Local constants                            #
+#                                                                      #
 ########################################################################
 # log.debug("Sets the name of the index file")
 INDEX: Final = "index.json"
@@ -56,7 +64,9 @@ JSON_FILES: Final = "*.json"
 
 
 ########################################################################
+#                                                                      #
 #                            Results index                             #
+#                                                                      #
 ########################################################################
 # log.debug("Defines the index of a results folder and an extractions folder")
 def build_index(results: Path | None = None, extractions: Path | None = None) -> dict[str, Any]:
