@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.5.2, Nov 5, 2026
+
+- **Dependencies:** the backend's lockfile moves to dash 4.5.0, python-multipart 0.0.33 and
+  pandas-stubs 3.1.0.261029; the review screen's moves to ESLint 10.14.0 and eslint-plugin-jsdoc
+  65.4.2, two major versions on, with the same rules. Nothing had to change for them: lint, the
+  types, the code standard, the tests, the offline evaluation and the audits pass as they were.
+  The health check reports 0.5.2.
+
 ## v0.5.1, Nov 5, 2026
 
 - **Utils:** every shared package pins utils v0.5.1 (commit

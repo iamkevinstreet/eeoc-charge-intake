@@ -35,4 +35,4 @@ log = get_logger(__name__)
 #                                                                      #
 ########################################################################
 # log.debug("Sets the release, reported by the health check")
-__version__ = "0.5.1"
+__version__ = "0.5.2"
