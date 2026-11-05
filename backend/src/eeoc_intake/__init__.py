@@ -6,7 +6,7 @@
 """
 Author:            Kevin Street
 Created on:        2026-10-29
-Last modified on:  2026-11-03
+Last modified on:  2026-11-05
 
 The charge intake package: its version, reported by the health check.
 """
@@ -35,4 +35,4 @@ log = get_logger(__name__)
 #                                                                      #
 ########################################################################
 # log.debug("Sets the release, reported by the health check")
-__version__ = "0.5.0"
+__version__ = "0.5.1"

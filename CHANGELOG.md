@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.5.1, Nov 5, 2026
+
+- **Utils:** every shared package pins utils v0.5.1 (commit
+  `e57de0e97d1c41616af1a98873f6beeecc74c99f`), whose checker now also reads the statements inside
+  a function whose signature wraps and inside a bare `catch`. Each of them in the review screen
+  already had its logger line, so no code changed; the health check reports 0.5.1.
+
 ## v0.5.0, Oct 29, 2026
 
 The code moves to the updated code standard. Nothing a reader of the results sees changes: the
