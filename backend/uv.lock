@@ -348,7 +348,7 @@ wheels = [
 
 [[package]]
 name = "dash"
-version = "4.4.1"
+version = "4.5.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "comm" },
@@ -364,9 +364,9 @@ dependencies = [
     { name = "typing-extensions" },
     { name = "werkzeug" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/5a/67/d5cea6dedfbfde4165436fb58154480ea6358a9e71a739d3366575b5b724/dash-4.4.1.tar.gz", hash = "sha256:9356ca7856bc496c12c5b6de5978aaf783e090d07450ee395ade1c0c2cbdf816", size = 8536482, upload-time = "2026-07-21T18:58:19.72Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/c9/93/f4f8cbc5fb7f6fd16ce08d27bf9005b450a7b4b6c94357ae34708bdc7807/dash-4.5.0.tar.gz", hash = "sha256:950964e22c21485edc50c36d5c139d95316d94b11348ea3e77f99acc2456b43d", size = 8855952, upload-time = "2026-10-29T20:21:48.54Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/9a/29/498125538103a11eab9cfbbde41bacf93e14ab3ac92ae9fb4ac0ac4dd61b/dash-4.4.1-py3-none-any.whl", hash = "sha256:72120a91b10ee4d73f9446efd5d6a4ec218086feed7b1b479d2259844d1f658f", size = 8945027, upload-time = "2026-07-21T18:58:11.405Z" },
+    { url = "https://files.pythonhosted.org/packages/b3/77/36799a6b840c0d6acf726ad06a9e10355827f9c84f506d0ba168238ba54c/dash-4.5.0-py3-none-any.whl", hash = "sha256:d50a0900c2ce9e5f43f484d6966acc3ecbddcfd54df727311e34a0b7d3da2129", size = 9278243, upload-time = "2026-10-29T20:21:34.717Z" },
 ]
 
 [[package]]
@@ -1389,14 +1389,14 @@ wheels = [
 
 [[package]]
 name = "pandas-stubs"
-version = "3.0.5.260914"
+version = "3.1.0.261029"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "numpy" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/c1/93/8948ae6c1e1e3d6833596fd266f7be2d27c1451b8be094975ad42c5e842e/pandas_stubs-3.0.5.260914.tar.gz", hash = "sha256:3f6fc1f147f68fd89c007105e7c94a948acb4ecd7eb20dc1c02e153c4ed5c250", size = 117622, upload-time = "2026-09-14T16:42:35.065Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/f9/f8/0346629264426a6693affbc9a0fb52143acfa38112d569f68da514ea503a/pandas_stubs-3.1.0.261029.tar.gz", hash = "sha256:dcfb5b14d399beae72cce558db6d2a0d89c10301275557f1c00d5393e9cb190e", size = 119466, upload-time = "2026-10-29T17:09:31.352Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/9a/cb/5ad79e02a556cc23fed5816de0109fa8af660c66cfa5f4af74c3e8d4cd26/pandas_stubs-3.0.5.260914-py3-none-any.whl", hash = "sha256:39a1300c5c5c55fdf609e3476805decce5d5015539a4dcb683449f8feaeee2fb", size = 177344, upload-time = "2026-09-14T16:42:33.771Z" },
+    { url = "https://files.pythonhosted.org/packages/c0/2c/ecbc04b2a8d05d737351a54398f843223cb66edf42ec5c0fcc6198f17d3a/pandas_stubs-3.1.0.261029-py3-none-any.whl", hash = "sha256:70f631f2d0781c4500b1cd5f84cab7d7279a3d114674d69655536a4a99a3a67f", size = 179851, upload-time = "2026-10-29T17:09:30.112Z" },
 ]
 
 [[package]]
@@ -1785,11 +1785,11 @@ wheels = [
 
 [[package]]
 name = "python-multipart"
-version = "0.0.32"
+version = "0.0.33"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/5b/42/55c32bb9b12693c092ad250a0e82edb5b31ddeda6eb772de5f308b3804ad/python_multipart-0.0.32.tar.gz", hash = "sha256:be54b7f3fa167bb83e4fcd936b887b708f4e57fe75911c02aebf53efaf8d938e", size = 46881, upload-time = "2026-06-04T16:18:58.647Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/9f/b7/15b905f6142a9a8a68f66900788da1a32e4d4254452783b37ad1eccb0506/python_multipart-0.0.33.tar.gz", hash = "sha256:b8112424a6abd162ec08d390565dd113ad699f2fe6fef3c987b8bbcbfe9e390d", size = 50499, upload-time = "2026-10-31T14:23:47.461Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/e1/04/e8135ebd1ad02c56ec633277529b2602ff99ff634be76cdba5744cf554fd/python_multipart-0.0.32-py3-none-any.whl", hash = "sha256:ff6d3f776f16878c894e52e107296ffc890e913c611b1a4ec6c44e2821fe2e23", size = 30042, upload-time = "2026-06-04T16:18:57.319Z" },
+    { url = "https://files.pythonhosted.org/packages/dd/1b/6b1b4164ec734cac911460ab599bfbe46afedd42c5c9627fe4235942c314/python_multipart-0.0.33-py3-none-any.whl", hash = "sha256:8f16c07b36add9da6b2ee87d3efcaf0a45a6de9c3d0a5dd94e9ccf7675a7bc45", size = 32253, upload-time = "2026-10-31T14:23:46.33Z" },
 ]
 
 [[package]]
