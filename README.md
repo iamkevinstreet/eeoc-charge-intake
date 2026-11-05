@@ -197,7 +197,7 @@ eeoc-charge-intake/
 ├── config/         config.toml: every setting at its default; .env.example: the secrets' names
 ├── data/           results, saved extractions and Tableau files; generated/ is not committed
 ├── docs/           diagrams.toml, the two SVGs it draws, and the review screen recording
-└── .github/        CI, CodeQL, the live evaluation, Dependabot, CODEOWNERS
+└── .github/        CI, CodeQL, the live evaluation, Dependabot and the workflow that lands its updates, CODEOWNERS
 ```
 
 ## Changelog and license

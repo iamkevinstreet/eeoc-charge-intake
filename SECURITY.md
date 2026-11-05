@@ -39,6 +39,6 @@ see "Unresolved" in the [README](README.md) before running it anywhere shared.
 | The review screen in a browser | A content security policy that allows only the service's own files, no framing, no MIME sniffing and no referrer |
 | Personal data in logs | Document text is never logged; `kds.logs` redacts emails, phone numbers and ID-like numbers from everything that is |
 | A committed secret | gitleaks before every commit and over the whole history in CI; secrets live only in `config/.env`, and the settings loader refuses one in `config/config.toml` |
-| A vulnerable dependency | Lockfiles with hashes, `pip-audit` and `npm audit` in CI, Dependabot every week |
+| A vulnerable dependency | Lockfiles with hashes, `pip-audit` and `npm audit` in CI, Dependabot every week, its updates landed only once CI passes |
 | A tampered Action or tool | Actions pinned to commit SHAs; the gitleaks download checked against its published SHA-256 |
 | A flaw in the code | CodeQL for Python and TypeScript, ruff's security rules (bandit), least-privilege workflow permissions |
