@@ -18,7 +18,7 @@ Case study: <https://kevindstreet.com/projects/eeoc-charge-intake-extraction/>
 | | |
 | --- | --- |
 | Works today | Extraction with a quote and page for every field, the quote check, the review screen with gated export, demo mode, the evaluation (offline in CI, live by hand), the dashboard and the Tableau export, and spans of every extraction for Langfuse |
-| Measured | Three live runs with `claude-sonnet-5-5`, the latest on 200 documents: every field right on every document (below) |
+| Measured | Four live runs with `claude-sonnet-5-5`, the largest on 200 documents and the latest, with its trace, on 40: every field right on every document (below) |
 | Next | A harder test set: varied wording, irrelevant detail, pages that look scanned |
 
 Every charge, notice, person and company here is made up: the generator writes them from a seed, with
@@ -106,6 +106,7 @@ are public on the Actions tab:
 
 | Run | Fields right | Unsupported values | Guesses | Wrongly blank per document | Median time | Cost per document |
 | --- | --- | --- | --- | --- | --- | --- |
+| v0.6, claude-sonnet-5-5, 40 documents, Nov 7, 2026 | 100% | 0 | 0 | 0 | 4.4 s | $0.0133 |
 | v0.3, claude-sonnet-5-5, 200 documents, Oct 26, 2026 | 100% | 0 | 0 | 0 | 4.5 s | $0.0134 |
 | v0.3, claude-sonnet-5-5, 40 documents, Oct 17, 2026 | 100% | 0 | 0 | 0 | 4.2 s | $0.0134 |
 | v0.2, claude-sonnet-5-5, 40 documents, Oct 17, 2026 | 93.0% | 0 | 0 | 0.70 | 4.3 s | $0.0119 |
@@ -127,6 +128,12 @@ What the third run said: the same setup on 200 documents, ten of each hard case,
 right again. With no document wrong out of 200, the share of documents like these with any field wrong
 is below 1.5% at 95% confidence (the exact binomial bound, 1 - 0.05^(1/200)); at 40 documents the
 same bound was 7.2%. They are still generated documents, so the harder test set is the next step.
+
+What the fourth run said: the first with spans on (v0.6), on 40 documents, and every field was right
+again. Its trace is kept beside its results, in
+[live-claude-sonnet-5-5-20261107T203513Z.spans.jsonl](data/evals/results/live-claude-sonnet-5-5-20261107T203513Z.spans.jsonl):
+for each document, the extraction with its model call (tokens, cost, stop reason) and its quote
+check, which emptied nothing.
 
 ## Configuration
 
