@@ -9,6 +9,15 @@
   when every check passes. One whose checks fail is labelled "needs a person" and waits. CI can now
   be called for a given commit, which is how the workflow checks one before it lands.
 
+## v0.6.1, Nov 7, 2026
+
+- **Spans:** the Anthropic SDK no longer adds a span of its own to each model call. That span
+  repeated the `chat` span's call, tokens included, so Langfuse listed every call twice, and it
+  carried the account's organization and workspace ids. The workbench moves to utils v0.6.1, which
+  builds the Anthropic client with the SDK's spans and trace headers off. The spans file of the
+  Nov 7 live run, on the eval-results branch, has those spans removed too.
+- 64 backend tests. The health check reports 0.6.1.
+
 ## v0.6.0, Nov 7, 2026
 
 - **Spans:** each extraction is one `extract` span recording how many fields the record fills and
