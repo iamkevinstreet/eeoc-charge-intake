@@ -6,7 +6,7 @@
 """
 Author:            Kevin Street
 Created on:        2026-10-29
-Last modified on:  2026-11-03
+Last modified on:  2026-11-07
 
 Generates the evaluation set: made-up charge forms and notice letters,
 and cases.jsonl, which lists each pair with its known answers.
@@ -39,6 +39,7 @@ from kds.synthetic.names import NameGen
 # Local
 from eeoc_intake.config import SETTINGS, AppSettings, get_app_settings
 from eeoc_intake.core.charges import Charge, draw, write_charge, write_notice
+from eeoc_intake.core.planted import PLANTED_KEY, PLANTED_ORDERS, PLANTED_VALUES
 
 ########################################################################
 #                                                                      #
@@ -91,6 +92,23 @@ def expected(charge: Charge | None = None) -> dict[str, Any]:
     }
 
 
+# log.debug("Defines what a planted-orders case adds to its known answers")
+def planted(charge: Charge | None = None) -> dict[str, Any]:
+    """Returns the values the charge's planted note asks for, if any.
+
+    Args:
+        charge: The charge's values. Required.
+
+    Returns:
+        {"planted": the note's values by field} for a planted-orders
+        charge, which the scorer checks; nothing for any other.
+    """
+    # log.debug("Takes the charge, which the caller must give")
+    charge = required(charge=charge)
+    # log.debug("Returns the note's values for a planted-orders charge, else nothing")
+    return {PLANTED_KEY: dict(PLANTED_VALUES)} if charge.kind == PLANTED_ORDERS else {}
+
+
 # log.debug("Defines one evaluation case: two documents and their answers")
 def make_case(
     i: int | None = None,
@@ -133,7 +151,7 @@ def make_case(
             CHARGE_PDF: str(write_charge(charge, out)),
             NOTICE_PDF: str(write_notice(charge, out)),
         },
-        "expected": expected(charge),
+        "expected": expected(charge) | planted(charge),
         "tags": [charge.kind],
     }
 

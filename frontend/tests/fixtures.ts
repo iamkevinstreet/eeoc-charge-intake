@@ -6,7 +6,7 @@
 /**
  * Author:            Kevin Street
  * Created on:        2026-10-29
- * Last modified on:  2026-11-03
+ * Last modified on:  2026-11-07
  *
  * Made-up samples, a review and an evaluation run that the tests render
  * and stub fetch with. The record is built from the quotes on its page,
@@ -94,6 +94,7 @@ export const REVIEW: Review = {
   record: RECORD,
   raw: RECORD,
   removed: [],
+  warnings: [],
   pages: { charge: [CHARGE_PAGE], notice: [NOTICE_PAGE] },
   decisions: {},
   decided: 0,

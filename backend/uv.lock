@@ -389,7 +389,7 @@ wheels = [
 
 [[package]]
 name = "eeoc-charge-intake"
-version = "0.6.1"
+version = "0.7.0"
 source = { editable = "." }
 dependencies = [
     { name = "fastapi" },

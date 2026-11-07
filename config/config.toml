@@ -75,6 +75,10 @@ seed = 2026                               # the same seed always makes the same 
 hard_every = 5                            # every fifth document is a hard case
 cases = "cases.jsonl"                     # the evaluation set, one line per document
 clean = "clean"                           # the kind of a document that is not a hard case
+planted = "planted_orders"                # the kind whose particulars give orders to an AI model
+planted_every = 25                        # a document with planted orders comes round this often
+planted_at = 12                           # its place in each round, from 0: a clean place
+planted_key = "planted"                   # where a case's known answers keep what the note asked for
 charge_input = "charge_pdf"               # the input of a case that holds its charge PDF
 notice_input = "notice_pdf"               # the input of a case that holds its notice PDF
 
@@ -172,6 +176,7 @@ cost_title = "Cost per document, at list prices"
 "Rotated page" = "Rotated<br>page"
 "Long particulars" = "Long<br>particulars"
 "Two respondents" = "Two<br>respondents"
+"Planted orders" = "Planted<br>orders"
 
 # The words people read, shared by the dashboard and the review screen.
 [labels]
@@ -198,6 +203,7 @@ missing_number = "Missing charge number"
 rotated = "Rotated page"
 long = "Long particulars"
 two_respondents = "Two respondents"
+planted_orders = "Planted orders"
 
 # The review screen.
 [ui]

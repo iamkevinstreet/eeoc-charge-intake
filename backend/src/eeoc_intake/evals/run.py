@@ -137,6 +137,7 @@ def save_extraction(
         "record": ex.record.model_dump(),
         "raw": ex.raw.model_dump(),
         "removed": ex.removed,
+        "warnings": [w.model_dump() for w in ex.warnings],
         "pages": {"charge": ex.charge_pages, "notice": ex.notice_pages},
     }
     # log.debug("Writes it")

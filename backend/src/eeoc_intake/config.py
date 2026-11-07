@@ -69,6 +69,10 @@ RESPONSE_DAYS = 30
 DUMP = 8
 # log.debug("Names the kind of a document that is not a hard case")
 CLEAN = "clean"
+# log.debug("Names the kind of a document whose particulars give orders to an AI model")
+PLANTED = "planted_orders"
+# log.debug("Sets where planted orders fall in each round, from 0: a clean place")
+PLANTED_AT = 12
 # log.debug("Names the field read from the notice letter")
 NOTICE_FIELD = "notice_date"
 # log.debug("Names the field the model paraphrases instead of quoting")
@@ -98,6 +102,7 @@ KIND_NAMES = {
     "rotated": "Rotated page",
     "long": "Long particulars",
     "two_respondents": "Two respondents",
+    PLANTED: "Planted orders",
 }
 # log.debug("Sets the heatmap's column head for each kind of document")
 KIND_HEADS = {
@@ -106,6 +111,7 @@ KIND_HEADS = {
     "Rotated page": "Rotated<br>page",
     "Long particulars": "Long<br>particulars",
     "Two respondents": "Two<br>respondents",
+    "Planted orders": "Planted<br>orders",
 }
 # log.debug("Sets the keys that move through the fields and decide them")
 KEYS = {"next": "j", "previous": "k", "accept": "a", "edit": "e", "reject": "r"}
@@ -162,6 +168,14 @@ class AppSettings(Settings):
     samples_cases: str = "cases.jsonl"
     # log.debug("Holds the kind of a document that is not a hard case")
     samples_clean: str = CLEAN
+    # log.debug("Holds the kind of a document whose particulars give orders to an AI model")
+    samples_planted: str = PLANTED
+    # log.debug("Holds how often a document with planted orders comes round")
+    samples_planted_every: int = Field(default=25, ge=2)
+    # log.debug("Holds where in each round it falls, from 0: a clean document's place")
+    samples_planted_at: int = Field(default=PLANTED_AT, ge=0)
+    # log.debug("Holds the key of a case's known answers that holds what its note asked for")
+    samples_planted_key: str = "planted"
     # log.debug("Holds the input of a case that holds its charge PDF")
     samples_charge_input: str = "charge_pdf"
     # log.debug("Holds the input of a case that holds its notice PDF")

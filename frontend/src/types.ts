@@ -6,7 +6,7 @@
 /**
  * Author:            Kevin Street
  * Created on:        2026-10-29
- * Last modified on:  2026-11-03
+ * Last modified on:  2026-11-07
  *
  * The API's shapes in TypeScript, as the backend returns them: a field
  * with its evidence, a review and its decisions, the samples, the
@@ -52,6 +52,13 @@ export interface Progress {
   total: number;
 }
 
+/** A sentence of a document that gives orders to an AI model, and where it is. */
+export interface Flagged {
+  document: DocKind;
+  page: number;
+  text: string;
+}
+
 /** One extraction under review, with the decisions made so far. */
 export interface Review {
   review_id: string;
@@ -67,6 +74,8 @@ export interface Review {
   /** The record as the model gave it, before verification emptied any field. */
   raw: Record<string, Sourced>;
   removed: string[];
+  /** The sentences the guard flagged as orders to an AI model; read as text, never followed. */
+  warnings: Flagged[];
   pages: Record<DocKind, string[]>;
   decisions: Record<string, Decision>;
   decided: number;

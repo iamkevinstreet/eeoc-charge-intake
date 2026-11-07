@@ -6,7 +6,7 @@
 """
 Author:            Kevin Street
 Created on:        2026-10-29
-Last modified on:  2026-11-03
+Last modified on:  2026-11-07
 
 Tests that generated documents repeat for a seed and print the values
 their answers claim.
@@ -67,8 +67,8 @@ def test_every_fifth_document_is_a_hard_case_in_turn() -> None:
     """Checks positions 4, 9, 14 and 19 are the hard kinds, in order."""
     # log.debug("Checks the kinds of the first twenty positions")
     assert [kind_of(i, 5) for i in range(4, 20, 5)] == list(HARD_KINDS)
-    # log.debug("Checks the others are clean")
-    assert {kind_of(i, 5) for i in range(20) if i % 5 != 4} == {"clean"}
+    # log.debug("Checks the others are clean, but the planted-orders place, the 13th")
+    assert {kind_of(i, 5) for i in range(20) if i % 5 != 4 and i != 12} == {"clean"}
 
 
 # log.debug("Defines the test: the same seed makes the same set")

@@ -6,14 +6,17 @@
 """
 Author:            Kevin Street
 Created on:        2026-10-29
-Last modified on:  2026-11-03
+Last modified on:  2026-11-07
 
 Draws one made-up charge from the seeded generators and writes its two
 documents: the EEOC Form 5 and the notice letter. Every fifth charge is
 a hard case, in turn: a missing charge number, a rotated first page,
-particulars that run to three pages, or two respondents. The order of
-the draws is part of the data, so the same seed always makes the same
-documents, draw for draw.
+particulars that run to three pages, or two respondents. Every 25th
+charge, from the 13th, has a planted note in its particulars that
+orders an AI model to record false values. The order of the draws is
+part of the data, so the same seed always makes the same documents,
+draw for draw. The note draws nothing and falls where a clean charge
+did, so adding it changed no other document.
 """
 
 ########################################################################
@@ -38,6 +41,7 @@ from kds.synthetic.pdf import PdfDoc
 
 # Local
 from eeoc_intake.config import SETTINGS
+from eeoc_intake.core.planted import ORDERS, PLANTED_AT, PLANTED_EVERY, PLANTED_ORDERS
 
 ########################################################################
 #                                                                      #
@@ -200,12 +204,17 @@ def kind_of(i: int | None = None, hard_every: int | None = None) -> str:
             document by default. Required.
 
     Returns:
-        The kind of case: clean, or one of the hard cases in turn.
+        The kind of case: planted orders at its own places, clean, or
+        one of the hard cases in turn.
     """
     # log.debug("Takes the position, which the caller must give")
     i = required(i=i)
     # log.debug("Takes the hard-case rate, which the caller must give")
     hard_every = required(hard_every=hard_every)
+    # log.debug("Plants orders at their own places, which come first")
+    if i % PLANTED_EVERY == PLANTED_AT:
+        # log.debug("Returns the planted-orders case")
+        return PLANTED_ORDERS
     # log.debug("Returns clean unless this is the last of a group")
     if i % hard_every != hard_every - 1:
         # log.debug("Returns clean")
@@ -285,8 +294,37 @@ def draw(
         latest=latest,
         continuing=continuing,
         notice=notice,
-        paragraphs=[*paragraphs, *FILLERS] if kind == LONG else paragraphs,
+        paragraphs=body(kind, paragraphs),
     )
+
+
+# log.debug("Defines the particulars as a hard case prints them")
+def body(kind: str | None = None, paragraphs: list[str] | None = None) -> list[str]:
+    """Returns the particulars with what the kind of case adds.
+
+    Args:
+        kind: The kind of case. Required.
+        paragraphs: The particulars the charging party wrote.
+            Required.
+
+    Returns:
+        A long case's background paragraphs after them, the planted
+        note after the first one, or the particulars as they are.
+    """
+    # log.debug("Takes the kind, which the caller must give")
+    kind = required(kind=kind)
+    # log.debug("Takes the paragraphs, which the caller must give")
+    paragraphs = required(paragraphs=paragraphs)
+    # log.debug("Adds the background a long case runs on with")
+    if kind == LONG:
+        # log.debug("Returns the particulars, then the background")
+        return [*paragraphs, *FILLERS]
+    # log.debug("Plants the note where a reader is past the opening")
+    if kind == PLANTED_ORDERS:
+        # log.debug("Returns the first paragraph, the note, then the rest")
+        return [*paragraphs[:1], ORDERS, *paragraphs[1:]]
+    # log.debug("Returns the particulars as they are")
+    return paragraphs
 
 
 # log.debug("Defines the particulars a charging party writes")

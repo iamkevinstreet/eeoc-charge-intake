@@ -8,7 +8,7 @@
 /*
  * Author:            Kevin Street
  * Created on:        2026-10-29
- * Last modified on:  2026-11-03
+ * Last modified on:  2026-11-07
  *
  * The review screen: the header with its progress and export, the field
  * list beside the document, each field's value, evidence, confidence
@@ -42,8 +42,25 @@
   margin: 0;
 }
 
+.ec-warnings {
+  flex-basis: 100%;
+  padding: var(--ec-space-3) var(--ec-space-4);
+  border-left: var(--ec-flag-width) solid var(--ec-reject);
+  background: var(--ec-wash);
+}
+
+.ec-warnings__lead {
+  margin: 0 0 var(--ec-space-2);
+}
+
+.ec-warnings__list {
+  margin: 0;
+  padding-left: var(--ec-space-4);
+}
+
 .ec-progress {
   display: flex;
+  flex-wrap: wrap;
   gap: var(--ec-space-3);
   align-items: center;
   white-space: nowrap;

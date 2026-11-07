@@ -6,11 +6,13 @@
 /**
  * Author:            Kevin Street
  * Created on:        2026-10-29
- * Last modified on:  2026-11-03
+ * Last modified on:  2026-11-07
  *
  * The head of the review screen: the way back, the document's name, who
  * answered and at what cost, how many fields have a decision, and the
- * export, which waits until every field has one.
+ * export, which waits until every field has one. When either document
+ * has sentences that give orders to an AI model, they are listed with
+ * their pages, so a value that came from one can be caught.
  */
 
 // ########################################################################
@@ -19,9 +21,18 @@
 // #                                                                      #
 // ########################################################################
 // Local
+import { CONFIG } from '../config';
 import { money, percent, seconds } from '../format';
 import { required } from '../lib/required';
-import type { Review } from '../types';
+import type { Flagged, Review } from '../types';
+
+// ########################################################################
+// #                                                                      #
+// #                           Global constants                           #
+// #                                                                      #
+// ########################################################################
+// log.debug('Takes the style of the quieter notes, from the config')
+const META = CONFIG.ui.note_class;
 
 // ########################################################################
 // #                                                                      #
@@ -30,6 +41,8 @@ import type { Review } from '../types';
 // ########################################################################
 // log.debug('Matches the prefix that says where a document came from')
 const SOURCE = /^(?:sample|upload):/;
+// log.debug('Names each document as the warnings list it')
+const DOCUMENT_NAMES = { charge: 'Charge', notice: 'Notice' } as const;
 
 // ########################################################################
 // #                                                                      #
@@ -80,6 +93,38 @@ function summary(review: Review | null = null): string {
   const emptied = `Verification emptied ${removed} ${removed === 1 ? 'field' : 'fields'}`;
   // log.debug('Returns the line and the emptied fields')
   return `${line}. ${emptied} whose cited text was not on the cited page.`;
+}
+
+// log.debug('Defines the list of sentences that give orders to an AI model')
+/**
+ * Renders the flagged sentences, each with its document and page.
+ *
+ * @param props - The component's props.
+ * @param props.flagged - The sentences the guard flagged. Required.
+ * @returns The note and its list.
+ */
+function Warnings({ flagged = null }: { flagged?: Flagged[] | null } = {}): React.JSX.Element {
+  // log.debug('Takes the sentences, which the caller must give')
+  flagged = required({ flagged });
+  // log.debug('Returns the note, then each sentence where it is')
+  return (
+    <div className="ec-warnings" role="note">
+      <p className="ec-warnings__lead">
+        These sentences read like orders to an AI model. They were read as part of the document,
+        not followed; check any value that matches them.
+      </p>
+      <ul className="ec-warnings__list">
+        {flagged.map((f) => (
+          <li key={`${f.document}-${f.page}-${f.text}`}>
+            <span className={META}>
+              {DOCUMENT_NAMES[f.document]}, page {f.page}:{' '}
+            </span>
+            <q className="ec-quote">{f.text}</q>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
 }
 
 // log.debug('Defines the head of the review screen')
@@ -139,6 +184,7 @@ export function ReviewHead({
           Export record
         </button>
       </div>
+      {review.warnings.length > 0 && <Warnings flagged={review.warnings} />}
     </header>
   );
 }

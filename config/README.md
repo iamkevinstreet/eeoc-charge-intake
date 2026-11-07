@@ -56,6 +56,7 @@ reads.
 | `[samples] count` | `30` | How many documents to generate |
 | `[samples] seed` | `2026` | The seed; the same seed always makes the same documents |
 | `[samples] hard_every` | `5` | Every fifth document is a hard case |
+| `[samples] planted_every`, `[samples] planted_at` | `25`, `12` | A document with orders planted for an AI model comes round this often, at this place from 0: the 13th, 38th and so on, each a clean place |
 | `[extract] response_days` | `30` | A position statement is due this many days after the notice |
 | `[extract] dump` | `8` | How many whole extractions a live run saves |
 | `[api] host` | `127.0.0.1` | The address the service listens on: this machine only |
@@ -83,7 +84,7 @@ whatever else depends on it: a column name, say, changes the Tableau CSV files t
 | `[scores]` | The names of the scores a document gets, and the prefix of each field's own score | The scoring, the dashboard and the review screen |
 | `[labels]`, `[labels.fields]`, `[labels.kinds]` | The words people read: yes and no, what joins a list, each field's and each kind of document's name | The dashboard and the review screen |
 | `[units]`, `[files] encoding` | Milliseconds in a second, percent in a whole, and the encoding of every file read or written | The backend; the review screen reads `[units]` too |
-| `[eval] results_key`, `[samples] cases`, `clean`, `charge_input`, `notice_input` | How a run file and a case are written and read | The generator, the evaluation, the service and the dashboard |
+| `[eval] results_key`, `[samples] cases`, `clean`, `planted`, `planted_key`, `charge_input`, `notice_input` | How a run file and a case are written and read, and the planted-orders kind and where its asked-for values go | The generator, the evaluation, the service and the dashboard |
 | `[stats]` | The two tests that decide whether a change between runs is bigger than noise | The change tests and the dashboard's tiles |
 | `[dashboard_ids]`, `[columns]`, `[charts]`, `[charts.kind_heads]` | The dashboard's part ids, the evaluation tables' column names, and the charts' schemes, sizes and titles | The dashboard, the case study's figures and the Tableau files |
 | `[ui]` (but `dist`), `[ui.keys]` | The code link, the commands the screens suggest, two names the screens share, and the review keys | The review screen |

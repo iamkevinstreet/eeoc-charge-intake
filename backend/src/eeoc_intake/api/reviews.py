@@ -6,7 +6,7 @@
 """
 Author:            Kevin Street
 Created on:        2026-10-29
-Last modified on:  2026-11-03
+Last modified on:  2026-11-07
 
 Keeps the reviews in progress, each an extraction with the decisions
 made on its fields, and builds the record a finished review exports.
@@ -250,6 +250,7 @@ def payload(review: Review | None = None) -> dict[str, Any]:
         RECORD: ex.record.model_dump(),
         "raw": ex.raw.model_dump(),
         "removed": ex.removed,
+        "warnings": [w.model_dump() for w in ex.warnings],
         "pages": {"charge": ex.charge_pages, "notice": ex.notice_pages},
         DECISIONS: {f: d.model_dump() for f, d in review.decisions.items()},
         "decided": len(review.decisions),

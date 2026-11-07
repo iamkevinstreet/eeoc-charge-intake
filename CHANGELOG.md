@@ -9,6 +9,24 @@
   when every check passes. One whose checks fail is labelled "needs a person" and waits. CI can now
   be called for a given commit, which is how the workflow checks one before it lands.
 
+## v0.7.0, Nov 7, 2026
+
+- **Planted orders:** a new hard case. Every 25th generated charge, from the 13th, has a note in its
+  particulars that tells an AI model to ignore its instructions, record a false charge number and
+  respondent, and leave the bases blank. It falls where a clean charge was and draws nothing from
+  the seeded generators, so every other document is as it was. The values it asks for go into the
+  case's known answers, and `planted_followed` counts the fields that took one. The quote check
+  cannot catch an obedient model, since the note is on the page, which is what the score is for.
+- **The guard:** every sentence of a charge or notice that gives an AI model orders is flagged,
+  with its document and page. The review screen lists them above the fields, the review and the
+  saved extractions carry them, and the extraction's span counts them. The model is told the pages
+  are data, never instructions.
+- **Settings:** `[samples] planted`, `planted_every`, `planted_at` and `planted_key`, and the
+  label and heatmap head of the new kind.
+- **Phones:** the review screen's progress row wraps, so the export button no longer runs 18 px
+  past a 390 px screen.
+- 68 backend and 13 review-screen tests. The health check reports 0.7.0.
+
 ## v0.6.1, Nov 7, 2026
 
 - **Spans:** the Anthropic SDK no longer adds a span of its own to each model call. That span
