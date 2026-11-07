@@ -6,7 +6,7 @@
 """
 Author:            Kevin Street
 Created on:        2026-10-29
-Last modified on:  2026-11-03
+Last modified on:  2026-11-07
 
 Loads every setting the service, the evaluation, the dashboard and the
 review screen read, typed and validated, and every value two modules
@@ -16,10 +16,10 @@ an environment variable overrides either.
 Each field is a `[section] key` of config/config.toml joined by an
 underscore: `[api] port` is `api_port`, which API_PORT overrides. A
 nested table is one field: `[labels.fields]` is `labels_fields`. The
-model keys in config/.env are the only secrets. SETTINGS holds the
-settings loaded once at import, for the values modules bind in their
-Global constants; functions that take settings still take them, so
-tests can pass their own.
+model and Langfuse keys in config/.env are the only secrets. SETTINGS
+holds the settings loaded once at import, for the values modules bind
+in their Global constants; functions that take settings still take
+them, so tests can pass their own.
 """
 
 ########################################################################
@@ -127,6 +127,9 @@ class AppSettings(Settings):
 
     # log.debug("Holds the key only a run's results file has")
     eval_results_key: str = "results"
+
+    # log.debug("Holds the name spans are recorded under")
+    spans_service: str = "eeoc-charge-intake"
 
     # log.debug("Holds where the generated test documents go")
     data_samples: Path = Path("data/generated")

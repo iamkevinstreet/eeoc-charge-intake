@@ -9,6 +9,21 @@
   when every check passes. One whose checks fail is labelled "needs a person" and waits. CI can now
   be called for a given commit, which is how the workflow checks one before it lands.
 
+## v0.6.0, Nov 7, 2026
+
+- **Spans:** each extraction is one `extract` span recording how many fields the record fills and
+  how many the quote check emptied. It holds a `chat` span for the model call (tokens, cost, stop
+  reason), named as the OpenTelemetry GenAI conventions name it, and a `verify` span for the check,
+  which names the fields it emptied and which Langfuse shows as a guardrail. Each evaluated document
+  runs in its own `eval` span with its scores, never the values read or expected, and a run's
+  documents share one session. With `LANGFUSE_PUBLIC_KEY` and `LANGFUSE_SECRET_KEY` in
+  `config/.env` the spans go to Langfuse; unset, they stay off. The live workflow sends them when
+  those two repository secrets are set and keeps each run's spans beside its results. Four tests
+  check the tree, the fields the check names, an evaluation's spans and a kept run's file.
+- **The workbench:** utils v0.6.0 (spans), pinned at its new commit. The new settings, `[spans]`
+  and `[langfuse]`, are in `config/config.toml`.
+- 64 backend tests. The health check reports 0.6.0.
+
 ## v0.5.2, Nov 5, 2026
 
 - **Dependencies:** the backend's lockfile moves to dash 4.5.0, python-multipart 0.0.33 and
