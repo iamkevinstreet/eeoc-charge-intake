@@ -1,0 +1,200 @@
+{
+ "case_id": "charge-003",
+ "tags": [
+  "clean"
+ ],
+ "expected": {
+  "charge_number": "410-2026-10003",
+  "charging_party": "Avery Goldsmith",
+  "respondent": "Summit Consulting Corp.",
+  "eeoc_office": "Phoenix District Office",
+  "bases": [
+   "Religion"
+  ],
+  "issues": [
+   "Reasonable Accommodation"
+  ],
+  "earliest_date": "2025-06-12",
+  "latest_date": "2025-10-08",
+  "continuing_action": false,
+  "notice_date": "2025-12-18"
+ },
+ "model": "claude-sonnet-5-5",
+ "cost_usd": 0.011988,
+ "latency_ms": 4084,
+ "record": {
+  "charge_number": {
+   "value": "410-2026-10003",
+   "page": 1,
+   "span": "Charge No. 410-2026-10003",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "charging_party": {
+   "value": "Avery Goldsmith",
+   "page": 1,
+   "span": "Charging Party: Avery Goldsmith",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "respondent": {
+   "value": "Summit Consulting Corp.",
+   "page": 1,
+   "span": "Respondent: Summit Consulting Corp.",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "eeoc_office": {
+   "value": "Phoenix District Office",
+   "page": 1,
+   "span": "EEOC Office: Phoenix District Office",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "bases": {
+   "value": [
+    "Religion"
+   ],
+   "page": 1,
+   "span": "DISCRIMINATION BASED ON: Religion",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "issues": {
+   "value": [
+    "Reasonable Accommodation"
+   ],
+   "page": 1,
+   "span": "I requested a reasonable accommodation and my request was denied without discussion.",
+   "confidence": 0.93,
+   "reason": null
+  },
+  "earliest_date": {
+   "value": "2025-06-12",
+   "page": 1,
+   "span": "Earliest 06/12/2025",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "latest_date": {
+   "value": "2025-10-08",
+   "page": 1,
+   "span": "Latest 10/08/2025",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "continuing_action": {
+   "value": false,
+   "page": null,
+   "span": null,
+   "confidence": 0.9,
+   "reason": "The form does not mark the continuing action box."
+  },
+  "notice_date": {
+   "value": "2025-12-18",
+   "page": 1,
+   "span": "Date of Notice: 12/18/2025",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "summary": {
+   "value": "Avery Goldsmith, employed by Summit Consulting Corp., alleges religious discrimination. The charging party states that a request for reasonable accommodation was denied without discussion. The conduct is described as occurring from June 12, 2025 through October 8, 2025.",
+   "page": null,
+   "span": null,
+   "confidence": 0.9,
+   "reason": null
+  }
+ },
+ "raw": {
+  "charge_number": {
+   "value": "410-2026-10003",
+   "page": 1,
+   "span": "Charge No. 410-2026-10003",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "charging_party": {
+   "value": "Avery Goldsmith",
+   "page": 1,
+   "span": "Charging Party: Avery Goldsmith",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "respondent": {
+   "value": "Summit Consulting Corp.",
+   "page": 1,
+   "span": "Respondent: Summit Consulting Corp.",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "eeoc_office": {
+   "value": "Phoenix District Office",
+   "page": 1,
+   "span": "EEOC Office: Phoenix District Office",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "bases": {
+   "value": [
+    "Religion"
+   ],
+   "page": 1,
+   "span": "DISCRIMINATION BASED ON: Religion",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "issues": {
+   "value": [
+    "Reasonable Accommodation"
+   ],
+   "page": 1,
+   "span": "I requested a reasonable accommodation and my request was denied without discussion.",
+   "confidence": 0.93,
+   "reason": null
+  },
+  "earliest_date": {
+   "value": "2025-06-12",
+   "page": 1,
+   "span": "Earliest 06/12/2025",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "latest_date": {
+   "value": "2025-10-08",
+   "page": 1,
+   "span": "Latest 10/08/2025",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "continuing_action": {
+   "value": false,
+   "page": null,
+   "span": null,
+   "confidence": 0.9,
+   "reason": "The form does not mark the continuing action box."
+  },
+  "notice_date": {
+   "value": "2025-12-18",
+   "page": 1,
+   "span": "Date of Notice: 12/18/2025",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "summary": {
+   "value": "Avery Goldsmith, employed by Summit Consulting Corp., alleges religious discrimination. The charging party states that a request for reasonable accommodation was denied without discussion. The conduct is described as occurring from June 12, 2025 through October 8, 2025.",
+   "page": null,
+   "span": null,
+   "confidence": 0.9,
+   "reason": null
+  }
+ },
+ "removed": [],
+ "pages": {
+  "charge": [
+   "EEOC FORM 5 (11/09)\nCHARGE OF DISCRIMINATION\nCharge No. 410-2026-10003\nEEOC Office: Phoenix District Office\nCharging Party: Avery Goldsmith\nCity/State: Denver, CO\nRespondent: Summit Consulting Corp.\nDISCRIMINATION BASED ON: Religion\nDATE(S) DISCRIMINATION TOOK PLACE: Earliest 06/12/2025 Latest 10/08/2025\nTHE PARTICULARS ARE:\n1. I was employed by Summit Consulting Corp beginning before June 12, 2025. The conduct\ndescribed below began on or about June 12, 2025 and continued through October 08, 2025.\n2. I requested a reasonable accommodation and my request was denied without discussion.\n3. I believe I have been discriminated against because of my religion, in violation of\napplicable federal law.\n"
+  ],
+  "notice": [
+   "U.S. EQUAL EMPLOYMENT OPPORTUNITY COMMISSION\nPhoenix District Office\nNOTICE OF CHARGE OF DISCRIMINATION\nDate of Notice: 12/18/2025\nTo: Summit Consulting Corp.\nRe: Charge No. 410-2026-10003\nThis is notice that a charge of employment discrimination has been filed against your\norganization. No action is required on your part at this time. A position statement may be\nrequested.\n"
+  ]
+ }
+}

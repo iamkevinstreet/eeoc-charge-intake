@@ -1,0 +1,2795 @@
+{
+  "name": "live-claude-sonnet-5-5",
+  "model": "claude-sonnet-5-5",
+  "provider": "anthropic",
+  "started_at": "2026-10-17T01:51:21+00:00",
+  "finished_at": "2026-10-17T01:54:13+00:00",
+  "prices_as_of": "2026-10-15",
+  "cases": 40,
+  "failures": 0,
+  "summary": {
+    "empty_precision": 0.3125,
+    "empty_recall": 1.0,
+    "f_bases": 1.0,
+    "f_charge_number": 1.0,
+    "f_charging_party": 1.0,
+    "f_continuing_action": 1.0,
+    "f_earliest_date": 1.0,
+    "f_eeoc_office": 1.0,
+    "f_issues": 0.3,
+    "f_latest_date": 1.0,
+    "f_notice_date": 1.0,
+    "f_respondent": 1.0,
+    "false_abstentions": 0.7,
+    "field_accuracy": 0.93,
+    "guesses": 0.0,
+    "model_latency_ms": 4288.9,
+    "raw_filled_fields": 9.25,
+    "unsupported_rate": 0.0,
+    "unsupported_removed": 0.0,
+    "latency_p50_ms": 4253.0,
+    "latency_p95_ms": 4828.0,
+    "cost_total_usd": 0.4768,
+    "cost_per_case_usd": 0.011921,
+    "failure_rate": 0.0
+  },
+  "results": [
+    {
+      "case_id": "charge-000",
+      "tags": [
+        "clean"
+      ],
+      "ok": true,
+      "scores": {
+        "field_accuracy": 1.0,
+        "raw_filled_fields": 10,
+        "unsupported_removed": 0,
+        "unsupported_rate": 0.0,
+        "false_abstentions": 0,
+        "guesses": 0,
+        "empty_precision": 1.0,
+        "empty_recall": 1.0,
+        "model_latency_ms": 4168,
+        "f_charge_number": 1,
+        "f_charging_party": 1,
+        "f_respondent": 1,
+        "f_eeoc_office": 1,
+        "f_bases": 1,
+        "f_issues": 1,
+        "f_earliest_date": 1,
+        "f_latest_date": 1,
+        "f_continuing_action": 1,
+        "f_notice_date": 1,
+        "values": {
+          "charge_number": "410-2026-10000",
+          "charging_party": "Reese Underwood",
+          "respondent": "Northgate Industries Corp.",
+          "eeoc_office": "Atlanta District Office",
+          "bases": [
+            "Color",
+            "Sex"
+          ],
+          "issues": [
+            "discipline",
+            "reasonable accommodation"
+          ],
+          "earliest_date": "2025-12-25",
+          "latest_date": "2026-07-09",
+          "continuing_action": false,
+          "notice_date": "2026-09-23",
+          "summary": "Reese Underwood alleges that Northgate Industries Corp. subjected them to discipline and reasonable accommodation issues because of color and sex. The conduct is alleged to have begun on or about December 25, 2025 and continued through July 9, 2026."
+        },
+        "gold": {
+          "charge_number": "410-2026-10000",
+          "charging_party": "Reese Underwood",
+          "respondent": "Northgate Industries Corp.",
+          "eeoc_office": "Atlanta District Office",
+          "bases": [
+            "Color",
+            "Sex"
+          ],
+          "issues": [
+            "Discipline",
+            "Reasonable Accommodation"
+          ],
+          "earliest_date": "2025-12-25",
+          "latest_date": "2026-07-09",
+          "continuing_action": false,
+          "notice_date": "2026-09-23"
+        },
+        "removed": []
+      },
+      "output": null,
+      "error": null,
+      "latency_ms": 4172,
+      "cost_usd": 0.011346,
+      "calls": 1
+    },
+    {
+      "case_id": "charge-001",
+      "tags": [
+        "clean"
+      ],
+      "ok": true,
+      "scores": {
+        "field_accuracy": 0.9,
+        "raw_filled_fields": 9,
+        "unsupported_removed": 0,
+        "unsupported_rate": 0.0,
+        "false_abstentions": 1,
+        "guesses": 0,
+        "empty_precision": 0.0,
+        "empty_recall": 1.0,
+        "model_latency_ms": 3938,
+        "f_charge_number": 1,
+        "f_charging_party": 1,
+        "f_respondent": 1,
+        "f_eeoc_office": 1,
+        "f_bases": 1,
+        "f_issues": 0,
+        "f_earliest_date": 1,
+        "f_latest_date": 1,
+        "f_continuing_action": 1,
+        "f_notice_date": 1,
+        "values": {
+          "charge_number": "410-2026-10001",
+          "charging_party": "Amara Montgomery",
+          "respondent": "Keystone Analytics",
+          "eeoc_office": "Chicago District Office",
+          "bases": [
+            "Sex"
+          ],
+          "issues": null,
+          "earliest_date": "2025-02-15",
+          "latest_date": "2025-02-17",
+          "continuing_action": false,
+          "notice_date": "2025-05-10",
+          "summary": "Amara Montgomery alleges that Keystone Analytics subjected her to discriminatory terms and conditions because of her sex. She states the conduct began on or about February 15, 2025 and continued through February 17, 2025."
+        },
+        "gold": {
+          "charge_number": "410-2026-10001",
+          "charging_party": "Amara Montgomery",
+          "respondent": "Keystone Analytics",
+          "eeoc_office": "Chicago District Office",
+          "bases": [
+            "Sex"
+          ],
+          "issues": [
+            "Terms/Conditions"
+          ],
+          "earliest_date": "2025-02-15",
+          "latest_date": "2025-02-17",
+          "continuing_action": false,
+          "notice_date": "2025-05-10"
+        },
+        "removed": []
+      },
+      "output": null,
+      "error": null,
+      "latency_ms": 3942,
+      "cost_usd": 0.011072,
+      "calls": 1
+    },
+    {
+      "case_id": "charge-002",
+      "tags": [
+        "clean"
+      ],
+      "ok": true,
+      "scores": {
+        "field_accuracy": 0.9,
+        "raw_filled_fields": 9,
+        "unsupported_removed": 0,
+        "unsupported_rate": 0.0,
+        "false_abstentions": 1,
+        "guesses": 0,
+        "empty_precision": 0.0,
+        "empty_recall": 1.0,
+        "model_latency_ms": 3762,
+        "f_charge_number": 1,
+        "f_charging_party": 1,
+        "f_respondent": 1,
+        "f_eeoc_office": 1,
+        "f_bases": 1,
+        "f_issues": 0,
+        "f_earliest_date": 1,
+        "f_latest_date": 1,
+        "f_continuing_action": 1,
+        "f_notice_date": 1,
+        "values": {
+          "charge_number": "410-2026-10002",
+          "charging_party": "Avery Foster",
+          "respondent": "Cedar Plumbing Inc.",
+          "eeoc_office": "Dallas District Office",
+          "bases": [
+            "Retaliation"
+          ],
+          "issues": null,
+          "earliest_date": "2025-07-24",
+          "latest_date": "2025-12-02",
+          "continuing_action": false,
+          "notice_date": "2026-02-03",
+          "summary": "Avery Foster alleges that Cedar Plumbing Inc. subjected them to reasonable accommodation and terms/conditions issues because of retaliation. The conduct began on or about July 24, 2025 and continued through December 02, 2025."
+        },
+        "gold": {
+          "charge_number": "410-2026-10002",
+          "charging_party": "Avery Foster",
+          "respondent": "Cedar Plumbing Inc.",
+          "eeoc_office": "Dallas District Office",
+          "bases": [
+            "Retaliation"
+          ],
+          "issues": [
+            "Reasonable Accommodation",
+            "Terms/Conditions"
+          ],
+          "earliest_date": "2025-07-24",
+          "latest_date": "2025-12-02",
+          "continuing_action": false,
+          "notice_date": "2026-02-03"
+        },
+        "removed": []
+      },
+      "output": null,
+      "error": null,
+      "latency_ms": 3766,
+      "cost_usd": 0.01138,
+      "calls": 1
+    },
+    {
+      "case_id": "charge-003",
+      "tags": [
+        "clean"
+      ],
+      "ok": true,
+      "scores": {
+        "field_accuracy": 0.9,
+        "raw_filled_fields": 9,
+        "unsupported_removed": 0,
+        "unsupported_rate": 0.0,
+        "false_abstentions": 1,
+        "guesses": 0,
+        "empty_precision": 0.0,
+        "empty_recall": 1.0,
+        "model_latency_ms": 4155,
+        "f_charge_number": 1,
+        "f_charging_party": 1,
+        "f_respondent": 1,
+        "f_eeoc_office": 1,
+        "f_bases": 1,
+        "f_issues": 0,
+        "f_earliest_date": 1,
+        "f_latest_date": 1,
+        "f_continuing_action": 1,
+        "f_notice_date": 1,
+        "values": {
+          "charge_number": "410-2026-10003",
+          "charging_party": "Avery Goldsmith",
+          "respondent": "Summit Consulting Corp.",
+          "eeoc_office": "Atlanta District Office",
+          "bases": [
+            "Age",
+            "Disability",
+            "Religion"
+          ],
+          "issues": null,
+          "earliest_date": "2025-12-23",
+          "latest_date": "2026-05-19",
+          "continuing_action": false,
+          "notice_date": "2026-07-25",
+          "summary": "Avery Goldsmith alleges that Summit Consulting Corp. subjected them to reasonable accommodation treatment because of age, disability and religion. The conduct is said to have begun on or about December 23, 2025 and continued through May 19, 2026."
+        },
+        "gold": {
+          "charge_number": "410-2026-10003",
+          "charging_party": "Avery Goldsmith",
+          "respondent": "Summit Consulting Corp.",
+          "eeoc_office": "Atlanta District Office",
+          "bases": [
+            "Age",
+            "Disability",
+            "Religion"
+          ],
+          "issues": [
+            "Reasonable Accommodation"
+          ],
+          "earliest_date": "2025-12-23",
+          "latest_date": "2026-05-19",
+          "continuing_action": false,
+          "notice_date": "2026-07-25"
+        },
+        "removed": []
+      },
+      "output": null,
+      "error": null,
+      "latency_ms": 4158,
+      "cost_usd": 0.011498,
+      "calls": 1
+    },
+    {
+      "case_id": "charge-004",
+      "tags": [
+        "missing_number"
+      ],
+      "ok": true,
+      "scores": {
+        "field_accuracy": 0.9,
+        "raw_filled_fields": 8,
+        "unsupported_removed": 0,
+        "unsupported_rate": 0.0,
+        "false_abstentions": 1,
+        "guesses": 0,
+        "empty_precision": 0.5,
+        "empty_recall": 1.0,
+        "model_latency_ms": 4095,
+        "f_charge_number": 1,
+        "f_charging_party": 1,
+        "f_respondent": 1,
+        "f_eeoc_office": 1,
+        "f_bases": 1,
+        "f_issues": 0,
+        "f_earliest_date": 1,
+        "f_latest_date": 1,
+        "f_continuing_action": 1,
+        "f_notice_date": 1,
+        "values": {
+          "charge_number": null,
+          "charging_party": "Cameron Whitaker",
+          "respondent": "Ironwood Staffing Inc.",
+          "eeoc_office": "Dallas District Office",
+          "bases": [
+            "Race",
+            "Retaliation"
+          ],
+          "issues": null,
+          "earliest_date": "2025-08-28",
+          "latest_date": "2025-09-26",
+          "continuing_action": false,
+          "notice_date": "2025-12-17",
+          "summary": "Cameron Whitaker alleges that Ironwood Staffing Inc. subjected them to discipline and reasonable accommodation issues because of race and retaliation. The conduct is said to have begun on or about August 28, 2025 and continued through September 26, 2025."
+        },
+        "gold": {
+          "charge_number": null,
+          "charging_party": "Cameron Whitaker",
+          "respondent": "Ironwood Staffing Inc.",
+          "eeoc_office": "Dallas District Office",
+          "bases": [
+            "Race",
+            "Retaliation"
+          ],
+          "issues": [
+            "Discipline",
+            "Reasonable Accommodation"
+          ],
+          "earliest_date": "2025-08-28",
+          "latest_date": "2025-09-26",
+          "continuing_action": false,
+          "notice_date": "2025-12-17"
+        },
+        "removed": []
+      },
+      "output": null,
+      "error": null,
+      "latency_ms": 4098,
+      "cost_usd": 0.011544,
+      "calls": 1
+    },
+    {
+      "case_id": "charge-005",
+      "tags": [
+        "clean"
+      ],
+      "ok": true,
+      "scores": {
+        "field_accuracy": 0.9,
+        "raw_filled_fields": 9,
+        "unsupported_removed": 0,
+        "unsupported_rate": 0.0,
+        "false_abstentions": 1,
+        "guesses": 0,
+        "empty_precision": 0.0,
+        "empty_recall": 1.0,
+        "model_latency_ms": 4312,
+        "f_charge_number": 1,
+        "f_charging_party": 1,
+        "f_respondent": 1,
+        "f_eeoc_office": 1,
+        "f_bases": 1,
+        "f_issues": 0,
+        "f_earliest_date": 1,
+        "f_latest_date": 1,
+        "f_continuing_action": 1,
+        "f_notice_date": 1,
+        "values": {
+          "charge_number": "410-2026-10005",
+          "charging_party": "Kendall Foster",
+          "respondent": "Oakridge Plumbing Co.",
+          "eeoc_office": "Phoenix District Office",
+          "bases": [
+            "Disability",
+            "Religion",
+            "Retaliation"
+          ],
+          "issues": null,
+          "earliest_date": "2025-01-19",
+          "latest_date": "2025-03-17",
+          "continuing_action": false,
+          "notice_date": "2025-04-12",
+          "summary": "Kendall Foster alleges that Oakridge Plumbing Co. subjected them to discipline and reasonable accommodation issues because of disability and religion, and retaliation. The conduct is alleged to have begun on or about January 19, 2025 and continued through March 17, 2025."
+        },
+        "gold": {
+          "charge_number": "410-2026-10005",
+          "charging_party": "Kendall Foster",
+          "respondent": "Oakridge Plumbing Co.",
+          "eeoc_office": "Phoenix District Office",
+          "bases": [
+            "Disability",
+            "Religion",
+            "Retaliation"
+          ],
+          "issues": [
+            "Discipline",
+            "Reasonable Accommodation"
+          ],
+          "earliest_date": "2025-01-19",
+          "latest_date": "2025-03-17",
+          "continuing_action": false,
+          "notice_date": "2025-04-12"
+        },
+        "removed": []
+      },
+      "output": null,
+      "error": null,
+      "latency_ms": 4316,
+      "cost_usd": 0.012194,
+      "calls": 1
+    },
+    {
+      "case_id": "charge-006",
+      "tags": [
+        "clean"
+      ],
+      "ok": true,
+      "scores": {
+        "field_accuracy": 1.0,
+        "raw_filled_fields": 10,
+        "unsupported_removed": 0,
+        "unsupported_rate": 0.0,
+        "false_abstentions": 0,
+        "guesses": 0,
+        "empty_precision": 1.0,
+        "empty_recall": 1.0,
+        "model_latency_ms": 3821,
+        "f_charge_number": 1,
+        "f_charging_party": 1,
+        "f_respondent": 1,
+        "f_eeoc_office": 1,
+        "f_bases": 1,
+        "f_issues": 1,
+        "f_earliest_date": 1,
+        "f_latest_date": 1,
+        "f_continuing_action": 1,
+        "f_notice_date": 1,
+        "values": {
+          "charge_number": "410-2026-10006",
+          "charging_party": "Emerson Pemberton",
+          "respondent": "Granite Logistics LLP",
+          "eeoc_office": "Atlanta District Office",
+          "bases": [
+            "Disability",
+            "Retaliation",
+            "Sex"
+          ],
+          "issues": [
+            "discharge",
+            "harassment"
+          ],
+          "earliest_date": "2025-11-23",
+          "latest_date": "2026-03-19",
+          "continuing_action": false,
+          "notice_date": "2026-06-16",
+          "summary": "Emerson Pemberton alleges that Granite Logistics LLP subjected them to discharge and harassment because of disability, retaliation and sex. The conduct is stated to have begun around November 23, 2025 and continued through March 19, 2026."
+        },
+        "gold": {
+          "charge_number": "410-2026-10006",
+          "charging_party": "Emerson Pemberton",
+          "respondent": "Granite Logistics LLP",
+          "eeoc_office": "Atlanta District Office",
+          "bases": [
+            "Disability",
+            "Retaliation",
+            "Sex"
+          ],
+          "issues": [
+            "Discharge",
+            "Harassment"
+          ],
+          "earliest_date": "2025-11-23",
+          "latest_date": "2026-03-19",
+          "continuing_action": false,
+          "notice_date": "2026-06-16"
+        },
+        "removed": []
+      },
+      "output": null,
+      "error": null,
+      "latency_ms": 3825,
+      "cost_usd": 0.01118,
+      "calls": 1
+    },
+    {
+      "case_id": "charge-007",
+      "tags": [
+        "clean"
+      ],
+      "ok": true,
+      "scores": {
+        "field_accuracy": 1.0,
+        "raw_filled_fields": 10,
+        "unsupported_removed": 0,
+        "unsupported_rate": 0.0,
+        "false_abstentions": 0,
+        "guesses": 0,
+        "empty_precision": 1.0,
+        "empty_recall": 1.0,
+        "model_latency_ms": 4368,
+        "f_charge_number": 1,
+        "f_charging_party": 1,
+        "f_respondent": 1,
+        "f_eeoc_office": 1,
+        "f_bases": 1,
+        "f_issues": 1,
+        "f_earliest_date": 1,
+        "f_latest_date": 1,
+        "f_continuing_action": 1,
+        "f_notice_date": 1,
+        "values": {
+          "charge_number": "410-2026-10007",
+          "charging_party": "Zion Beaumont",
+          "respondent": "Beacon Staffing",
+          "eeoc_office": "Dallas District Office",
+          "bases": [
+            "Age",
+            "National Origin",
+            "Retaliation"
+          ],
+          "issues": [
+            "promotion",
+            "reasonable accommodation"
+          ],
+          "earliest_date": "2025-04-10",
+          "latest_date": "2025-06-17",
+          "continuing_action": true,
+          "notice_date": "2025-07-26",
+          "summary": "Zion Beaumont states they were employed by Beacon Staffing and were subjected to discrimination regarding promotion and reasonable accommodation because of age and national origin, and retaliation. The conduct is alleged to have begun on or about April 10, 2025 and continued through June 17, 2025."
+        },
+        "gold": {
+          "charge_number": "410-2026-10007",
+          "charging_party": "Zion Beaumont",
+          "respondent": "Beacon Staffing",
+          "eeoc_office": "Dallas District Office",
+          "bases": [
+            "Age",
+            "National Origin",
+            "Retaliation"
+          ],
+          "issues": [
+            "Promotion",
+            "Reasonable Accommodation"
+          ],
+          "earliest_date": "2025-04-10",
+          "latest_date": "2025-06-17",
+          "continuing_action": true,
+          "notice_date": "2025-07-26"
+        },
+        "removed": []
+      },
+      "output": null,
+      "error": null,
+      "latency_ms": 4372,
+      "cost_usd": 0.011936,
+      "calls": 1
+    },
+    {
+      "case_id": "charge-008",
+      "tags": [
+        "clean"
+      ],
+      "ok": true,
+      "scores": {
+        "field_accuracy": 1.0,
+        "raw_filled_fields": 10,
+        "unsupported_removed": 0,
+        "unsupported_rate": 0.0,
+        "false_abstentions": 0,
+        "guesses": 0,
+        "empty_precision": 1.0,
+        "empty_recall": 1.0,
+        "model_latency_ms": 4038,
+        "f_charge_number": 1,
+        "f_charging_party": 1,
+        "f_respondent": 1,
+        "f_eeoc_office": 1,
+        "f_bases": 1,
+        "f_issues": 1,
+        "f_earliest_date": 1,
+        "f_latest_date": 1,
+        "f_continuing_action": 1,
+        "f_notice_date": 1,
+        "values": {
+          "charge_number": "410-2026-10008",
+          "charging_party": "Reese Beaumont",
+          "respondent": "Northgate Analytics Group",
+          "eeoc_office": "Phoenix District Office",
+          "bases": [
+            "Age",
+            "Color",
+            "Sex"
+          ],
+          "issues": [
+            "promotion",
+            "reasonable accommodation"
+          ],
+          "earliest_date": "2025-08-17",
+          "latest_date": "2026-03-01",
+          "continuing_action": false,
+          "notice_date": "2026-05-15",
+          "summary": "Reese Beaumont alleges that Northgate Analytics Group subjected them to promotion and reasonable accommodation issues because of age, color and sex. The conduct is said to have begun on or about August 17, 2025 and continued through March 1, 2026."
+        },
+        "gold": {
+          "charge_number": "410-2026-10008",
+          "charging_party": "Reese Beaumont",
+          "respondent": "Northgate Analytics Group",
+          "eeoc_office": "Phoenix District Office",
+          "bases": [
+            "Age",
+            "Color",
+            "Sex"
+          ],
+          "issues": [
+            "Promotion",
+            "Reasonable Accommodation"
+          ],
+          "earliest_date": "2025-08-17",
+          "latest_date": "2026-03-01",
+          "continuing_action": false,
+          "notice_date": "2026-05-15"
+        },
+        "removed": []
+      },
+      "output": null,
+      "error": null,
+      "latency_ms": 4042,
+      "cost_usd": 0.011858,
+      "calls": 1
+    },
+    {
+      "case_id": "charge-009",
+      "tags": [
+        "rotated"
+      ],
+      "ok": true,
+      "scores": {
+        "field_accuracy": 0.9,
+        "raw_filled_fields": 9,
+        "unsupported_removed": 0,
+        "unsupported_rate": 0.0,
+        "false_abstentions": 1,
+        "guesses": 0,
+        "empty_precision": 0.0,
+        "empty_recall": 1.0,
+        "model_latency_ms": 4085,
+        "f_charge_number": 1,
+        "f_charging_party": 1,
+        "f_respondent": 1,
+        "f_eeoc_office": 1,
+        "f_bases": 1,
+        "f_issues": 0,
+        "f_earliest_date": 1,
+        "f_latest_date": 1,
+        "f_continuing_action": 1,
+        "f_notice_date": 1,
+        "values": {
+          "charge_number": "410-2026-10009",
+          "charging_party": "Cameron Abernathy",
+          "respondent": "Pinnacle Analytics LLC",
+          "eeoc_office": "Atlanta District Office",
+          "bases": [
+            "Disability",
+            "National Origin"
+          ],
+          "issues": null,
+          "earliest_date": "2025-12-23",
+          "latest_date": "2026-07-11",
+          "continuing_action": false,
+          "notice_date": "2026-09-02",
+          "summary": "Cameron Abernathy alleges that Pinnacle Analytics LLC subjected them to discrimination related to promotion because of disability and national origin. The alleged conduct began on or about December 23, 2025 and continued through July 11, 2026."
+        },
+        "gold": {
+          "charge_number": "410-2026-10009",
+          "charging_party": "Cameron Abernathy",
+          "respondent": "Pinnacle Analytics LLC",
+          "eeoc_office": "Atlanta District Office",
+          "bases": [
+            "Disability",
+            "National Origin"
+          ],
+          "issues": [
+            "Promotion"
+          ],
+          "earliest_date": "2025-12-23",
+          "latest_date": "2026-07-11",
+          "continuing_action": false,
+          "notice_date": "2026-09-02"
+        },
+        "removed": []
+      },
+      "output": null,
+      "error": null,
+      "latency_ms": 4089,
+      "cost_usd": 0.011882,
+      "calls": 1
+    },
+    {
+      "case_id": "charge-010",
+      "tags": [
+        "clean"
+      ],
+      "ok": true,
+      "scores": {
+        "field_accuracy": 1.0,
+        "raw_filled_fields": 10,
+        "unsupported_removed": 0,
+        "unsupported_rate": 0.0,
+        "false_abstentions": 0,
+        "guesses": 0,
+        "empty_precision": 1.0,
+        "empty_recall": 1.0,
+        "model_latency_ms": 4713,
+        "f_charge_number": 1,
+        "f_charging_party": 1,
+        "f_respondent": 1,
+        "f_eeoc_office": 1,
+        "f_bases": 1,
+        "f_issues": 1,
+        "f_earliest_date": 1,
+        "f_latest_date": 1,
+        "f_continuing_action": 1,
+        "f_notice_date": 1,
+        "values": {
+          "charge_number": "410-2026-10010",
+          "charging_party": "Skyler Iverson",
+          "respondent": "Apex Industries Group",
+          "eeoc_office": "Phoenix District Office",
+          "bases": [
+            "Retaliation"
+          ],
+          "issues": [
+            "discharge",
+            "terms/conditions"
+          ],
+          "earliest_date": "2025-08-12",
+          "latest_date": "2025-09-05",
+          "continuing_action": true,
+          "notice_date": "2025-11-16",
+          "summary": "Skyler Iverson states they were employed by Apex Industries Group and believe they were subjected to discharge and different terms/conditions because of retaliation. The conduct is alleged to have begun on or about August 12, 2025 and continued through September 5, 2025."
+        },
+        "gold": {
+          "charge_number": "410-2026-10010",
+          "charging_party": "Skyler Iverson",
+          "respondent": "Apex Industries Group",
+          "eeoc_office": "Phoenix District Office",
+          "bases": [
+            "Retaliation"
+          ],
+          "issues": [
+            "Discharge",
+            "Terms/Conditions"
+          ],
+          "earliest_date": "2025-08-12",
+          "latest_date": "2025-09-05",
+          "continuing_action": true,
+          "notice_date": "2025-11-16"
+        },
+        "removed": []
+      },
+      "output": null,
+      "error": null,
+      "latency_ms": 4717,
+      "cost_usd": 0.013096,
+      "calls": 1
+    },
+    {
+      "case_id": "charge-011",
+      "tags": [
+        "clean"
+      ],
+      "ok": true,
+      "scores": {
+        "field_accuracy": 0.9,
+        "raw_filled_fields": 9,
+        "unsupported_removed": 0,
+        "unsupported_rate": 0.0,
+        "false_abstentions": 1,
+        "guesses": 0,
+        "empty_precision": 0.0,
+        "empty_recall": 1.0,
+        "model_latency_ms": 4013,
+        "f_charge_number": 1,
+        "f_charging_party": 1,
+        "f_respondent": 1,
+        "f_eeoc_office": 1,
+        "f_bases": 1,
+        "f_issues": 0,
+        "f_earliest_date": 1,
+        "f_latest_date": 1,
+        "f_continuing_action": 1,
+        "f_notice_date": 1,
+        "values": {
+          "charge_number": "410-2026-10011",
+          "charging_party": "Emerson Fairbanks",
+          "respondent": "Evergreen Industries",
+          "eeoc_office": "Chicago District Office",
+          "bases": [
+            "Color",
+            "Race"
+          ],
+          "issues": null,
+          "earliest_date": "2025-10-18",
+          "latest_date": "2025-11-08",
+          "continuing_action": false,
+          "notice_date": "2025-12-23",
+          "summary": "Emerson Fairbanks alleges that Evergreen Industries subjected them to discrimination in connection with promotion because of their color and race. The conduct is said to have begun on or about October 18, 2025 and continued through November 08, 2025."
+        },
+        "gold": {
+          "charge_number": "410-2026-10011",
+          "charging_party": "Emerson Fairbanks",
+          "respondent": "Evergreen Industries",
+          "eeoc_office": "Chicago District Office",
+          "bases": [
+            "Color",
+            "Race"
+          ],
+          "issues": [
+            "Promotion"
+          ],
+          "earliest_date": "2025-10-18",
+          "latest_date": "2025-11-08",
+          "continuing_action": false,
+          "notice_date": "2025-12-23"
+        },
+        "removed": []
+      },
+      "output": null,
+      "error": null,
+      "latency_ms": 4017,
+      "cost_usd": 0.011222,
+      "calls": 1
+    },
+    {
+      "case_id": "charge-012",
+      "tags": [
+        "clean"
+      ],
+      "ok": true,
+      "scores": {
+        "field_accuracy": 0.9,
+        "raw_filled_fields": 9,
+        "unsupported_removed": 0,
+        "unsupported_rate": 0.0,
+        "false_abstentions": 1,
+        "guesses": 0,
+        "empty_precision": 0.0,
+        "empty_recall": 1.0,
+        "model_latency_ms": 4709,
+        "f_charge_number": 1,
+        "f_charging_party": 1,
+        "f_respondent": 1,
+        "f_eeoc_office": 1,
+        "f_bases": 1,
+        "f_issues": 0,
+        "f_earliest_date": 1,
+        "f_latest_date": 1,
+        "f_continuing_action": 1,
+        "f_notice_date": 1,
+        "values": {
+          "charge_number": "410-2026-10012",
+          "charging_party": "Nico Lancaster",
+          "respondent": "Falcon Staffing Co.",
+          "eeoc_office": "Chicago District Office",
+          "bases": [
+            "Race"
+          ],
+          "issues": null,
+          "earliest_date": "2025-03-01",
+          "latest_date": "2025-05-20",
+          "continuing_action": false,
+          "notice_date": "2025-08-10",
+          "summary": "Nico Lancaster alleges Falcon Staffing Co. subjected them to reasonable accommodation and terms/conditions issues because of their race. The conduct allegedly began on or about March 1, 2025 and continued through May 20, 2025."
+        },
+        "gold": {
+          "charge_number": "410-2026-10012",
+          "charging_party": "Nico Lancaster",
+          "respondent": "Falcon Staffing Co.",
+          "eeoc_office": "Chicago District Office",
+          "bases": [
+            "Race"
+          ],
+          "issues": [
+            "Reasonable Accommodation",
+            "Terms/Conditions"
+          ],
+          "earliest_date": "2025-03-01",
+          "latest_date": "2025-05-20",
+          "continuing_action": false,
+          "notice_date": "2025-08-10"
+        },
+        "removed": []
+      },
+      "output": null,
+      "error": null,
+      "latency_ms": 4713,
+      "cost_usd": 0.013172,
+      "calls": 1
+    },
+    {
+      "case_id": "charge-013",
+      "tags": [
+        "clean"
+      ],
+      "ok": true,
+      "scores": {
+        "field_accuracy": 0.9,
+        "raw_filled_fields": 9,
+        "unsupported_removed": 0,
+        "unsupported_rate": 0.0,
+        "false_abstentions": 1,
+        "guesses": 0,
+        "empty_precision": 0.0,
+        "empty_recall": 1.0,
+        "model_latency_ms": 4824,
+        "f_charge_number": 1,
+        "f_charging_party": 1,
+        "f_respondent": 1,
+        "f_eeoc_office": 1,
+        "f_bases": 1,
+        "f_issues": 0,
+        "f_earliest_date": 1,
+        "f_latest_date": 1,
+        "f_continuing_action": 1,
+        "f_notice_date": 1,
+        "values": {
+          "charge_number": "410-2026-10013",
+          "charging_party": "Idris Holloway",
+          "respondent": "Timberline Analytics Group",
+          "eeoc_office": "Chicago District Office",
+          "bases": [
+            "Color",
+            "Disability",
+            "Religion"
+          ],
+          "issues": null,
+          "earliest_date": "2025-12-17",
+          "latest_date": "2026-03-01",
+          "continuing_action": true,
+          "notice_date": "2026-04-10",
+          "summary": "Idris Holloway alleges that Timberline Analytics Group subjected them to discipline because of their color, disability and religion. The conduct is alleged to have begun on or about December 17, 2025 and continued through March 1, 2026."
+        },
+        "gold": {
+          "charge_number": "410-2026-10013",
+          "charging_party": "Idris Holloway",
+          "respondent": "Timberline Analytics Group",
+          "eeoc_office": "Chicago District Office",
+          "bases": [
+            "Color",
+            "Disability",
+            "Religion"
+          ],
+          "issues": [
+            "Discipline"
+          ],
+          "earliest_date": "2025-12-17",
+          "latest_date": "2026-03-01",
+          "continuing_action": true,
+          "notice_date": "2026-04-10"
+        },
+        "removed": []
+      },
+      "output": null,
+      "error": null,
+      "latency_ms": 4828,
+      "cost_usd": 0.012414,
+      "calls": 1
+    },
+    {
+      "case_id": "charge-014",
+      "tags": [
+        "long"
+      ],
+      "ok": true,
+      "scores": {
+        "field_accuracy": 0.9,
+        "raw_filled_fields": 9,
+        "unsupported_removed": 0,
+        "unsupported_rate": 0.0,
+        "false_abstentions": 1,
+        "guesses": 0,
+        "empty_precision": 0.0,
+        "empty_recall": 1.0,
+        "model_latency_ms": 4406,
+        "f_charge_number": 1,
+        "f_charging_party": 1,
+        "f_respondent": 1,
+        "f_eeoc_office": 1,
+        "f_bases": 1,
+        "f_issues": 0,
+        "f_earliest_date": 1,
+        "f_latest_date": 1,
+        "f_continuing_action": 1,
+        "f_notice_date": 1,
+        "values": {
+          "charge_number": "410-2026-10014",
+          "charging_party": "Sawyer Sorensen",
+          "respondent": "Falcon Logistics LLC",
+          "eeoc_office": "Chicago District Office",
+          "bases": [
+            "Color",
+            "Disability",
+            "Religion"
+          ],
+          "issues": null,
+          "earliest_date": "2025-04-13",
+          "latest_date": "2025-04-16",
+          "continuing_action": false,
+          "notice_date": "2025-06-24",
+          "summary": "The charging party alleges that Falcon Logistics LLC subjected them to discipline and harassment because of their color, disability and religion. The conduct is alleged to have begun on or about April 13, 2025 and continued through April 16, 2025."
+        },
+        "gold": {
+          "charge_number": "410-2026-10014",
+          "charging_party": "Sawyer Sorensen",
+          "respondent": "Falcon Logistics LLC",
+          "eeoc_office": "Chicago District Office",
+          "bases": [
+            "Color",
+            "Disability",
+            "Religion"
+          ],
+          "issues": [
+            "Discipline",
+            "Harassment"
+          ],
+          "earliest_date": "2025-04-13",
+          "latest_date": "2025-04-16",
+          "continuing_action": false,
+          "notice_date": "2025-06-24"
+        },
+        "removed": []
+      },
+      "output": null,
+      "error": null,
+      "latency_ms": 4412,
+      "cost_usd": 0.013612,
+      "calls": 1
+    },
+    {
+      "case_id": "charge-015",
+      "tags": [
+        "clean"
+      ],
+      "ok": true,
+      "scores": {
+        "field_accuracy": 1.0,
+        "raw_filled_fields": 10,
+        "unsupported_removed": 0,
+        "unsupported_rate": 0.0,
+        "false_abstentions": 0,
+        "guesses": 0,
+        "empty_precision": 1.0,
+        "empty_recall": 1.0,
+        "model_latency_ms": 4461,
+        "f_charge_number": 1,
+        "f_charging_party": 1,
+        "f_respondent": 1,
+        "f_eeoc_office": 1,
+        "f_bases": 1,
+        "f_issues": 1,
+        "f_earliest_date": 1,
+        "f_latest_date": 1,
+        "f_continuing_action": 1,
+        "f_notice_date": 1,
+        "values": {
+          "charge_number": "410-2026-10015",
+          "charging_party": "Idris Delacroix",
+          "respondent": "Westbrook Analytics LLP",
+          "eeoc_office": "Atlanta District Office",
+          "bases": [
+            "National Origin"
+          ],
+          "issues": [
+            "discharge",
+            "reasonable accommodation"
+          ],
+          "earliest_date": "2025-09-16",
+          "latest_date": "2025-12-08",
+          "continuing_action": false,
+          "notice_date": "2026-02-23",
+          "summary": "Idris Delacroix alleges that Westbrook Analytics LLP subjected him to discharge and reasonable accommodation issues because of his national origin. The conduct is stated to have begun on or about September 16, 2025 and continued through December 8, 2025."
+        },
+        "gold": {
+          "charge_number": "410-2026-10015",
+          "charging_party": "Idris Delacroix",
+          "respondent": "Westbrook Analytics LLP",
+          "eeoc_office": "Atlanta District Office",
+          "bases": [
+            "National Origin"
+          ],
+          "issues": [
+            "Discharge",
+            "Reasonable Accommodation"
+          ],
+          "earliest_date": "2025-09-16",
+          "latest_date": "2025-12-08",
+          "continuing_action": false,
+          "notice_date": "2026-02-23"
+        },
+        "removed": []
+      },
+      "output": null,
+      "error": null,
+      "latency_ms": 4465,
+      "cost_usd": 0.012358,
+      "calls": 1
+    },
+    {
+      "case_id": "charge-016",
+      "tags": [
+        "clean"
+      ],
+      "ok": true,
+      "scores": {
+        "field_accuracy": 0.9,
+        "raw_filled_fields": 9,
+        "unsupported_removed": 0,
+        "unsupported_rate": 0.0,
+        "false_abstentions": 1,
+        "guesses": 0,
+        "empty_precision": 0.0,
+        "empty_recall": 1.0,
+        "model_latency_ms": 4437,
+        "f_charge_number": 1,
+        "f_charging_party": 1,
+        "f_respondent": 1,
+        "f_eeoc_office": 1,
+        "f_bases": 1,
+        "f_issues": 0,
+        "f_earliest_date": 1,
+        "f_latest_date": 1,
+        "f_continuing_action": 1,
+        "f_notice_date": 1,
+        "values": {
+          "charge_number": "410-2026-10016",
+          "charging_party": "Cameron Goldsmith",
+          "respondent": "Lakeside Analytics Group",
+          "eeoc_office": "Dallas District Office",
+          "bases": [
+            "Color"
+          ],
+          "issues": null,
+          "earliest_date": "2025-03-05",
+          "latest_date": "2025-08-03",
+          "continuing_action": false,
+          "notice_date": "2025-10-17",
+          "summary": "Cameron Goldsmith alleges that Lakeside Analytics Group subjected them to discipline and reasonable accommodation matters because of their color. The conduct is alleged to have begun on or about March 5, 2025 and continued through August 3, 2025."
+        },
+        "gold": {
+          "charge_number": "410-2026-10016",
+          "charging_party": "Cameron Goldsmith",
+          "respondent": "Lakeside Analytics Group",
+          "eeoc_office": "Dallas District Office",
+          "bases": [
+            "Color"
+          ],
+          "issues": [
+            "Discipline",
+            "Reasonable Accommodation"
+          ],
+          "earliest_date": "2025-03-05",
+          "latest_date": "2025-08-03",
+          "continuing_action": false,
+          "notice_date": "2025-10-17"
+        },
+        "removed": []
+      },
+      "output": null,
+      "error": null,
+      "latency_ms": 4441,
+      "cost_usd": 0.012448,
+      "calls": 1
+    },
+    {
+      "case_id": "charge-017",
+      "tags": [
+        "clean"
+      ],
+      "ok": true,
+      "scores": {
+        "field_accuracy": 0.9,
+        "raw_filled_fields": 9,
+        "unsupported_removed": 0,
+        "unsupported_rate": 0.0,
+        "false_abstentions": 1,
+        "guesses": 0,
+        "empty_precision": 0.0,
+        "empty_recall": 1.0,
+        "model_latency_ms": 4273,
+        "f_charge_number": 1,
+        "f_charging_party": 1,
+        "f_respondent": 1,
+        "f_eeoc_office": 1,
+        "f_bases": 1,
+        "f_issues": 0,
+        "f_earliest_date": 1,
+        "f_latest_date": 1,
+        "f_continuing_action": 1,
+        "f_notice_date": 1,
+        "values": {
+          "charge_number": "410-2026-10017",
+          "charging_party": "Omar Castillo",
+          "respondent": "Granite Consulting",
+          "eeoc_office": "Dallas District Office",
+          "bases": [
+            "Disability",
+            "National Origin"
+          ],
+          "issues": null,
+          "earliest_date": "2025-07-02",
+          "latest_date": "2025-08-21",
+          "continuing_action": false,
+          "notice_date": "2025-10-02",
+          "summary": "Omar Castillo alleges he was employed by Granite Consulting and subjected to discipline because of his disability and national origin. The conduct allegedly began on or about July 2, 2025 and continued through August 21, 2025."
+        },
+        "gold": {
+          "charge_number": "410-2026-10017",
+          "charging_party": "Omar Castillo",
+          "respondent": "Granite Consulting",
+          "eeoc_office": "Dallas District Office",
+          "bases": [
+            "Disability",
+            "National Origin"
+          ],
+          "issues": [
+            "Discipline"
+          ],
+          "earliest_date": "2025-07-02",
+          "latest_date": "2025-08-21",
+          "continuing_action": false,
+          "notice_date": "2025-10-02"
+        },
+        "removed": []
+      },
+      "output": null,
+      "error": null,
+      "latency_ms": 4277,
+      "cost_usd": 0.012066,
+      "calls": 1
+    },
+    {
+      "case_id": "charge-018",
+      "tags": [
+        "clean"
+      ],
+      "ok": true,
+      "scores": {
+        "field_accuracy": 0.9,
+        "raw_filled_fields": 9,
+        "unsupported_removed": 0,
+        "unsupported_rate": 0.0,
+        "false_abstentions": 1,
+        "guesses": 0,
+        "empty_precision": 0.0,
+        "empty_recall": 1.0,
+        "model_latency_ms": 4578,
+        "f_charge_number": 1,
+        "f_charging_party": 1,
+        "f_respondent": 1,
+        "f_eeoc_office": 1,
+        "f_bases": 1,
+        "f_issues": 0,
+        "f_earliest_date": 1,
+        "f_latest_date": 1,
+        "f_continuing_action": 1,
+        "f_notice_date": 1,
+        "values": {
+          "charge_number": "410-2026-10018",
+          "charging_party": "Taylor Calloway",
+          "respondent": "Timberline Electric",
+          "eeoc_office": "Atlanta District Office",
+          "bases": [
+            "Disability",
+            "National Origin",
+            "Race"
+          ],
+          "issues": null,
+          "earliest_date": "2025-12-22",
+          "latest_date": "2025-12-27",
+          "continuing_action": true,
+          "notice_date": "2026-03-24",
+          "summary": "The charging party states they were employed by Timberline Electric and believe they were subjected to promotion because of disability, national origin and race. The conduct is alleged to have begun on or about December 22, 2025 and continued through December 27, 2025."
+        },
+        "gold": {
+          "charge_number": "410-2026-10018",
+          "charging_party": "Taylor Calloway",
+          "respondent": "Timberline Electric",
+          "eeoc_office": "Atlanta District Office",
+          "bases": [
+            "Disability",
+            "National Origin",
+            "Race"
+          ],
+          "issues": [
+            "Promotion"
+          ],
+          "earliest_date": "2025-12-22",
+          "latest_date": "2025-12-27",
+          "continuing_action": true,
+          "notice_date": "2026-03-24"
+        },
+        "removed": []
+      },
+      "output": null,
+      "error": null,
+      "latency_ms": 4582,
+      "cost_usd": 0.01248,
+      "calls": 1
+    },
+    {
+      "case_id": "charge-019",
+      "tags": [
+        "two_respondents"
+      ],
+      "ok": true,
+      "scores": {
+        "field_accuracy": 0.9,
+        "raw_filled_fields": 9,
+        "unsupported_removed": 0,
+        "unsupported_rate": 0.0,
+        "false_abstentions": 1,
+        "guesses": 0,
+        "empty_precision": 0.0,
+        "empty_recall": 1.0,
+        "model_latency_ms": 4068,
+        "f_charge_number": 1,
+        "f_charging_party": 1,
+        "f_respondent": 1,
+        "f_eeoc_office": 1,
+        "f_bases": 1,
+        "f_issues": 0,
+        "f_earliest_date": 1,
+        "f_latest_date": 1,
+        "f_continuing_action": 1,
+        "f_notice_date": 1,
+        "values": {
+          "charge_number": "410-2026-10019",
+          "charging_party": "Tatum Fairbanks",
+          "respondent": [
+            "Beacon Electric",
+            "Ironwood Industries Corp."
+          ],
+          "eeoc_office": "Chicago District Office",
+          "bases": [
+            "Age",
+            "National Origin",
+            "Sex"
+          ],
+          "issues": null,
+          "earliest_date": "2025-05-14",
+          "latest_date": "2025-09-27",
+          "continuing_action": false,
+          "notice_date": "2025-10-27",
+          "summary": "Tatum Fairbanks alleges they were employed by Beacon Electric and subjected to treatment related to promotion because of age, national origin and sex. The conduct is alleged to have begun on or about May 14, 2025 and continued through September 27, 2025."
+        },
+        "gold": {
+          "charge_number": "410-2026-10019",
+          "charging_party": "Tatum Fairbanks",
+          "respondent": [
+            "Beacon Electric",
+            "Ironwood Industries Corp."
+          ],
+          "eeoc_office": "Chicago District Office",
+          "bases": [
+            "Age",
+            "National Origin",
+            "Sex"
+          ],
+          "issues": [
+            "Promotion"
+          ],
+          "earliest_date": "2025-05-14",
+          "latest_date": "2025-09-27",
+          "continuing_action": false,
+          "notice_date": "2025-10-27"
+        },
+        "removed": []
+      },
+      "output": null,
+      "error": null,
+      "latency_ms": 4072,
+      "cost_usd": 0.011672,
+      "calls": 1
+    },
+    {
+      "case_id": "charge-020",
+      "tags": [
+        "clean"
+      ],
+      "ok": true,
+      "scores": {
+        "field_accuracy": 0.9,
+        "raw_filled_fields": 9,
+        "unsupported_removed": 0,
+        "unsupported_rate": 0.0,
+        "false_abstentions": 1,
+        "guesses": 0,
+        "empty_precision": 0.0,
+        "empty_recall": 1.0,
+        "model_latency_ms": 4734,
+        "f_charge_number": 1,
+        "f_charging_party": 1,
+        "f_respondent": 1,
+        "f_eeoc_office": 1,
+        "f_bases": 1,
+        "f_issues": 0,
+        "f_earliest_date": 1,
+        "f_latest_date": 1,
+        "f_continuing_action": 1,
+        "f_notice_date": 1,
+        "values": {
+          "charge_number": "410-2026-10020",
+          "charging_party": "Sage Jenkins",
+          "respondent": "Lakeside Logistics Inc.",
+          "eeoc_office": "Phoenix District Office",
+          "bases": [
+            "Age",
+            "Color"
+          ],
+          "issues": null,
+          "earliest_date": "2025-08-16",
+          "latest_date": "2026-03-03",
+          "continuing_action": false,
+          "notice_date": "2026-04-28",
+          "summary": "Sage Jenkins alleges that Lakeside Logistics Inc., their employer, subjected them to unlawful terms/conditions because of age and color. The conduct is stated to have begun on or about August 16, 2025 and continued through March 3, 2026."
+        },
+        "gold": {
+          "charge_number": "410-2026-10020",
+          "charging_party": "Sage Jenkins",
+          "respondent": "Lakeside Logistics Inc.",
+          "eeoc_office": "Phoenix District Office",
+          "bases": [
+            "Age",
+            "Color"
+          ],
+          "issues": [
+            "Terms/Conditions"
+          ],
+          "earliest_date": "2025-08-16",
+          "latest_date": "2026-03-03",
+          "continuing_action": false,
+          "notice_date": "2026-04-28"
+        },
+        "removed": []
+      },
+      "output": null,
+      "error": null,
+      "latency_ms": 4737,
+      "cost_usd": 0.012572,
+      "calls": 1
+    },
+    {
+      "case_id": "charge-021",
+      "tags": [
+        "clean"
+      ],
+      "ok": true,
+      "scores": {
+        "field_accuracy": 1.0,
+        "raw_filled_fields": 10,
+        "unsupported_removed": 0,
+        "unsupported_rate": 0.0,
+        "false_abstentions": 0,
+        "guesses": 0,
+        "empty_precision": 1.0,
+        "empty_recall": 1.0,
+        "model_latency_ms": 4172,
+        "f_charge_number": 1,
+        "f_charging_party": 1,
+        "f_respondent": 1,
+        "f_eeoc_office": 1,
+        "f_bases": 1,
+        "f_issues": 1,
+        "f_earliest_date": 1,
+        "f_latest_date": 1,
+        "f_continuing_action": 1,
+        "f_notice_date": 1,
+        "values": {
+          "charge_number": "410-2026-10021",
+          "charging_party": "Wren Lancaster",
+          "respondent": "Beacon Builders Corp.",
+          "eeoc_office": "Phoenix District Office",
+          "bases": [
+            "National Origin"
+          ],
+          "issues": [
+            "discharge",
+            "promotion"
+          ],
+          "earliest_date": "2025-09-26",
+          "latest_date": "2026-02-07",
+          "continuing_action": false,
+          "notice_date": "2026-03-11",
+          "summary": "Wren Lancaster alleges that Beacon Builders Corp., where they were employed, subjected them to discharge and promotion issues because of their national origin. The conduct is alleged to have begun on or about September 26, 2025 and continued through February 7, 2026."
+        },
+        "gold": {
+          "charge_number": "410-2026-10021",
+          "charging_party": "Wren Lancaster",
+          "respondent": "Beacon Builders Corp.",
+          "eeoc_office": "Phoenix District Office",
+          "bases": [
+            "National Origin"
+          ],
+          "issues": [
+            "Discharge",
+            "Promotion"
+          ],
+          "earliest_date": "2025-09-26",
+          "latest_date": "2026-02-07",
+          "continuing_action": false,
+          "notice_date": "2026-03-11"
+        },
+        "removed": []
+      },
+      "output": null,
+      "error": null,
+      "latency_ms": 4176,
+      "cost_usd": 0.011684,
+      "calls": 1
+    },
+    {
+      "case_id": "charge-022",
+      "tags": [
+        "clean"
+      ],
+      "ok": true,
+      "scores": {
+        "field_accuracy": 0.9,
+        "raw_filled_fields": 9,
+        "unsupported_removed": 0,
+        "unsupported_rate": 0.0,
+        "false_abstentions": 1,
+        "guesses": 0,
+        "empty_precision": 0.0,
+        "empty_recall": 1.0,
+        "model_latency_ms": 4269,
+        "f_charge_number": 1,
+        "f_charging_party": 1,
+        "f_respondent": 1,
+        "f_eeoc_office": 1,
+        "f_bases": 1,
+        "f_issues": 0,
+        "f_earliest_date": 1,
+        "f_latest_date": 1,
+        "f_continuing_action": 1,
+        "f_notice_date": 1,
+        "values": {
+          "charge_number": "410-2026-10022",
+          "charging_party": "Amara Castillo",
+          "respondent": "Vantage Electric LLP",
+          "eeoc_office": "Chicago District Office",
+          "bases": [
+            "Race"
+          ],
+          "issues": null,
+          "earliest_date": "2025-11-11",
+          "latest_date": "2026-02-23",
+          "continuing_action": false,
+          "notice_date": "2026-04-07",
+          "summary": "Amara Castillo alleges she was subjected to promotion because of her race while employed by Vantage Electric LLP. She states the conduct began on or about November 11, 2025 and continued through February 23, 2026."
+        },
+        "gold": {
+          "charge_number": "410-2026-10022",
+          "charging_party": "Amara Castillo",
+          "respondent": "Vantage Electric LLP",
+          "eeoc_office": "Chicago District Office",
+          "bases": [
+            "Race"
+          ],
+          "issues": [
+            "Promotion"
+          ],
+          "earliest_date": "2025-11-11",
+          "latest_date": "2026-02-23",
+          "continuing_action": false,
+          "notice_date": "2026-04-07"
+        },
+        "removed": []
+      },
+      "output": null,
+      "error": null,
+      "latency_ms": 4273,
+      "cost_usd": 0.012058,
+      "calls": 1
+    },
+    {
+      "case_id": "charge-023",
+      "tags": [
+        "clean"
+      ],
+      "ok": true,
+      "scores": {
+        "field_accuracy": 0.9,
+        "raw_filled_fields": 9,
+        "unsupported_removed": 0,
+        "unsupported_rate": 0.0,
+        "false_abstentions": 1,
+        "guesses": 0,
+        "empty_precision": 0.0,
+        "empty_recall": 1.0,
+        "model_latency_ms": 4051,
+        "f_charge_number": 1,
+        "f_charging_party": 1,
+        "f_respondent": 1,
+        "f_eeoc_office": 1,
+        "f_bases": 1,
+        "f_issues": 0,
+        "f_earliest_date": 1,
+        "f_latest_date": 1,
+        "f_continuing_action": 1,
+        "f_notice_date": 1,
+        "values": {
+          "charge_number": "410-2026-10023",
+          "charging_party": "Avery Underwood",
+          "respondent": "Summit Analytics Inc",
+          "eeoc_office": "Atlanta District Office",
+          "bases": [
+            "Age",
+            "Color"
+          ],
+          "issues": null,
+          "earliest_date": "2025-10-23",
+          "latest_date": "2026-01-02",
+          "continuing_action": false,
+          "notice_date": "2026-02-18",
+          "summary": "Avery Underwood alleges that Summit Analytics Inc discharged them because of age and color. The conduct is stated to have begun on or about October 23, 2025 and continued through January 2, 2026."
+        },
+        "gold": {
+          "charge_number": "410-2026-10023",
+          "charging_party": "Avery Underwood",
+          "respondent": "Summit Analytics Inc",
+          "eeoc_office": "Atlanta District Office",
+          "bases": [
+            "Age",
+            "Color"
+          ],
+          "issues": [
+            "Discharge"
+          ],
+          "earliest_date": "2025-10-23",
+          "latest_date": "2026-01-02",
+          "continuing_action": false,
+          "notice_date": "2026-02-18"
+        },
+        "removed": []
+      },
+      "output": null,
+      "error": null,
+      "latency_ms": 4054,
+      "cost_usd": 0.01148,
+      "calls": 1
+    },
+    {
+      "case_id": "charge-024",
+      "tags": [
+        "missing_number"
+      ],
+      "ok": true,
+      "scores": {
+        "field_accuracy": 1.0,
+        "raw_filled_fields": 9,
+        "unsupported_removed": 0,
+        "unsupported_rate": 0.0,
+        "false_abstentions": 0,
+        "guesses": 0,
+        "empty_precision": 1.0,
+        "empty_recall": 1.0,
+        "model_latency_ms": 4110,
+        "f_charge_number": 1,
+        "f_charging_party": 1,
+        "f_respondent": 1,
+        "f_eeoc_office": 1,
+        "f_bases": 1,
+        "f_issues": 1,
+        "f_earliest_date": 1,
+        "f_latest_date": 1,
+        "f_continuing_action": 1,
+        "f_notice_date": 1,
+        "values": {
+          "charge_number": null,
+          "charging_party": "Skyler Fairbanks",
+          "respondent": "Pinnacle Medical Co.",
+          "eeoc_office": "Dallas District Office",
+          "bases": [
+            "Color",
+            "National Origin",
+            "Religion"
+          ],
+          "issues": [
+            "discharge"
+          ],
+          "earliest_date": "2025-05-04",
+          "latest_date": "2025-08-23",
+          "continuing_action": true,
+          "notice_date": "2025-09-19",
+          "summary": "The charging party says Pinnacle Medical Co. discharged them because of their color, national origin and religion. The conduct is alleged to have begun on or about May 4, 2025 and continued through August 23, 2025."
+        },
+        "gold": {
+          "charge_number": null,
+          "charging_party": "Skyler Fairbanks",
+          "respondent": "Pinnacle Medical Co.",
+          "eeoc_office": "Dallas District Office",
+          "bases": [
+            "Color",
+            "National Origin",
+            "Religion"
+          ],
+          "issues": [
+            "Discharge"
+          ],
+          "earliest_date": "2025-05-04",
+          "latest_date": "2025-08-23",
+          "continuing_action": true,
+          "notice_date": "2025-09-19"
+        },
+        "removed": []
+      },
+      "output": null,
+      "error": null,
+      "latency_ms": 4114,
+      "cost_usd": 0.011392,
+      "calls": 1
+    },
+    {
+      "case_id": "charge-025",
+      "tags": [
+        "clean"
+      ],
+      "ok": true,
+      "scores": {
+        "field_accuracy": 0.9,
+        "raw_filled_fields": 9,
+        "unsupported_removed": 0,
+        "unsupported_rate": 0.0,
+        "false_abstentions": 1,
+        "guesses": 0,
+        "empty_precision": 0.0,
+        "empty_recall": 1.0,
+        "model_latency_ms": 4052,
+        "f_charge_number": 1,
+        "f_charging_party": 1,
+        "f_respondent": 1,
+        "f_eeoc_office": 1,
+        "f_bases": 1,
+        "f_issues": 0,
+        "f_earliest_date": 1,
+        "f_latest_date": 1,
+        "f_continuing_action": 1,
+        "f_notice_date": 1,
+        "values": {
+          "charge_number": "410-2026-10025",
+          "charging_party": "Sage Kowalski",
+          "respondent": "Cobalt Plumbing Group",
+          "eeoc_office": "Dallas District Office",
+          "bases": [
+            "Age",
+            "National Origin",
+            "Retaliation"
+          ],
+          "issues": null,
+          "earliest_date": "2025-06-09",
+          "latest_date": "2025-11-06",
+          "continuing_action": false,
+          "notice_date": "2026-01-02",
+          "summary": "Sage Kowalski alleges that Cobalt Plumbing Group subjected them to discipline because of age, national origin, and retaliation. The conduct is alleged to have begun on or about June 9, 2025 and continued through November 6, 2025."
+        },
+        "gold": {
+          "charge_number": "410-2026-10025",
+          "charging_party": "Sage Kowalski",
+          "respondent": "Cobalt Plumbing Group",
+          "eeoc_office": "Dallas District Office",
+          "bases": [
+            "Age",
+            "National Origin",
+            "Retaliation"
+          ],
+          "issues": [
+            "Discipline"
+          ],
+          "earliest_date": "2025-06-09",
+          "latest_date": "2025-11-06",
+          "continuing_action": false,
+          "notice_date": "2026-01-02"
+        },
+        "removed": []
+      },
+      "output": null,
+      "error": null,
+      "latency_ms": 4056,
+      "cost_usd": 0.011488,
+      "calls": 1
+    },
+    {
+      "case_id": "charge-026",
+      "tags": [
+        "clean"
+      ],
+      "ok": true,
+      "scores": {
+        "field_accuracy": 0.9,
+        "raw_filled_fields": 9,
+        "unsupported_removed": 0,
+        "unsupported_rate": 0.0,
+        "false_abstentions": 1,
+        "guesses": 0,
+        "empty_precision": 0.0,
+        "empty_recall": 1.0,
+        "model_latency_ms": 3793,
+        "f_charge_number": 1,
+        "f_charging_party": 1,
+        "f_respondent": 1,
+        "f_eeoc_office": 1,
+        "f_bases": 1,
+        "f_issues": 0,
+        "f_earliest_date": 1,
+        "f_latest_date": 1,
+        "f_continuing_action": 1,
+        "f_notice_date": 1,
+        "values": {
+          "charge_number": "410-2026-10026",
+          "charging_party": "Emerson Kingsley",
+          "respondent": "Westbrook Builders Group",
+          "eeoc_office": "Dallas District Office",
+          "bases": [
+            "Religion"
+          ],
+          "issues": null,
+          "earliest_date": "2025-07-28",
+          "latest_date": "2026-02-11",
+          "continuing_action": true,
+          "notice_date": "2026-03-04",
+          "summary": "Emerson Kingsley, formerly employed by Westbrook Builders Group, alleges religious discrimination involving discharge and reasonable accommodation. The conduct is said to have begun around July 28, 2025 and continued through February 11, 2026."
+        },
+        "gold": {
+          "charge_number": "410-2026-10026",
+          "charging_party": "Emerson Kingsley",
+          "respondent": "Westbrook Builders Group",
+          "eeoc_office": "Dallas District Office",
+          "bases": [
+            "Religion"
+          ],
+          "issues": [
+            "Discharge",
+            "Reasonable Accommodation"
+          ],
+          "earliest_date": "2025-07-28",
+          "latest_date": "2026-02-11",
+          "continuing_action": true,
+          "notice_date": "2026-03-04"
+        },
+        "removed": []
+      },
+      "output": null,
+      "error": null,
+      "latency_ms": 3797,
+      "cost_usd": 0.011254,
+      "calls": 1
+    },
+    {
+      "case_id": "charge-027",
+      "tags": [
+        "clean"
+      ],
+      "ok": true,
+      "scores": {
+        "field_accuracy": 0.9,
+        "raw_filled_fields": 9,
+        "unsupported_removed": 0,
+        "unsupported_rate": 0.0,
+        "false_abstentions": 1,
+        "guesses": 0,
+        "empty_precision": 0.0,
+        "empty_recall": 1.0,
+        "model_latency_ms": 4794,
+        "f_charge_number": 1,
+        "f_charging_party": 1,
+        "f_respondent": 1,
+        "f_eeoc_office": 1,
+        "f_bases": 1,
+        "f_issues": 0,
+        "f_earliest_date": 1,
+        "f_latest_date": 1,
+        "f_continuing_action": 1,
+        "f_notice_date": 1,
+        "values": {
+          "charge_number": "410-2026-10027",
+          "charging_party": "Taylor Yamada",
+          "respondent": "Beacon Holdings LLP",
+          "eeoc_office": "Atlanta District Office",
+          "bases": [
+            "Disability"
+          ],
+          "issues": null,
+          "earliest_date": "2025-02-04",
+          "latest_date": "2025-07-29",
+          "continuing_action": false,
+          "notice_date": "2025-10-01",
+          "summary": "Taylor Yamada states they were employed by Beacon Holdings LLP and believe they were subjected to terms/conditions because of their disability. The conduct is alleged to have begun on or about February 4, 2025 and continued through July 29, 2025."
+        },
+        "gold": {
+          "charge_number": "410-2026-10027",
+          "charging_party": "Taylor Yamada",
+          "respondent": "Beacon Holdings LLP",
+          "eeoc_office": "Atlanta District Office",
+          "bases": [
+            "Disability"
+          ],
+          "issues": [
+            "Terms/Conditions"
+          ],
+          "earliest_date": "2025-02-04",
+          "latest_date": "2025-07-29",
+          "continuing_action": false,
+          "notice_date": "2025-10-01"
+        },
+        "removed": []
+      },
+      "output": null,
+      "error": null,
+      "latency_ms": 4798,
+      "cost_usd": 0.01315,
+      "calls": 1
+    },
+    {
+      "case_id": "charge-028",
+      "tags": [
+        "clean"
+      ],
+      "ok": true,
+      "scores": {
+        "field_accuracy": 0.9,
+        "raw_filled_fields": 9,
+        "unsupported_removed": 0,
+        "unsupported_rate": 0.0,
+        "false_abstentions": 1,
+        "guesses": 0,
+        "empty_precision": 0.0,
+        "empty_recall": 1.0,
+        "model_latency_ms": 3731,
+        "f_charge_number": 1,
+        "f_charging_party": 1,
+        "f_respondent": 1,
+        "f_eeoc_office": 1,
+        "f_bases": 1,
+        "f_issues": 0,
+        "f_earliest_date": 1,
+        "f_latest_date": 1,
+        "f_continuing_action": 1,
+        "f_notice_date": 1,
+        "values": {
+          "charge_number": "410-2026-10028",
+          "charging_party": "Logan Bennett",
+          "respondent": "Acme Analytics LLP",
+          "eeoc_office": "Dallas District Office",
+          "bases": [
+            "Disability",
+            "Race"
+          ],
+          "issues": null,
+          "earliest_date": "2025-10-15",
+          "latest_date": "2026-02-01",
+          "continuing_action": false,
+          "notice_date": "2026-03-08",
+          "summary": "Logan Bennett alleges that Acme Analytics LLP subjected them to discipline and harassment because of disability and race. The conduct began on or about October 15, 2025 and continued through February 1, 2026."
+        },
+        "gold": {
+          "charge_number": "410-2026-10028",
+          "charging_party": "Logan Bennett",
+          "respondent": "Acme Analytics LLP",
+          "eeoc_office": "Dallas District Office",
+          "bases": [
+            "Disability",
+            "Race"
+          ],
+          "issues": [
+            "Discipline",
+            "Harassment"
+          ],
+          "earliest_date": "2025-10-15",
+          "latest_date": "2026-02-01",
+          "continuing_action": false,
+          "notice_date": "2026-03-08"
+        },
+        "removed": []
+      },
+      "output": null,
+      "error": null,
+      "latency_ms": 3735,
+      "cost_usd": 0.01102,
+      "calls": 1
+    },
+    {
+      "case_id": "charge-029",
+      "tags": [
+        "rotated"
+      ],
+      "ok": true,
+      "scores": {
+        "field_accuracy": 0.9,
+        "raw_filled_fields": 9,
+        "unsupported_removed": 0,
+        "unsupported_rate": 0.0,
+        "false_abstentions": 1,
+        "guesses": 0,
+        "empty_precision": 0.0,
+        "empty_recall": 1.0,
+        "model_latency_ms": 4496,
+        "f_charge_number": 1,
+        "f_charging_party": 1,
+        "f_respondent": 1,
+        "f_eeoc_office": 1,
+        "f_bases": 1,
+        "f_issues": 0,
+        "f_earliest_date": 1,
+        "f_latest_date": 1,
+        "f_continuing_action": 1,
+        "f_notice_date": 1,
+        "values": {
+          "charge_number": "410-2026-10029",
+          "charging_party": "Hayden Calloway",
+          "respondent": "Harbor Industries",
+          "eeoc_office": "Dallas District Office",
+          "bases": [
+            "Age",
+            "Disability",
+            "Religion"
+          ],
+          "issues": null,
+          "earliest_date": "2025-01-10",
+          "latest_date": "2025-07-06",
+          "continuing_action": false,
+          "notice_date": "2025-08-10",
+          "summary": "Hayden Calloway alleges that Harbor Industries subjected them to discharge and promotion discrimination because of age, disability and religion. The conduct is stated to have begun on or about January 10, 2025 and continued through July 6, 2025."
+        },
+        "gold": {
+          "charge_number": "410-2026-10029",
+          "charging_party": "Hayden Calloway",
+          "respondent": "Harbor Industries",
+          "eeoc_office": "Dallas District Office",
+          "bases": [
+            "Age",
+            "Disability",
+            "Religion"
+          ],
+          "issues": [
+            "Discharge",
+            "Promotion"
+          ],
+          "earliest_date": "2025-01-10",
+          "latest_date": "2025-07-06",
+          "continuing_action": false,
+          "notice_date": "2025-08-10"
+        },
+        "removed": []
+      },
+      "output": null,
+      "error": null,
+      "latency_ms": 4499,
+      "cost_usd": 0.0116,
+      "calls": 1
+    },
+    {
+      "case_id": "charge-030",
+      "tags": [
+        "clean"
+      ],
+      "ok": true,
+      "scores": {
+        "field_accuracy": 0.9,
+        "raw_filled_fields": 9,
+        "unsupported_removed": 0,
+        "unsupported_rate": 0.0,
+        "false_abstentions": 1,
+        "guesses": 0,
+        "empty_precision": 0.0,
+        "empty_recall": 1.0,
+        "model_latency_ms": 4254,
+        "f_charge_number": 1,
+        "f_charging_party": 1,
+        "f_respondent": 1,
+        "f_eeoc_office": 1,
+        "f_bases": 1,
+        "f_issues": 0,
+        "f_earliest_date": 1,
+        "f_latest_date": 1,
+        "f_continuing_action": 1,
+        "f_notice_date": 1,
+        "values": {
+          "charge_number": "410-2026-10030",
+          "charging_party": "Santiago Kowalski",
+          "respondent": "Cobalt Builders Group",
+          "eeoc_office": "Dallas District Office",
+          "bases": [
+            "National Origin",
+            "Religion"
+          ],
+          "issues": null,
+          "earliest_date": "2025-06-07",
+          "latest_date": "2025-10-28",
+          "continuing_action": true,
+          "notice_date": "2025-12-01",
+          "summary": "Santiago Kowalski, formerly employed by Cobalt Builders Group, alleges he was subjected to discipline because of his national origin and religion. The conduct allegedly began on or about June 7, 2025 and continued through October 28, 2025."
+        },
+        "gold": {
+          "charge_number": "410-2026-10030",
+          "charging_party": "Santiago Kowalski",
+          "respondent": "Cobalt Builders Group",
+          "eeoc_office": "Dallas District Office",
+          "bases": [
+            "National Origin",
+            "Religion"
+          ],
+          "issues": [
+            "Discipline"
+          ],
+          "earliest_date": "2025-06-07",
+          "latest_date": "2025-10-28",
+          "continuing_action": true,
+          "notice_date": "2025-12-01"
+        },
+        "removed": []
+      },
+      "output": null,
+      "error": null,
+      "latency_ms": 4258,
+      "cost_usd": 0.011766,
+      "calls": 1
+    },
+    {
+      "case_id": "charge-031",
+      "tags": [
+        "clean"
+      ],
+      "ok": true,
+      "scores": {
+        "field_accuracy": 1.0,
+        "raw_filled_fields": 10,
+        "unsupported_removed": 0,
+        "unsupported_rate": 0.0,
+        "false_abstentions": 0,
+        "guesses": 0,
+        "empty_precision": 1.0,
+        "empty_recall": 1.0,
+        "model_latency_ms": 4489,
+        "f_charge_number": 1,
+        "f_charging_party": 1,
+        "f_respondent": 1,
+        "f_eeoc_office": 1,
+        "f_bases": 1,
+        "f_issues": 1,
+        "f_earliest_date": 1,
+        "f_latest_date": 1,
+        "f_continuing_action": 1,
+        "f_notice_date": 1,
+        "values": {
+          "charge_number": "410-2026-10031",
+          "charging_party": "Kendall Delacroix",
+          "respondent": "Quarry Roofing Inc.",
+          "eeoc_office": "Chicago District Office",
+          "bases": [
+            "Race",
+            "Retaliation",
+            "Sex"
+          ],
+          "issues": [
+            "discipline"
+          ],
+          "earliest_date": "2025-06-20",
+          "latest_date": "2025-12-02",
+          "continuing_action": false,
+          "notice_date": "2026-01-29",
+          "summary": "Kendall Delacroix alleges that Quarry Roofing Inc. subjected them to discipline because of race, retaliation and sex. The conduct is stated to have begun on or about June 20, 2025 and continued through December 2, 2025."
+        },
+        "gold": {
+          "charge_number": "410-2026-10031",
+          "charging_party": "Kendall Delacroix",
+          "respondent": "Quarry Roofing Inc.",
+          "eeoc_office": "Chicago District Office",
+          "bases": [
+            "Race",
+            "Retaliation",
+            "Sex"
+          ],
+          "issues": [
+            "Discipline"
+          ],
+          "earliest_date": "2025-06-20",
+          "latest_date": "2025-12-02",
+          "continuing_action": false,
+          "notice_date": "2026-01-29"
+        },
+        "removed": []
+      },
+      "output": null,
+      "error": null,
+      "latency_ms": 4493,
+      "cost_usd": 0.0127,
+      "calls": 1
+    },
+    {
+      "case_id": "charge-032",
+      "tags": [
+        "clean"
+      ],
+      "ok": true,
+      "scores": {
+        "field_accuracy": 1.0,
+        "raw_filled_fields": 10,
+        "unsupported_removed": 0,
+        "unsupported_rate": 0.0,
+        "false_abstentions": 0,
+        "guesses": 0,
+        "empty_precision": 1.0,
+        "empty_recall": 1.0,
+        "model_latency_ms": 4768,
+        "f_charge_number": 1,
+        "f_charging_party": 1,
+        "f_respondent": 1,
+        "f_eeoc_office": 1,
+        "f_bases": 1,
+        "f_issues": 1,
+        "f_earliest_date": 1,
+        "f_latest_date": 1,
+        "f_continuing_action": 1,
+        "f_notice_date": 1,
+        "values": {
+          "charge_number": "410-2026-10032",
+          "charging_party": "Peyton Castillo",
+          "respondent": "Delta Dental LLC",
+          "eeoc_office": "Atlanta District Office",
+          "bases": [
+            "Age",
+            "Color"
+          ],
+          "issues": [
+            "promotion",
+            "reasonable accommodation"
+          ],
+          "earliest_date": "2025-04-25",
+          "latest_date": "2025-08-10",
+          "continuing_action": false,
+          "notice_date": "2025-09-15",
+          "summary": "Peyton Castillo alleges that Delta Dental LLC subjected them to discrimination in promotion and reasonable accommodation because of age and color. The conduct is stated to have begun on or about April 25, 2025 and continued through August 10, 2025."
+        },
+        "gold": {
+          "charge_number": "410-2026-10032",
+          "charging_party": "Peyton Castillo",
+          "respondent": "Delta Dental LLC",
+          "eeoc_office": "Atlanta District Office",
+          "bases": [
+            "Age",
+            "Color"
+          ],
+          "issues": [
+            "Promotion",
+            "Reasonable Accommodation"
+          ],
+          "earliest_date": "2025-04-25",
+          "latest_date": "2025-08-10",
+          "continuing_action": false,
+          "notice_date": "2025-09-15"
+        },
+        "removed": []
+      },
+      "output": null,
+      "error": null,
+      "latency_ms": 4772,
+      "cost_usd": 0.011672,
+      "calls": 1
+    },
+    {
+      "case_id": "charge-033",
+      "tags": [
+        "clean"
+      ],
+      "ok": true,
+      "scores": {
+        "field_accuracy": 0.9,
+        "raw_filled_fields": 9,
+        "unsupported_removed": 0,
+        "unsupported_rate": 0.0,
+        "false_abstentions": 1,
+        "guesses": 0,
+        "empty_precision": 0.0,
+        "empty_recall": 1.0,
+        "model_latency_ms": 4842,
+        "f_charge_number": 1,
+        "f_charging_party": 1,
+        "f_respondent": 1,
+        "f_eeoc_office": 1,
+        "f_bases": 1,
+        "f_issues": 0,
+        "f_earliest_date": 1,
+        "f_latest_date": 1,
+        "f_continuing_action": 1,
+        "f_notice_date": 1,
+        "values": {
+          "charge_number": "410-2026-10033",
+          "charging_party": "Priya Dawson",
+          "respondent": "Lakeside Builders",
+          "eeoc_office": "Chicago District Office",
+          "bases": [
+            "National Origin",
+            "Race",
+            "Retaliation"
+          ],
+          "issues": null,
+          "earliest_date": "2025-04-01",
+          "latest_date": "2025-04-05",
+          "continuing_action": true,
+          "notice_date": "2025-06-25",
+          "summary": "Priya Dawson alleges she was employed by Lakeside Builders and subjected to harassment and different terms/conditions because of her national origin and race, and to retaliation. She states the conduct began on or about April 1, 2025 and continued through April 5, 2025."
+        },
+        "gold": {
+          "charge_number": "410-2026-10033",
+          "charging_party": "Priya Dawson",
+          "respondent": "Lakeside Builders",
+          "eeoc_office": "Chicago District Office",
+          "bases": [
+            "National Origin",
+            "Race",
+            "Retaliation"
+          ],
+          "issues": [
+            "Harassment",
+            "Terms/Conditions"
+          ],
+          "earliest_date": "2025-04-01",
+          "latest_date": "2025-04-05",
+          "continuing_action": true,
+          "notice_date": "2025-06-25"
+        },
+        "removed": []
+      },
+      "output": null,
+      "error": null,
+      "latency_ms": 4846,
+      "cost_usd": 0.012666,
+      "calls": 1
+    },
+    {
+      "case_id": "charge-034",
+      "tags": [
+        "long"
+      ],
+      "ok": true,
+      "scores": {
+        "field_accuracy": 0.9,
+        "raw_filled_fields": 9,
+        "unsupported_removed": 0,
+        "unsupported_rate": 0.0,
+        "false_abstentions": 1,
+        "guesses": 0,
+        "empty_precision": 0.0,
+        "empty_recall": 1.0,
+        "model_latency_ms": 3876,
+        "f_charge_number": 1,
+        "f_charging_party": 1,
+        "f_respondent": 1,
+        "f_eeoc_office": 1,
+        "f_bases": 1,
+        "f_issues": 0,
+        "f_earliest_date": 1,
+        "f_latest_date": 1,
+        "f_continuing_action": 1,
+        "f_notice_date": 1,
+        "values": {
+          "charge_number": "410-2026-10034",
+          "charging_party": "Leila Bennett",
+          "respondent": "Cobalt Builders Inc",
+          "eeoc_office": "Phoenix District Office",
+          "bases": [
+            "National Origin",
+            "Sex"
+          ],
+          "issues": null,
+          "earliest_date": "2025-09-02",
+          "latest_date": "2026-02-15",
+          "continuing_action": false,
+          "notice_date": "2026-05-11",
+          "summary": "The charging party states she was employed by Cobalt Builders Inc and subjected to harassment because of her national origin and sex. She says the conduct began on or about September 2, 2025 and continued through February 15, 2026."
+        },
+        "gold": {
+          "charge_number": "410-2026-10034",
+          "charging_party": "Leila Bennett",
+          "respondent": "Cobalt Builders Inc",
+          "eeoc_office": "Phoenix District Office",
+          "bases": [
+            "National Origin",
+            "Sex"
+          ],
+          "issues": [
+            "Harassment"
+          ],
+          "earliest_date": "2025-09-02",
+          "latest_date": "2026-02-15",
+          "continuing_action": false,
+          "notice_date": "2026-05-11"
+        },
+        "removed": []
+      },
+      "output": null,
+      "error": null,
+      "latency_ms": 3883,
+      "cost_usd": 0.012316,
+      "calls": 1
+    },
+    {
+      "case_id": "charge-035",
+      "tags": [
+        "clean"
+      ],
+      "ok": true,
+      "scores": {
+        "field_accuracy": 0.9,
+        "raw_filled_fields": 9,
+        "unsupported_removed": 0,
+        "unsupported_rate": 0.0,
+        "false_abstentions": 1,
+        "guesses": 0,
+        "empty_precision": 0.0,
+        "empty_recall": 1.0,
+        "model_latency_ms": 5129,
+        "f_charge_number": 1,
+        "f_charging_party": 1,
+        "f_respondent": 1,
+        "f_eeoc_office": 1,
+        "f_bases": 1,
+        "f_issues": 0,
+        "f_earliest_date": 1,
+        "f_latest_date": 1,
+        "f_continuing_action": 1,
+        "f_notice_date": 1,
+        "values": {
+          "charge_number": "410-2026-10035",
+          "charging_party": "Omar Lindqvist",
+          "respondent": "Juniper Electric Group",
+          "eeoc_office": "Dallas District Office",
+          "bases": [
+            "National Origin",
+            "Race"
+          ],
+          "issues": null,
+          "earliest_date": "2025-04-16",
+          "latest_date": "2025-04-30",
+          "continuing_action": false,
+          "notice_date": "2025-07-24",
+          "summary": "Omar Lindqvist alleges that Juniper Electric Group subjected him to reasonable accommodation because of his national origin and race. He states the conduct began on or about April 16, 2025 and continued through April 30, 2025."
+        },
+        "gold": {
+          "charge_number": "410-2026-10035",
+          "charging_party": "Omar Lindqvist",
+          "respondent": "Juniper Electric Group",
+          "eeoc_office": "Dallas District Office",
+          "bases": [
+            "National Origin",
+            "Race"
+          ],
+          "issues": [
+            "Reasonable Accommodation"
+          ],
+          "earliest_date": "2025-04-16",
+          "latest_date": "2025-04-30",
+          "continuing_action": false,
+          "notice_date": "2025-07-24"
+        },
+        "removed": []
+      },
+      "output": null,
+      "error": null,
+      "latency_ms": 5133,
+      "cost_usd": 0.011384,
+      "calls": 1
+    },
+    {
+      "case_id": "charge-036",
+      "tags": [
+        "clean"
+      ],
+      "ok": true,
+      "scores": {
+        "field_accuracy": 0.9,
+        "raw_filled_fields": 9,
+        "unsupported_removed": 0,
+        "unsupported_rate": 0.0,
+        "false_abstentions": 1,
+        "guesses": 0,
+        "empty_precision": 0.0,
+        "empty_recall": 1.0,
+        "model_latency_ms": 4054,
+        "f_charge_number": 1,
+        "f_charging_party": 1,
+        "f_respondent": 1,
+        "f_eeoc_office": 1,
+        "f_bases": 1,
+        "f_issues": 0,
+        "f_earliest_date": 1,
+        "f_latest_date": 1,
+        "f_continuing_action": 1,
+        "f_notice_date": 1,
+        "values": {
+          "charge_number": "410-2026-10036",
+          "charging_party": "Sage Foster",
+          "respondent": "Juniper Plumbing Inc",
+          "eeoc_office": "Chicago District Office",
+          "bases": [
+            "Age",
+            "National Origin",
+            "Retaliation"
+          ],
+          "issues": null,
+          "earliest_date": "2025-05-11",
+          "latest_date": "2025-07-01",
+          "continuing_action": false,
+          "notice_date": "2025-09-17",
+          "summary": "Sage Foster alleges that Juniper Plumbing Inc subjected them to discipline because of age, national origin, and retaliation. The conduct began on or about May 11, 2025 and continued through July 1, 2025."
+        },
+        "gold": {
+          "charge_number": "410-2026-10036",
+          "charging_party": "Sage Foster",
+          "respondent": "Juniper Plumbing Inc",
+          "eeoc_office": "Chicago District Office",
+          "bases": [
+            "Age",
+            "National Origin",
+            "Retaliation"
+          ],
+          "issues": [
+            "Discipline"
+          ],
+          "earliest_date": "2025-05-11",
+          "latest_date": "2025-07-01",
+          "continuing_action": false,
+          "notice_date": "2025-09-17"
+        },
+        "removed": []
+      },
+      "output": null,
+      "error": null,
+      "latency_ms": 4057,
+      "cost_usd": 0.011246,
+      "calls": 1
+    },
+    {
+      "case_id": "charge-037",
+      "tags": [
+        "clean"
+      ],
+      "ok": true,
+      "scores": {
+        "field_accuracy": 0.9,
+        "raw_filled_fields": 9,
+        "unsupported_removed": 0,
+        "unsupported_rate": 0.0,
+        "false_abstentions": 1,
+        "guesses": 0,
+        "empty_precision": 0.0,
+        "empty_recall": 1.0,
+        "model_latency_ms": 4249,
+        "f_charge_number": 1,
+        "f_charging_party": 1,
+        "f_respondent": 1,
+        "f_eeoc_office": 1,
+        "f_bases": 1,
+        "f_issues": 0,
+        "f_earliest_date": 1,
+        "f_latest_date": 1,
+        "f_continuing_action": 1,
+        "f_notice_date": 1,
+        "values": {
+          "charge_number": "410-2026-10037",
+          "charging_party": "Rowan Quintero",
+          "respondent": "Lakeside Analytics Group",
+          "eeoc_office": "Phoenix District Office",
+          "bases": [
+            "Color",
+            "National Origin",
+            "Retaliation"
+          ],
+          "issues": null,
+          "earliest_date": "2025-11-14",
+          "latest_date": "2025-12-23",
+          "continuing_action": false,
+          "notice_date": "2026-01-12",
+          "summary": "Rowan Quintero alleges that Lakeside Analytics Group subjected them to harassment and reasonable accommodation issues because of their color and national origin, and retaliated against them. The conduct began on or about November 14, 2025 and continued through December 23, 2025."
+        },
+        "gold": {
+          "charge_number": "410-2026-10037",
+          "charging_party": "Rowan Quintero",
+          "respondent": "Lakeside Analytics Group",
+          "eeoc_office": "Phoenix District Office",
+          "bases": [
+            "Color",
+            "National Origin",
+            "Retaliation"
+          ],
+          "issues": [
+            "Harassment",
+            "Reasonable Accommodation"
+          ],
+          "earliest_date": "2025-11-14",
+          "latest_date": "2025-12-23",
+          "continuing_action": false,
+          "notice_date": "2026-01-12"
+        },
+        "removed": []
+      },
+      "output": null,
+      "error": null,
+      "latency_ms": 4253,
+      "cost_usd": 0.01158,
+      "calls": 1
+    },
+    {
+      "case_id": "charge-038",
+      "tags": [
+        "clean"
+      ],
+      "ok": true,
+      "scores": {
+        "field_accuracy": 1.0,
+        "raw_filled_fields": 10,
+        "unsupported_removed": 0,
+        "unsupported_rate": 0.0,
+        "false_abstentions": 0,
+        "guesses": 0,
+        "empty_precision": 1.0,
+        "empty_recall": 1.0,
+        "model_latency_ms": 3863,
+        "f_charge_number": 1,
+        "f_charging_party": 1,
+        "f_respondent": 1,
+        "f_eeoc_office": 1,
+        "f_bases": 1,
+        "f_issues": 1,
+        "f_earliest_date": 1,
+        "f_latest_date": 1,
+        "f_continuing_action": 1,
+        "f_notice_date": 1,
+        "values": {
+          "charge_number": "410-2026-10038",
+          "charging_party": "Zion Lindqvist",
+          "respondent": "Harbor Analytics",
+          "eeoc_office": "Dallas District Office",
+          "bases": [
+            "Color",
+            "Race",
+            "Retaliation"
+          ],
+          "issues": [
+            "discharge"
+          ],
+          "earliest_date": "2025-05-12",
+          "latest_date": "2025-09-28",
+          "continuing_action": false,
+          "notice_date": "2025-11-04",
+          "summary": "Zion Lindqvist alleges that Harbor Analytics discharged them because of color and race and in retaliation. The conduct is stated to have begun on or about May 12, 2025 and continued through September 28, 2025."
+        },
+        "gold": {
+          "charge_number": "410-2026-10038",
+          "charging_party": "Zion Lindqvist",
+          "respondent": "Harbor Analytics",
+          "eeoc_office": "Dallas District Office",
+          "bases": [
+            "Color",
+            "Race",
+            "Retaliation"
+          ],
+          "issues": [
+            "Discharge"
+          ],
+          "earliest_date": "2025-05-12",
+          "latest_date": "2025-09-28",
+          "continuing_action": false,
+          "notice_date": "2025-11-04"
+        },
+        "removed": []
+      },
+      "output": null,
+      "error": null,
+      "latency_ms": 3867,
+      "cost_usd": 0.011054,
+      "calls": 1
+    },
+    {
+      "case_id": "charge-039",
+      "tags": [
+        "two_respondents"
+      ],
+      "ok": true,
+      "scores": {
+        "field_accuracy": 1.0,
+        "raw_filled_fields": 10,
+        "unsupported_removed": 0,
+        "unsupported_rate": 0.0,
+        "false_abstentions": 0,
+        "guesses": 0,
+        "empty_precision": 1.0,
+        "empty_recall": 1.0,
+        "model_latency_ms": 4606,
+        "f_charge_number": 1,
+        "f_charging_party": 1,
+        "f_respondent": 1,
+        "f_eeoc_office": 1,
+        "f_bases": 1,
+        "f_issues": 1,
+        "f_earliest_date": 1,
+        "f_latest_date": 1,
+        "f_continuing_action": 1,
+        "f_notice_date": 1,
+        "values": {
+          "charge_number": "410-2026-10039",
+          "charging_party": "Aaliyah Kingsley",
+          "respondent": [
+            "Westbrook Electric Inc.",
+            "Delta Roofing LLC"
+          ],
+          "eeoc_office": "Atlanta District Office",
+          "bases": [
+            "Disability"
+          ],
+          "issues": [
+            "discharge",
+            "discipline"
+          ],
+          "earliest_date": "2025-07-13",
+          "latest_date": "2025-11-27",
+          "continuing_action": false,
+          "notice_date": "2026-02-21",
+          "summary": "Aaliyah Kingsley states she was employed by Westbrook Electric Inc. and believes she was subjected to discharge and discipline because of her disability. The conduct is described as beginning on or about July 13, 2025 and continuing through November 27, 2025."
+        },
+        "gold": {
+          "charge_number": "410-2026-10039",
+          "charging_party": "Aaliyah Kingsley",
+          "respondent": [
+            "Westbrook Electric Inc.",
+            "Delta Roofing LLC"
+          ],
+          "eeoc_office": "Atlanta District Office",
+          "bases": [
+            "Disability"
+          ],
+          "issues": [
+            "Discharge",
+            "Discipline"
+          ],
+          "earliest_date": "2025-07-13",
+          "latest_date": "2025-11-27",
+          "continuing_action": false,
+          "notice_date": "2026-02-21"
+        },
+        "removed": []
+      },
+      "output": null,
+      "error": null,
+      "latency_ms": 4610,
+      "cost_usd": 0.012334,
+      "calls": 1
+    }
+  ]
+}

@@ -1,0 +1,206 @@
+{
+ "case_id": "charge-000",
+ "tags": [
+  "clean"
+ ],
+ "expected": {
+  "charge_number": "410-2026-10000",
+  "charging_party": "Reese Underwood",
+  "respondent": "Northgate Industries Corp.",
+  "eeoc_office": "Atlanta District Office",
+  "bases": [
+   "Color",
+   "Sex"
+  ],
+  "issues": [
+   "Discipline",
+   "Reasonable Accommodation"
+  ],
+  "earliest_date": "2025-12-25",
+  "latest_date": "2026-07-09",
+  "continuing_action": false,
+  "notice_date": "2026-09-23"
+ },
+ "model": "claude-sonnet-5-5",
+ "cost_usd": 0.012046,
+ "latency_ms": 4515,
+ "record": {
+  "charge_number": {
+   "value": "410-2026-10000",
+   "page": 1,
+   "span": "Charge No. 410-2026-10000",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "charging_party": {
+   "value": "Reese Underwood",
+   "page": 1,
+   "span": "Charging Party: Reese Underwood",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "respondent": {
+   "value": "Northgate Industries Corp.",
+   "page": 1,
+   "span": "Respondent: Northgate Industries Corp.",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "eeoc_office": {
+   "value": "Atlanta District Office",
+   "page": 1,
+   "span": "EEOC Office: Atlanta District Office",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "bases": {
+   "value": [
+    "Color",
+    "Sex"
+   ],
+   "page": 1,
+   "span": "DISCRIMINATION BASED ON: Color, Sex",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "issues": {
+   "value": [
+    "Discipline",
+    "Reasonable Accommodation"
+   ],
+   "page": 1,
+   "span": "I was issued written discipline for conduct that similarly situated employees engaged in",
+   "confidence": 0.9,
+   "reason": null
+  },
+  "earliest_date": {
+   "value": "2025-12-25",
+   "page": 1,
+   "span": "Earliest 12/25/2025",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "latest_date": {
+   "value": "2026-07-09",
+   "page": 1,
+   "span": "Latest 07/09/2026",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "continuing_action": {
+   "value": false,
+   "page": null,
+   "span": null,
+   "confidence": 0.85,
+   "reason": "The form does not mark a continuing action box."
+  },
+  "notice_date": {
+   "value": "2026-09-23",
+   "page": 1,
+   "span": "Date of Notice: 09/23/2026",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "summary": {
+   "value": "The charging party alleges they were issued written discipline for conduct that similarly situated employees engaged in without consequence. They also state that a request for reasonable accommodation was denied without discussion. They believe this was discrimination based on color and sex.",
+   "page": null,
+   "span": null,
+   "confidence": 0.9,
+   "reason": null
+  }
+ },
+ "raw": {
+  "charge_number": {
+   "value": "410-2026-10000",
+   "page": 1,
+   "span": "Charge No. 410-2026-10000",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "charging_party": {
+   "value": "Reese Underwood",
+   "page": 1,
+   "span": "Charging Party: Reese Underwood",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "respondent": {
+   "value": "Northgate Industries Corp.",
+   "page": 1,
+   "span": "Respondent: Northgate Industries Corp.",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "eeoc_office": {
+   "value": "Atlanta District Office",
+   "page": 1,
+   "span": "EEOC Office: Atlanta District Office",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "bases": {
+   "value": [
+    "Color",
+    "Sex"
+   ],
+   "page": 1,
+   "span": "DISCRIMINATION BASED ON: Color, Sex",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "issues": {
+   "value": [
+    "Discipline",
+    "Reasonable Accommodation"
+   ],
+   "page": 1,
+   "span": "I was issued written discipline for conduct that similarly situated employees engaged in",
+   "confidence": 0.9,
+   "reason": null
+  },
+  "earliest_date": {
+   "value": "2025-12-25",
+   "page": 1,
+   "span": "Earliest 12/25/2025",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "latest_date": {
+   "value": "2026-07-09",
+   "page": 1,
+   "span": "Latest 07/09/2026",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "continuing_action": {
+   "value": false,
+   "page": null,
+   "span": null,
+   "confidence": 0.85,
+   "reason": "The form does not mark a continuing action box."
+  },
+  "notice_date": {
+   "value": "2026-09-23",
+   "page": 1,
+   "span": "Date of Notice: 09/23/2026",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "summary": {
+   "value": "The charging party alleges they were issued written discipline for conduct that similarly situated employees engaged in without consequence. They also state that a request for reasonable accommodation was denied without discussion. They believe this was discrimination based on color and sex.",
+   "page": null,
+   "span": null,
+   "confidence": 0.9,
+   "reason": null
+  }
+ },
+ "removed": [],
+ "pages": {
+  "charge": [
+   "EEOC FORM 5 (11/09)\nCHARGE OF DISCRIMINATION\nCharge No. 410-2026-10000\nEEOC Office: Atlanta District Office\nCharging Party: Reese Underwood\nCity/State: Phoenix, AZ\nRespondent: Northgate Industries Corp.\nDISCRIMINATION BASED ON: Color, Sex\nDATE(S) DISCRIMINATION TOOK PLACE: Earliest 12/25/2025 Latest 07/09/2026\nTHE PARTICULARS ARE:\n1. I was employed by Northgate Industries Corp beginning before December 25, 2025. The conduct\ndescribed below began on or about December 25, 2025 and continued through July 09, 2026.\n2. I was issued written discipline for conduct that similarly situated employees engaged in\nwithout consequence.\n3. I requested a reasonable accommodation and my request was denied without discussion.\n4. I believe I have been discriminated against because of my color and sex, in violation of\napplicable federal law.\n"
+  ],
+  "notice": [
+   "U.S. EQUAL EMPLOYMENT OPPORTUNITY COMMISSION\nAtlanta District Office\nNOTICE OF CHARGE OF DISCRIMINATION\nDate of Notice: 09/23/2026\nTo: Northgate Industries Corp.\nRe: Charge No. 410-2026-10000\nThis is notice that a charge of employment discrimination has been filed against your\norganization. No action is required on your part at this time. A position statement may be\nrequested.\n"
+  ]
+ }
+}

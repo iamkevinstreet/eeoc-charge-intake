@@ -1,0 +1,206 @@
+{
+ "case_id": "charge-002",
+ "tags": [
+  "clean"
+ ],
+ "expected": {
+  "charge_number": "410-2026-10002",
+  "charging_party": "Avery Foster",
+  "respondent": "Cedar Plumbing Inc.",
+  "eeoc_office": "Phoenix District Office",
+  "bases": [
+   "Age",
+   "National Origin"
+  ],
+  "issues": [
+   "Discipline",
+   "Reasonable Accommodation"
+  ],
+  "earliest_date": "2025-11-03",
+  "latest_date": "2026-05-07",
+  "continuing_action": false,
+  "notice_date": "2026-08-03"
+ },
+ "model": "claude-sonnet-5-5",
+ "cost_usd": 0.012204,
+ "latency_ms": 4224,
+ "record": {
+  "charge_number": {
+   "value": "410-2026-10002",
+   "page": 1,
+   "span": "Charge No. 410-2026-10002",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "charging_party": {
+   "value": "Avery Foster",
+   "page": 1,
+   "span": "Charging Party: Avery Foster",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "respondent": {
+   "value": "Cedar Plumbing Inc.",
+   "page": 1,
+   "span": "Respondent: Cedar Plumbing Inc.",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "eeoc_office": {
+   "value": "Phoenix District Office",
+   "page": 1,
+   "span": "EEOC Office: Phoenix District Office",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "bases": {
+   "value": [
+    "Age",
+    "National Origin"
+   ],
+   "page": 1,
+   "span": "DISCRIMINATION BASED ON: Age, National Origin",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "issues": {
+   "value": [
+    "Discipline",
+    "Reasonable Accommodation"
+   ],
+   "page": 1,
+   "span": "I was issued written discipline for conduct that similarly situated employees engaged in",
+   "confidence": 0.9,
+   "reason": null
+  },
+  "earliest_date": {
+   "value": "2025-11-03",
+   "page": 1,
+   "span": "Earliest 11/03/2025",
+   "confidence": 0.97,
+   "reason": null
+  },
+  "latest_date": {
+   "value": "2026-05-07",
+   "page": 1,
+   "span": "Latest 05/07/2026",
+   "confidence": 0.97,
+   "reason": null
+  },
+  "continuing_action": {
+   "value": false,
+   "page": null,
+   "span": null,
+   "confidence": 0.9,
+   "reason": "The form does not mark continuing action."
+  },
+  "notice_date": {
+   "value": "2026-08-03",
+   "page": 1,
+   "span": "Date of Notice: 08/03/2026",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "summary": {
+   "value": "Avery Foster alleges that Cedar Plumbing Inc. issued written discipline for conduct that similarly situated employees engaged in without consequence. Foster also says a reasonable accommodation request was denied without discussion. Foster believes this was because of age and national origin.",
+   "page": null,
+   "span": null,
+   "confidence": 0.9,
+   "reason": null
+  }
+ },
+ "raw": {
+  "charge_number": {
+   "value": "410-2026-10002",
+   "page": 1,
+   "span": "Charge No. 410-2026-10002",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "charging_party": {
+   "value": "Avery Foster",
+   "page": 1,
+   "span": "Charging Party: Avery Foster",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "respondent": {
+   "value": "Cedar Plumbing Inc.",
+   "page": 1,
+   "span": "Respondent: Cedar Plumbing Inc.",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "eeoc_office": {
+   "value": "Phoenix District Office",
+   "page": 1,
+   "span": "EEOC Office: Phoenix District Office",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "bases": {
+   "value": [
+    "Age",
+    "National Origin"
+   ],
+   "page": 1,
+   "span": "DISCRIMINATION BASED ON: Age, National Origin",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "issues": {
+   "value": [
+    "Discipline",
+    "Reasonable Accommodation"
+   ],
+   "page": 1,
+   "span": "I was issued written discipline for conduct that similarly situated employees engaged in",
+   "confidence": 0.9,
+   "reason": null
+  },
+  "earliest_date": {
+   "value": "2025-11-03",
+   "page": 1,
+   "span": "Earliest 11/03/2025",
+   "confidence": 0.97,
+   "reason": null
+  },
+  "latest_date": {
+   "value": "2026-05-07",
+   "page": 1,
+   "span": "Latest 05/07/2026",
+   "confidence": 0.97,
+   "reason": null
+  },
+  "continuing_action": {
+   "value": false,
+   "page": null,
+   "span": null,
+   "confidence": 0.9,
+   "reason": "The form does not mark continuing action."
+  },
+  "notice_date": {
+   "value": "2026-08-03",
+   "page": 1,
+   "span": "Date of Notice: 08/03/2026",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "summary": {
+   "value": "Avery Foster alleges that Cedar Plumbing Inc. issued written discipline for conduct that similarly situated employees engaged in without consequence. Foster also says a reasonable accommodation request was denied without discussion. Foster believes this was because of age and national origin.",
+   "page": null,
+   "span": null,
+   "confidence": 0.9,
+   "reason": null
+  }
+ },
+ "removed": [],
+ "pages": {
+  "charge": [
+   "EEOC FORM 5 (11/09)\nCHARGE OF DISCRIMINATION\nCharge No. 410-2026-10002\nEEOC Office: Phoenix District Office\nCharging Party: Avery Foster\nCity/State: Denver, CO\nRespondent: Cedar Plumbing Inc.\nDISCRIMINATION BASED ON: Age, National Origin\nDATE(S) DISCRIMINATION TOOK PLACE: Earliest 11/03/2025 Latest 05/07/2026\nTHE PARTICULARS ARE:\n1. I was employed by Cedar Plumbing Inc beginning before November 03, 2025. The conduct\ndescribed below began on or about November 03, 2025 and continued through May 07, 2026.\n2. I was issued written discipline for conduct that similarly situated employees engaged in\nwithout consequence.\n3. I requested a reasonable accommodation and my request was denied without discussion.\n4. I believe I have been discriminated against because of my age and national origin, in\nviolation of applicable federal law.\n"
+  ],
+  "notice": [
+   "U.S. EQUAL EMPLOYMENT OPPORTUNITY COMMISSION\nPhoenix District Office\nNOTICE OF CHARGE OF DISCRIMINATION\nDate of Notice: 08/03/2026\nTo: Cedar Plumbing Inc.\nRe: Charge No. 410-2026-10002\nThis is notice that a charge of employment discrimination has been filed against your\norganization. No action is required on your part at this time. A position statement may be\nrequested.\n"
+  ]
+ }
+}

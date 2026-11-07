@@ -1,0 +1,209 @@
+{
+ "case_id": "charge-005",
+ "tags": [
+  "clean"
+ ],
+ "expected": {
+  "charge_number": "410-2026-10005",
+  "charging_party": "Kendall Foster",
+  "respondent": "Oakridge Plumbing Co.",
+  "eeoc_office": "Atlanta District Office",
+  "bases": [
+   "Disability",
+   "Retaliation",
+   "Sex"
+  ],
+  "issues": [
+   "Discharge",
+   "Harassment"
+  ],
+  "earliest_date": "2025-11-23",
+  "latest_date": "2026-03-19",
+  "continuing_action": false,
+  "notice_date": "2026-06-16"
+ },
+ "model": "claude-sonnet-5-5",
+ "cost_usd": 0.020888,
+ "latency_ms": 15977,
+ "record": {
+  "charge_number": {
+   "value": "410-2026-10005",
+   "page": 1,
+   "span": "Charge No. 410-2026-10005",
+   "confidence": 0.99,
+   "reason": null
+  },
+  "charging_party": {
+   "value": "Kendall Foster",
+   "page": 1,
+   "span": "Charging Party: Kendall Foster",
+   "confidence": 0.99,
+   "reason": null
+  },
+  "respondent": {
+   "value": "Oakridge Plumbing Co.",
+   "page": 1,
+   "span": "Respondent: Oakridge Plumbing Co.",
+   "confidence": 0.99,
+   "reason": null
+  },
+  "eeoc_office": {
+   "value": "Atlanta District Office",
+   "page": 1,
+   "span": "EEOC Office: Atlanta District Office",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "bases": {
+   "value": [
+    "Disability",
+    "Retaliation",
+    "Sex"
+   ],
+   "page": 1,
+   "span": "DISCRIMINATION BASED ON: Disability, Retaliation, Sex",
+   "confidence": 0.99,
+   "reason": null
+  },
+  "issues": {
+   "value": [
+    "Discharge",
+    "Harassment"
+   ],
+   "page": 1,
+   "span": "2. On or about March 19, 2026, I was discharged from my position.",
+   "confidence": 0.9,
+   "reason": null
+  },
+  "earliest_date": {
+   "value": "2025-11-23",
+   "page": 1,
+   "span": "Earliest 11/23/2025",
+   "confidence": 0.99,
+   "reason": null
+  },
+  "latest_date": {
+   "value": "2026-03-19",
+   "page": 1,
+   "span": "Latest 03/19/2026",
+   "confidence": 0.99,
+   "reason": null
+  },
+  "continuing_action": {
+   "value": false,
+   "page": null,
+   "span": null,
+   "confidence": 0.9,
+   "reason": "The form does not mark the continuing action box."
+  },
+  "notice_date": {
+   "value": "2026-06-16",
+   "page": 1,
+   "span": "Date of Notice: 06/16/2026",
+   "confidence": 0.99,
+   "reason": null
+  },
+  "summary": {
+   "value": "The charging party says they were employed by Oakridge Plumbing Co and that the conduct began on or about November 23, 2025 and continued through March 19, 2026. They allege harassment by a supervisor, including repeated remarks about their sex, and say they were discharged on or about March 19, 2026. They believe this was because of disability, retaliation and sex.",
+   "page": null,
+   "span": null,
+   "confidence": 0.9,
+   "reason": null
+  }
+ },
+ "raw": {
+  "charge_number": {
+   "value": "410-2026-10005",
+   "page": 1,
+   "span": "Charge No. 410-2026-10005",
+   "confidence": 0.99,
+   "reason": null
+  },
+  "charging_party": {
+   "value": "Kendall Foster",
+   "page": 1,
+   "span": "Charging Party: Kendall Foster",
+   "confidence": 0.99,
+   "reason": null
+  },
+  "respondent": {
+   "value": "Oakridge Plumbing Co.",
+   "page": 1,
+   "span": "Respondent: Oakridge Plumbing Co.",
+   "confidence": 0.99,
+   "reason": null
+  },
+  "eeoc_office": {
+   "value": "Atlanta District Office",
+   "page": 1,
+   "span": "EEOC Office: Atlanta District Office",
+   "confidence": 0.98,
+   "reason": null
+  },
+  "bases": {
+   "value": [
+    "Disability",
+    "Retaliation",
+    "Sex"
+   ],
+   "page": 1,
+   "span": "DISCRIMINATION BASED ON: Disability, Retaliation, Sex",
+   "confidence": 0.99,
+   "reason": null
+  },
+  "issues": {
+   "value": [
+    "Discharge",
+    "Harassment"
+   ],
+   "page": 1,
+   "span": "2. On or about March 19, 2026, I was discharged from my position.",
+   "confidence": 0.9,
+   "reason": null
+  },
+  "earliest_date": {
+   "value": "2025-11-23",
+   "page": 1,
+   "span": "Earliest 11/23/2025",
+   "confidence": 0.99,
+   "reason": null
+  },
+  "latest_date": {
+   "value": "2026-03-19",
+   "page": 1,
+   "span": "Latest 03/19/2026",
+   "confidence": 0.99,
+   "reason": null
+  },
+  "continuing_action": {
+   "value": false,
+   "page": null,
+   "span": null,
+   "confidence": 0.9,
+   "reason": "The form does not mark the continuing action box."
+  },
+  "notice_date": {
+   "value": "2026-06-16",
+   "page": 1,
+   "span": "Date of Notice: 06/16/2026",
+   "confidence": 0.99,
+   "reason": null
+  },
+  "summary": {
+   "value": "The charging party says they were employed by Oakridge Plumbing Co and that the conduct began on or about November 23, 2025 and continued through March 19, 2026. They allege harassment by a supervisor, including repeated remarks about their sex, and say they were discharged on or about March 19, 2026. They believe this was because of disability, retaliation and sex.",
+   "page": null,
+   "span": null,
+   "confidence": 0.9,
+   "reason": null
+  }
+ },
+ "removed": [],
+ "pages": {
+  "charge": [
+   "EEOC FORM 5 (11/09)\nCHARGE OF DISCRIMINATION\nCharge No. 410-2026-10005\nEEOC Office: Atlanta District Office\nCharging Party: Kendall Foster\nCity/State: Denver, CO\nRespondent: Oakridge Plumbing Co.\nDISCRIMINATION BASED ON: Disability, Retaliation, Sex\nDATE(S) DISCRIMINATION TOOK PLACE: Earliest 11/23/2025 Latest 03/19/2026\nTHE PARTICULARS ARE:\n1. I was employed by Oakridge Plumbing Co beginning before November 23, 2025. The conduct\ndescribed below began on or about November 23, 2025 and continued through March 19, 2026.\n2. On or about March 19, 2026, I was discharged from my position.\n3. Throughout this period I was subjected to harassment by my supervisor, including repeated\nremarks about my sex that made it difficult to do my job.\n4. I believe I have been discriminated against because of my disability and retaliation and\nsex, in violation of applicable federal law.\n"
+  ],
+  "notice": [
+   "U.S. EQUAL EMPLOYMENT OPPORTUNITY COMMISSION\nAtlanta District Office\nNOTICE OF CHARGE OF DISCRIMINATION\nDate of Notice: 06/16/2026\nTo: Oakridge Plumbing Co.\nRe: Charge No. 410-2026-10005\nThis is notice that a charge of employment discrimination has been filed against your\norganization. No action is required on your part at this time. A position statement may be\nrequested.\n"
+  ]
+ }
+}

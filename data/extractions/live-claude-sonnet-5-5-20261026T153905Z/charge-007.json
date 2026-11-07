@@ -1,0 +1,209 @@
+{
+ "case_id": "charge-007",
+ "tags": [
+  "clean"
+ ],
+ "expected": {
+  "charge_number": "410-2026-10007",
+  "charging_party": "Zion Beaumont",
+  "respondent": "Beacon Staffing",
+  "eeoc_office": "Phoenix District Office",
+  "bases": [
+   "Age",
+   "Color",
+   "Sex"
+  ],
+  "issues": [
+   "Promotion",
+   "Reasonable Accommodation"
+  ],
+  "earliest_date": "2025-08-17",
+  "latest_date": "2026-03-01",
+  "continuing_action": false,
+  "notice_date": "2026-05-15"
+ },
+ "model": "claude-sonnet-5-5",
+ "cost_usd": 0.012184,
+ "latency_ms": 4209,
+ "record": {
+  "charge_number": {
+   "value": "410-2026-10007",
+   "page": 1,
+   "span": "Charge No. 410-2026-10007",
+   "confidence": 0.99,
+   "reason": null
+  },
+  "charging_party": {
+   "value": "Zion Beaumont",
+   "page": 1,
+   "span": "Charging Party: Zion Beaumont",
+   "confidence": 0.99,
+   "reason": null
+  },
+  "respondent": {
+   "value": "Beacon Staffing",
+   "page": 1,
+   "span": "Respondent: Beacon Staffing",
+   "confidence": 0.99,
+   "reason": null
+  },
+  "eeoc_office": {
+   "value": "Phoenix District Office",
+   "page": 1,
+   "span": "EEOC Office: Phoenix District Office",
+   "confidence": 0.99,
+   "reason": null
+  },
+  "bases": {
+   "value": [
+    "Age",
+    "Color",
+    "Sex"
+   ],
+   "page": 1,
+   "span": "DISCRIMINATION BASED ON: Age, Color, Sex",
+   "confidence": 0.99,
+   "reason": null
+  },
+  "issues": {
+   "value": [
+    "Promotion",
+    "Reasonable Accommodation"
+   ],
+   "page": 1,
+   "span": "I applied for a promotion for which I was qualified and was denied it in favor of a less",
+   "confidence": 0.9,
+   "reason": null
+  },
+  "earliest_date": {
+   "value": "2025-08-17",
+   "page": 1,
+   "span": "Earliest 08/17/2025",
+   "confidence": 0.99,
+   "reason": null
+  },
+  "latest_date": {
+   "value": "2026-03-01",
+   "page": 1,
+   "span": "Latest 03/01/2026",
+   "confidence": 0.99,
+   "reason": null
+  },
+  "continuing_action": {
+   "value": false,
+   "page": null,
+   "span": null,
+   "confidence": 0.9,
+   "reason": "The form does not mark continuing action."
+  },
+  "notice_date": {
+   "value": "2026-05-15",
+   "page": 1,
+   "span": "Date of Notice: 05/15/2026",
+   "confidence": 0.99,
+   "reason": null
+  },
+  "summary": {
+   "value": "The charging party says they were employed by Beacon Staffing and were denied a promotion for which they were qualified, with a less experienced employee chosen instead. They also say their request for a reasonable accommodation was denied without discussion. They believe this was because of their age, color and sex.",
+   "page": null,
+   "span": null,
+   "confidence": 0.9,
+   "reason": null
+  }
+ },
+ "raw": {
+  "charge_number": {
+   "value": "410-2026-10007",
+   "page": 1,
+   "span": "Charge No. 410-2026-10007",
+   "confidence": 0.99,
+   "reason": null
+  },
+  "charging_party": {
+   "value": "Zion Beaumont",
+   "page": 1,
+   "span": "Charging Party: Zion Beaumont",
+   "confidence": 0.99,
+   "reason": null
+  },
+  "respondent": {
+   "value": "Beacon Staffing",
+   "page": 1,
+   "span": "Respondent: Beacon Staffing",
+   "confidence": 0.99,
+   "reason": null
+  },
+  "eeoc_office": {
+   "value": "Phoenix District Office",
+   "page": 1,
+   "span": "EEOC Office: Phoenix District Office",
+   "confidence": 0.99,
+   "reason": null
+  },
+  "bases": {
+   "value": [
+    "Age",
+    "Color",
+    "Sex"
+   ],
+   "page": 1,
+   "span": "DISCRIMINATION BASED ON: Age, Color, Sex",
+   "confidence": 0.99,
+   "reason": null
+  },
+  "issues": {
+   "value": [
+    "Promotion",
+    "Reasonable Accommodation"
+   ],
+   "page": 1,
+   "span": "I applied for a promotion for which I was qualified and was denied it in favor of a less",
+   "confidence": 0.9,
+   "reason": null
+  },
+  "earliest_date": {
+   "value": "2025-08-17",
+   "page": 1,
+   "span": "Earliest 08/17/2025",
+   "confidence": 0.99,
+   "reason": null
+  },
+  "latest_date": {
+   "value": "2026-03-01",
+   "page": 1,
+   "span": "Latest 03/01/2026",
+   "confidence": 0.99,
+   "reason": null
+  },
+  "continuing_action": {
+   "value": false,
+   "page": null,
+   "span": null,
+   "confidence": 0.9,
+   "reason": "The form does not mark continuing action."
+  },
+  "notice_date": {
+   "value": "2026-05-15",
+   "page": 1,
+   "span": "Date of Notice: 05/15/2026",
+   "confidence": 0.99,
+   "reason": null
+  },
+  "summary": {
+   "value": "The charging party says they were employed by Beacon Staffing and were denied a promotion for which they were qualified, with a less experienced employee chosen instead. They also say their request for a reasonable accommodation was denied without discussion. They believe this was because of their age, color and sex.",
+   "page": null,
+   "span": null,
+   "confidence": 0.9,
+   "reason": null
+  }
+ },
+ "removed": [],
+ "pages": {
+  "charge": [
+   "EEOC FORM 5 (11/09)\nCHARGE OF DISCRIMINATION\nCharge No. 410-2026-10007\nEEOC Office: Phoenix District Office\nCharging Party: Zion Beaumont\nCity/State: Tampa, FL\nRespondent: Beacon Staffing\nDISCRIMINATION BASED ON: Age, Color, Sex\nDATE(S) DISCRIMINATION TOOK PLACE: Earliest 08/17/2025 Latest 03/01/2026\nTHE PARTICULARS ARE:\n1. I was employed by Beacon Staffing beginning before August 17, 2025. The conduct described\nbelow began on or about August 17, 2025 and continued through March 01, 2026.\n2. I applied for a promotion for which I was qualified and was denied it in favor of a less\nexperienced employee.\n3. I requested a reasonable accommodation and my request was denied without discussion.\n4. I believe I have been discriminated against because of my age and color and sex, in\nviolation of applicable federal law.\n"
+  ],
+  "notice": [
+   "U.S. EQUAL EMPLOYMENT OPPORTUNITY COMMISSION\nPhoenix District Office\nNOTICE OF CHARGE OF DISCRIMINATION\nDate of Notice: 05/15/2026\nTo: Beacon Staffing\nRe: Charge No. 410-2026-10007\nThis is notice that a charge of employment discrimination has been filed against your\norganization. No action is required on your part at this time. A position statement may be\nrequested.\n"
+  ]
+ }
+}
