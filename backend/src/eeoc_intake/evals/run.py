@@ -6,7 +6,7 @@
 """
 Author:            Kevin Street
 Created on:        2026-10-29
-Last modified on:  2026-11-03
+Last modified on:  2026-11-07
 
 Runs the extraction evaluation over the generated documents and writes
 the results.
@@ -20,6 +20,11 @@ document's known values: a smoke run that needs no key, written to
 to `[data] results`, committed so the case study can cite them, and
 the first `[extract] dump` extractions are saved whole in
 `[data] extractions`.
+
+Each document is one "eval" span with its scores, holding its
+extraction, and a run's documents share one session. With
+`[spans] keep` on, the run's spans are also written beside its
+results.
 """
 
 ########################################################################
@@ -41,9 +46,10 @@ from typing import Final
 from kds.args import required
 from kds.evals.case import EvalCase, load_cases
 from kds.evals.runner import RunResult, run_eval
-from kds.logs import get_logger, log_event, setup_logging
+from kds.logs import get_logger, log_event, setup_logging, setup_spans
 
 # Local
+from eeoc_intake import __version__
 from eeoc_intake.config import SETTINGS, AppSettings, get_app_settings
 from eeoc_intake.core.extract import Extraction, extract
 from eeoc_intake.core.offline import adapter_for
@@ -270,6 +276,8 @@ def main(argv: Sequence[str] | None = None) -> int:
     settings = get_app_settings()
     # log.debug("Starts logging to the configured folder")
     setup_logging(settings)
+    # log.debug("Turns spans on, when they have somewhere to go or are kept")
+    setup_spans(settings, service=settings.spans_service, version=__version__)
     # log.debug("Saves the configured number whole on a live run, none offline")
     dump = args.dump if args.dump is not None else _default_dump(settings)
     # log.debug("Runs the evaluation")

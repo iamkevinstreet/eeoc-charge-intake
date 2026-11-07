@@ -6,7 +6,7 @@
 """
 Author:            Kevin Street
 Created on:        2026-10-29
-Last modified on:  2026-11-03
+Last modified on:  2026-11-07
 
 Builds the HTTP app: its startup, request ids, security headers,
 allowed hosts, body limits and the review screen. Every response
@@ -30,7 +30,7 @@ import logging
 import re
 import time
 from collections.abc import AsyncIterator, Awaitable, Callable
-from contextlib import asynccontextmanager
+from contextlib import AbstractAsyncContextManager, asynccontextmanager
 from typing import Any, Final
 
 # Third-party
@@ -41,7 +41,7 @@ from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 from kds.args import required
 from kds.llm import ModelAdapter
-from kds.logs import get_logger, log_event, new_request_id, setup_logging
+from kds.logs import flush_spans, get_logger, log_event, new_request_id, setup_logging, setup_spans
 from kds.settings import describe
 
 # Local
@@ -163,36 +163,11 @@ def create_app(
     """
     # log.debug("Uses the shared settings unless given")
     config = settings or get_app_settings()
-
-    # log.debug("Defines startup: logging, the settings in the log, the services")
-    @asynccontextmanager
-    async def lifespan(app: FastAPI | None = None) -> AsyncIterator[None]:
-        """Sets up logging, logs every setting and builds the services.
-
-        Secrets are masked in the logged settings.
-
-        Args:
-            app: The app that is starting. Required.
-
-        Yields:
-            Control to the app, which serves until it shuts down.
-        """
-        # log.debug("Takes the app, which the caller must give")
-        app = required(app=app)
-        # log.debug("Starts logging to the configured folder")
-        setup_logging(config)
-        # log.debug("Logs the version and every setting, secrets masked")
-        log_event(log, "service.start", version=__version__, settings=describe(config))
-        # log.debug("Builds the services the routes share")
-        app.state.services = build_services(config, adapter)
-        # log.debug("Serves until shutdown")
-        yield
-
     # log.debug("Builds the app, with the API's schema under its prefix")
     app = App(
         title=SERVICE,
         version=__version__,
-        lifespan=lifespan,
+        lifespan=_lifespan(config, adapter),
         docs_url=None,
         redoc_url=None,
         openapi_url=f"{PREFIX}/openapi.json",
@@ -220,6 +195,55 @@ def create_app(
         app.get("/")(_unbuilt)
     # log.debug("Returns the app")
     return app
+
+
+# log.debug("Defines the app's startup and shutdown")
+def _lifespan(
+    config: AppSettings | None = None, adapter: ModelAdapter | None = None
+) -> Callable[[FastAPI], AbstractAsyncContextManager[None]]:
+    """Returns the app's lifespan: logs, spans, settings, services.
+
+    Args:
+        config: The settings the app runs with. Required.
+        adapter: The model to call; None builds one from the settings.
+
+    Returns:
+        The lifespan, for FastAPI.
+    """
+    # log.debug("Takes the settings, which the caller must give")
+    config = required(config=config)
+
+    # log.debug("Defines startup: logging, spans, the settings in the log, the services")
+    @asynccontextmanager
+    async def lifespan(app: FastAPI | None = None) -> AsyncIterator[None]:
+        """Sets up logging and spans, logs settings, builds services.
+
+        Secrets are masked in the logged settings. Spans stay off until
+        the Langfuse keys or an OpenTelemetry endpoint are set.
+
+        Args:
+            app: The app that is starting. Required.
+
+        Yields:
+            Control to the app, which serves until it shuts down.
+        """
+        # log.debug("Takes the app, which the caller must give")
+        app = required(app=app)
+        # log.debug("Starts logging to the configured folder")
+        setup_logging(config)
+        # log.debug("Turns spans on, when they have somewhere to go")
+        setup_spans(config, service=config.spans_service, version=__version__)
+        # log.debug("Logs the version and every setting, secrets masked")
+        log_event(log, "service.start", version=__version__, settings=describe(config))
+        # log.debug("Builds the services the routes share")
+        app.state.services = build_services(config, adapter)
+        # log.debug("Serves until shutdown")
+        yield
+        # log.debug("Sends any spans still waiting")
+        flush_spans()
+
+    # log.debug("Returns the lifespan")
+    return lifespan
 
 
 # log.debug("Defines the answer at / before the review screen is built")

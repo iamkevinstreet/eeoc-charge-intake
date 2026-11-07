@@ -17,7 +17,7 @@ Case study: <https://kevindstreet.com/projects/eeoc-charge-intake-extraction/>
 
 | | |
 | --- | --- |
-| Works today | Extraction with a quote and page for every field, the quote check, the review screen with gated export, demo mode, the evaluation (offline in CI, live by hand), the dashboard and the Tableau export |
+| Works today | Extraction with a quote and page for every field, the quote check, the review screen with gated export, demo mode, the evaluation (offline in CI, live by hand), the dashboard and the Tableau export, and spans of every extraction for Langfuse |
 | Measured | Three live runs with `claude-sonnet-5-5`, the latest on 200 documents: every field right on every document (below) |
 | Next | A harder test set: varied wording, irrelevant detail, pages that look scanned |
 
@@ -86,7 +86,7 @@ samples and uploaded PDFs with the model.
 - **Chosen solution:** the model reads both documents and quotes its evidence; the service checks
   every quote against its page and empties what it cannot find; a reviewer decides each field; the
   deadline is computed, not extracted.
-- **Test plan:** 59 backend and 11 review-screen tests; an offline smoke run on
+- **Test plan:** 64 backend and 11 review-screen tests; an offline smoke run on
   generated documents in CI; live runs by hand on 40 to 200 documents across five kinds of
   document, each scored per field against the known answers.
 - **Rollout:** local only; live results reviewed on a branch before they merge; the case study shows
@@ -140,6 +140,7 @@ are most likely to change:
 | `[api] max_upload_bytes`, `[api] extracts_per_minute` | `10000000`, `6` | `config/config.toml` |
 | `[eval] budget_usd` | `5.0` | `config/config.toml` |
 | `ANTHROPIC_API_KEY` | unset | `config/.env` only |
+| `LANGFUSE_PUBLIC_KEY`, `LANGFUSE_SECRET_KEY` | unset: spans stay off | `config/.env` only |
 
 Any setting can be overridden by an environment variable named for its section and key:
 `SAMPLES_COUNT=200`. `config.toml` also holds the values two parts of the code share, such as the
@@ -155,6 +156,14 @@ one place.
   emptied, and the extraction's cost and time.
 - **Request id:** on every log line and in the `X-Request-ID` header of every response, and saved
   with each review.
+- **Spans:** each extraction is one `extract` span recording how many fields the record fills and
+  how many the check emptied, holding a `chat` span for the model call (tokens, cost, stop reason)
+  and a `verify` span for the quote check, which names the fields it emptied and which Langfuse shows
+  as a guardrail. Each evaluated document is one `eval` span with its scores, and a run's documents
+  share one session. Set `LANGFUSE_PUBLIC_KEY` and `LANGFUSE_SECRET_KEY` in `config/.env` and the
+  spans go to Langfuse; unset, they stay off. Document text, prompts, answers and extracted values
+  stay off spans unless `[spans] content` is on, and a log line written in a span carries its
+  `trace_id`.
 - **When something fails:** `GET /api/v1/health` shows the provider, the model and whether this is
   demo mode. A 422 means a PDF could not be read; a 502, the model's answer did not fit the record
   even after a repair; a 503, the model could not be reached or the spending limit was reached

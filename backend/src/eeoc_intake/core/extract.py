@@ -6,7 +6,7 @@
 """
 Author:            Kevin Street
 Created on:        2026-10-29
-Last modified on:  2026-11-03
+Last modified on:  2026-11-07
 
 Reads a charge and its notice into a record with evidence, then empties
 what the pages don't say.
@@ -14,7 +14,9 @@ what the pages don't say.
 `extract()` returns everything a reviewer or an evaluation needs to
 judge the result: the verified record, the raw model output, the
 fields verification emptied, the page texts the quotes point into,
-and what the call cost.
+and what the call cost. Each extraction is one "extract" span holding
+the model call and the quote check, which Langfuse shows as a
+guardrail.
 """
 
 ########################################################################
@@ -34,7 +36,7 @@ from typing import Final
 # Third-party
 from kds.args import missing, required
 from kds.llm import ModelAdapter
-from kds.logs import get_logger, log_event
+from kds.logs import get_logger, log_event, set_values, step
 from kds.synthetic.pdftext import pages_text, span_in_page
 from pypdf.errors import PyPdfError
 
@@ -93,6 +95,14 @@ SYSTEM: Final = (
 )
 # log.debug("Sets the reason a field emptied by verification carries")
 UNSUPPORTED: Final = "unsupported: cited span not found on cited page"
+# log.debug("Names the span an extraction runs in")
+EXTRACT: Final = "extract"
+# log.debug("Names the span the quotes are checked in")
+VERIFY: Final = "verify"
+# log.debug("Names the attribute Langfuse reads a span's kind from")
+GUARDRAIL_TYPE: Final = "langfuse.observation.type"
+# log.debug("Names the kind Langfuse shows the quote check as")
+GUARDRAIL: Final = "guardrail"
 
 
 ########################################################################
@@ -179,6 +189,10 @@ def extract(
 ) -> Extraction:
     """Reads both PDFs, asks the model for the record, checks quotes.
 
+    The work runs in an "extract" span that records how many fields
+    the record fills and how many the check emptied; it holds the
+    model call and the check.
+
     Args:
         adapter: The model adapter to call. Required.
         charge_pdf: The charge form's PDF. Required.
@@ -204,6 +218,55 @@ def extract(
     if notice_pdf is None:
         # log.debug("Raises the missing-argument error")
         raise missing(notice_pdf=notice_pdf)
+    # log.debug("Extracts in a span of its own")
+    with step(EXTRACT) as span:
+        # log.debug("Reads both documents, asks the model and checks its quotes")
+        ex = _extract(adapter, charge_pdf, notice_pdf)
+        # log.debug("Counts the fields the checked record fills")
+        filled = sum(1 for f in FIELDS if not is_empty(ex.record.sourced(f).value))
+        # log.debug("Records how many fields were filled and how many emptied")
+        set_values(span, {"extract.filled": filled, "extract.removed": len(ex.removed)})
+        # log.debug("Logs how many fields were filled and which were emptied")
+        log_event(
+            log,
+            "extract.done",
+            filled=filled,
+            removed=ex.removed,
+            cost_usd=ex.cost_usd,
+            latency_ms=ex.latency_ms,
+        )
+    # log.debug("Returns the record, the raw answer and the call's facts")
+    return ex
+
+
+# log.debug("Defines the work of one extraction")
+def _extract(
+    adapter: ModelAdapter | None = None,
+    charge_pdf: Path | str | None = None,
+    notice_pdf: Path | str | None = None,
+) -> Extraction:
+    """Reads both PDFs, asks the model for the record, checks quotes.
+
+    Args:
+        adapter: The model adapter to call. Required.
+        charge_pdf: The charge form's PDF. Required.
+        notice_pdf: The notice letter's PDF. Required.
+
+    Returns:
+        The checked record, the model's own record, the fields the
+        check emptied, both documents' page texts, and the model, cost
+        and time of the call.
+    """
+    # log.debug("Takes the adapter, which the caller must give")
+    adapter = required(adapter=adapter)
+    # log.debug("Stops when the caller left out the charge's PDF")
+    if charge_pdf is None:
+        # log.debug("Raises the missing-argument error")
+        raise missing(charge_pdf=charge_pdf)
+    # log.debug("Stops when the caller left out the notice's PDF")
+    if notice_pdf is None:
+        # log.debug("Raises the missing-argument error")
+        raise missing(notice_pdf=notice_pdf)
     # log.debug("Reads the charge's text, page by page")
     charge_pages = read_pages(charge_pdf)
     # log.debug("Reads the notice's text, page by page")
@@ -218,19 +281,12 @@ def extract(
     )
     # log.debug("Measures the whole exchange, a repair included")
     latency_ms = int((time.perf_counter() - started) * MS)
-    # log.debug("Measures what the exchange cost")
-    cost_usd = adapter.spent_usd - spent
-    # log.debug("Empties every field whose quote is not on the page it cites")
-    verified, removed = verify_spans(raw, charge_pages, notice_pages)
-    # log.debug("Logs how many fields were filled and which were emptied")
-    log_event(
-        log,
-        "extract.done",
-        filled=sum(1 for f in FIELDS if not is_empty(verified.sourced(f).value)),
-        removed=removed,
-        cost_usd=cost_usd,
-        latency_ms=latency_ms,
-    )
+    # log.debug("Checks the quotes in a span Langfuse shows as a guardrail")
+    with step(VERIFY, {GUARDRAIL_TYPE: GUARDRAIL}) as span:
+        # log.debug("Empties every field whose quote is not on the page it cites")
+        verified, removed = verify_spans(raw, charge_pages, notice_pages)
+        # log.debug("Records the fields it emptied, by name")
+        set_values(span, {"verify.removed": removed})
     # log.debug("Returns the record, the raw answer and the call's facts")
     return Extraction(
         record=verified,
@@ -239,7 +295,7 @@ def extract(
         charge_pages=charge_pages,
         notice_pages=notice_pages,
         model=completion.model,
-        cost_usd=cost_usd,
+        cost_usd=adapter.spent_usd - spent,
         latency_ms=latency_ms,
     )
 

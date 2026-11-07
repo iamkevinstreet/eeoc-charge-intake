@@ -42,6 +42,11 @@ reads.
 | `[log] level` | `INFO` | `DEBUG`, `INFO`, `WARNING` or `ERROR` |
 | `[log] redact` | `true` | Removes emails, phone numbers and ID-like numbers from log lines |
 | `[log] trace` | `false` | Prints the logger lines (once switched on) as HH:MM:SS traces |
+| `[spans] keep` | `false` | Writes each evaluation's spans beside its results, one per line |
+| `[spans] content` | `false` | Puts the documents' text, prompts and answers on spans; for made-up documents only |
+| `[spans] public` | `false` | Lets anyone with a trace's link open it in Langfuse |
+| `[spans] service` | `eeoc-charge-intake` | The name spans are recorded under |
+| `[langfuse] base_url` | `https://cloud.langfuse.com` | Where spans go once `LANGFUSE_PUBLIC_KEY` and `LANGFUSE_SECRET_KEY` are in `config/.env`; `https://us.cloud.langfuse.com` for US data |
 | `[data] samples` | `data/generated` | The generated charges and notices, and `cases.jsonl` |
 | `[data] results` | `data/evals/results` | Live evaluation results, committed |
 | `[data] smoke` | `data/evals/smoke` | Offline smoke results, never committed |

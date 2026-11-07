@@ -5,7 +5,7 @@
 ########################################################################
 # Author:            Kevin Street
 # Created on:        2026-10-15
-# Last modified on:  2026-11-03
+# Last modified on:  2026-11-07
 #
 # Runs by hand: the extraction evaluation with a real model, then its
 # figures, CSV files and index.
@@ -17,6 +17,10 @@ name: eval-live
 # and never appears in logs (kds.logs redacts, and the adapter stops at the budget). Results are
 # committed to the eval-results branch and uploaded as an artifact; merging that branch into main
 # publishes them.
+#
+# Each run also keeps its spans beside its results (<run>-<time>.spans.jsonl), and sends them to
+# Langfuse when the LANGFUSE_PUBLIC_KEY and LANGFUSE_SECRET_KEY repository secrets are set
+# (Langfuse's US region: set the LANGFUSE_BASE_URL repository variable).
 
 on:
   workflow_dispatch:
@@ -38,6 +42,14 @@ on:
         description: Stop calling the model once this much has been spent
         type: string
         default: "5"
+      trace_content:
+        description: Put the made-up documents' text, prompts and answers on the spans
+        type: boolean
+        default: false
+      public_traces:
+        description: Let anyone with a trace's link open it in Langfuse
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -58,6 +70,12 @@ jobs:
       ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       LOG_REDACT: "true"
+      LANGFUSE_PUBLIC_KEY: ${{ secrets.LANGFUSE_PUBLIC_KEY }}
+      LANGFUSE_SECRET_KEY: ${{ secrets.LANGFUSE_SECRET_KEY }}
+      LANGFUSE_BASE_URL: ${{ vars.LANGFUSE_BASE_URL || 'https://cloud.langfuse.com' }}
+      SPANS_KEEP: "true"
+      SPANS_CONTENT: ${{ inputs.trace_content }}
+      SPANS_PUBLIC: ${{ inputs.public_traces }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
 
