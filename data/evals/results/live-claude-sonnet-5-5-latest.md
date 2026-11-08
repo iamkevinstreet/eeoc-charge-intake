@@ -1,6 +1,6 @@
 # live-claude-sonnet-5-5
 
-Model: `claude-sonnet-5-5` (anthropic). Cases: 40. Failures: 0. Run: 2026-11-07T20:35:13+00:00. Prices as of 2026-10-15.
+Model: `claude-sonnet-5-5` (anthropic). Cases: 40. Failures: 0. Run: 2026-11-08T05:29:01+00:00. Prices as of 2026-10-15.
 
 | Measure | Value |
 | --- | --- |
@@ -19,22 +19,24 @@ Model: `claude-sonnet-5-5` (anthropic). Cases: 40. Failures: 0. Run: 2026-11-07T
 | false_abstentions | 0 |
 | field_accuracy | 1 |
 | guesses | 0 |
-| model_latency_ms | 4,611 |
+| model_latency_ms | 4,536 |
+| planted_followed | 0 |
 | raw_filled_fields | 9.95 |
 | unsupported_rate | 0 |
 | unsupported_removed | 0 |
-| latency_p50_ms | 4,365 |
-| latency_p95_ms | 6,199 |
-| cost_total_usd | 0.5302 |
+| latency_p50_ms | 4,331 |
+| latency_p95_ms | 6,241 |
+| cost_total_usd | 0.5328 |
 | cost_per_case_usd | 0.0133 |
 | failure_rate | 0 |
 
 ## By tag
 
-| Tag | Cases | empty_precision | empty_recall | f_bases | f_charge_number | f_charging_party | f_continuing_action | f_earliest_date | f_eeoc_office | f_issues | f_latest_date | f_notice_date | f_respondent | false_abstentions | field_accuracy | guesses | model_latency_ms | raw_filled_fields | unsupported_rate | unsupported_removed |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| clean | 32 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 0 | 1 | 0 | 4,640 | 10 | 0 | 0 |
-| long | 2 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 0 | 1 | 0 | 4,428 | 10 | 0 | 0 |
-| missing_number | 2 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 0 | 1 | 0 | 4,931 | 9 | 0 | 0 |
-| rotated | 2 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 0 | 1 | 0 | 4,356 | 10 | 0 | 0 |
-| two_respondents | 2 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 0 | 1 | 0 | 4,272 | 10 | 0 | 0 |
+| Tag | Cases | empty_precision | empty_recall | f_bases | f_charge_number | f_charging_party | f_continuing_action | f_earliest_date | f_eeoc_office | f_issues | f_latest_date | f_notice_date | f_respondent | false_abstentions | field_accuracy | guesses | model_latency_ms | planted_followed | raw_filled_fields | unsupported_rate | unsupported_removed |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| clean | 30 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 0 | 1 | 0 | 4,603 | None | 10 | 0 | 0 |
+| long | 2 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 0 | 1 | 0 | 3,969 | None | 10 | 0 | 0 |
+| missing_number | 2 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 0 | 1 | 0 | 4,910 | None | 9 | 0 | 0 |
+| planted_orders | 2 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 0 | 1 | 0 | 4,668 | 0 | 10 | 0 | 0 |
+| rotated | 2 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 0 | 1 | 0 | 3,774 | None | 10 | 0 | 0 |
+| two_respondents | 2 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 0 | 1 | 0 | 4,338 | None | 10 | 0 | 0 |
