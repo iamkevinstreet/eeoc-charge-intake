@@ -6,13 +6,15 @@
 """
 Author:            Kevin Street
 Created on:        2026-10-29
-Last modified on:  2026-11-07
+Last modified on:  2026-11-08
 
 Keeps the reviews in progress, each an extraction with the decisions
 made on its fields, and builds the record a finished review exports.
-A review exports only when every field is decided. The store keeps the
-newest `[api] max_reviews` in memory and drops the oldest: it is not a
-database, which the README lists as unresolved.
+A review exports only when every field is decided. This store keeps
+the newest `[api] max_reviews` in memory and drops the oldest, for the
+demo and the tests; api/store.py keeps them in Postgres. Both build a
+review the same way and agree on the Store protocol below. An export
+follows the contract in contracts/review_export_v1.json.
 """
 
 ########################################################################
@@ -23,11 +25,11 @@ database, which the README lists as unresolved.
 # Standard library
 from __future__ import annotations
 
+import json
 import threading
-import uuid
 from collections import OrderedDict
-from dataclasses import dataclass, field
 from datetime import UTC, date, datetime
+from pathlib import Path
 from typing import Any, Final
 
 # Third-party
@@ -35,6 +37,7 @@ from kds.args import required
 from kds.logs import get_logger
 
 # Local
+from eeoc_intake.api.review import Review, stamp, start_review
 from eeoc_intake.config import SETTINGS
 from eeoc_intake.core.extract import Extraction, response_due
 from eeoc_intake.core.schema import FIELDS, Decision, Value
@@ -47,22 +50,30 @@ from eeoc_intake.core.schema import FIELDS, Decision, Value
 log = get_logger(__name__)
 # log.debug("Takes the field the response deadline is counted from, from the config")
 NOTICE_FIELD: Final = SETTINGS.record_notice_field
+# log.debug("Takes the name every export's contract goes by, from the config")
+CONTRACT: Final = SETTINGS.exports_contract
+# log.debug("Takes the text encoding of every file written, from the config")
+ENCODING: Final = SETTINGS.files_encoding
 
 ########################################################################
 #                                                                      #
 #                           Local constants                            #
 #                                                                      #
 ########################################################################
-# log.debug("Sets the length of a review id, in hex digits")
-ID_DIGITS: Final = 10
-# log.debug("Sets the time stamp's precision")
-TIMESPEC: Final = "seconds"
 # log.debug("Names the review id key both answers carry")
 REVIEW_ID: Final = "review_id"
 # log.debug("Names the record key both answers carry")
 RECORD: Final = "record"
 # log.debug("Names the decisions key both answers carry")
 DECISIONS: Final = "decisions"
+# log.debug("Names the source key both answers carry")
+SOURCE: Final = "source"
+# log.debug("Names the demo key both answers carry")
+DEMO: Final = "demo"
+# log.debug("Names the key of the fields the quote check emptied, in both answers")
+REMOVED: Final = "removed"
+# log.debug("Names the export's time key, which the file's name also uses")
+EXPORTED_AT: Final = "exported_at"
 
 
 ########################################################################
@@ -70,37 +81,6 @@ DECISIONS: Final = "decisions"
 #                         Reviews in progress                          #
 #                                                                      #
 ########################################################################
-# log.debug("Defines one review")
-@dataclass
-class Review:
-    """One extraction under review and the decisions made so far.
-
-    Attributes:
-        review_id: The review's id, ten hex digits.
-        source: Where the documents came from, a sample or an upload.
-        demo: Whether the offline stand-in made the extraction.
-        created_at: When the review began, in UTC.
-        request_id: The request that made the extraction, for the logs.
-        extraction: The extraction under review.
-        decisions: Each decided field's decision.
-    """
-
-    # log.debug("Holds the id")
-    review_id: str
-    # log.debug("Holds the source")
-    source: str
-    # log.debug("Holds whether this is demo output")
-    demo: bool
-    # log.debug("Holds when it began")
-    created_at: str
-    # log.debug("Holds the request id")
-    request_id: str
-    # log.debug("Holds the extraction")
-    extraction: Extraction
-    # log.debug("Holds the decisions, by field")
-    decisions: dict[str, Decision] = field(default_factory=dict)
-
-
 # log.debug("Defines the store")
 class ReviewStore:
     """The reviews of one process, the oldest dropped past the limit."""
@@ -153,14 +133,7 @@ class ReviewStore:
         # log.debug("Takes the request id, which the caller must give")
         request_id = required(request_id=request_id)
         # log.debug("Builds the review with a random id")
-        review = Review(
-            review_id=uuid.uuid4().hex[:ID_DIGITS],
-            source=source,
-            demo=demo,
-            created_at=datetime.now(UTC).isoformat(timespec=TIMESPEC),
-            request_id=request_id,
-            extraction=extraction,
-        )
+        review = start_review(extraction, source=source, demo=demo, request_id=request_id)
         # log.debug("Stores it, dropping the oldest past the limit")
         with self._lock:
             # log.debug("Adds it as the newest")
@@ -220,6 +193,25 @@ class ReviewStore:
             # log.debug("Returns the count")
             return len(review.decisions)
 
+    # log.debug("Defines the record of an export, which memory keeps per review")
+    def record_export(
+        self, review: Review | None = None, export: dict[str, Any] | None = None
+    ) -> None:
+        """Keeps the review's exports beside it, until it is dropped.
+
+        Args:
+            review: The review exported. Required.
+            export: What the export returned. Required.
+        """
+        # log.debug("Takes the review, which the caller must give")
+        review = required(review=review)
+        # log.debug("Takes the export, which the caller must give")
+        export = required(export=export)
+        # log.debug("Keeps it with the review")
+        with self._lock:
+            # log.debug("Adds it to the review's exports")
+            review.exports.append(export)
+
 
 # log.debug("Defines what the review screen receives")
 def payload(review: Review | None = None) -> dict[str, Any]:
@@ -239,8 +231,8 @@ def payload(review: Review | None = None) -> dict[str, Any]:
     # log.debug("Returns the review, the extraction and the decisions so far")
     return {
         REVIEW_ID: review.review_id,
-        "source": review.source,
-        "demo": review.demo,
+        SOURCE: review.source,
+        DEMO: review.demo,
         "created_at": review.created_at,
         "request_id": review.request_id,
         "model": ex.model,
@@ -249,7 +241,7 @@ def payload(review: Review | None = None) -> dict[str, Any]:
         "fields": FIELDS,
         RECORD: ex.record.model_dump(),
         "raw": ex.raw.model_dump(),
-        "removed": ex.removed,
+        REMOVED: ex.removed,
         "warnings": [w.model_dump() for w in ex.warnings],
         "pages": {"charge": ex.charge_pages, "notice": ex.notice_pages},
         DECISIONS: {f: d.model_dump() for f, d in review.decisions.items()},
@@ -280,7 +272,8 @@ def exported(review: Review | None = None, *, response_days: int | None = None) 
 
     Accepted fields keep the extracted value, edited ones the reviewer's
     value, and rejected ones are empty. The caller checks that every
-    field is decided first.
+    field is decided first. The shape is the export contract's, version
+    1: contracts/review_export_v1.json.
 
     Args:
         review: The review, with every field decided. Required.
@@ -288,9 +281,10 @@ def exported(review: Review | None = None, *, response_days: int | None = None) 
             statement is due. Required.
 
     Returns:
-        The record after the decisions, when it was exported, the
-        response deadline (None without a valid notice date) and each
-        field's decision.
+        The record after the decisions, the values the model read, the
+        fields the quote check emptied, each field's decision, the
+        response deadline (None without a valid notice date), where the
+        documents came from, and when the review began and exported.
     """
     # log.debug("Takes the review, which the caller must give")
     review = required(review=review)
@@ -300,12 +294,46 @@ def exported(review: Review | None = None, *, response_days: int | None = None) 
     record = {f: _decided_value(review, f) for f in FIELDS}
     # log.debug("Returns the record, its deadline and the decisions")
     return {
+        "contract": CONTRACT,
         REVIEW_ID: review.review_id,
-        "exported_at": datetime.now(UTC).isoformat(timespec=TIMESPEC),
+        SOURCE: review.source,
+        DEMO: review.demo,
+        "started_at": review.created_at,
+        EXPORTED_AT: stamp(datetime.now(UTC)),
         RECORD: record,
+        "extracted": {f: getattr(review.extraction.record, f).value for f in FIELDS},
+        REMOVED: list(review.extraction.removed),
         "response_due": _due(record.get(NOTICE_FIELD), response_days),
         DECISIONS: {f: d.action for f, d in review.decisions.items()},
     }
+
+
+# log.debug("Defines the copy of an export written to a folder")
+def write_export(folder: Path | None = None, export: dict[str, Any] | None = None) -> Path:
+    """Writes the export to the folder as <review_id>-<time>.json.
+
+    A loader reads the folder, or the bucket it is synced to; the name
+    sorts a review's exports by time and never overwrites one.
+
+    Args:
+        folder: Where exports go, `[exports] folder`. Required.
+        export: What the export returned. Required.
+
+    Returns:
+        The file written.
+    """
+    # log.debug("Takes the folder, which the caller must give")
+    folder = required(folder=folder)
+    # log.debug("Takes the export, which the caller must give")
+    export = required(export=export)
+    # log.debug("Makes the folder")
+    folder.mkdir(parents=True, exist_ok=True)
+    # log.debug("Names the file by the review and the time, safe in any file system")
+    path = folder / f"{export[REVIEW_ID]}-{export[EXPORTED_AT].replace(':', '')}.json"
+    # log.debug("Writes it")
+    path.write_text(json.dumps(export, indent=1, sort_keys=True), encoding=ENCODING)
+    # log.debug("Returns where it went")
+    return path
 
 
 # log.debug("Defines one field's value after its decision")

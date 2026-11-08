@@ -5,7 +5,7 @@
 ########################################################################
 # Author:            Kevin Street
 # Created on:        2026-10-14
-# Last modified on:  2026-11-05
+# Last modified on:  2026-11-08
 #
 # Runs on every push and pull request: the secrets scan, lint, types,
 # the code standard, the tests, the offline evaluation and the audits.
@@ -36,7 +36,20 @@ jobs:
   backend:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    services:
+      # The review store's tests run against a real Postgres; it is the runner's alone.
+      postgres:
+        image: postgres:17.6
+        env:
+          POSTGRES_USER: reviews
+          POSTGRES_PASSWORD: ci-only
+          POSTGRES_DB: reviews_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U reviews" --health-interval 5s --health-retries 10
     env:
+      REVIEWS_TEST_DATABASE_URL: postgresql://reviews:ci-only@localhost:5432/reviews_test
       GITLEAKS_VERSION: 8.30.1
       GITLEAKS_SHA256: 551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb
     steps:

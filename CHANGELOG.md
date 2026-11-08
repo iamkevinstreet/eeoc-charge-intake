@@ -9,6 +9,21 @@
   when every check passes. One whose checks fail is labelled "needs a person" and waits. CI can now
   be called for a given commit, which is how the workflow checks one before it lands.
 
+## v0.8.0, Nov 8, 2026
+
+- **Reviews in Postgres:** `[reviews] store = "postgres"` keeps every review, each field's latest
+  decision and every export in Postgres at `REVIEWS_DATABASE_URL`, so a review survives a restart.
+  The schema is applied from `db/*.sql` at startup, once each, and recorded in `schema_migrations`;
+  a trigger refuses any change to an export. Memory stays the default, for the demo and the tests.
+- **Export contract, version 1:** `contracts/review_export_v1.json`, a JSON Schema. An export now also
+  carries its contract, the review's source and whether it was demo output, when it began, the values
+  the model read and the fields the quote check emptied, so a warehouse can count corrections by
+  field. Fields may be added within version 1; none is removed or retyped without version 2.
+- **Exports folder:** with `[exports] folder` set, each export is also written there, one file each,
+  for the data platform's loaders.
+- **Tests:** the contract on every export, the folder copy, and in Postgres a restart, a replaced
+  decision, the append-only exports and the migrations. 74 backend tests.
+
 ## v0.7.0, Nov 7, 2026
 
 - **Planted orders:** a new hard case. Every 25th generated charge, from the 13th, has a note in its

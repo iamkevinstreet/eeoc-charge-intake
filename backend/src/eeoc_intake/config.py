@@ -6,7 +6,7 @@
 """
 Author:            Kevin Street
 Created on:        2026-10-29
-Last modified on:  2026-11-07
+Last modified on:  2026-11-08
 
 Loads every setting the service, the evaluation, the dashboard and the
 review screen read, typed and validated, and every value two modules
@@ -32,12 +32,12 @@ from __future__ import annotations
 
 from functools import lru_cache
 from pathlib import Path
-from typing import Final, Self
+from typing import Final, Literal, Self
 
 # Third-party
 from kds.logs import get_logger
 from kds.settings import Settings
-from pydantic import Field, model_validator
+from pydantic import Field, SecretStr, model_validator
 
 ########################################################################
 #                                                                      #
@@ -55,6 +55,8 @@ log = get_logger(__name__)
 LOCALHOST: Final = "127.0.0.1"
 # log.debug("Lists the addresses that only this machine can reach")
 LOOPBACK = frozenset({LOCALHOST, "::1", "localhost"})
+# log.debug("Sets the store that keeps reviews in memory, the default")
+MEMORY: Final = "memory"
 # log.debug("Sets the highest port number")
 MAX_PORT = 65_535
 # log.debug("Sets the smallest upload limit that still fits a one-page PDF")
@@ -217,6 +219,15 @@ class AppSettings(Settings):
     api_max_upload_bytes: int = Field(default=10_000_000, ge=MIN_UPLOAD_BYTES)
     # log.debug("Holds the most reviews kept in memory")
     api_max_reviews: int = Field(default=200, ge=1)
+
+    # log.debug("Holds where reviews are kept: memory, or Postgres at REVIEWS_DATABASE_URL")
+    reviews_store: Literal["memory", "postgres"] = MEMORY
+    # log.debug("Holds the reviews database's address, a secret: it can hold a password")
+    reviews_database_url: SecretStr | None = None
+    # log.debug("Holds the folder each export is also written to; blank writes none")
+    exports_folder: str = ""
+    # log.debug("Holds the name and version of the export's contract")
+    exports_contract: str = "eeoc-review-export/v1"
     # log.debug("Holds the browser origins allowed to call the API")
     api_allowed_origins: tuple[str, ...] = ("http://localhost:5173",)
     # log.debug("Holds the host names requests may be addressed to")
@@ -346,12 +357,15 @@ class AppSettings(Settings):
     def _check(self) -> Self:
         """Refuses to listen beyond this machine: there is no sign-in.
 
+        Also refuses the Postgres store without its database's address.
+
         Returns:
             The settings, unchanged.
 
         Raises:
             ValueError: When the service or dashboard would listen on
-                an address other machines can reach.
+                an address other machines can reach, or Postgres is the
+                store without REVIEWS_DATABASE_URL.
         """
         # log.debug("Finds any server that would listen beyond this machine")
         exposed = [
@@ -371,6 +385,10 @@ class AppSettings(Settings):
             )
             # log.debug("Raises it")
             raise ValueError(msg)
+        # log.debug("Refuses the Postgres store with nowhere to keep reviews")
+        if self.reviews_store != MEMORY and not self.reviews_database_url:
+            # log.debug("Raises the missing address's error")
+            raise ValueError("[reviews] store = postgres needs REVIEWS_DATABASE_URL")
         # log.debug("Returns the settings unchanged")
         return self
 

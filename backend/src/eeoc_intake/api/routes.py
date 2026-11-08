@@ -6,7 +6,7 @@
 """
 Author:            Kevin Street
 Created on:        2026-10-29
-Last modified on:  2026-11-03
+Last modified on:  2026-11-08
 
 Serves the review routes, all under the API's prefix (/api/v1):
 
@@ -49,7 +49,8 @@ from eeoc_intake.api.extraction import (
     run_extraction,
     upload_name,
 )
-from eeoc_intake.api.reviews import Review, exported, payload, undecided
+from eeoc_intake.api.review import Review
+from eeoc_intake.api.reviews import exported, payload, undecided, write_export
 from eeoc_intake.api.state import Services, services
 from eeoc_intake.config import SETTINGS
 from eeoc_intake.core.extract import Extraction
@@ -288,10 +289,18 @@ def export(review_id: ReviewId, svc: Svc) -> dict[str, Any]:
     if missing:
         # log.debug("Names them")
         raise HTTPException(status.HTTP_409_CONFLICT, f"undecided fields: {missing}")
+    # log.debug("Builds the export")
+    out = exported(review, response_days=svc.settings.extract_response_days)
+    # log.debug("Records it in the store, which in Postgres no one can change")
+    svc.reviews.record_export(review, out)
+    # log.debug("Writes a copy for the loaders when a folder is set")
+    if svc.settings.exports_folder:
+        # log.debug("Writes the copy")
+        write_export(Path(svc.settings.exports_folder), out)
     # log.debug("Logs the export, which ends the review")
     log_event(log, "review.exported", review_id=review_id)
     # log.debug("Returns the record")
-    return exported(review, response_days=svc.settings.extract_response_days)
+    return out
 
 
 # log.debug("Defines the latest evaluation run")

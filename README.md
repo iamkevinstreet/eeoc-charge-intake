@@ -17,7 +17,7 @@ Case study: <https://kevindstreet.com/projects/eeoc-charge-intake-extraction/>
 
 | | |
 | --- | --- |
-| Works today | Extraction with a quote and page for every field, the quote check, the review screen with gated export, demo mode, the evaluation (offline in CI, live by hand), the dashboard and the Tableau export, and spans of every extraction for Langfuse |
+| Works today | Extraction with a quote and page for every field, the quote check, the review screen with gated export, demo mode, the evaluation (offline in CI, live by hand), the dashboard and the Tableau export, spans of every extraction for Langfuse, and reviews kept in Postgres with every export on record under a versioned contract |
 | Measured | Four live runs with `claude-sonnet-5-5`, the largest on 200 documents and the latest, with its trace, on 40: every field right on every document (below) |
 | Next | A harder test set: varied wording, irrelevant detail, pages that look scanned |
 
@@ -88,7 +88,7 @@ samples and uploaded PDFs with the model.
 - **Chosen solution:** the model reads both documents and quotes its evidence; the service checks
   every quote against its page and empties what it cannot find; a reviewer decides each field; the
   deadline is computed, not extracted.
-- **Test plan:** 68 backend and 13 review-screen tests; an offline smoke run on
+- **Test plan:** 74 backend and 13 review-screen tests; an offline smoke run on
   generated documents in CI; live runs by hand on 40 to 200 documents across five kinds of
   document, each scored per field against the known answers.
 - **Rollout:** local only; live results reviewed on a branch before they merge; the case study shows
@@ -96,8 +96,8 @@ samples and uploaded PDFs with the model.
   reviews, and real (consented) documents to measure against.
 - **Unresolved:** generated particulars are cleaner and more regular than real ones, so 100% here is a
   ceiling, not a forecast; a scanned PDF has no text layer, so its fields come back empty with
-  reasons (there is no OCR yet); reviews live in memory, the newest 200, and are lost on restart; the
-  per-client limit lives in memory, so two server processes would each allow six a minute; neither
+  reasons (there is no OCR yet); reviews live in memory, the newest 200, unless `[reviews] store` is
+  `postgres`; the per-client limit lives in memory, so two server processes would each allow six a minute; neither
   the service nor the dashboard has sign-in, so both refuse to listen beyond this machine.
 
 ## Results
@@ -186,6 +186,14 @@ one place.
   spans go to Langfuse; unset, they stay off. Document text, prompts, answers and extracted values
   stay off spans unless `[spans] content` is on, and a log line written in a span carries its
   `trace_id`.
+- **Reviews and exports:** with `[reviews] store = "postgres"` and `REVIEWS_DATABASE_URL` in
+  `config/.env`, every review, each field's latest decision and every export is kept in Postgres. The
+  schema is `backend/src/eeoc_intake/db/*.sql`, applied once each at startup and recorded in
+  `schema_migrations`; a trigger refuses any change to an export once written. Each export follows
+  the contract in `backend/src/eeoc_intake/contracts/review_export_v1.json`: the record after the
+  decisions, the values the model read, the fields the quote check emptied, each decision, and when
+  the review began and ended. With `[exports] folder` set, each export is also written there as
+  `<review_id>-<time>.json`, for the data platform's loaders.
 - **When something fails:** `GET /api/v1/health` shows the provider, the model and whether this is
   demo mode. A 422 means a PDF could not be read; a 502, the model's answer did not fit the record
   even after a repair; a 503, the model could not be reached or the spending limit was reached
@@ -201,8 +209,10 @@ make eval    # the offline smoke run over the generated documents; no key, no ne
 ```
 
 Tests never call a model or the network: the offline stand-in and scripted answers take its place.
-They write only to temporary folders, run from an empty folder so no `config/.env` leaks in,
-generate their documents from fixed seeds, and never sleep: retries take an injected wait. CI runs
+The Postgres tests run against `REVIEWS_TEST_DATABASE_URL`, a database they empty first; CI starts
+one, and without it they are skipped. Tests write only to temporary folders, run from an empty
+folder so no `config/.env` leaks in, generate their documents from fixed seeds, and never sleep:
+retries take an injected wait. CI runs
 the checks, the tests and the smoke run on every push to `main` and every pull request, with the
 dependency audits, CodeQL and a secrets scan of the whole history. The live evaluation is started by
 hand.
@@ -220,7 +230,7 @@ lists every control.
 ```
 eeoc-charge-intake/
 ├── backend/        the service, extraction, evaluation and dashboard (Python)
-│   ├── src/eeoc_intake/  core/, api/, evals/, dashboard/
+│   ├── src/eeoc_intake/  core/, api/, evals/, dashboard/, db/ (the reviews schema), contracts/
 │   └── tests/
 ├── frontend/       the review screen (React, TypeScript)
 │   ├── src/            components/, lib/, styles/

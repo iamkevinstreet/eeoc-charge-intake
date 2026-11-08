@@ -6,7 +6,7 @@
 """
 Author:            Kevin Street
 Created on:        2026-10-29
-Last modified on:  2026-11-03
+Last modified on:  2026-11-08
 
 Builds the services every route shares, once when the app starts: the
 generated samples, the model, the reviews in progress and the
@@ -35,7 +35,8 @@ from kds.logs import get_logger
 
 # Local
 from eeoc_intake.api.limits import RateLimiter
-from eeoc_intake.api.reviews import ReviewStore
+from eeoc_intake.api.review import Store
+from eeoc_intake.api.store import open_store
 from eeoc_intake.config import SETTINGS, AppSettings
 from eeoc_intake.core.offline import adapter_for
 
@@ -135,7 +136,7 @@ class Services:
     # log.debug("Holds the generated samples")
     samples: Samples
     # log.debug("Holds the reviews")
-    reviews: ReviewStore
+    reviews: Store
     # log.debug("Holds the limiter")
     limiter: RateLimiter
 
@@ -193,7 +194,7 @@ def build_services(
         settings=settings,
         adapter=adapter,
         samples=Samples(settings.data_samples / CASES_FILE),
-        reviews=ReviewStore(settings.api_max_reviews),
+        reviews=open_store(settings),
         limiter=RateLimiter(settings.api_extracts_per_minute),
     )
 

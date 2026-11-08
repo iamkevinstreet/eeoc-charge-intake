@@ -64,6 +64,9 @@ reads.
 | `[api] extracts_per_minute` | `6` | Per client; each extraction with a real model costs money |
 | `[api] max_upload_bytes` | `10000000` | The largest PDF an upload may be |
 | `[api] max_reviews` | `200` | The most reviews kept in memory; the oldest go first |
+| `[reviews] store` | `memory` | `memory`, for the demo and the tests, or `postgres`, at `REVIEWS_DATABASE_URL` in `config/.env` |
+| `[exports] folder` | blank | A folder each export is also written to, as `<review_id>-<time>.json`; blank writes none |
+| `[exports] contract` | `eeoc-review-export/v1` | The export contract's name and version, written in every export |
 | `[api] allowed_origins` | `http://localhost:5173` | Browser origins allowed to call the API |
 | `[api] allowed_hosts` | `localhost`, `127.0.0.1` | Host names requests may be addressed to |
 | `[dashboard] host` | `127.0.0.1` | The address the dashboard listens on: this machine only |

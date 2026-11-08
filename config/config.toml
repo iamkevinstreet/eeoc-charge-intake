@@ -5,7 +5,7 @@
 ########################################################################
 # Author:            Kevin Street
 # Created on:        2026-10-29
-# Last modified on:  2026-11-07
+# Last modified on:  2026-11-08
 #
 # Every setting the service, the evaluation, the dashboard and the
 # review screen read, at its default, and every value two files share.
@@ -114,6 +114,14 @@ allowed_origins = ["http://localhost:5173"]  # browser origins allowed to call t
 allowed_hosts = ["localhost", "127.0.0.1"]   # host names requests may be addressed to
 prefix = "/api/v1"                        # every route's prefix, with the API's version
 request_id_header = "X-Request-ID"        # the header that carries a request's id, both ways
+
+
+[reviews]
+store = "memory"                          # memory (the demo, the tests) | postgres (REVIEWS_DATABASE_URL)
+
+[exports]
+folder = ""                               # each export is also written here, for the loaders; blank: none
+contract = "eeoc-review-export/v1"        # the contract's name and version, in every export
 
 [demo]
 provider = "fake"                         # the provider that means demo mode: the offline stand-in

@@ -31,6 +31,7 @@ see "Unresolved" in the [README](README.md) before running it anywhere shared.
 | --- | --- |
 | A value the document does not support reaches a reviewer | Every quote is checked against the page it cites; a field whose quote is not there is emptied, with the reason, before any response |
 | A record exported before review | The export answers 409 until every field has a decision; a rejected field exports empty |
+| An export changed after the fact | In Postgres, every export is a row a trigger refuses to update or delete, beside the contract it was written under; the database's address is a secret, kept in `config/.env` |
 | A malicious upload | Uploads are limited in size, by the declared length and again per file; each must start like a PDF; they are written under fixed names to a temporary folder that is deleted after; an uploaded file's name is never used as a path |
 | Reading files through the service | Samples are looked up by id in the generated set, and ids and review ids must match fixed patterns; no route takes a path |
 | A server reachable by others | Neither the service nor the dashboard has sign-in, so the settings refuse any address but this machine's for both |

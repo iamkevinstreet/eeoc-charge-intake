@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/iamkevinstreet/eeoc-charge-intake/contracts/review_export_v1.json",
+  "title": "EEOC charge review export, version 1",
+  "description": "One reviewed charge as the service exports it: the record after every field's decision, the values the model read, and when and from what the review was made. Fields may be added within version 1; none is removed or retyped without version 2.",
+  "type": "object",
+  "required": ["contract", "review_id", "source", "demo", "started_at", "exported_at", "record", "extracted", "decisions", "removed", "response_due"],
+  "properties": {
+    "contract": {"const": "eeoc-review-export/v1"},
+    "review_id": {"type": "string", "pattern": "^[0-9a-f]{10}$"},
+    "source": {"type": "string", "pattern": "^(sample|upload):"},
+    "demo": {"type": "boolean"},
+    "started_at": {"type": "string", "format": "date-time"},
+    "exported_at": {"type": "string", "format": "date-time"},
+    "record": {"$ref": "#/$defs/record"},
+    "extracted": {"$ref": "#/$defs/record"},
+    "decisions": {
+      "type": "object",
+      "propertyNames": {"$ref": "#/$defs/field"},
+      "additionalProperties": {"enum": ["accept", "edit", "reject"]}
+    },
+    "removed": {"type": "array", "items": {"$ref": "#/$defs/field"}},
+    "response_due": {"type": ["string", "null"], "format": "date"}
+  },
+  "$defs": {
+    "field": {
+      "enum": ["charge_number", "charging_party", "respondent", "eeoc_office", "bases", "issues", "earliest_date", "latest_date", "continuing_action", "notice_date", "summary"]
+    },
+    "value": {
+      "anyOf": [
+        {"type": "string"},
+        {"type": "array", "items": {"type": "string"}},
+        {"type": "boolean"},
+        {"type": "null"}
+      ]
+    },
+    "record": {
+      "type": "object",
+      "propertyNames": {"$ref": "#/$defs/field"},
+      "additionalProperties": {"$ref": "#/$defs/value"}
+    }
+  }
+}

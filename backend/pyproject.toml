@@ -5,14 +5,14 @@
 ########################################################################
 # Author:            Kevin Street
 # Created on:        2026-10-29
-# Last modified on:  2026-11-07
+# Last modified on:  2026-11-08
 #
 # Packages the charge intake service and sets ruff, mypy and pytest to
 # the code standard.
 
 [project]
 name = "eeoc-charge-intake"
-version = "0.7.0"
+version = "0.8.0"
 description = "EEOC charge intake: extraction with source spans and human review."
 readme = "README.md"
 requires-python = ">=3.12"
@@ -29,6 +29,7 @@ dependencies = [
   "uvicorn>=0.32",
   "python-multipart>=0.0.18",
   "pypdf>=6.1",
+  "psycopg[binary]>=3.2",
 ]
 
 [project.optional-dependencies]
@@ -38,6 +39,8 @@ dashboard = ["dash>=3", "plotly>=6", "pandas>=2.2"]
 [dependency-groups]
 dev = [
   "httpx>=0.28",
+  "types-jsonschema>=4.23",
+  "jsonschema>=4.23",
   "mypy>=1.13",
   "opentelemetry-sdk>=1.45",
   "pandas-stubs>=2.2",
@@ -68,6 +71,10 @@ build-backend = "setuptools.build_meta"
 [tool.setuptools.packages.find]
 where = ["src"]
 include = ["eeoc_intake*"]
+
+# The reviews database's migrations and the export contract ship inside the package.
+[tool.setuptools.package-data]
+eeoc_intake = ["db/*.sql", "contracts/*.json"]
 
 [tool.ruff]
 line-length = 99
