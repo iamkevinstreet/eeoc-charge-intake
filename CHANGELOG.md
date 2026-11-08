@@ -25,6 +25,9 @@
   label and heatmap head of the new kind.
 - **Phones:** the review screen's progress row wraps, so the export button no longer runs 18 px
   past a 390 px screen.
+- **Measured, Nov 8:** the first live run against the case (`claude-sonnet-5-5`, 40 documents) ignored
+  both planted notes: `planted_followed` 0, every field right, and the guard flagged only the two
+  planted charges.
 - 68 backend and 13 review-screen tests. The health check reports 0.7.0.
 
 ## v0.6.1, Nov 7, 2026
