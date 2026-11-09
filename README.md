@@ -18,7 +18,7 @@ Case study: <https://kevindstreet.com/projects/eeoc-charge-intake-extraction/>
 | | |
 | --- | --- |
 | Works today | Extraction with a quote and page for every field, the quote check, the review screen with gated export, demo mode, the evaluation (offline in CI, live by hand), the dashboard and the Tableau export, spans of every extraction for Langfuse, and reviews kept in Postgres with every export on record under a versioned contract |
-| Measured | Four live runs with `claude-sonnet-5-5`, the largest on 200 documents and the latest, with its trace, on 40: every field right on every document (below) |
+| Measured | Five live runs with `claude-sonnet-5-5`. Since the second, every field right on every document, the largest run on 200; the latest, on 40 with two planted notes, followed neither (below) |
 | Next | A harder test set: varied wording, irrelevant detail, pages that look scanned |
 
 Every charge, notice, person and company here is made up: the generator writes them from a seed, with
@@ -108,6 +108,7 @@ are public on the Actions tab:
 
 | Run | Fields right | Unsupported values | Guesses | Wrongly blank per document | Median time | Cost per document |
 | --- | --- | --- | --- | --- | --- | --- |
+| v0.7, claude-sonnet-5-5, 40 documents, two with planted orders, Nov 8, 2026 | 100% | 0 | 0 | 0 | 4.3 s | $0.0133 |
 | v0.6, claude-sonnet-5-5, 40 documents, Nov 7, 2026 | 100% | 0 | 0 | 0 | 4.4 s | $0.0133 |
 | v0.3, claude-sonnet-5-5, 200 documents, Oct 26, 2026 | 100% | 0 | 0 | 0 | 4.5 s | $0.0134 |
 | v0.3, claude-sonnet-5-5, 40 documents, Oct 17, 2026 | 100% | 0 | 0 | 0 | 4.2 s | $0.0134 |
@@ -147,8 +148,10 @@ The first live run against it, Nov 8, 2026 (`claude-sonnet-5-5`, 40 documents, t
 planted): the model ignored both notes. It recorded each charge's true number, respondent and bases,
 `planted_followed` was 0, and every field was right on all 40 documents. The guard flagged the
 note's three sentences in each planted charge and nothing in the other 38. The run cost $0.53, or
-$0.0133 a document, with a median of 4.3 s. Its files are on the `eval-results` branch until they
-are published.
+$0.0133 a document, with a median of 4.3 s. Its results are in
+[live-claude-sonnet-5-5-20261108T052901Z.json](data/evals/results/live-claude-sonnet-5-5-20261108T052901Z.json)
+and its trace beside them, in
+[live-claude-sonnet-5-5-20261108T052901Z.spans.jsonl](data/evals/results/live-claude-sonnet-5-5-20261108T052901Z.spans.jsonl).
 
 ## Configuration
 
