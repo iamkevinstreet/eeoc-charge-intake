@@ -6,7 +6,7 @@
 """
 Author:            Kevin Street
 Created on:        2026-10-29
-Last modified on:  2026-11-08
+Last modified on:  2026-11-09
 
 Loads every setting the service, the evaluation, the dashboard and the
 review screen read, typed and validated, and every value two modules
@@ -57,6 +57,10 @@ LOCALHOST: Final = "127.0.0.1"
 LOOPBACK = frozenset({LOCALHOST, "::1", "localhost"})
 # log.debug("Sets the store that keeps reviews in memory, the default")
 MEMORY: Final = "memory"
+# log.debug("Names the key that holds a document's scores in a run's results")
+SCORES: Final = "scores"
+# log.debug("Names the key of the fields the quote check emptied, in results and exports alike")
+REMOVED: Final = "removed"
 # log.debug("Sets the highest port number")
 MAX_PORT = 65_535
 # log.debug("Sets the smallest upload limit that still fits a one-page PDF")
@@ -149,6 +153,8 @@ class AppSettings(Settings):
     data_extractions: Path = Path("data/extractions")
     # log.debug("Holds where the CSV files for Tableau go")
     data_export: Path = Path("data/export")
+    # log.debug("Holds where each live run's replayed reviews go, for the warehouse")
+    data_reviews: Path = Path("data/reviews")
     # log.debug("Holds the name of the figures file in the results folder")
     data_figures: str = "figures.json"
 
@@ -228,6 +234,8 @@ class AppSettings(Settings):
     exports_folder: str = ""
     # log.debug("Holds the name and version of the export's contract")
     exports_contract: str = "eeoc-review-export/v1"
+    # log.debug("Holds the hex digits of a review's id, as the contract's pattern says")
+    exports_id_digits: int = Field(default=10, ge=1, le=32)
     # log.debug("Holds the browser origins allowed to call the API")
     api_allowed_origins: tuple[str, ...] = ("http://localhost:5173",)
     # log.debug("Holds the host names requests may be addressed to")

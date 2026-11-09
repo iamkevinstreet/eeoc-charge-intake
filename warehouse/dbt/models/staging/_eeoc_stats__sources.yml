@@ -1,0 +1,27 @@
+########################################################################
+#                                                                      #
+#        warehouse/dbt/models/staging/_eeoc_stats__sources.yml         #
+#                                                                      #
+########################################################################
+# Author:            Kevin Street
+# Created on:        2026-11-09
+# Last modified on:  2026-11-09
+#
+# The raw table `python -m pipelines load receipts` fills from the
+# EEOC's Table E1a. Its rows' contract is pipelines/rows.py; the monthly
+# load checks for a revised table, which shows as a new hash.
+
+sources:
+  - name: eeoc_stats
+    description: The EEOC's published charge statistics.
+    schema: raw_eeoc_stats
+    config:
+      loaded_at_field: loaded_at
+      freshness:
+        warn_after: {count: 40, period: day}
+        error_after: {count: 70, period: day}
+    tables:
+      - name: charge_receipts
+        description: >
+          One row per basis or statute per fiscal year of Table E1a, charge
+          receipts FY 1997 to FY 2025, the total charges row among them.

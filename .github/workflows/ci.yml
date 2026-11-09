@@ -5,12 +5,13 @@
 ########################################################################
 # Author:            Kevin Street
 # Created on:        2026-10-14
-# Last modified on:  2026-11-08
+# Last modified on:  2026-11-09
 #
 # Runs on every push and pull request: the secrets scan, lint, types,
-# the code standard, the tests, the offline evaluation and the audits.
-# The dependency-updates workflow runs the same checks on the commit
-# it is about to land.
+# the code standard, the tests, the offline evaluation and the audits;
+# and for the warehouse, its loads, the dbt build on DuckDB, its docs
+# and the DAG tests. The dependency-updates workflow runs the same
+# checks on the commit it is about to land.
 
 name: ci
 
@@ -18,6 +19,8 @@ on:
   push:
     branches: [main]
   pull_request:
+  # By hand, on any branch: a branch is checked before it has a pull request.
+  workflow_dispatch:
   workflow_call:
     inputs:
       ref:
@@ -120,3 +123,72 @@ jobs:
 
       - name: Known vulnerabilities in npm dependencies
         run: make audit-frontend
+
+  warehouse:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: warehouse
+    env:
+      RUNTIME__DLTHUB_TELEMETRY: "false"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          ref: ${{ inputs.ref }}
+          persist-credentials: false
+
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0  # v7.1.0
+        with:
+          python-version: "3.12"
+
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2  # v10.3.3
+        with:
+          version: "0.13.6"
+
+      - name: Install the locked warehouse (hashes checked)
+        run: uv sync --locked
+
+      - name: Lint, format and strict types
+        run: make check
+
+      - name: Tests, offline
+        run: make test
+
+      - name: Known vulnerabilities in every locked dependency
+        run: make audit
+
+      - name: Load the review exports and the EEOC's national statistics
+        run: make load
+
+      - name: Build and test every model on DuckDB, the published totals among them
+        run: make build
+
+      - name: The docs site, with its lineage graph
+        run: make docs
+
+  warehouse-dags:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: warehouse
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          ref: ${{ inputs.ref }}
+          persist-credentials: false
+
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0  # v7.1.0
+        with:
+          python-version: "3.12"
+
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2  # v10.3.3
+        with:
+          version: "0.13.6"
+
+      - name: Install the locked warehouse with Airflow
+        run: uv sync --locked --group airflow
+
+      - name: DAG import and integrity tests
+        run: uv run --no-sync pytest tests/test_dags.py

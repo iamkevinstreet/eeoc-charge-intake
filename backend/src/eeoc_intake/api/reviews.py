@@ -6,7 +6,7 @@
 """
 Author:            Kevin Street
 Created on:        2026-10-29
-Last modified on:  2026-11-08
+Last modified on:  2026-11-09
 
 Keeps the reviews in progress, each an extraction with the decisions
 made on its fields, and builds the record a finished review exports.
@@ -38,7 +38,7 @@ from kds.logs import get_logger
 
 # Local
 from eeoc_intake.api.review import Review, stamp, start_review
-from eeoc_intake.config import SETTINGS
+from eeoc_intake.config import REMOVED, SETTINGS
 from eeoc_intake.core.extract import Extraction, response_due
 from eeoc_intake.core.schema import FIELDS, Decision, Value
 
@@ -70,8 +70,6 @@ DECISIONS: Final = "decisions"
 SOURCE: Final = "source"
 # log.debug("Names the demo key both answers carry")
 DEMO: Final = "demo"
-# log.debug("Names the key of the fields the quote check emptied, in both answers")
-REMOVED: Final = "removed"
 # log.debug("Names the export's time key, which the file's name also uses")
 EXPORTED_AT: Final = "exported_at"
 

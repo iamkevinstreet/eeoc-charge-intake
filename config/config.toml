@@ -5,7 +5,7 @@
 ########################################################################
 # Author:            Kevin Street
 # Created on:        2026-10-29
-# Last modified on:  2026-11-08
+# Last modified on:  2026-11-09
 #
 # Every setting the service, the evaluation, the dashboard and the
 # review screen read, at its default, and every value two files share.
@@ -59,6 +59,7 @@ results = "data/evals/results"            # live evaluation results, committed
 smoke = "data/evals/smoke"                # offline smoke results, not committed
 extractions = "data/extractions"          # full extractions a live run saves for the demo
 export = "data/export"                    # CSV files for Tableau
+reviews = "data/reviews"                  # each live run replayed as reviewed exports, for the warehouse
 figures = "figures.json"                  # the case study's figures, in the results folder
 
 # How files are read and written, and the units every part converts between.
@@ -122,6 +123,7 @@ store = "memory"                          # memory (the demo, the tests) | postg
 [exports]
 folder = ""                               # each export is also written here, for the loaders; blank: none
 contract = "eeoc-review-export/v1"        # the contract's name and version, in every export
+id_digits = 10                            # the hex digits of a review's id, as the contract's pattern says
 
 [demo]
 provider = "fake"                         # the provider that means demo mode: the offline stand-in

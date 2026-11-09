@@ -1,0 +1,88 @@
+########################################################################
+#                                                                      #
+#        warehouse/dbt/models/charges/_charges__unit_tests.yml         #
+#                                                                      #
+########################################################################
+# Author:            Kevin Street
+# Created on:        2026-11-09
+# Last modified on:  2026-11-09
+#
+# Unit tests: the logic the window functions and the record's rules
+# carry, checked on a few hand-written rows before any real data is
+# read.
+
+unit_tests:
+  - name: a_new_spelling_of_a_respondent_starts_a_version
+    description: Type 2 by export time; the same spelling again starts nothing.
+    model: dim_respondent
+    given:
+      - input: ref('stg_reviews__export_values')
+        rows:
+          - {export_id: e1, version: record, field: respondent, value: "Northgate Industries Corp."}
+          - {export_id: e2, version: record, field: respondent, value: "Northgate Industries Corp."}
+          - {export_id: e3, version: record, field: respondent, value: "NORTHGATE INDUSTRIES CORP."}
+          - {export_id: e3, version: extracted, field: respondent, value: "Northgate"}
+      - input: ref('int_reviews__latest_exports')
+        rows:
+          - {export_id: e1, exported_at: "2026-10-01 00:00:00"}
+          - {export_id: e2, exported_at: "2026-10-02 00:00:00"}
+          - {export_id: e3, exported_at: "2026-10-03 00:00:00"}
+    expect:
+      rows:
+        - {respondent_name: "Northgate Industries Corp.", valid_from: "2026-10-01 00:00:00",
+           valid_to: "2026-10-03 00:00:00", is_current: false}
+        - {respondent_name: "NORTHGATE INDUSTRIES CORP.", valid_from: "2026-10-03 00:00:00",
+           valid_to: null, is_current: true}
+
+  - name: a_fields_correction_rate_counts_every_review_so_far
+    description: A running share per field, in export order, ties broken by review.
+    model: rpt_field_corrections
+    given:
+      - input: ref('fct_field_reviews')
+        rows:
+          - {field: issues, review_id: r1, exported_at: "2026-10-17 01:59:00", corrected: true}
+          - {field: issues, review_id: r2, exported_at: "2026-10-17 01:59:00", corrected: true}
+          - {field: issues, review_id: r3, exported_at: "2026-10-26 16:02:00", corrected: true}
+          - {field: issues, review_id: r4, exported_at: "2026-11-07 20:40:00", corrected: false}
+          - {field: bases, review_id: r1, exported_at: "2026-10-17 01:59:00", corrected: false}
+    expect:
+      rows:
+        - {field: issues, review_id: r1, corrections_so_far: 1, reviews_so_far: 1, correction_rate_so_far: 1.0}
+        - {field: issues, review_id: r2, corrections_so_far: 2, reviews_so_far: 2, correction_rate_so_far: 1.0}
+        - {field: issues, review_id: r3, corrections_so_far: 3, reviews_so_far: 3, correction_rate_so_far: 1.0}
+        - {field: issues, review_id: r4, corrections_so_far: 3, reviews_so_far: 4, correction_rate_so_far: 0.75}
+        - {field: bases, review_id: r1, corrections_so_far: 0, reviews_so_far: 1, correction_rate_so_far: 0.0}
+
+  - name: a_charge_keeps_its_latest_review_and_counts_them_all
+    description: Reviewed in two runs, a charge keeps the later record.
+    model: int_charges__latest_reviews
+    given:
+      - input: ref('int_reviews__records')
+        rows:
+          - {charge_key: "410-2026-10000", review_id: r1, exported_at: "2026-10-17 01:59:00"}
+          - {charge_key: "410-2026-10000", review_id: r2, exported_at: "2026-11-08 05:35:00"}
+          - {charge_key: "sample:charge-004", review_id: r3, exported_at: "2026-10-17 01:59:00"}
+    expect:
+      rows:
+        - {charge_key: "410-2026-10000", review_id: r2, reviews: 2}
+        - {charge_key: "sample:charge-004", review_id: r3, reviews: 1}
+
+  - name: a_charge_without_a_number_is_known_by_its_document
+    description: The record's single values become typed columns.
+    model: int_reviews__records
+    given:
+      - input: ref('int_reviews__latest_exports')
+        rows:
+          - {export_id: e1, review_id: r1, source: "sample:charge-000"}
+          - {export_id: e2, review_id: r2, source: "sample:charge-004"}
+      - input: ref('stg_reviews__export_values')
+        rows:
+          - {export_id: e1, version: record, field: charge_number, position: 0, value: "410-2026-10000"}
+          - {export_id: e1, version: record, field: continuing_action, position: 0, value: "true"}
+          - {export_id: e1, version: record, field: notice_date, position: 0, value: "2026-09-23"}
+          - {export_id: e2, version: record, field: continuing_action, position: 0, value: "false"}
+          - {export_id: e2, version: extracted, field: charge_number, position: 0, value: "410-2026-99999"}
+    expect:
+      rows:
+        - {review_id: r1, charge_key: "410-2026-10000", continuing_action: true, notice_date: "2026-09-23"}
+        - {review_id: r2, charge_key: "sample:charge-004", continuing_action: false, notice_date: null}

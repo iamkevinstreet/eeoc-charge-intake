@@ -1,7 +1,31 @@
 # Changelog
 
-## Unreleased
+## v0.9.0, Nov 9, 2026
 
+- **The charge warehouse,** in `warehouse/`, the repository's data layers, started from the utils
+  project template (v0.7.1) in a folder of its own beside the app:
+  - **Loads:** dlt reads every review export in `[reviews] folder`, checks each against contract v1
+    before any row is made, and merges on the review and its time; and the EEOC's Table E1a, charge
+    receipts by basis FY 1997 to FY 2025, read by its shape, restored from ai-operations' 8c6b715.
+  - **Models:** staging and intermediate views, then the `charges` mart (`fct_charges`,
+    `fct_reviews`, `fct_field_reviews`, bridges for respondents, bases and issues, a type 2
+    `dim_respondent`, `dim_charging_party` with a key and an initial only, offices, bases, issues
+    and dates, `rpt_field_corrections` and `rpt_bases_vs_national`) and the `national` mart
+    (`fct_receipts_by_basis`), every table under an enforced contract.
+  - **Tests:** the build fails unless Table E1a's totals equal the EEOC's own reports for FY 2023 to
+    2025, each basis has one national label, and an accepted field keeps what the model read; four
+    unit tests on the window and type 2 logic; 18 offline warehouse tests.
+  - **Schedules:** a daily load of the exports, a monthly one of the table, and the build when
+    either changes, through Airflow 3.
+- **Replayed reviews:** `make reviews` writes each live run's documents to `data/reviews/` as
+  exports under contract v1, with a reviewer who knows the true values, for the warehouse to load:
+  360 exports, every one meeting the contract.
+- **CI** gains the warehouse's checks, tests, audit, both loads, the dbt build and docs on DuckDB,
+  and its DAG tests; it can also be started by hand on any branch. Dependabot updates the
+  warehouse's lockfile too.
+- **utils v0.7.1** for the backend as well, which knows a folder that is a project of its own.
+  The review id's length is a setting, `[exports] id_digits`.
+- 77 backend, 13 review-screen and 18 warehouse tests. The health check reports 0.9.0.
 - **Dependency updates land by themselves.** Dependabot groups each week's updates into one pull
   request per kind (Actions, the backend, the frontend), and the new `dependency-updates` workflow
   lands them every weekday: it applies the oldest open one to `main` as an ordinary commit, refreshes

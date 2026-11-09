@@ -5,24 +5,28 @@
 ########################################################################
 # Author:            Kevin Street
 # Created on:        2026-10-14
-# Last modified on:  2026-11-03
+# Last modified on:  2026-11-09
 #
 # Runs each routine task with one command: install, run, samples,
-# check, test, eval, publish and audit. CI runs the same targets. Run
-# them from the repository root, where config/ and data/ are found.
+# check, test, eval, publish, reviews, audit and the warehouse. CI runs
+# the same targets. Run them from the repository root, where config/
+# and data/ are found; the warehouse's own targets run in warehouse/.
 
 UV := uv run --project backend --no-sync
 NPM := npm --prefix frontend
+WAREHOUSE := $(MAKE) --no-print-directory -C warehouse
 # Our own packages install from git, not PyPI, so the PyPI audit leaves them out.
 KDS := kds-args kds-settings kds-logs kds-llm kds-evals kds-synthetic kds-standards kds-diagrams
 AUDIT_FILE := data/generated/requirements-audit.txt
 
-.PHONY: install run api web samples dashboard check check-backend check-frontend test \
-	test-backend test-frontend eval publish audit audit-backend audit-frontend diagrams build
+.PHONY: install run api web samples dashboard check check-backend check-frontend \
+	check-warehouse test test-backend test-frontend test-warehouse eval publish reviews audit \
+	audit-backend audit-frontend audit-warehouse diagrams build warehouse
 
-install:  ## The backend from uv.lock (with the dashboard) and the frontend from package-lock.json
+install:  ## The backend (with the dashboard), the frontend and the warehouse, each from its lockfile
 	uv sync --project backend --locked --all-extras
 	$(NPM) ci
+	$(WAREHOUSE) install
 
 run:  ## The API on :8000 and the review screen on :5173 together; Ctrl-C stops both
 	$(MAKE) -j2 api web
@@ -39,7 +43,7 @@ samples:  ## Generate the test documents and cases.jsonl into data/generated
 dashboard:  ## The evaluation dashboard on :8050
 	$(UV) python -m eeoc_intake.dashboard
 
-check: check-backend check-frontend  ## Every linter, formatter, type check and the code standard
+check: check-backend check-frontend check-warehouse  ## Every linter, formatter, type check and the code standard
 
 check-backend:
 	$(UV) ruff check backend
@@ -52,7 +56,7 @@ check-frontend:
 	$(NPM) run format:check
 	$(NPM) run typecheck
 
-test: test-backend test-frontend  ## Every test, offline and deterministic
+test: test-backend test-frontend test-warehouse  ## Every test, offline and deterministic
 
 test-backend:
 	cd backend && uv run --no-sync pytest -W error
@@ -63,12 +67,16 @@ test-frontend:
 eval: samples  ## The offline smoke run: the stand-in answers; no key, no network
 	LLM_PROVIDER=fake $(UV) python -m eeoc_intake.evals.run --name offline
 
-publish:  ## After a live run: the figures, the Tableau CSV files and the index the case study reads
+publish:  ## After a live run: the figures, the Tableau CSV files, the index and the replayed reviews
 	$(UV) python -m eeoc_intake.dashboard --export-figures
 	$(UV) python -m eeoc_intake.evals.export
 	$(UV) python -m eeoc_intake.evals.index
+	$(MAKE) reviews
 
-audit: audit-backend audit-frontend  ## Known vulnerabilities in every locked dependency
+reviews:  ## Each live run's documents replayed as reviewed exports, into data/reviews
+	$(UV) python -m eeoc_intake.evals.replay
+
+audit: audit-backend audit-frontend audit-warehouse  ## Known vulnerabilities in every locked dependency
 
 audit-backend:
 	mkdir -p data/generated
@@ -84,3 +92,15 @@ diagrams:  ## Redraw docs/architecture.svg and docs/flow.svg from docs/diagrams.
 
 build:  ## The production review screen, in frontend/dist, which the service serves at /
 	$(NPM) run build
+
+check-warehouse:
+	$(WAREHOUSE) check
+
+test-warehouse:
+	$(WAREHOUSE) test
+
+audit-warehouse:
+	$(WAREHOUSE) audit
+
+warehouse:  ## Load the review exports and the EEOC's statistics, then build and test every model
+	$(WAREHOUSE) load build

@@ -1,0 +1,47 @@
+########################################################################
+#                                                                      #
+#                     warehouse/config/config.toml                     #
+#                                                                      #
+########################################################################
+# Author:            Kevin Street
+# Created on:        2026-11-09
+# Last modified on:  2026-11-09
+#
+# Every setting the loaders, the build and the DAGs read, at its
+# default. No secrets: those go in config/.env.
+#
+# Each key's name is its section and key joined: [warehouse] path is
+# warehouse_path, and the environment variable WAREHOUSE_PATH overrides
+# it. A test keeps this file equal to the defaults in code.
+
+[warehouse]
+destination = "duckdb"                    # duckdb | databricks
+path = "data/generated/warehouse.duckdb"  # the DuckDB file dlt loads and dbt builds in
+state = "data/generated/dlt"              # dlt's pipeline state
+
+[dbt]
+project = "dbt"                           # the dbt project, which also holds profiles.yml
+target = "dev"                            # dev builds in DuckDB, prod in Databricks
+threads = 4                               # models dbt builds at once
+
+[databricks]
+catalog = "kds"                           # the Unity Catalog catalog every schema lives in
+
+[receipts]
+dataset = "raw_eeoc_stats"                # the schema the EEOC's national statistics load into
+# Table E1a, charge receipts by basis or statute, FY 1997 to FY 2025, as the EEOC published it in
+# April 2026; a revised table shows up as a new hash on every row.
+url = "https://www.eeoc.gov/sites/default/files/2026-04/Table_E1a._Charge_Receipts_by_Basis_or_Statute_%28All_Statutes%29_FY_1997_-_FY_2025_0.xlsx"
+timeout_s = 60.0                          # how long the download may take
+
+[reviews]
+dataset = "raw_reviews"                   # the schema the review exports load into
+folder = "../data/reviews"                # exports under contract v1: one per .json file, or one per line of .jsonl
+contract = "../backend/src/eeoc_intake/contracts/review_export_v1.json"  # the contract each must meet
+
+[files]
+encoding = "utf-8"                        # every file read or written
+
+[log]
+dir = "logs"                              # one YYYY-MM-DD.jsonl file per day
+level = "INFO"                            # DEBUG | INFO | WARNING | ERROR

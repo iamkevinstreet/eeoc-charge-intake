@@ -5,10 +5,10 @@
 ########################################################################
 # Author:            Kevin Street
 # Created on:        2026-10-29
-# Last modified on:  2026-11-05
+# Last modified on:  2026-11-09
 #
 # Opens weekly pull requests that update the pinned Actions, the uv
-# lockfile and the npm lockfile, each kind's updates grouped into one
+# lockfiles and the npm lockfile, each kind's updates grouped into one
 # pull request, which the dependency-updates workflow lands once CI
 # passes.
 
@@ -27,6 +27,13 @@ updates:
       interval: weekly
     groups:
       backend:
+        patterns: ["*"]
+  - package-ecosystem: uv
+    directory: /warehouse
+    schedule:
+      interval: weekly
+    groups:
+      warehouse:
         patterns: ["*"]
   - package-ecosystem: npm
     directory: /frontend

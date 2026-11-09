@@ -17,9 +17,9 @@ Case study: <https://kevindstreet.com/projects/eeoc-charge-intake-extraction/>
 
 | | |
 | --- | --- |
-| Works today | Extraction with a quote and page for every field, the quote check, the review screen with gated export, demo mode, the evaluation (offline in CI, live by hand), the dashboard and the Tableau export, spans of every extraction for Langfuse, and reviews kept in Postgres with every export on record under a versioned contract |
+| Works today | Extraction with a quote and page for every field, the quote check, the review screen with gated export, demo mode, the evaluation (offline in CI, live by hand), the dashboard and the Tableau export, spans of every extraction for Langfuse, reviews kept in Postgres with every export on record under a versioned contract, and the charge warehouse those exports load into, beside the EEOC's national statistics |
 | Measured | Five live runs with `claude-sonnet-5-5`. Since the second, every field right on every document, the largest run on 200; the latest, on 40 with two planted notes, followed neither (below) |
-| Next | A harder test set: varied wording, irrelevant detail, pages that look scanned |
+| Next | A harder test set: varied wording, irrelevant detail, pages that look scanned; the warehouse on Databricks |
 
 Every charge, notice, person and company here is made up: the generator writes them from a seed, with
 known answers. No real charge appears anywhere in this project.
@@ -73,6 +73,19 @@ samples and uploaded PDFs with the model.
 | Bases | the charge | Summary | the particulars, three sentences, no quote |
 | Issues | the particulars, as EEOC labels | | |
 
+## The charge warehouse
+
+The repository's data layers, in [`warehouse/`](warehouse/README.md): dlt loads every review export,
+each checked against the contract first, and the EEOC's Table E1a of charge receipts by basis; dbt
+models them into the `charges` mart (one row per charge, per review and per field decided, with
+bridges for respondents, bases and issues, a type 2 respondent, and the charging party known only by
+a key and an initial) and the `national` mart; Airflow schedules both loads and the build. It runs on
+DuckDB on a laptop and in CI, and on Databricks in production.
+
+No person has reviewed these charges yet, so `make reviews` replays the five live runs' 360 documents
+as exports, with a reviewer who knows each true value; CI loads them and the real Table E1a, builds
+every model and checks the table's totals against the EEOC's own reports.
+
 ## Design
 
 - **Context:** an employer's lawyer gets a charge and a notice and must log the facts that set the
@@ -88,7 +101,7 @@ samples and uploaded PDFs with the model.
 - **Chosen solution:** the model reads both documents and quotes its evidence; the service checks
   every quote against its page and empties what it cannot find; a reviewer decides each field; the
   deadline is computed, not extracted.
-- **Test plan:** 74 backend and 13 review-screen tests; an offline smoke run on
+- **Test plan:** 77 backend, 13 review-screen and 18 warehouse tests; an offline smoke run on
   generated documents in CI; live runs by hand on 40 to 200 documents across five kinds of
   document, each scored per field against the known answers.
 - **Rollout:** local only; live results reviewed on a branch before they merge; the case study shows
@@ -211,7 +224,8 @@ make test    # the backend and review-screen tests
 make eval    # the offline smoke run over the generated documents; no key, no network
 ```
 
-Tests never call a model or the network: the offline stand-in and scripted answers take its place.
+Tests never call a model or the network: the offline stand-in and scripted answers take its place,
+and `make test` runs the warehouse's tests too.
 The Postgres tests run against `REVIEWS_TEST_DATABASE_URL`, a database they empty first; CI starts
 one, and without it they are skipped. Tests write only to temporary folders, run from an empty
 folder so no `config/.env` leaks in, generate their documents from fixed seeds, and never sleep:
@@ -238,8 +252,9 @@ eeoc-charge-intake/
 ├── frontend/       the review screen (React, TypeScript)
 │   ├── src/            components/, lib/, styles/
 │   └── tests/
+├── warehouse/      the charge warehouse: dlt loads, the dbt project and the Airflow DAGs (Python)
 ├── config/         config.toml: every setting at its default; .env.example: the secrets' names
-├── data/           results, saved extractions and Tableau files; generated/ is not committed
+├── data/           results, saved extractions, replayed reviews and Tableau files; generated/ is not committed
 ├── docs/           diagrams.toml, the two SVGs it draws, and the review screen recording
 └── .github/        CI, CodeQL, the live evaluation, Dependabot and the workflow that lands its updates, CODEOWNERS
 ```

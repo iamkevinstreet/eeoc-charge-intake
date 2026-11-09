@@ -1,0 +1,31 @@
+########################################################################
+#                                                                      #
+#         warehouse/dbt/models/intermediate/_intermediate.yml          #
+#                                                                      #
+########################################################################
+# Author:            Kevin Street
+# Created on:        2026-11-09
+# Last modified on:  2026-11-09
+#
+# The intermediate views' grains: one latest export per review, one
+# latest review per charge.
+
+models:
+  - name: int_reviews__latest_exports
+    description: One row per review, its latest export.
+    columns:
+      - {name: review_id, data_tests: [unique, not_null]}
+  - name: int_reviews__records
+    description: One row per review, its record's single values in columns.
+    columns:
+      - {name: review_id, data_tests: [unique, not_null]}
+      - {name: charge_key, data_tests: [not_null]}
+  - name: int_charges__latest_reviews
+    description: One row per charge, its latest review.
+    columns:
+      - {name: charge_key, data_tests: [unique, not_null]}
+  - name: int_charges__list_values
+    description: One row per charge, list field and item.
+    data_tests:
+      - unique_combination:
+          arguments: {columns: [charge_key, field, position]}

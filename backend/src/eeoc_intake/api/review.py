@@ -6,7 +6,7 @@
 """
 Author:            Kevin Street
 Created on:        2026-11-08
-Last modified on:  2026-11-08
+Last modified on:  2026-11-09
 
 What a review is, whichever store keeps it: the Review itself, the
 Store protocol the memory and Postgres stores both follow, and how a
@@ -31,6 +31,7 @@ from kds.args import required
 from kds.logs import get_logger
 
 # Local
+from eeoc_intake.config import SETTINGS
 from eeoc_intake.core.extract import Extraction
 from eeoc_intake.core.schema import Decision
 
@@ -40,14 +41,14 @@ from eeoc_intake.core.schema import Decision
 #                                                                      #
 ########################################################################
 log = get_logger(__name__)
+# log.debug("Takes the hex digits of a review's id, from the config")
+ID_DIGITS: Final = SETTINGS.exports_id_digits
 
 ########################################################################
 #                                                                      #
 #                           Local constants                            #
 #                                                                      #
 ########################################################################
-# log.debug("Sets the length of a review id, in hex digits")
-ID_DIGITS: Final = 10
 # log.debug("Sets the time stamp's precision")
 TIMESPEC: Final = "seconds"
 

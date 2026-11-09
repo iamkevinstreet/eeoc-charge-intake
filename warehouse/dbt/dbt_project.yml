@@ -1,0 +1,74 @@
+########################################################################
+#                                                                      #
+#                    warehouse/dbt/dbt_project.yml                     #
+#                                                                      #
+########################################################################
+# Author:            Kevin Street
+# Created on:        2026-11-09
+# Last modified on:  2026-11-09
+#
+# The one dbt project: staging views over the raw tables dlt loads,
+# intermediate views that line the sources up, and two published marts,
+# the reviewed charges and the EEOC's national statistics, each a table
+# with an enforced contract. The same models build in DuckDB (dev, CI)
+# and Databricks (prod).
+
+name: eeoc_charge_intake
+version: "0.1.0"
+config-version: 2
+profile: warehouse
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+test-paths: ["tests"]
+macro-paths: ["macros"]
+analysis-paths: ["analyses"]
+clean-targets: ["target", "logs"]
+
+# No usage data leaves the machine, and no version check calls out.
+flags:
+  send_anonymous_usage_stats: false
+  version_check: false
+
+models:
+  eeoc_charge_intake:
+    # One view per raw table: renamed, cast, nothing joined.
+    staging:
+      +schema: staging
+      +materialized: view
+    # The sources lined up to one grain, for the marts to share.
+    intermediate:
+      +schema: intermediate
+      +materialized: view
+    # The reviewed charges: facts, bridges, dimensions and reports, with contracts.
+    charges:
+      +schema: charges
+      +materialized: table
+      +group: charges
+      +access: public
+      +contract:
+        enforced: true
+    # The EEOC's national statistics, the charges' context, with contracts.
+    national:
+      +schema: national
+      +materialized: table
+      +group: national
+      +access: public
+      +contract:
+        enforced: true
+
+seeds:
+  eeoc_charge_intake:
+    +schema: reference
+
+data_tests:
+  eeoc_charge_intake:
+    +severity: error
+
+vars:
+  # The days dim_date covers: the federal fiscal years 2025 to 2027. A charge's date outside them
+  # fails the relationships tests, which says to widen them.
+  date_spine_start: "2024-10-01"
+  date_spine_end: "2027-09-30"
+  # The fields whose values name a person; the marts never show them.
+  personal_fields: ["charging_party"]

@@ -1,0 +1,273 @@
+########################################################################
+#                                                                      #
+#          warehouse/dbt/models/charges/_charges__models.yml           #
+#                                                                      #
+########################################################################
+# Author:            Kevin Street
+# Created on:        2026-11-09
+# Last modified on:  2026-11-09
+#
+# The charges mart: every reviewed charge as facts, bridges and
+# dimensions, and two reports. Every model's columns and types are a
+# contract dbt enforces when it builds the table.
+
+groups:
+  - name: charges
+    owner:
+      name: Kevin Street
+      email: info@kevindstreet.com
+
+models:
+  - name: fct_charges
+    description: >
+      One row per charge, as its latest review left it. A charge is known by
+      its number, or by the document it came from when the form left the
+      number blank; each live run reads the same documents again, so
+      `reviews` counts how often a charge was reviewed.
+    columns:
+      - {name: charge_key, data_type: string, data_tests: [unique, not_null]}
+      - {name: charge_number, data_type: string}
+      - name: latest_review_id
+        data_type: string
+        data_tests:
+          - not_null
+          - relationships:
+              arguments: {to: ref('fct_reviews'), field: review_id}
+      - {name: reviewed_at, data_type: timestamp, data_tests: [not_null]}
+      - {name: reviews, data_type: bigint, data_tests: [not_null]}
+      - name: office_key
+        data_type: string
+        data_tests:
+          - relationships:
+              arguments: {to: ref('dim_office'), field: office_key}
+      - name: charging_party_key
+        data_type: string
+        data_tests:
+          - relationships:
+              arguments: {to: ref('dim_charging_party'), field: charging_party_key}
+      - name: earliest_date
+        data_type: date
+        description: The first date of harm the charge names.
+        data_tests:
+          - relationships:
+              arguments: {to: ref('dim_date'), field: date_day}
+      - name: latest_date
+        data_type: date
+        data_tests:
+          - relationships:
+              arguments: {to: ref('dim_date'), field: date_day}
+      - name: days_of_harm
+        data_type: bigint
+        description: From the first date of harm to the latest.
+        data_tests:
+          - between:
+              arguments: {min_value: 0, max_value: 3650}
+      - {name: continuing_action, data_type: boolean}
+      - name: notice_date
+        data_type: date
+        data_tests:
+          - relationships:
+              arguments: {to: ref('dim_date'), field: date_day}
+      - name: response_due
+        data_type: date
+        description: When the respondent's position statement is due, from the notice date.
+        data_tests:
+          - relationships:
+              arguments: {to: ref('dim_date'), field: date_day}
+      - {name: source, data_type: string, description: "The documents: sample: or upload:."}
+
+  - name: fct_reviews
+    description: One row per review, as its latest export left it, with its fields' decisions counted.
+    columns:
+      - {name: review_id, data_type: string, data_tests: [unique, not_null]}
+      - {name: export_id, data_type: string, data_tests: [unique, not_null]}
+      - name: charge_key
+        data_type: string
+        data_tests:
+          - not_null
+          - relationships:
+              arguments: {to: ref('fct_charges'), field: charge_key}
+      - {name: source, data_type: string}
+      - {name: demo, data_type: boolean}
+      - {name: started_at, data_type: timestamp}
+      - {name: exported_at, data_type: timestamp, data_tests: [not_null]}
+      - {name: exports, data_type: bigint, description: How often the review was exported.}
+      - name: fields
+        data_type: bigint
+        description: The fields decided; a review exports only when all eleven are.
+        data_tests:
+          - accepted_values:
+              arguments: {values: [11], quote: false}
+      - {name: accepted, data_type: bigint}
+      - {name: edited, data_type: bigint}
+      - {name: rejected, data_type: bigint}
+      - {name: emptied_by_quote_check, data_type: bigint}
+      - {name: accepted_as_read, data_type: boolean, description: Every field accepted as the model read it.}
+
+  - name: fct_field_reviews
+    description: >
+      One row per review and field: the decision, whether the quote check had
+      emptied the field first, and whether the record ended different from
+      what the model read. A field that names a person shows no value.
+    columns:
+      - {name: field_review_key, data_type: string, data_tests: [unique, not_null]}
+      - name: review_id
+        data_type: string
+        data_tests:
+          - not_null
+          - relationships:
+              arguments: {to: ref('fct_reviews'), field: review_id}
+      - {name: charge_key, data_type: string}
+      - {name: field, data_type: string, data_tests: [not_null]}
+      - name: decision
+        data_type: string
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments: {values: [accept, edit, reject]}
+      - {name: emptied_by_quote_check, data_type: boolean}
+      - {name: corrected, data_type: boolean, description: Edited or rejected.}
+      - {name: changed, data_type: boolean, description: The record differs from what the model read.}
+      - {name: extracted_value, data_type: string, description: "What the model read; a list's items sorted, joined by |."}
+      - {name: reviewed_value, data_type: string, description: What the record ended with.}
+      - {name: exported_at, data_type: timestamp}
+
+  - name: bridge_charge_respondent
+    description: One row per charge and respondent it names.
+    data_tests:
+      - unique_combination:
+          arguments: {columns: [charge_key, position]}
+    columns:
+      - name: charge_key
+        data_type: string
+        data_tests:
+          - relationships:
+              arguments: {to: ref('fct_charges'), field: charge_key}
+      - name: respondent_key
+        data_type: string
+        data_tests:
+          - not_null
+          - relationships:
+              arguments: {to: ref('dim_respondent'), field: respondent_key}
+      - {name: position, data_type: bigint}
+      - {name: is_first_named, data_type: boolean, description: The employer the notice went to.}
+
+  - name: bridge_charge_basis
+    description: One row per charge and protected basis it cites.
+    data_tests:
+      - unique_combination:
+          arguments: {columns: [charge_key, basis_key]}
+    columns:
+      - name: charge_key
+        data_type: string
+        data_tests:
+          - relationships:
+              arguments: {to: ref('fct_charges'), field: charge_key}
+      - name: basis_key
+        data_type: string
+        data_tests:
+          - not_null
+          - relationships:
+              arguments: {to: ref('dim_basis'), field: basis_key}
+
+  - name: bridge_charge_issue
+    description: One row per charge and issue it raises.
+    data_tests:
+      - unique_combination:
+          arguments: {columns: [charge_key, issue_key]}
+    columns:
+      - name: charge_key
+        data_type: string
+        data_tests:
+          - relationships:
+              arguments: {to: ref('fct_charges'), field: charge_key}
+      - name: issue_key
+        data_type: string
+        data_tests:
+          - not_null
+          - relationships:
+              arguments: {to: ref('dim_issue'), field: issue_key}
+
+  - name: dim_respondent
+    description: >
+      One row per respondent per spelling of its name, type 2: known by its
+      name in lower case and trimmed, a version is valid from the export that
+      first recorded the spelling until one records another.
+    data_tests:
+      - unique_combination:
+          arguments: {columns: [respondent_key, valid_from]}
+    columns:
+      - {name: respondent_version_key, data_type: string, data_tests: [unique, not_null]}
+      - {name: respondent_key, data_type: string, data_tests: [not_null]}
+      - {name: respondent_name, data_type: string, data_tests: [not_null]}
+      - {name: valid_from, data_type: timestamp, data_tests: [not_null]}
+      - {name: valid_to, data_type: timestamp, description: Blank for the current version.}
+      - {name: is_current, data_type: boolean}
+
+  - name: dim_charging_party
+    description: One row per charging party, by a key and an initial; the name never reaches a mart.
+    columns:
+      - {name: charging_party_key, data_type: string, data_tests: [unique, not_null]}
+      - {name: initial, data_type: string}
+
+  - name: dim_office
+    description: One row per EEOC office a reviewed charge names.
+    columns:
+      - {name: office_key, data_type: string, data_tests: [unique, not_null]}
+      - {name: office, data_type: string}
+
+  - name: dim_basis
+    description: One row per protected basis, with the pattern of its label in the EEOC's statistics.
+    columns:
+      - {name: basis_key, data_type: string, data_tests: [unique, not_null]}
+      - {name: basis, data_type: string}
+      - {name: national_label_pattern, data_type: string}
+
+  - name: dim_issue
+    description: One row per issue a reviewed charge raises.
+    columns:
+      - {name: issue_key, data_type: string, data_tests: [unique, not_null]}
+      - {name: issue, data_type: string}
+
+  - name: dim_date
+    description: One row per day, with the federal fiscal year, October to September.
+    columns:
+      - {name: date_day, data_type: date, data_tests: [unique, not_null]}
+      - {name: calendar_year, data_type: bigint}
+      - {name: calendar_month, data_type: bigint}
+      - {name: fiscal_year, data_type: bigint}
+
+  - name: rpt_field_corrections
+    description: >
+      One row per field per review, in the order reviews were exported: the
+      share of the field's reviews so far that a reviewer had to correct.
+    columns:
+      - {name: correction_key, data_type: string, data_tests: [unique, not_null]}
+      - {name: field, data_type: string}
+      - {name: review_id, data_type: string}
+      - {name: exported_at, data_type: timestamp}
+      - {name: corrected, data_type: boolean}
+      - {name: corrections_so_far, data_type: bigint}
+      - {name: reviews_so_far, data_type: bigint}
+      - name: correction_rate_so_far
+        data_type: double
+        data_tests:
+          - between:
+              arguments: {min_value: 0, max_value: 1}
+
+  - name: rpt_bases_vs_national
+    description: >
+      One row per basis: the share of reviewed charges citing it beside the
+      share of the EEOC's charges citing it in the latest fiscal year
+      published. Charges cite more than one basis, so neither share sums to
+      one; the reviewed charges are the generator's, not a sample of real ones.
+    columns:
+      - {name: basis_key, data_type: string, data_tests: [unique, not_null]}
+      - {name: basis, data_type: string}
+      - {name: reviewed_charges_citing, data_type: bigint}
+      - {name: reviewed_share, data_type: double}
+      - {name: national_label, data_type: string}
+      - {name: national_fiscal_year, data_type: bigint}
+      - {name: national_receipts, data_type: bigint}
+      - {name: national_share, data_type: double}
+      - {name: share_difference, data_type: double}

@@ -14,9 +14,10 @@ are credited in the advisory unless you would rather not be.
 
 ## Scope
 
-In scope: the review service in `backend/`, the review screen in `frontend/`, the workflows in
-`.github/`, and above all any way to show a reviewer a value whose quote is not on the page it
-cites, to export a record before every field is decided, or to read a file through the service.
+In scope: the review service in `backend/`, the review screen in `frontend/`, the warehouse in
+`warehouse/`, the workflows in `.github/`, and above all any way to show a reviewer a value whose
+quote is not on the page it cites, to export a record before every field is decided, to read a file
+through the service, or to load an export the contract refuses.
 
 Out of scope: the model providers' own services, the made-up documents and results in `data/`, the
 dashboard and the service on your own machine (they have no sign-in by design and only listen
@@ -41,6 +42,9 @@ see "Unresolved" in the [README](README.md) before running it anywhere shared.
 | Personal data in logs | Document text is never logged; `kds.logs` redacts emails, phone numbers and ID-like numbers from everything that is |
 | Orders planted in a document | The model is told the pages are data and never instructions; a guard flags every sentence that gives an AI model orders, and the review screen lists each with its page; the evaluation plants such a note in every 25th charge and counts any field that took a planted value |
 | Personal data in spans | Spans hold no document text, prompt, answer or extracted value unless `[spans] content` is on; an evaluated document's span holds its scores, never the values read or expected; text on a span is redacted as log lines are; a failure is recorded by its type, never its message; spans go only where the Langfuse keys or the standard OpenTelemetry endpoint say |
+| An export the contract refuses reaching the warehouse | The loader checks every export against contract v1 before any row is written, and fails naming the file and line; the raw tables refuse a field they do not name |
+| A name in the warehouse's marts | The charging party's name stays in the raw and staging layers; the marts hold a key and an initial, and show no value for a field that names a person |
+| A misread national table | The build fails unless Table E1a's totals equal the EEOC's own reports; each row carries the file's SHA-256, so a revision shows |
 | A committed secret | gitleaks before every commit and over the whole history in CI; secrets live only in `config/.env`, and the settings loader refuses one in `config/config.toml` |
 | A vulnerable dependency | Lockfiles with hashes, `pip-audit` and `npm audit` in CI, Dependabot every week, its updates landed only once CI passes |
 | A tampered Action or tool | Actions pinned to commit SHAs; the gitleaks download checked against its published SHA-256 |

@@ -7,6 +7,7 @@ Everything here is made up. No charge, person or company belongs to anyone real.
 | `evals/results/` | Live evaluation results: one JSON file per run, with every document's scores, values and known answers; its Markdown table; a `-latest.md` copy per run name; `figures.json`, the case study's Plotly figures; and `index.json`, the list of files the case study fetches | Yes (generated) |
 | `extractions/` | Whole extractions from live runs, the first eight of each: the record, the model's raw answer, the fields the quote check emptied, and the page text the case study's demo shows | Yes (generated) |
 | `export/` | `runs.csv`, `documents.csv` and `fields.csv`, for Tableau (below) | Yes (generated) |
+| `reviews/` | Each live run's documents replayed as reviewed exports under contract v1, one JSON Lines file per run, which the warehouse loads; `make reviews` writes them (below) | Yes (generated) |
 | `evals/smoke/` | Results of the offline smoke run, which only proves the pipeline works | No: ignored |
 | `generated/` | The generated charge and notice PDFs and `cases.jsonl`, the evaluation set; also `requirements-audit.txt`, the locked list `make audit` checks | No: ignored |
 
@@ -24,6 +25,13 @@ notice of charge), and one line in `cases.jsonl`:
 Every fifth document is a hard case, in turn: a missing charge number, a rotated first page,
 particulars that run to three pages, and two respondents. The same seed always makes the same
 documents; `backend/tests/test_generate.py` checks it.
+
+## The replayed reviews
+
+No person made these reviews. For each document of each live run, a reviewer who knows the true
+values accepts a field the model read right, rejects one it filled where the document holds
+nothing, edits any other to the true value, and accepts the summary. Each export is shaped by
+contract v1 and carries its run's start and finish as its times, so no review time is measured.
 
 ## How a run is scored
 

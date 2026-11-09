@@ -5,7 +5,7 @@
 ########################################################################
 # Author:            Kevin Street
 # Created on:        2026-10-29
-# Last modified on:  2026-11-03
+# Last modified on:  2026-11-09
 #
 # LF line endings everywhere, and the generated files GitHub and the
 # checker should skip.
@@ -19,7 +19,10 @@
 # Generated: regenerate rather than edit.
 docs/*.svg linguist-generated
 backend/uv.lock linguist-generated
+warehouse/uv.lock linguist-generated
+warehouse/.copier-answers.yml linguist-generated
 frontend/package-lock.json linguist-generated
 data/evals/results/* linguist-generated
 data/extractions/** linguist-generated
 data/export/* linguist-generated
+data/reviews/* linguist-generated

@@ -1,0 +1,40 @@
+########################################################################
+#                                                                      #
+#                    warehouse/dbt/seeds/_seeds.yml                    #
+#                                                                      #
+########################################################################
+# Author:            Kevin Street
+# Created on:        2026-11-09
+# Last modified on:  2026-11-09
+#
+# Reference tables kept in the repository: the totals the EEOC
+# published, which the loaded table must match, and the label each
+# basis has in the EEOC's statistics.
+
+seeds:
+  - name: published_totals
+    description: >
+      The charges the EEOC said it received each fiscal year, in its own
+      reports, with the page each figure is from. The loaded Table E1a must
+      hold the same totals.
+    config:
+      column_types:
+        fiscal_year: bigint
+        total_charges: bigint
+        source_url: string
+    columns:
+      - name: fiscal_year
+        data_tests: [unique, not_null]
+
+  - name: basis_map
+    description: >
+      Each protected basis a charge may cite, with a pattern, in lower case,
+      that its label in Table E1a matches: Retaliation is the row for all
+      statutes, not Title VII's alone.
+    config:
+      column_types:
+        basis: string
+        national_label_pattern: string
+    columns:
+      - name: basis
+        data_tests: [unique, not_null]

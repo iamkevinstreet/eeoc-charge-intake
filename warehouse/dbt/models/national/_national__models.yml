@@ -1,0 +1,41 @@
+########################################################################
+#                                                                      #
+#         warehouse/dbt/models/national/_national__models.yml          #
+#                                                                      #
+########################################################################
+# Author:            Kevin Street
+# Created on:        2026-11-09
+# Last modified on:  2026-11-09
+#
+# The national mart: the EEOC's published charge statistics, the
+# context the reviewed charges are read in. Every model's columns and
+# types are a contract dbt enforces when it builds the table.
+
+groups:
+  - name: national
+    owner:
+      name: Kevin Street
+      email: info@kevindstreet.com
+
+models:
+  - name: fct_receipts_by_basis
+    description: >
+      One row per basis or statute per fiscal year of the EEOC's Table E1a:
+      the charges citing it, their share of all charges that year, and the
+      change from the year before. A charge can cite more than one basis.
+    data_tests:
+      - unique_combination:
+          arguments: {columns: [basis, fiscal_year]}
+    columns:
+      - {name: receipt_key, data_type: string, data_tests: [unique, not_null]}
+      - {name: basis, data_type: string, data_tests: [not_null]}
+      - {name: fiscal_year, data_type: bigint, data_tests: [not_null]}
+      - {name: receipts, data_type: bigint, data_tests: [not_null]}
+      - {name: total_charges, data_type: bigint, data_tests: [not_null]}
+      - name: share_of_charges
+        data_type: double
+        data_tests:
+          - between:
+              arguments: {min_value: 0, max_value: 1}
+      - {name: change_from_prior_year, data_type: bigint, description: Blank in the first year.}
+      - {name: source_sha256, data_type: string, description: The file's hash; a revision changes it.}

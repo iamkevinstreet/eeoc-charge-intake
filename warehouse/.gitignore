@@ -1,0 +1,68 @@
+########################################################################
+#                                                                      #
+#                         warehouse/.gitignore                         #
+#                                                                      #
+########################################################################
+# Author:            Kevin Street
+# Created on:        2026-11-09
+# Last modified on:  2026-11-09
+#
+# Keeps secrets, keys, caches, builds, runtime logs and generated
+# data out of git: the warehouse, dlt's state and Airflow's home are
+# rebuilt by a load.
+
+# Secrets and keys: never committed (config/.env holds the secrets)
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+id_*
+secrets/
+*.tfvars
+backend.hcl
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Terraform's providers and local state
+.terraform/
+*.tfstate
+*.tfstate.*
+
+# dbt's compiled project and logs
+dbt/target/
+dbt/logs/
+
+# Node, which nothing here uses, should a tool bring it
+node_modules/
+
+# Runtime logs: kds.logs writes <log_dir>/YYYY-MM-DD.jsonl
+logs/
+*.log
+
+# Generated data: the warehouse, dlt's state, Airflow's home, audit files
+data/generated/
+.cache/
+*.sqlite
+*.db
+*.duckdb
+*.duckdb.wal
+
+# Editors and operating systems
+.idea/
+.vscode/
+.DS_Store
+
+# dbt's per-user id file, written on a first run
+dbt/.user.yml

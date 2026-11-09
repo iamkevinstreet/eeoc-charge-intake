@@ -6,7 +6,7 @@
 """
 Author:            Kevin Street
 Created on:        2026-10-29
-Last modified on:  2026-11-03
+Last modified on:  2026-11-09
 
 Reads the live and smoke run files into the three tables the dashboard
 and the Tableau export share, and names each run. Every run file (a
@@ -37,7 +37,7 @@ from kds.args import required
 from kds.logs import get_logger
 
 # Local
-from eeoc_intake.config import SETTINGS
+from eeoc_intake.config import SCORES, SETTINGS
 from eeoc_intake.core.schema import SCORED_FIELDS
 
 ########################################################################
@@ -96,8 +96,6 @@ FIELD_SCORE: Final = SETTINGS.scores_field_prefix
 LIVE: Final = "live"
 # log.debug("Names the kind of run that answered from the known answers")
 SMOKE: Final = "smoke"
-# log.debug("Names the key that holds a document's scores")
-SCORES: Final = "scores"
 # log.debug("Names the key and column of a run's provider")
 PROVIDER: Final = "provider"
 # log.debug("Names the key and column of a run's number of documents")

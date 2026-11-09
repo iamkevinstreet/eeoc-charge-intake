@@ -1,0 +1,64 @@
+########################################################################
+#                                                                      #
+#              warehouse/dbt/models/staging/_staging.yml               #
+#                                                                      #
+########################################################################
+# Author:            Kevin Street
+# Created on:        2026-11-09
+# Last modified on:  2026-11-09
+#
+# The staging views' grains and values, tested as early as they can
+# be: a copy in a raw table fails here, before any mart counts it twice.
+
+models:
+  - name: stg_reviews__exports
+    description: One row per export of a finished review.
+    columns:
+      - {name: export_id, data_tests: [unique, not_null]}
+      - {name: review_id, data_tests: [not_null]}
+      - name: contract
+        data_tests:
+          - accepted_values:
+              arguments: {values: ["eeoc-review-export/v1"]}
+
+  - name: stg_reviews__export_values
+    description: One row per export, version, field and list item.
+    data_tests:
+      - unique_combination:
+          arguments: {columns: [export_id, version, field, position]}
+    columns:
+      - name: version
+        data_tests:
+          - accepted_values:
+              arguments: {values: [record, extracted]}
+      - name: export_id
+        data_tests:
+          - relationships:
+              arguments: {to: ref('stg_reviews__exports'), field: export_id}
+
+  - name: stg_reviews__export_decisions
+    description: One row per export and field.
+    data_tests:
+      - unique_combination:
+          arguments: {columns: [export_id, field]}
+    columns:
+      - name: decision
+        data_tests:
+          - accepted_values:
+              arguments: {values: [accept, edit, reject]}
+      - name: export_id
+        data_tests:
+          - relationships:
+              arguments: {to: ref('stg_reviews__exports'), field: export_id}
+
+  - name: stg_eeoc_stats__charge_receipts
+    description: One row per basis or statute per fiscal year of Table E1a.
+    data_tests:
+      - unique_combination:
+          arguments: {columns: [table_id, basis, fiscal_year]}
+    columns:
+      - name: receipts
+        data_tests:
+          - not_null
+          - between:
+              arguments: {min_value: 0, max_value: 1000000}
