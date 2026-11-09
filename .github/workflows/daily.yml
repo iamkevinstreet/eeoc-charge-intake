@@ -1,0 +1,138 @@
+########################################################################
+#                                                                      #
+#                     .github/workflows/daily.yml                      #
+#                                                                      #
+########################################################################
+# Author:            Kevin Street
+# Created on:        2026-11-09
+# Last modified on:  2026-11-09
+#
+# Runs the charge warehouse every day. On DuckDB: each DAG end to end
+# through Airflow, both loads and the build, then the docs site, kept as
+# an artifact and, from main, copied to the lake under this project's
+# prefix by date. On Databricks: both loads and the build. AWS is
+# reached through the platform's role, which GitHub's OIDC token
+# assumes for main only; anything that names an account is a secret.
+
+name: daily
+
+on:
+  schedule:
+    - cron: "41 5 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: daily
+  cancel-in-progress: false
+
+jobs:
+  duckdb:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      id-token: write  # only for the AWS role, through GitHub's OIDC token
+    defaults:
+      run:
+        working-directory: warehouse
+    env:
+      RUNTIME__DLTHUB_TELEMETRY: "false"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0  # v7.1.0
+        with:
+          python-version: "3.12"
+
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2  # v10.3.3
+        with:
+          version: "0.13.6"
+
+      - name: Install the locked warehouse with Airflow
+        run: uv sync --locked --group airflow
+
+      - name: Each DAG end to end through Airflow
+        run: make dags-test
+
+      - name: The docs site, with its lineage graph
+        run: make docs
+
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9  # v7.0.2
+        with:
+          name: warehouse-${{ github.run_id }}
+          path: |
+            warehouse/data/generated/warehouse.duckdb
+            warehouse/dbt/target/static_index.html
+          retention-days: 30
+
+      - name: Sign in to AWS as the CI role
+        id: aws
+        if: vars.AWS_REGION != '' && github.ref == 'refs/heads/main'
+        uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd  # v6.3.0
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+          mask-aws-account-id: true
+
+      - name: Show the OIDC claims the role was offered
+        if: failure() && steps.aws.outcome == 'failure'
+        run: |
+          curl -sS -H "Authorization: bearer ${ACTIONS_ID_TOKEN_REQUEST_TOKEN}" \
+            "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=sts.amazonaws.com" \
+            | python3 -c 'import base64, json, sys
+          part = json.load(sys.stdin)["value"].split(".")[1]
+          claims = json.loads(base64.urlsafe_b64decode(part + "=" * (-len(part) % 4)))
+          print({key: claims[key] for key in ("sub", "aud", "ref")})'
+
+      - name: Copy the warehouse and its docs to the lake, under this project's prefix, by date
+        if: vars.AWS_REGION != '' && github.ref == 'refs/heads/main'
+        env:
+          BUCKET: ${{ secrets.LAKE_BUCKET }}
+        run: |
+          day="$(date -u +%Y-%m-%d)"
+          aws s3 cp data/generated/warehouse.duckdb \
+            "s3://${BUCKET}/eeoc-charge-intake/warehouse/${day}/warehouse.duckdb"
+          aws s3 cp dbt/target/static_index.html \
+            "s3://${BUCKET}/eeoc-charge-intake/docs/${day}/index.html"
+
+  databricks:
+    if: vars.DATABRICKS_CATALOG != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: warehouse
+    env:
+      RUNTIME__DLTHUB_TELEMETRY: "false"
+      WAREHOUSE_DESTINATION: databricks
+      DBT_TARGET: prod
+      DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+      DATABRICKS_HTTP_PATH: ${{ secrets.DATABRICKS_HTTP_PATH }}
+      DATABRICKS_CATALOG: ${{ vars.DATABRICKS_CATALOG }}
+      DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0  # v7.1.0
+        with:
+          python-version: "3.12"
+
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2  # v10.3.3
+        with:
+          version: "0.13.6"
+
+      - name: Install the locked warehouse with the Databricks adapters
+        run: uv sync --locked --group databricks
+
+      - name: Load the review exports and the EEOC's statistics into Databricks
+        run: make load
+
+      - name: Build and test every model on Databricks
+        run: make build

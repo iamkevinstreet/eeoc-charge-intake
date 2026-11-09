@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+- **The warehouse runs every day,** in a new `daily` workflow: on DuckDB, each DAG end to end
+  through Airflow and the docs site, kept as an artifact and, from main, copied to the lake under
+  `eeoc-charge-intake/` by date; and on Databricks, both loads and the build. AWS is reached through
+  data-platform-aws-databricks' CI role, which trusts this repository from its v0.2.0.
+
 ## v0.9.0, Nov 9, 2026
 
 - **The charge warehouse,** in `warehouse/`, the repository's data layers, started from the utils

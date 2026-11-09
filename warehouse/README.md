@@ -29,7 +29,8 @@ Every project follows the same seven layers, and fills only the ones its problem
 | --- | --- |
 | Works today | Both loads and the build on DuckDB: 4 staging and 4 intermediate views, 15 tables, 2 seeds, 4 unit tests and the data tests, the EEOC's published totals among them. 18 offline tests |
 | The data | The five live runs' 360 documents replayed as reviewed exports (below), and Table E1a, which CI reads from the EEOC's site |
-| Next | The same build on Databricks, on [data-platform-aws-databricks](https://github.com/iamkevinstreet/data-platform-aws-databricks), with column masks on the charging party; the review service's own exports folder as a source |
+| Every day | The `daily` workflow runs each DAG end to end through Airflow on DuckDB, keeps the warehouse and its docs as an artifact and copies them to the lake, and loads and builds on Databricks, on [data-platform-aws-databricks](https://github.com/iamkevinstreet/data-platform-aws-databricks) |
+| Next | Column masks on the charging party and separate grants on Databricks; the review service's own exports folder as a source |
 
 ## Where the reviews come from
 

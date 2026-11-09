@@ -10,7 +10,7 @@
 # Runs on every push and pull request: the secrets scan, lint, types,
 # the code standard, the tests, the offline evaluation and the audits;
 # and for the warehouse, its loads, the dbt build on DuckDB, its docs
-# and the DAG tests. The dependency-updates workflow runs the same
+# and the DAG tests; the daily workflow runs it on Databricks too. The dependency-updates workflow runs the same
 # checks on the commit it is about to land.
 
 name: ci
