@@ -8,11 +8,11 @@ Author:            Kevin Street
 Created on:        2026-11-10
 Last modified on:  2026-11-10
 
-Tests the column mask without Databricks: its statements name every
-personal field and the one group that may read them, and a setting
-cannot break out of their quotes; the personal fields are dbt's; a load
-into DuckDB puts no mask; and on Databricks both statements run, the
-function first, in one session.
+Tests the masks without Databricks or Snowflake: their statements name
+every personal field and the one group or role that may read them, and
+a setting cannot break out of their quotes; the personal fields are
+dbt's; a load into DuckDB puts no mask; and on Databricks and Snowflake
+every statement runs, the mask first, in one session.
 """
 
 ########################################################################
@@ -57,6 +57,12 @@ log = get_logger(__name__)
 DATASET: Final = "`kds`.`raw_reviews`"
 # log.debug("Sets the values table's name as Databricks quotes it")
 TABLE: Final = f"{DATASET}.`export_values`"
+# log.debug("Sets the dataset's name as Snowflake quotes it")
+SNOWFLAKE_DATASET: Final = '"KDS"."RAW_REVIEWS"'
+# log.debug("Sets the values table's name as Snowflake quotes it")
+SNOWFLAKE_TABLE: Final = f'{SNOWFLAKE_DATASET}."EXPORT_VALUES"'
+# log.debug("Sets a made-up Snowflake account")
+ACCOUNT: Final = "ORGNAME-ACCOUNTNAME"
 
 
 ########################################################################
@@ -66,11 +72,20 @@ TABLE: Final = f"{DATASET}.`export_values`"
 ########################################################################
 # log.debug("Defines a SQL client that keeps what it is asked to run")
 class FakeClient:
-    """Stands in for dlt's Databricks SQL client."""
+    """Stands in for dlt's SQL client, quoting as one warehouse does."""
 
     # log.debug("Defines the client's start")
-    def __init__(self) -> None:
-        """Starts with nothing run."""
+    def __init__(self, dataset: str = DATASET, table: str = TABLE) -> None:
+        """Starts with nothing run.
+
+        Args:
+            dataset: The dataset's quoted name.
+            table: The values table's quoted name.
+        """
+        # log.debug("Keeps the dataset's name")
+        self.dataset = dataset
+        # log.debug("Keeps the table's name")
+        self.table = table
         # log.debug("Starts the statements run")
         self.run: list[str] = []
 
@@ -82,7 +97,7 @@ class FakeClient:
             The name.
         """
         # log.debug("Returns it")
-        return DATASET
+        return self.dataset
 
     # log.debug("Defines a table's name")
     def make_qualified_table_name(self, table: str = "") -> str:
@@ -95,7 +110,7 @@ class FakeClient:
             The name.
         """
         # log.debug("Returns it, checking it is the values table")
-        return TABLE if table == masks.TABLE else table
+        return self.table if table == masks.TABLE else table
 
     # log.debug("Defines a statement's run")
     def execute_sql(self, sql: str = "") -> None:
@@ -113,10 +128,14 @@ class FakePipeline:
     """Stands in for the dlt pipeline the mask opens."""
 
     # log.debug("Defines the pipeline's start")
-    def __init__(self) -> None:
-        """Starts with a fresh client and no session opened."""
+    def __init__(self, client: FakeClient | None = None) -> None:
+        """Starts with a client and no session opened.
+
+        Args:
+            client: The client; a Databricks one when None.
+        """
         # log.debug("Starts the client")
-        self.client = FakeClient()
+        self.client = client or FakeClient()
         # log.debug("Starts the count of sessions")
         self.sessions = 0
 
@@ -153,17 +172,51 @@ def test_the_mask_names_each_personal_field_and_the_group_that_may_read_them() -
     )
 
 
+# log.debug("Defines the test that Snowflake's policy shows names to one role alone")
+def test_the_snowflake_policy_shows_names_to_one_role_and_replaces_none() -> None:
+    """The policy is made once, its rule kept current, then set."""
+    # log.debug("Builds the statements for Snowflake")
+    make, rule, set_policy = mask_statements(
+        AppSettings(warehouse_destination="snowflake", snowflake_account=ACCOUNT),
+        dataset=SNOWFLAKE_DATASET,
+        table=SNOWFLAKE_TABLE,
+    )
+    # log.debug("Names the policy as the statements do")
+    policy = f"{SNOWFLAKE_DATASET}.mask_personal"
+    # log.debug("Checks the policy, its rule, and the statement that sets it")
+    assert (
+        make.startswith(
+            f"CREATE MASKING POLICY IF NOT EXISTS {policy} AS (value STRING, field STRING)"
+        ),
+        rule.startswith(f"ALTER MASKING POLICY {policy} SET BODY -> CASE"),
+        "WHEN field IN ('charging_party') "
+        "AND NOT IS_ROLE_IN_SESSION('PERSONAL_DATA_READER')" in rule,
+        set_policy,
+    ) == (
+        True,
+        True,
+        True,
+        f"ALTER TABLE {SNOWFLAKE_TABLE} MODIFY COLUMN value "
+        f"SET MASKING POLICY {policy} USING (value, field) FORCE",
+    )
+
+
 # log.debug("Defines the test that a setting cannot break out of the mask's quotes")
 @pytest.mark.parametrize(
     "setting",
     [
         {"reviews_personal_fields": ["charging_party') OR ('a"]},
         {"reviews_personal_readers": "readers') OR true OR ('a"},
+        {"reviews_personal_role": "READER') OR TRUE OR ('A"},
+        {"reviews_personal_role": "personal_data_reader"},
         {"reviews_personal_fields": []},
     ],
 )
 def test_a_setting_cannot_break_out_of_the_mask_s_quotes(setting: dict[str, Any]) -> None:
-    """A field or group with a quote in it is refused, as is no field.
+    """A quote in a field, group or role is refused, and more besides.
+
+    A role not written as Snowflake keeps it, and no field at all, are
+    refused too.
 
     Args:
         setting: The setting to try.
@@ -230,4 +283,34 @@ def test_a_load_into_databricks_runs_both_statements(
         True,
         1,
         ["CREATE", "ALTER"],
+    )
+
+
+# log.debug("Defines the test that a Snowflake load runs its three statements")
+def test_a_load_into_snowflake_runs_its_three_statements(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """The policy, its rule, then its setting run, in one session.
+
+    Args:
+        tmp_path: A temporary folder pytest makes for this test.
+        monkeypatch: pytest's way to stand in for dlt's pipeline.
+    """
+    # log.debug("Makes the fake pipeline, quoting as Snowflake does")
+    pipeline = FakePipeline(FakeClient(SNOWFLAKE_DATASET, SNOWFLAKE_TABLE))
+    # log.debug("Stands it in for dlt's pipeline")
+    monkeypatch.setattr("dlt.pipeline", lambda **_: pipeline)
+    # log.debug("Stands in for the destination, which would ask GitHub for a token")
+    monkeypatch.setattr(masks, "destination", lambda _: None)
+    # log.debug("Sets up Snowflake as the destination, with a made-up account")
+    settings = settings_in(tmp_path).model_copy(
+        update={"warehouse_destination": "snowflake", "snowflake_account": ACCOUNT}
+    )
+    # log.debug("Puts the mask on")
+    masked = mask_reviews(settings)
+    # log.debug("Checks one session made the policy, set its rule, then set it on the values")
+    assert (masked, pipeline.sessions, [s.split()[:2] for s in pipeline.client.run]) == (
+        True,
+        1,
+        [["CREATE", "MASKING"], ["ALTER", "MASKING"], ["ALTER", "TABLE"]],
     )

@@ -15,17 +15,20 @@
 # it. A test keeps this file equal to the defaults in code.
 
 [warehouse]
-destination = "duckdb"                    # duckdb | databricks
+destination = "duckdb"                    # duckdb | databricks | snowflake
 path = "data/generated/warehouse.duckdb"  # the DuckDB file dlt loads and dbt builds in
 state = "data/generated/dlt"              # dlt's pipeline state
 
 [dbt]
 project = "dbt"                           # the dbt project, which also holds profiles.yml
-target = "dev"                            # dev builds in DuckDB, prod in Databricks
+target = "dev"                            # dev is DuckDB, prod Databricks, snowflake Snowflake
 threads = 4                               # models dbt builds at once
 
 [databricks]
 catalog = "kds"                           # the Unity Catalog catalog every schema lives in
+
+[snowflake]
+database = "KDS"                          # the Snowflake database every schema lives in
 
 [receipts]
 dataset = "raw_eeoc_stats"                # the schema the EEOC's national statistics load into
@@ -38,10 +41,12 @@ timeout_s = 60.0                          # how long the download may take
 dataset = "raw_reviews"                   # the schema the review exports load into
 folder = "../data/reviews"                # exports under contract v1: one per .json file, or one per line of .jsonl
 contract = "../backend/src/eeoc_intake/contracts/review_export_v1.json"  # the contract each must meet
-# The fields whose values name a person: never in a mart, and on Databricks masked in the raw table
-# for everyone outside personal_readers, an account group made in the workspace and left empty.
+# The fields whose values name a person: never in a mart, and on Databricks and Snowflake masked in
+# the raw table for everyone outside personal_readers, an account group made in the Databricks
+# workspace and left empty, or personal_role, a Snowflake role granted to no one.
 personal_fields = ["charging_party"]
 personal_readers = "personal-data-readers"
+personal_role = "PERSONAL_DATA_READER"
 
 [files]
 encoding = "utf-8"                        # every file read or written

@@ -8,11 +8,15 @@ Author:            Kevin Street
 Created on:        2026-11-10
 Last modified on:  2026-11-10
 
-The column mask on the raw review values, put on after every load into
-Databricks. A value of a field that names a person, the charging
-party's, shows to every reader as its initial and a fingerprint of its
-text in lower case and trimmed, such as "J. 3f9a0c2b71de", unless the
-reader belongs to `[reviews] personal_readers`, a group no one is in.
+The mask on the raw review values, put on after every load into
+Databricks or Snowflake. A value of a field that names a person, the
+charging party's, shows to every reader as its initial and a
+fingerprint of its text in lower case and trimmed, such as
+"J. 3f9a0c2b71de", unless the reader may see names: on Databricks a
+member of `[reviews] personal_readers`, an account group no one is in,
+through a column mask; on Snowflake a session holding `[reviews]
+personal_role`, a role granted to no one, through a masking policy.
+Both compute the same fingerprint.
 
 The mask binds the table's owner too, and the build: dbt reads the
 masked value and needs no more, since the fingerprint tells two people
@@ -36,7 +40,7 @@ from typing import Final
 import dlt
 from kds.args import required
 from kds.logs import get_logger, log_event
-from kds.pipelines import DUCKDB, destination
+from kds.pipelines import DUCKDB, SNOWFLAKE, destination
 
 # Local
 from pipelines.config import AppSettings
@@ -55,13 +59,13 @@ log = get_logger(__name__)
 ########################################################################
 # log.debug("Names dlt's switch for its usage reports, which stay off")
 TELEMETRY: Final = "runtime.dlthub_telemetry"
-# log.debug("Names the mask's function, kept beside the table it masks")
+# log.debug("Names the mask, kept beside the table it masks")
 FUNCTION: Final = "mask_personal"
 # log.debug("Names the masked table: every value of every export")
 TABLE: Final = "export_values"
 # log.debug("Sets how many hex digits of the SHA-256 the fingerprint keeps")
 FINGERPRINT: Final = 12
-# log.debug("Sets the function: a personal field's value, its initial and fingerprint")
+# log.debug("Sets the Databricks function: a personal field's value, its initial and fingerprint")
 MASK: Final = """\
 CREATE OR REPLACE FUNCTION {function}(value STRING, field STRING)
 RETURNS STRING
@@ -75,32 +79,56 @@ RETURN CASE
         )
     ELSE value
 END"""
-# log.debug("Sets the statement that puts the mask on the values")
+# log.debug("Sets the Databricks statement that puts the mask on the values")
 SET_MASK: Final = (
     "ALTER TABLE {table} ALTER COLUMN value SET MASK {function} USING COLUMNS (field)"
+)
+# log.debug("Sets the Snowflake rule: the same initial and fingerprint, but for one role")
+RULE: Final = """\
+CASE
+    WHEN field IN ({fields}) AND NOT IS_ROLE_IN_SESSION('{role}')
+        THEN CONCAT(
+            UPPER(SUBSTR(TRIM(value), 1, 1)),
+            '. ',
+            SUBSTR(SHA2(LOWER(TRIM(value)), 256), 1, {fingerprint})
+        )
+    ELSE value
+END"""
+# log.debug("Sets the Snowflake policy, made once: one set on a column cannot be replaced")
+POLICY: Final = """\
+CREATE MASKING POLICY IF NOT EXISTS {policy} AS (value STRING, field STRING)
+RETURNS STRING -> {rule}
+COMMENT = 'The mask on {table}.value: a personal field shows its initial and a fingerprint.'"""
+# log.debug("Sets the statement that gives the policy the current rule, set on a column or not")
+SET_RULE: Final = "ALTER MASKING POLICY {policy} SET BODY -> {rule}"
+# log.debug("Sets the statement that puts the policy on the values, in place of any before it")
+SET_POLICY: Final = (
+    "ALTER TABLE {table} MODIFY COLUMN value "
+    "SET MASKING POLICY {policy} USING (value, field) FORCE"
 )
 
 
 ########################################################################
 #                                                                      #
-#                             Column masks                             #
+#                                Masks                                 #
 #                                                                      #
 ########################################################################
 # log.debug("Defines the statements that make the mask and put it on")
 def mask_statements(
     settings: AppSettings | None = None, dataset: str | None = None, table: str | None = None
 ) -> list[str]:
-    """Returns the SQL that makes the mask's function and sets it.
+    """Returns the SQL that makes the mask and sets it, in order.
 
     Args:
-        settings: The personal fields and the group that may read
+        settings: The warehouse, the personal fields and who may read
             them. Required.
         dataset: The dataset's qualified name, as the destination
             quotes it. Required.
         table: The values table's qualified name. Required.
 
     Returns:
-        The function's statement, then the table's.
+        On Databricks, the function's statement, then the table's; on
+        Snowflake, the policy's, its rule's, then the table's.
     """
     # log.debug("Takes the settings, which the caller must give")
     settings = required(settings=settings)
@@ -108,11 +136,23 @@ def mask_statements(
     dataset = required(dataset=dataset)
     # log.debug("Takes the table, which the caller must give")
     table = required(table=table)
-    # log.debug("Names the function inside the dataset")
+    # log.debug("Names the mask inside the dataset")
     function = f"{dataset}.{FUNCTION}"
     # log.debug("Quotes each personal field, as the settings check allows no quote in one")
     fields = ", ".join(f"'{f}'" for f in settings.reviews_personal_fields)
-    # log.debug("Fills the function's statement")
+    # log.debug("Builds Snowflake's policy, when Snowflake is the warehouse")
+    if settings.warehouse_destination == SNOWFLAKE:
+        # log.debug("Fills the rule, the role checked as the settings allow no quote in it")
+        rule = RULE.format(
+            fields=fields, role=settings.reviews_personal_role, fingerprint=FINGERPRINT
+        )
+        # log.debug("Returns the policy, its rule kept current, then its setting on the values")
+        return [
+            POLICY.format(policy=function, rule=rule, table=TABLE),
+            SET_RULE.format(policy=function, rule=rule),
+            SET_POLICY.format(table=table, policy=function),
+        ]
+    # log.debug("Fills Databricks' function's statement")
     make = MASK.format(
         function=function,
         table=TABLE,
@@ -126,10 +166,10 @@ def mask_statements(
 
 # log.debug("Defines the mask's setting after a load")
 def mask_reviews(settings: AppSettings | None = None) -> bool:
-    """Puts the column mask on the review values in Databricks.
+    """Puts the mask on the review values in Databricks or Snowflake.
 
-    Runs after every load, since a first load makes the table; both
-    statements are safe to run again. DuckDB has no masks, so a load
+    Runs after every load, since a first load makes the table; every
+    statement is safe to run again. DuckDB has no masks, so a load
     there puts none.
 
     Args:
@@ -154,7 +194,7 @@ def mask_reviews(settings: AppSettings | None = None) -> bool:
         dataset_name=settings.reviews_dataset,
         pipelines_dir=str(settings.warehouse_state),
     )
-    # log.debug("Runs both statements in one session")
+    # log.debug("Runs every statement in one session")
     with pipeline.sql_client() as client:
         # log.debug("Builds them with the destination's own quoting")
         statements = mask_statements(
@@ -167,6 +207,12 @@ def mask_reviews(settings: AppSettings | None = None) -> bool:
             # log.debug("Runs it")
             client.execute_sql(statement)
     # log.debug("Logs the mask")
-    log_event(log, "masks.set", table=TABLE, fields=len(settings.reviews_personal_fields))
+    log_event(
+        log,
+        "masks.set",
+        warehouse=settings.warehouse_destination,
+        table=TABLE,
+        fields=len(settings.reviews_personal_fields),
+    )
     # log.debug("Says so")
     return True

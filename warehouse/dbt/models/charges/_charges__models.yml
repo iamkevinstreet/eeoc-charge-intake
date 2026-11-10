@@ -207,7 +207,7 @@ models:
   - name: dim_charging_party
     description: >
       One row per charging party, by a key and an initial; the name never reaches a mart, and on
-      Databricks the build reads it masked.
+      Databricks and Snowflake the build reads it masked.
     columns:
       - {name: charging_party_key, data_type: string, data_tests: [unique, not_null]}
       - {name: initial, data_type: string}

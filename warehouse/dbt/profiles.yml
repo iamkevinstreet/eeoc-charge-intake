@@ -5,12 +5,16 @@
 ########################################################################
 # Author:            Kevin Street
 # Created on:        2026-11-09
-# Last modified on:  2026-11-09
+# Last modified on:  2026-11-10
 #
 # Where dbt builds: dev is the DuckDB file the loaders fill, prod the
-# Databricks SQL warehouse. Nothing here is a secret or a location:
-# `python -m pipelines dbt ...` sets every variable from the settings,
-# so the loaders and dbt always use the same warehouse.
+# Databricks SQL warehouse, snowflake the Snowflake account. Nothing
+# here is a secret or a location: `python -m pipelines dbt ...` sets
+# every variable from the settings, so the loaders and dbt always use
+# the same warehouse. On Snowflake dbt signs in as the workload itself,
+# with the token the settings made for this run; the service user that
+# token names has its role and warehouse set, and may make no schema,
+# so the default schema is one that exists.
 
 warehouse:
   target: dev
@@ -28,4 +32,13 @@ warehouse:
       token: "{{ env_var('DATABRICKS_TOKEN') }}"
       catalog: "{{ env_var('DATABRICKS_CATALOG') }}"
       schema: analytics
+      threads: 4
+    snowflake:
+      type: snowflake
+      account: "{{ env_var('SNOWFLAKE_ACCOUNT') }}"
+      database: "{{ env_var('SNOWFLAKE_DATABASE') }}"
+      authenticator: workload_identity
+      workload_identity_provider: OIDC
+      token: "{{ env_var('SNOWFLAKE_TOKEN') }}"
+      schema: STAGING
       threads: 4

@@ -17,7 +17,7 @@ Every project follows the same seven layers, and fills only the ones its problem
 | --- | --- |
 | Sources | The review service's exports under contract v1, and the EEOC's Table E1a, charge receipts by basis, FY 1997 to FY 2025 |
 | Ingestion | dlt: every export checked against the contract before a row is made, merged on its key; the table read by its shape, its hash on every row |
-| Storage | `raw_reviews` and `raw_eeoc_stats` in one DuckDB file on a laptop and in CI; Databricks in production |
+| Storage | `raw_reviews` and `raw_eeoc_stats` in one DuckDB file on a laptop and in CI; Databricks or Snowflake in production |
 | Modeling | Staging and intermediate views, then the `charges` mart (facts, bridges and dimensions, the respondent type 2) and the `national` mart, every table under a contract |
 | Serving | The marts, and the dbt docs site with its lineage graph |
 | Intelligence | Upstream, in the app: the extraction. The warehouse counts what reviewers had to correct |
@@ -27,10 +27,11 @@ Every project follows the same seven layers, and fills only the ones its problem
 
 | | |
 | --- | --- |
-| Works today | Both loads and the build on DuckDB: 4 staging and 4 intermediate views, 15 tables, 2 seeds, 4 unit tests and the data tests, the EEOC's published totals among them. 25 offline tests |
+| Works today | Both loads and the build on DuckDB: 4 staging and 4 intermediate views, 15 tables, 2 seeds, 4 unit tests and the data tests, the EEOC's published totals among them. 29 offline tests |
 | The data | The five live runs' 360 documents replayed as reviewed exports (below), and Table E1a, which CI reads from the EEOC's site |
-| Every day | The `daily` workflow runs each DAG end to end through Airflow on DuckDB, keeps the warehouse and its docs as an artifact and copies them to the lake, and loads and builds on Databricks, on [data-platform-aws-databricks](https://github.com/iamkevinstreet/data-platform-aws-databricks) |
-| Access on Databricks | A column mask on the raw values shows the charging party's name to no one, the build included, and the platform grants loading, building and reading to three groups; both wait on the platform's databricks root being applied |
+| Every day | The `daily` workflow runs each DAG end to end through Airflow on DuckDB, keeps the warehouse and its docs as an artifact and copies them to the lake, and loads and builds on Databricks, on [data-platform-aws-databricks](https://github.com/iamkevinstreet/data-platform-aws-databricks), and on Snowflake, on [data-platform-aws-snowflake](https://github.com/iamkevinstreet/data-platform-aws-snowflake), once that platform is applied |
+| Access on Databricks | A column mask on the raw values shows the charging party's name to no one, the build included, and the platform grants loading, building and reading to three groups. The daily build's test that it reads no name passes there |
+| Access on Snowflake | Written, not yet run: the load and the build each sign in as a service user of their own with the job's OIDC token, so no key is stored, and a masking policy shows the name to no role in use. Waits on the platform's snowflake root being applied |
 | Next | The review service's own exports folder as a source |
 
 ## Where the reviews come from
@@ -56,7 +57,7 @@ make install   # the locked environment
 make load      # the replayed exports, and Table E1a from the EEOC's site
 make build     # every seed, model, contract, unit test and data test, on DuckDB
 make docs      # the dbt docs site with its lineage graph, in dbt/target/static_index.html
-make test      # 25 tests, offline
+make test      # 29 tests, offline
 make check     # lint, format and strict types; the repository's root runs the code standard
 ```
 
@@ -86,14 +87,16 @@ To run the DAGs through Airflow, `make install-airflow` then `make dags-test`.
   the spelling recorded: a version begins when a later export records the same respondent, by its
   name in lower case and trimmed, spelled another way. The replayed exports hold one spelling each;
   a unit test shows the change.
-- **No name in a mart, and on Databricks in no query.** The marts hold a key and an initial, and
-  `fct_field_reviews` shows no value for a field that names a person. On Databricks, every load ends
-  by putting a column mask on the raw values ([`pipelines/masks.py`](pipelines/masks.py)): a value
-  of a field in `[reviews] personal_fields` shows as its initial and a fingerprint of its text, such
-  as `J. 3f9a0c2b71de`, to everyone outside `personal-data-readers`, an account group left empty.
-  The mask binds the table's owner too, and the build: the fingerprint tells two people apart and
-  the initial is all the marts keep, so dbt reads nothing more, and a test fails the build if it
-  ever reads a name. The fingerprint is an unsalted hash, so it stops reading, not guessing: someone
+- **No name in a mart, and on Databricks or Snowflake in no query.** The marts hold a key and an
+  initial, and `fct_field_reviews` shows no value for a field that names a person. On Databricks
+  and Snowflake, every load ends by putting a mask on the raw values
+  ([`pipelines/masks.py`](pipelines/masks.py)): a value of a field in `[reviews] personal_fields`
+  shows as its initial and a fingerprint of its text, such as `J. 3f9a0c2b71de`, to everyone outside
+  `personal-data-readers`, a Databricks account group left empty, or without
+  `PERSONAL_DATA_READER`, a Snowflake role granted to no one. Databricks calls it a column mask,
+  Snowflake a masking policy, and both compute the same fingerprint. The mask binds the table's
+  owner too, and the build: the fingerprint tells two people apart and the initial is all the marts
+  keep, so dbt reads nothing more, and a test fails the build if it ever reads a name. The fingerprint is an unsalted hash, so it stops reading, not guessing: someone
   who already suspects a name can hash it and compare. The platform's grants keep readers out of the
   raw and staging schemas altogether. DuckDB has no masks; there the build reads the name, and the
   marts still hold only the key and the initial.
@@ -112,12 +115,12 @@ equal to the defaults in code. A load to DuckDB needs no secret. See
 
 ## Testing
 
-`make test` runs 25 tests with no network: the table read by its shape, on workbooks the tests lay
+`make test` runs 29 tests with no network: the table read by its shape, on workbooks the tests lay
 out as the EEOC does; every committed export against the contract, a refused one, and a load done
 twice; the whole build on the committed exports and a stand-in table with the published totals; the
-column mask's statements, run against a stand-in for Databricks; the settings, the command, and the
-DAGs as Airflow parses them. CI also loads the real table from the
-EEOC's site and builds on it.
+masks' statements, run against stand-ins for Databricks and Snowflake; the settings, the command,
+and the DAGs as Airflow parses them. CI also loads the real table from the EEOC's site and builds on
+it.
 
 ## Project layout
 

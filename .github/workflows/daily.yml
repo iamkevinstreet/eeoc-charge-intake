@@ -5,14 +5,17 @@
 ########################################################################
 # Author:            Kevin Street
 # Created on:        2026-11-09
-# Last modified on:  2026-11-09
+# Last modified on:  2026-11-10
 #
 # Runs the charge warehouse every day. On DuckDB: each DAG end to end
 # through Airflow, both loads and the build, then the docs site, kept as
 # an artifact and, from main, copied to the lake under this project's
-# prefix by date. On Databricks: both loads and the build. AWS is
-# reached through the platform's role, which GitHub's OIDC token
-# assumes for main only; anything that names an account is a secret.
+# prefix by date. On Databricks: both loads and the build. On Snowflake:
+# both loads, then the build, each job its own service user. AWS and
+# Snowflake are reached with GitHub's OIDC token, so no key for either
+# is stored: AWS through the platform's role, for main only; Snowflake
+# as the service user that trusts the job's environment, which only
+# main may use. Anything that names an account is a secret.
 
 name: daily
 
@@ -135,4 +138,89 @@ jobs:
         run: make load
 
       - name: Build and test every model on Databricks
+        run: make build
+
+  snowflake-load:
+    if: vars.SNOWFLAKE_DATABASE != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment: snowflake-load
+    permissions:
+      contents: read
+      id-token: write  # signs in to Snowflake as this job's service user, with GitHub's OIDC token
+    defaults:
+      run:
+        working-directory: warehouse
+    env:
+      RUNTIME__DLTHUB_TELEMETRY: "false"
+      WAREHOUSE_DESTINATION: snowflake
+      DBT_TARGET: snowflake
+      SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+      SNOWFLAKE_DATABASE: ${{ vars.SNOWFLAKE_DATABASE }}
+    steps:
+      - name: Keep the account out of the log in either case, as GitHub matches a secret exactly
+        run: |
+          account="${SNOWFLAKE_ACCOUNT#https://}"
+          account="${account%%.*}"
+          echo "::add-mask::${account,,}"
+          echo "::add-mask::${account^^}"
+
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0  # v7.1.0
+        with:
+          python-version: "3.12"
+
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2  # v10.3.3
+        with:
+          version: "0.13.6"
+
+      - name: Install the locked warehouse with the Snowflake adapters
+        run: uv sync --locked --group snowflake
+
+      - name: Load the review exports and the EEOC's statistics into Snowflake, then mask the names
+        run: make load
+
+  snowflake-build:
+    needs: snowflake-load
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment: snowflake-build
+    permissions:
+      contents: read
+      id-token: write  # signs in to Snowflake as this job's service user, with GitHub's OIDC token
+    defaults:
+      run:
+        working-directory: warehouse
+    env:
+      WAREHOUSE_DESTINATION: snowflake
+      DBT_TARGET: snowflake
+      SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+      SNOWFLAKE_DATABASE: ${{ vars.SNOWFLAKE_DATABASE }}
+    steps:
+      - name: Keep the account out of the log in either case, as GitHub matches a secret exactly
+        run: |
+          account="${SNOWFLAKE_ACCOUNT#https://}"
+          account="${account%%.*}"
+          echo "::add-mask::${account,,}"
+          echo "::add-mask::${account^^}"
+
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0  # v7.1.0
+        with:
+          python-version: "3.12"
+
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2  # v10.3.3
+        with:
+          version: "0.13.6"
+
+      - name: Install the locked warehouse with the Snowflake adapters
+        run: uv sync --locked --group snowflake
+
+      - name: Build and test every model on Snowflake, the names read masked
         run: make build

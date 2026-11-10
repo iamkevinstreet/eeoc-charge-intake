@@ -17,8 +17,8 @@ Every export is checked against the contract before any row is made,
 so a file the contract refuses fails the load instead of loading half a
 review. An export is keyed by its review and its time, so loading the
 same files again changes nothing, and a review exported again adds a
-version beside the first. On Databricks, each load ends by putting the
-column mask on the names (pipelines/masks.py).
+version beside the first. On Databricks and Snowflake, each load ends
+by putting the mask on the names (pipelines/masks.py).
 """
 
 ########################################################################
@@ -123,7 +123,8 @@ def reviews(
 def load_reviews(settings: AppSettings | None = None) -> None:
     """Loads every export in the folder, as `load reviews` runs it.
 
-    On Databricks, then puts the column mask on the names it loaded.
+    On Databricks and Snowflake, then puts the mask on the names it
+    loaded.
 
     Args:
         settings: The folder, the contract and the warehouse. Required.

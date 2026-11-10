@@ -2,6 +2,18 @@
 
 ## Unreleased
 
+- **Snowflake, beside Databricks.** The `daily` workflow loads both sources into Snowflake, then
+  builds and tests every model there, once data-platform-aws-snowflake is applied and the
+  repository's `SNOWFLAKE_DATABASE` variable is set. Each job signs in as a service user of its own,
+  the load as one, the build as another, with the OIDC token GitHub gives the job in its
+  environment, `snowflake-load` or `snowflake-build`, so no password or key exists for either. The
+  name mask comes too, as a Snowflake masking policy with the same initial and fingerprint, shown
+  in full only to `[reviews] personal_role`, `PERSONAL_DATA_READER`, a role granted to no one; the
+  test that the build reads no name now runs on Snowflake as well as Databricks. A Snowflake form of
+  the sorted list macro, a `snowflake` dbt target and dependency group, with Snowflake's connector
+  held at 4.8.1, and `[snowflake] database` in the warehouse's settings. Not yet run on Snowflake.
+- **utils v0.8.0,** for the backend and the warehouse alike, so the repository keeps one pin.
+  29 offline warehouse tests.
 - **A column mask on the charging party's name, on Databricks.** Every review load into Databricks
   ends by putting a mask on `raw_reviews.export_values.value`: a value of a field in the new
   `[reviews] personal_fields` (the charging party) shows as its initial and a fingerprint of its

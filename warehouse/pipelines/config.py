@@ -9,11 +9,11 @@ Created on:        2026-11-09
 Last modified on:  2026-11-10
 
 Every setting this project's loaders, build and DAGs read. The shared
-ones (the warehouse, dlt's state, dbt and Databricks) come from
-kds.pipelines; each source adds its own here, and config/config.toml
-lists them all at their defaults. SETTINGS holds the settings loaded
-once at import; functions that take settings still take them, so tests
-can pass their own.
+ones (the warehouse, dlt's state, dbt, Databricks and Snowflake) come
+from kds.pipelines; each source adds its own here, and
+config/config.toml lists them all at their defaults. SETTINGS holds
+the settings loaded once at import; functions that take settings still
+take them, so tests can pass their own.
 """
 
 ########################################################################
@@ -78,9 +78,13 @@ class AppSettings(PipelineSettings):
     reviews_personal_fields: list[Annotated[str, Field(pattern=r"^[a-z_]+$")]] = Field(
         default_factory=lambda: ["charging_party"], min_length=1
     )
-    # log.debug("Holds the group a column mask shows a name to, with no quote in its name")
+    # log.debug("Holds the group a Databricks mask shows a name to, with no quote in its name")
     reviews_personal_readers: str = Field(
         default="personal-data-readers", pattern=r"^[A-Za-z0-9 ._-]+$"
+    )
+    # log.debug("Holds the role a Snowflake mask shows a name to, a plain role name")
+    reviews_personal_role: str = Field(
+        default="PERSONAL_DATA_READER", pattern=r"^[A-Z][A-Z0-9_]*$"
     )
 
 

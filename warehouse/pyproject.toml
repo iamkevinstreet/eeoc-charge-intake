@@ -5,13 +5,13 @@
 ########################################################################
 # Author:            Kevin Street
 # Created on:        2026-11-09
-# Last modified on:  2026-11-09
+# Last modified on:  2026-11-10
 #
 # Packages the loaders and the build command, and sets ruff, mypy and
-# pytest to the code standard. Airflow and the Databricks adapters are
-# dependency groups of their own: the DAGs only start commands, so the
-# scheduler never imports the loaders, and CI installs each group only
-# where it runs.
+# pytest to the code standard. Airflow and the Databricks and Snowflake
+# adapters are dependency groups of their own: the DAGs only start
+# commands, so the scheduler never imports the loaders, and CI installs
+# each group only where it runs.
 
 [project]
 name = "eeoc-charge-intake-warehouse"
@@ -22,10 +22,10 @@ requires-python = ">=3.12"
 license = { text = "Apache-2.0" }
 authors = [{ name = "Kevin Street", email = "info@kevindstreet.com" }]
 dependencies = [
-  "kds-args>=0.7.0,<0.8",
-  "kds-settings>=0.7.0,<0.8",
-  "kds-logs>=0.7.0,<0.8",
-  "kds-pipelines>=0.7.0,<0.8",
+  "kds-args>=0.8.0,<0.9",
+  "kds-settings>=0.8.0,<0.9",
+  "kds-logs>=0.8.0,<0.9",
+  "kds-pipelines>=0.8.0,<0.9",
   # dlt supports DuckDB below 2.0, so the lock holds DuckDB 1.5.
   "dlt[duckdb]==1.32.0",
   "dbt-core==1.12.6",
@@ -46,17 +46,24 @@ dev = [
   "types-PyYAML>=6.0",
   "types-jsonschema>=4.23",
   "types-openpyxl>=3.1",
-  "kds-standards>=0.7.0,<0.8",
+  "kds-standards>=0.8.0,<0.9",
 ]
 airflow = ["apache-airflow==3.4.0"]
 databricks = ["dbt-databricks==1.13.0", "dlt[databricks]==1.32.0"]
+# Snowflake's connector is held at 4.8.1, the last release before its 5.0 rewrite on a Rust core,
+# which dlt's loads have not run on yet.
+snowflake = [
+  "dbt-snowflake==1.12.5",
+  "dlt[snowflake]==1.32.0",
+  "snowflake-connector-python==4.8.1",
+]
 
 [tool.uv.sources]
-kds-args = { git = "https://github.com/iamkevinstreet/utils", subdirectory = "args", rev = "28d20c9c817795cb787023f20e4ab99af1b05957" }
-kds-settings = { git = "https://github.com/iamkevinstreet/utils", subdirectory = "settings", rev = "28d20c9c817795cb787023f20e4ab99af1b05957" }
-kds-logs = { git = "https://github.com/iamkevinstreet/utils", subdirectory = "logs", rev = "28d20c9c817795cb787023f20e4ab99af1b05957" }
-kds-pipelines = { git = "https://github.com/iamkevinstreet/utils", subdirectory = "pipelines", rev = "28d20c9c817795cb787023f20e4ab99af1b05957" }
-kds-standards = { git = "https://github.com/iamkevinstreet/utils", subdirectory = "standards", rev = "28d20c9c817795cb787023f20e4ab99af1b05957" }
+kds-args = { git = "https://github.com/iamkevinstreet/utils", subdirectory = "args", rev = "c6acc75155fb1a7350c6e8ccb09a57ce01bba40c" }
+kds-settings = { git = "https://github.com/iamkevinstreet/utils", subdirectory = "settings", rev = "c6acc75155fb1a7350c6e8ccb09a57ce01bba40c" }
+kds-logs = { git = "https://github.com/iamkevinstreet/utils", subdirectory = "logs", rev = "c6acc75155fb1a7350c6e8ccb09a57ce01bba40c" }
+kds-pipelines = { git = "https://github.com/iamkevinstreet/utils", subdirectory = "pipelines", rev = "c6acc75155fb1a7350c6e8ccb09a57ce01bba40c" }
+kds-standards = { git = "https://github.com/iamkevinstreet/utils", subdirectory = "standards", rev = "c6acc75155fb1a7350c6e8ccb09a57ce01bba40c" }
 
 [build-system]
 requires = ["setuptools>=69", "wheel"]
