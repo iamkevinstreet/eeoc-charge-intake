@@ -159,6 +159,7 @@ jobs:
       SNOWFLAKE_DATABASE: ${{ vars.SNOWFLAKE_DATABASE }}
     steps:
       - name: Keep the account out of the log in either case, as GitHub matches a secret exactly
+        working-directory: .  # warehouse/ exists only after the checkout below
         run: |
           account="${SNOWFLAKE_ACCOUNT#https://}"
           account="${account%%.*}"
@@ -201,6 +202,7 @@ jobs:
       SNOWFLAKE_DATABASE: ${{ vars.SNOWFLAKE_DATABASE }}
     steps:
       - name: Keep the account out of the log in either case, as GitHub matches a secret exactly
+        working-directory: .  # warehouse/ exists only after the checkout below
         run: |
           account="${SNOWFLAKE_ACCOUNT#https://}"
           account="${account%%.*}"
