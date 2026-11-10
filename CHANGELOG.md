@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+- **A column mask on the charging party's name, on Databricks.** Every review load into Databricks
+  ends by putting a mask on `raw_reviews.export_values.value`: a value of a field in the new
+  `[reviews] personal_fields` (the charging party) shows as its initial and a fingerprint of its
+  text, such as `J. 3f9a0c2b71de`, to everyone outside `[reviews] personal_readers`, an account
+  group made in the workspace and left empty. The mask binds the table's owner and the build too:
+  the fingerprint tells two people apart and the initial is all the marts keep, so dbt needs no
+  more, and a new test, on Databricks only, fails the build if it ever reads a name. Grants for
+  loading, building and reading come from data-platform-aws-databricks v0.3.0. 25 offline warehouse
+  tests.
 - **The warehouse runs every day,** in a new `daily` workflow: on DuckDB, each DAG end to end
   through Airflow and the docs site, kept as an artifact and, from main, copied to the lake under
   `eeoc-charge-intake/` by date; and on Databricks, both loads and the build. AWS is reached through

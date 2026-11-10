@@ -6,7 +6,7 @@
 """
 Author:            Kevin Street
 Created on:        2026-11-09
-Last modified on:  2026-11-09
+Last modified on:  2026-11-10
 
 The dlt source for review exports under contract v1: every file in
 `[reviews] folder`, one export to a .json file as the review service
@@ -17,7 +17,8 @@ Every export is checked against the contract before any row is made,
 so a file the contract refuses fails the load instead of loading half a
 review. An export is keyed by its review and its time, so loading the
 same files again changes nothing, and a review exported again adds a
-version beside the first.
+version beside the first. On Databricks, each load ends by putting the
+column mask on the names (pipelines/masks.py).
 """
 
 ########################################################################
@@ -45,6 +46,7 @@ from pydantic import BaseModel
 
 # Local
 from pipelines.config import SETTINGS, AppSettings
+from pipelines.masks import mask_reviews
 from pipelines.rows import DecisionRow, ExportRow, ValueRow
 
 ########################################################################
@@ -121,6 +123,8 @@ def reviews(
 def load_reviews(settings: AppSettings | None = None) -> None:
     """Loads every export in the folder, as `load reviews` runs it.
 
+    On Databricks, then puts the column mask on the names it loaded.
+
     Args:
         settings: The folder, the contract and the warehouse. Required.
     """
@@ -133,6 +137,8 @@ def load_reviews(settings: AppSettings | None = None) -> None:
         dataset=settings.reviews_dataset,
         source=reviews(settings, loaded_at=datetime.now(UTC)),
     )
+    # log.debug("Masks the names it loaded, where the warehouse has masks")
+    mask_reviews(settings)
 
 
 # log.debug("Defines the reading of every export in the folder")

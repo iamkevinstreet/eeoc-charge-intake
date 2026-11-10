@@ -6,7 +6,7 @@
 """
 Author:            Kevin Street
 Created on:        2026-11-09
-Last modified on:  2026-11-09
+Last modified on:  2026-11-10
 
 Every setting this project's loaders, build and DAGs read. The shared
 ones (the warehouse, dlt's state, dbt and Databricks) come from
@@ -26,7 +26,7 @@ from __future__ import annotations
 
 from functools import lru_cache
 from pathlib import Path
-from typing import Final
+from typing import Annotated, Final
 
 # Third-party
 from kds.logs import get_logger
@@ -74,6 +74,14 @@ class AppSettings(PipelineSettings):
     reviews_folder: Path = Path("../data/reviews")
     # log.debug("Holds the export contract every file must meet")
     reviews_contract: Path = Path("../backend/src/eeoc_intake/contracts/review_export_v1.json")
+    # log.debug("Holds the fields whose values name a person, each a plain field name")
+    reviews_personal_fields: list[Annotated[str, Field(pattern=r"^[a-z_]+$")]] = Field(
+        default_factory=lambda: ["charging_party"], min_length=1
+    )
+    # log.debug("Holds the group a column mask shows a name to, with no quote in its name")
+    reviews_personal_readers: str = Field(
+        default="personal-data-readers", pattern=r"^[A-Za-z0-9 ._-]+$"
+    )
 
 
 # log.debug("Defines how the settings are read")

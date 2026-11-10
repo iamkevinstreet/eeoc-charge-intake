@@ -27,10 +27,11 @@ Every project follows the same seven layers, and fills only the ones its problem
 
 | | |
 | --- | --- |
-| Works today | Both loads and the build on DuckDB: 4 staging and 4 intermediate views, 15 tables, 2 seeds, 4 unit tests and the data tests, the EEOC's published totals among them. 18 offline tests |
+| Works today | Both loads and the build on DuckDB: 4 staging and 4 intermediate views, 15 tables, 2 seeds, 4 unit tests and the data tests, the EEOC's published totals among them. 25 offline tests |
 | The data | The five live runs' 360 documents replayed as reviewed exports (below), and Table E1a, which CI reads from the EEOC's site |
 | Every day | The `daily` workflow runs each DAG end to end through Airflow on DuckDB, keeps the warehouse and its docs as an artifact and copies them to the lake, and loads and builds on Databricks, on [data-platform-aws-databricks](https://github.com/iamkevinstreet/data-platform-aws-databricks) |
-| Next | Column masks on the charging party and separate grants on Databricks; the review service's own exports folder as a source |
+| Access on Databricks | A column mask on the raw values shows the charging party's name to no one, the build included, and the platform grants loading, building and reading to three groups; both wait on the platform's databricks root being applied |
+| Next | The review service's own exports folder as a source |
 
 ## Where the reviews come from
 
@@ -55,7 +56,7 @@ make install   # the locked environment
 make load      # the replayed exports, and Table E1a from the EEOC's site
 make build     # every seed, model, contract, unit test and data test, on DuckDB
 make docs      # the dbt docs site with its lineage graph, in dbt/target/static_index.html
-make test      # 18 tests, offline
+make test      # 25 tests, offline
 make check     # lint, format and strict types; the repository's root runs the code standard
 ```
 
@@ -85,9 +86,17 @@ To run the DAGs through Airflow, `make install-airflow` then `make dags-test`.
   the spelling recorded: a version begins when a later export records the same respondent, by its
   name in lower case and trimmed, spelled another way. The replayed exports hold one spelling each;
   a unit test shows the change.
-- **No name in a mart.** The charging party's name stays in the raw and staging layers; the marts
-  hold a key and an initial, and `fct_field_reviews` shows no value for a field that names a person.
-  On Databricks, column masks and separate grants for loading, building and reading will enforce it.
+- **No name in a mart, and on Databricks in no query.** The marts hold a key and an initial, and
+  `fct_field_reviews` shows no value for a field that names a person. On Databricks, every load ends
+  by putting a column mask on the raw values ([`pipelines/masks.py`](pipelines/masks.py)): a value
+  of a field in `[reviews] personal_fields` shows as its initial and a fingerprint of its text, such
+  as `J. 3f9a0c2b71de`, to everyone outside `personal-data-readers`, an account group left empty.
+  The mask binds the table's owner too, and the build: the fingerprint tells two people apart and
+  the initial is all the marts keep, so dbt reads nothing more, and a test fails the build if it
+  ever reads a name. The fingerprint is an unsalted hash, so it stops reading, not guessing: someone
+  who already suspects a name can hash it and compare. The platform's grants keep readers out of the
+  raw and staging schemas altogether. DuckDB has no masks; there the build reads the name, and the
+  marts still hold only the key and the initial.
 - **The published totals are a test.** The build fails unless Table E1a's total charges equal the
   EEOC's own reports for FY 2023 to 2025: 81,055, 88,531 and 88,201, in
   [`dbt/seeds/published_totals.csv`](dbt/seeds/published_totals.csv) with each report's page.
@@ -103,10 +112,11 @@ equal to the defaults in code. A load to DuckDB needs no secret. See
 
 ## Testing
 
-`make test` runs 18 tests with no network: the table read by its shape, on workbooks the tests lay
+`make test` runs 25 tests with no network: the table read by its shape, on workbooks the tests lay
 out as the EEOC does; every committed export against the contract, a refused one, and a load done
 twice; the whole build on the committed exports and a stand-in table with the published totals; the
-settings, the command, and the DAGs as Airflow parses them. CI also loads the real table from the
+column mask's statements, run against a stand-in for Databricks; the settings, the command, and the
+DAGs as Airflow parses them. CI also loads the real table from the
 EEOC's site and builds on it.
 
 ## Project layout

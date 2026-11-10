@@ -12,7 +12,7 @@ One dbt project, built in DuckDB (`dev`, CI) or Databricks (`prod`). Run it thro
 | `models/national/` | The EEOC's Table E1a, with each basis's share and its change by year, in the `national` group, public | Tables in `national` |
 | `seeds/` | `published_totals`, the charges the EEOC's reports say it received, and `basis_map`, each basis's label in Table E1a | Tables in `reference` |
 | `macros/` | The schema names, a surrogate key both warehouses compute alike, a sorted list each adapter writes its own way, and two generic tests: a unique combination of columns, and a value between two bounds | |
-| `tests/` | The published totals, one national label per basis, and the export contract's rule that an accepted field keeps what the model read and a rejected one ends empty | |
+| `tests/` | The published totals, one national label per basis, the export contract's rule that an accepted field keeps what the model read and a rejected one ends empty, and, on Databricks, that the build reads every name masked | |
 
 The code standard allows this folder one level more than the repository's root, as a project of its
 own, so the published marts sit in a folder per domain directly under `models/`, beside the staging

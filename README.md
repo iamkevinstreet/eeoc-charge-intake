@@ -17,9 +17,9 @@ Case study: <https://kevindstreet.com/projects/eeoc-charge-intake-extraction/>
 
 | | |
 | --- | --- |
-| Works today | Extraction with a quote and page for every field, the quote check, the review screen with gated export, demo mode, the evaluation (offline in CI, live by hand), the dashboard and the Tableau export, spans of every extraction for Langfuse, reviews kept in Postgres with every export on record under a versioned contract, and the charge warehouse those exports load into, beside the EEOC's national statistics |
+| Works today | Extraction with a quote and page for every field, the quote check, the review screen with gated export, demo mode, the evaluation (offline in CI, live by hand), the dashboard and the Tableau export, spans of every extraction for Langfuse, reviews kept in Postgres with every export on record under a versioned contract, and the charge warehouse those exports load into, beside the EEOC's national statistics, built every day on DuckDB and on Databricks, where a column mask keeps the charging party's name out of every query |
 | Measured | Five live runs with `claude-sonnet-5-5`. Since the second, every field right on every document, the largest run on 200; the latest, on 40 with two planted notes, followed neither (below) |
-| Next | A harder test set: varied wording, irrelevant detail, pages that look scanned; the warehouse on Databricks |
+| Next | A harder test set: varied wording, irrelevant detail, pages that look scanned; the review service's own exports as the warehouse's source |
 
 Every charge, notice, person and company here is made up: the generator writes them from a seed, with
 known answers. No real charge appears anywhere in this project.

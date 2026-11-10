@@ -5,7 +5,7 @@
 ########################################################################
 # Author:            Kevin Street
 # Created on:        2026-11-09
-# Last modified on:  2026-11-09
+# Last modified on:  2026-11-10
 #
 # Every setting the loaders, the build and the DAGs read, at its
 # default. No secrets: those go in config/.env.
@@ -38,6 +38,10 @@ timeout_s = 60.0                          # how long the download may take
 dataset = "raw_reviews"                   # the schema the review exports load into
 folder = "../data/reviews"                # exports under contract v1: one per .json file, or one per line of .jsonl
 contract = "../backend/src/eeoc_intake/contracts/review_export_v1.json"  # the contract each must meet
+# The fields whose values name a person: never in a mart, and on Databricks masked in the raw table
+# for everyone outside personal_readers, an account group made in the workspace and left empty.
+personal_fields = ["charging_party"]
+personal_readers = "personal-data-readers"
 
 [files]
 encoding = "utf-8"                        # every file read or written

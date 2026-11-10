@@ -5,7 +5,7 @@
 ########################################################################
 # Author:            Kevin Street
 # Created on:        2026-11-09
-# Last modified on:  2026-11-09
+# Last modified on:  2026-11-10
 #
 # The charges mart: every reviewed charge as facts, bridges and
 # dimensions, and two reports. Every model's columns and types are a
@@ -205,7 +205,9 @@ models:
       - {name: is_current, data_type: boolean}
 
   - name: dim_charging_party
-    description: One row per charging party, by a key and an initial; the name never reaches a mart.
+    description: >
+      One row per charging party, by a key and an initial; the name never reaches a mart, and on
+      Databricks the build reads it masked.
     columns:
       - {name: charging_party_key, data_type: string, data_tests: [unique, not_null]}
       - {name: initial, data_type: string}

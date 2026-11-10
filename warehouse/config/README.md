@@ -30,6 +30,8 @@ variables from these settings before it starts dbt, and `dbt/profiles.yml` reads
 | `[reviews] dataset` | `raw_reviews` | The schema the review exports load into |
 | `[reviews] folder` | `../data/reviews` | The exports: one per `.json` file, as the review service writes them, or one per line of `.jsonl` |
 | `[reviews] contract` | the app's `review_export_v1.json` | The JSON Schema every export must meet before it loads |
+| `[reviews] personal_fields` | `["charging_party"]` | The fields whose values name a person: never in a mart, masked in the raw table on Databricks. dbt's `personal_fields` variable must match, and a test checks it does |
+| `[reviews] personal_readers` | `personal-data-readers` | The account group the mask shows a name to, made in the workspace and left empty, so no query returns a name |
 | `[files] encoding` | `utf-8` | Every file read or written |
 | `[log] dir`, `level` | `logs`, `INFO` | Where `kds.logs` writes one JSON line per event, and from what level |
 
