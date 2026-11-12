@@ -55,7 +55,7 @@ databricks = ["dbt-databricks==1.13.0", "dlt[databricks]==1.32.0"]
 snowflake = [
   "dbt-snowflake==1.12.5",
   "dlt[snowflake]==1.32.0",
-  "snowflake-connector-python==4.8.1",
+  "snowflake-connector-python==5.2.0",
 ]
 
 [tool.uv.sources]
