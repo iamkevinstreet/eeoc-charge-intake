@@ -20,7 +20,8 @@
   in full only to `[reviews] personal_role`, `PERSONAL_DATA_READER`, a role granted to no one; the
   test that the build reads no name now runs on Snowflake as well as Databricks. A Snowflake form of
   the sorted list macro, a `snowflake` dbt target and dependency group, with Snowflake's connector
-  held at 4.8.1, and `[snowflake] database` in the warehouse's settings. Not yet run on Snowflake.
+  held at 4.8.1, and `[snowflake] database` in the warehouse's settings. First run on Snowflake on
+  Nov 10: both loads, the masking policy and all 127 seeds, models and tests.
 - **utils v0.8.0,** for the backend and the warehouse alike, so the repository keeps one pin.
   29 offline warehouse tests.
 - **A column mask on the charging party's name, on Databricks.** Every review load into Databricks

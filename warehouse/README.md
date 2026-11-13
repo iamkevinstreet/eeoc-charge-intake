@@ -29,9 +29,9 @@ Every project follows the same seven layers, and fills only the ones its problem
 | --- | --- |
 | Works today | Both loads and the build on DuckDB: 4 staging and 4 intermediate views, 15 tables, 2 seeds, 4 unit tests and the data tests, the EEOC's published totals among them. 29 offline tests |
 | The data | The five live runs' 360 documents replayed as reviewed exports (below), and Table E1a, which CI reads from the EEOC's site |
-| Every day | The `daily` workflow runs each DAG end to end through Airflow on DuckDB, keeps the warehouse and its docs as an artifact and copies them to the lake, and loads and builds on Databricks, on [data-platform-aws-databricks](https://github.com/iamkevinstreet/data-platform-aws-databricks), and on Snowflake, on [data-platform-aws-snowflake](https://github.com/iamkevinstreet/data-platform-aws-snowflake), once that platform is applied |
+| Every day | The `daily` workflow runs each DAG end to end through Airflow on DuckDB, keeps the warehouse and its docs as an artifact and copies them to the lake, and loads and builds on Databricks, on [data-platform-aws-databricks](https://github.com/iamkevinstreet/data-platform-aws-databricks), and on Snowflake, on [data-platform-aws-snowflake](https://github.com/iamkevinstreet/data-platform-aws-snowflake) |
 | Access on Databricks | A column mask on the raw values shows the charging party's name to no one, the build included, and the platform grants loading, building and reading to three groups. The daily build's test that it reads no name passes there |
-| Access on Snowflake | Written, not yet run: the load and the build each sign in as a service user of their own with the job's OIDC token, so no key is stored, and a masking policy shows the name to no role in use. Waits on the platform's snowflake root being applied |
+| Access on Snowflake | The load and the build each sign in as a service user of their own with the job's OIDC token, so no key is stored, and a masking policy shows the name to no role in use. The daily build's test that it reads no name passes there |
 | Next | The review service's own exports folder as a source |
 
 ## Where the reviews come from
