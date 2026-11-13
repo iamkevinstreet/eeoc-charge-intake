@@ -5,7 +5,7 @@
 ########################################################################
 # Author:            Kevin Street
 # Created on:        2026-11-09
-# Last modified on:  2026-11-10
+# Last modified on:  2026-11-13
 #
 # Packages the loaders and the build command, and sets ruff, mypy and
 # pytest to the code standard. Airflow and the Databricks and Snowflake
@@ -50,12 +50,12 @@ dev = [
 ]
 airflow = ["apache-airflow==3.4.0"]
 databricks = ["dbt-databricks==1.13.0", "dlt[databricks]==1.32.0"]
-# Snowflake's connector is held at 4.8.1, the last release before its 5.0 rewrite on a Rust core,
-# which dlt's loads have not run on yet.
+# dbt's adapter and dlt's destination both run on Snowflake's connector, so it is pinned here too:
+# a new version of it arrives as a change of its own, as 5.0 did, its rewrite on a Rust core.
 snowflake = [
   "dbt-snowflake==1.12.5",
   "dlt[snowflake]==1.32.0",
-  "snowflake-connector-python==4.8.1",
+  "snowflake-connector-python==5.2.0",
 ]
 
 [tool.uv.sources]
