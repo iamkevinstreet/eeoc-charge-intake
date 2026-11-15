@@ -1,5 +1,5 @@
 # Written by Copier from the utils project template; `copier update` changes it.
-_commit: c6acc75
+_commit: 70d6dd8
 _src_path: gh:iamkevinstreet/utils
 description: 'Every reviewed charge as facts, bridges and dimensions, beside the EEOC''s
     national charge statistics: dlt loads the review exports and the EEOC''s tables,
@@ -8,4 +8,4 @@ folder: warehouse
 industry: legal
 project_name: EEOC charge warehouse
 repo: eeoc-charge-intake
-utils_commit: c6acc75155fb1a7350c6e8ccb09a57ce01bba40c
+utils_commit: 70d6dd894d6316c93d60de1764b6c63dff321035
