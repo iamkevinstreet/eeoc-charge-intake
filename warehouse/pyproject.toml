@@ -42,14 +42,14 @@ dev = [
   "mypy>=1.13",
   "pip-audit>=2.7",
   "pytest>=8.3",
-  "ruff==0.17.4",
+  "ruff==0.17.6",
   "types-PyYAML>=6.0",
   "types-jsonschema>=4.23",
   "types-openpyxl>=3.1",
   "kds-standards>=0.8.0,<0.9",
 ]
 airflow = ["apache-airflow==3.4.0"]
-databricks = ["dbt-databricks==1.13.0", "dlt[databricks]==1.32.0"]
+databricks = ["dbt-databricks==1.13.1", "dlt[databricks]==1.32.0"]
 # dbt's adapter and dlt's destination both run on Snowflake's connector, so it is pinned here too:
 # a new version of it arrives as a change of its own, as 5.0 did, its rewrite on a Rust core.
 snowflake = [
